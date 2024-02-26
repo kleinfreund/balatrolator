@@ -132,6 +132,7 @@ export interface State {
 	jokerSet: Set<JokerName>
 	jokerSlots: number
 	blueprintTarget: JokerName | undefined
+	brainstormTarget: JokerName | undefined
 	playedCards: Card[]
 	heldCards: Card[]
 	playedHand: HandName

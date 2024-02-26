@@ -232,6 +232,11 @@ export function getState (initialState: InitialState): State {
 		blueprintTarget = jokers[blueprintIndex + 1]!.name
 	}
 
+	let brainstormTarget
+	if (jokerSet.has('Brainstorm') && jokers[0]) {
+		brainstormTarget = jokers[0]!.name
+	}
+
 	return {
 		hands,
 		discards,
@@ -243,6 +248,7 @@ export function getState (initialState: InitialState): State {
 		jokerSet,
 		jokerSlots,
 		blueprintTarget,
+		brainstormTarget,
 		playedCards,
 		heldCards,
 		playedHand,
@@ -322,7 +328,12 @@ function createEffect (effect?: JokerEffect): JokerEffect {
 	if (effect) {
 		return function (options) {
 			const value = effect.call(this, options)
-			return value * (options.state.blueprintTarget === this.name ? 2 : 1)
+
+			let factor = 1
+			if (options.state.blueprintTarget === this.name) factor *= 2
+			if (options.state.brainstormTarget === this.name) factor *= 2
+
+			return value * factor
 		}
 	}
 
@@ -333,7 +344,12 @@ function createCardEffect (effect?: CardJokerEffect): CardJokerEffect {
 	if (effect) {
 		return function (options) {
 			const value = effect.call(this, options)
-			return value * (options.state.blueprintTarget === this.name ? 2 : 1)
+
+			let factor = 1
+			if (options.state.blueprintTarget === this.name) factor *= 2
+			if (options.state.brainstormTarget === this.name) factor *= 2
+
+			return value * factor
 		}
 	}
 
