@@ -1,0 +1,37 @@
+{
+	"compilerOptions": {
+		"baseUrl": ".",
+		"rootDir": ".",
+		"paths": {
+			"#*": [
+				"./src/*"
+			]
+		},
+		"outDir": "dist",
+		"sourceMap": false,
+		"noEmit": true,
+		"target": "es2022",
+		"module": "es2022",
+		"moduleResolution": "Bundler",
+		"lib": [
+			"dom",
+			"dom.iterable",
+			"es2022"
+		],
+		"allowUnreachableCode": false,
+		"noImplicitAny": true,
+		"noImplicitReturns": true,
+		"noImplicitThis": true,
+		"noUncheckedIndexedAccess": true,
+		"noUnusedLocals": true,
+		"noUnusedParameters": true,
+		"strict": true,
+		"strictNullChecks": true,
+		"types": [
+			"vite/client"
+		]
+	},
+	"include": [
+		"./src/**/*.ts"
+	]
+}

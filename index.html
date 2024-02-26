@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width,initial-scale=1.0" />
+
+	<title>Balatrolator</title>
+
+	<link rel="stylesheet" href="./src/ui/css/styles.css">
+</head>
+
+<body>
+	<main>
+		<h1>Balatrolator</h1>
+
+		<p>Besides it being the shittest UI you'll see all day, it's also not functional, yet. Come back later. 🃏</p>
+
+		<p>Balatrolator is a score calculator for <a href="https://www.playbalatro.com/">Balatro</a>. Go, buy it!</p>
+
+		<form class="form" method="POST" enctype="multipart/form-data">
+			<div>
+				<h2>Round data</h2>
+
+				<label>
+					Hands
+					<span>Influences: Acrobat</span>
+					<input name="hands" type="number" min="0" value="0">
+				</label>
+
+				<label>
+					Discards
+					<span>Influences: Banner, Mystic Summit</span>
+					<input name="discards" type="number" min="0" value="0">
+				</label>
+
+				<label>
+					Money
+					<span>Influences: Bull, Bootstraps</span>
+					<input name="money" type="number" value="0">
+				</label>
+
+				<label>
+					Blind
+					<input name="blind" list="blinds" value="Small Blind">
+				</label>
+
+				<label>
+					Joker slots
+					<span>Influences: Joker Stencil</span>
+					<input name="jokerSlots" type="number" value="5">
+				</label>
+			</div>
+
+			<div>
+				<h2>Jokers</h2>
+
+				<div class="joker-container list">
+					<div class="joker">
+						<label>
+							Joker name
+							<input list="jokers" value="">
+						</label>
+					</div>
+
+					<div class="joker">
+						<label>
+							Joker name
+							<input list="jokers" value="">
+						</label>
+					</div>
+				</div>
+
+				<button class="add-joker-button" type="button">Add</button>
+			</div>
+
+			<div>
+				<h2>Hand</h2>
+
+				<div class="card-container list">
+					<div class="card">
+						<label>
+							Is played?
+							<input type="checkbox" value="is-played" checked>
+						</label>
+
+						<label>
+							Rank
+							<input list="ranks" value="Ace">
+						</label>
+
+						<label>
+							Suit
+							<input list="suits" value="Clubs">
+						</label>
+					</div>
+
+					<div class="card">
+						<label>
+							Is played?
+							<input type="checkbox" value="is-played" checked>
+						</label>
+
+						<label>
+							Rank
+							<input list="ranks" value="Ace">
+						</label>
+
+						<label>
+							Suit
+							<input list="suits" value="Hearts">
+						</label>
+					</div>
+
+					<div class="card">
+						<label>
+							Is played?
+							<input type="checkbox" value="is-played">
+						</label>
+
+						<label>
+							Rank
+							<input list="ranks" value="5">
+						</label>
+
+						<label>
+							Suit
+							<input list="suits" value="Diamonds">
+						</label>
+					</div>
+				</div>
+
+				<button class="add-card-button" type="button">Add</button>
+			</div>
+
+			<button>Submit</button>
+		</form>
+	</main>
+
+	<template id="joker">
+		<div class="joker">
+			<label>
+				Joker name
+				<input list="jokers" value="">
+			</label>
+		</div>
+	</template>
+
+	<template id="card">
+		<div class="card">
+			<label>
+				Is played?
+				<input type="checkbox" value="is-played" checked>
+			</label>
+
+			<label>
+				Rank
+				<input list="ranks" value="Ace">
+			</label>
+
+			<label>
+				Suit
+				<input list="suits" value="Clubs">
+			</label>
+		</div>
+	</template>
+
+	<datalist id="blinds">
+		<option value="Small Blind"></option>
+		<option value="Big Blind"></option>
+		<option value="The Hook"></option>
+		<option value="The Ox"></option>
+		<option value="The House"></option>
+		<option value="The Wall"></option>
+		<option value="The Wheel"></option>
+		<option value="The Arm"></option>
+		<option value="The Club"></option>
+		<option value="The Fish"></option>
+		<option value="The Psychic"></option>
+		<option value="The Goad"></option>
+		<option value="The Water"></option>
+		<option value="The Window"></option>
+		<option value="The Manacle"></option>
+		<option value="The Eye"></option>
+		<option value="The Mouth"></option>
+		<option value="The Plant"></option>
+		<option value="The Serpent"></option>
+		<option value="The Pillar"></option>
+		<option value="The Needle"></option>
+		<option value="The Head"></option>
+		<option value="The Tooth"></option>
+		<option value="The Flint"></option>
+		<option value="The Mark"></option>
+		<option value="Amber Acorn"></option>
+		<option value="Unknown One"></option>
+		<option value="Violet Vessel"></option>
+		<option value="Unknown Two"></option>
+		<option value="Cerulean Bell"></option>
+	</datalist>
+
+	<datalist id="jokers">
+		<option value="Joker"></option>
+		<option value="Greedy Joker"></option>
+		<option value="Lusty Joker"></option>
+		<option value="Wrathful Joker"></option>
+		<option value="Gluttonous Joker"></option>
+	</datalist>
+
+	<datalist id="ranks">
+		<option value="Ace"></option>
+		<option value="King"></option>
+		<option value="Queen"></option>
+		<option value="Jack"></option>
+		<option value="10"></option>
+		<option value="9"></option>
+		<option value="8"></option>
+		<option value="7"></option>
+		<option value="6"></option>
+		<option value="5"></option>
+		<option value="4"></option>
+		<option value="3"></option>
+		<option value="2"></option>
+	</datalist>
+
+	<datalist id="suits">
+		<option value="Clubs"></option>
+		<option value="Spades"></option>
+		<option value="Hearts"></option>
+		<option value="Diamonds"></option>
+	</datalist>
+
+	<script src="./src/ui/main.ts" type="module"></script>
+</body>
+
+</html>

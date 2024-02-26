@@ -1,0 +1,26 @@
+body {
+	font-size: 0.8em;
+	line-height: 1.3;
+	font-family: Lato, Numero, sans-serif;
+}
+
+main {
+	padding: 1.5rem;
+}
+
+label+label {
+	margin-top: 0.5rem;
+}
+
+label {
+	display: block;
+}
+
+label>span {
+	display: block;
+}
+
+input {
+	display: block;
+	min-width: 0;
+}
