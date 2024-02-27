@@ -142,61 +142,61 @@ export const RANK_TO_INDEX_MAP: Record<Rank, number> = {
 	'Ace': 1,
 }
 
-export const JOKER_NAME_TO_JOKER_MAP: Record<JokerName, JokerEffects> = {
+export const JOKER_DEFINITIONS: Record<JokerName, JokerEffects> = {
 	'Joker': {
 		rarity: 'common',
-		applyMultiplier ({ value }) {
+		applyPlusMultiplier ({ value }) {
 			return value + 4
 		},
 	},
 	'Greedy Joker': {
 		rarity: 'common',
-		applyCardMultiplier ({ value, card }) {
+		applyCardPlusMultiplier ({ value, card }) {
 			return value + (isSuit({ card }, 'Diamonds') ? 4 : 0)
 		},
 	},
 	'Lusty Joker': {
 		rarity: 'common',
-		applyCardMultiplier ({ value, card }) {
+		applyCardPlusMultiplier ({ value, card }) {
 			return value + (isSuit({ card }, 'Hearts') ? 4 : 0)
 		},
 	},
 	'Wrathful Joker': {
 		rarity: 'common',
-		applyCardMultiplier ({ value, card }) {
+		applyCardPlusMultiplier ({ value, card }) {
 			return value + (isSuit({ card }, 'Spades') ? 4 : 0)
 		},
 	},
 	'Gluttonous Joker': {
 		rarity: 'common',
-		applyCardMultiplier ({ value, card }) {
+		applyCardPlusMultiplier ({ value, card }) {
 			return value + (isSuit({ card }, 'Clubs') ? 4 : 0)
 		},
 	},
 	'Jolly Joker': {
 		rarity: 'common',
-		applyMultiplier ({ value, state }) {
+		applyPlusMultiplier ({ value, state }) {
 			const cards = nOfAKind(state.playedCards, 2)
 			return value + (cards.length > 0 ? 8 : 0)
 		},
 	},
 	'Zany Joker': {
 		rarity: 'common',
-		applyMultiplier ({ value, state }) {
+		applyPlusMultiplier ({ value, state }) {
 			const cards = nOfAKind(state.playedCards, 3)
 			return value + (cards.length > 0 ? 8 : 0)
 		},
 	},
 	'Mad Joker': {
 		rarity: 'common',
-		applyMultiplier ({ value, state }) {
+		applyPlusMultiplier ({ value, state }) {
 			const cards = nOfAKind(state.playedCards, 4)
 			return value + (cards.length > 0 ? 8 : 0)
 		},
 	},
 	'Crazy Joker': {
 		rarity: 'common',
-		applyMultiplier ({ value, state }) {
+		applyPlusMultiplier ({ value, state }) {
 			const hasFourFingers = state.jokerSet.has('Four Fingers')
 			const hasShortcut = state.jokerSet.has('Shortcut')
 			const cards = straight(state.playedCards, hasFourFingers, hasShortcut)
@@ -205,7 +205,7 @@ export const JOKER_NAME_TO_JOKER_MAP: Record<JokerName, JokerEffects> = {
 	},
 	'Droll Joker': {
 		rarity: 'common',
-		applyMultiplier ({ value, state }) {
+		applyPlusMultiplier ({ value, state }) {
 			const hasFourFingers = state.jokerSet.has('Four Fingers')
 			const hasSmearedJoker = state.jokerSet.has('Smeared Joker')
 			const cards = flush(state.playedCards, hasFourFingers, hasSmearedJoker)
@@ -214,28 +214,28 @@ export const JOKER_NAME_TO_JOKER_MAP: Record<JokerName, JokerEffects> = {
 	},
 	'Sly Joker': {
 		rarity: 'common',
-		applyChips ({ value, state }) {
+		applyPlusChips ({ value, state }) {
 			const cards = nOfAKind(state.playedCards, 2)
 			return value + (cards.length > 0 ? 50 : 0)
 		},
 	},
 	'Wily Joker': {
 		rarity: 'common',
-		applyChips ({ value, state }) {
+		applyPlusChips ({ value, state }) {
 			const cards = nOfAKind(state.playedCards, 3)
 			return value + (cards.length > 0 ? 100 : 0)
 		},
 	},
 	'Clever Joker': {
 		rarity: 'common',
-		applyChips ({ value, state }) {
+		applyPlusChips ({ value, state }) {
 			const cards = nOfAKind(state.playedCards, 4)
 			return value + (cards.length > 0 ? 150 : 0)
 		},
 	},
 	'Devious Joker': {
 		rarity: 'common',
-		applyChips ({ value, state }) {
+		applyPlusChips ({ value, state }) {
 			const hasFourFingers = state.jokerSet.has('Four Fingers')
 			const hasShortcut = state.jokerSet.has('Shortcut')
 			const cards = straight(state.playedCards, hasFourFingers, hasShortcut)
@@ -244,7 +244,7 @@ export const JOKER_NAME_TO_JOKER_MAP: Record<JokerName, JokerEffects> = {
 	},
 	'Crafty Joker': {
 		rarity: 'common',
-		applyChips ({ value, state }) {
+		applyPlusChips ({ value, state }) {
 			const hasFourFingers = state.jokerSet.has('Four Fingers')
 			const hasSmearedJoker = state.jokerSet.has('Smeared Joker')
 			const cards = flush(state.playedCards, hasFourFingers, hasSmearedJoker)
@@ -253,13 +253,13 @@ export const JOKER_NAME_TO_JOKER_MAP: Record<JokerName, JokerEffects> = {
 	},
 	'Half Joker': {
 		rarity: 'common',
-		applyMultiplier ({ value, state }) {
+		applyPlusMultiplier ({ value, state }) {
 			return value + (state.playedCards.length <= 3 ? 20 : 0)
 		},
 	},
 	'Joker Stencil': {
 		rarity: 'uncommon',
-		applyMultiplier ({ value, state }) {
+		applyTimesMultiplier ({ value, state }) {
 			const nonNegativeJokers = state.jokers.filter(({ edition }) => edition !== 'negative')
 			return value * (state.jokerSlots - nonNegativeJokers.length)
 		},
@@ -275,19 +275,19 @@ export const JOKER_NAME_TO_JOKER_MAP: Record<JokerName, JokerEffects> = {
 	},
 	'Ceremonial Dagger': {
 		rarity: 'uncommon',
-		applyMultiplier ({ value }) {
+		applyPlusMultiplier ({ value }) {
 			return value + this.plusMult
 		},
 	},
 	'Banner': {
 		rarity: 'common',
-		applyChips ({ value, state }) {
+		applyPlusChips ({ value, state }) {
 			return value + (state.discards * 40)
 		},
 	},
 	'Mystic Summit': {
 		rarity: 'common',
-		applyMultiplier ({ value, state }) {
+		applyPlusMultiplier ({ value, state }) {
 			return value + (state.discards === 0 ? 15 : 0)
 		},
 	},
@@ -296,16 +296,16 @@ export const JOKER_NAME_TO_JOKER_MAP: Record<JokerName, JokerEffects> = {
 	},
 	'Loyalty Card': {
 		rarity: 'uncommon',
-		applyMultiplier ({ value }) {
+		applyTimesMultiplier ({ value }) {
 			return value * (this.isActive ? 4 : 0)
 		},
 	},
 	'8 Ball': {
 		rarity: 'common',
 	},
-	'Misprint': {
+	'Misprint': { // TODO:
 		rarity: 'common',
-		applyMultiplier ({ value }) {
+		applyPlusMultiplier ({ value }) {
 			return value + 0
 		},
 	},
@@ -314,7 +314,7 @@ export const JOKER_NAME_TO_JOKER_MAP: Record<JokerName, JokerEffects> = {
 	},
 	'Raised Fist': {
 		rarity: 'common',
-		applyMultiplier ({ value, state }) {
+		applyPlusMultiplier ({ value, state }) {
 			const ranks = state.heldCards.map(({ rank }) => RANK_TO_CHIP_MAP[rank])
 			ranks.sort((a, b) => a - b)
 			const lowestCardRank = ranks[0]
@@ -326,25 +326,25 @@ export const JOKER_NAME_TO_JOKER_MAP: Record<JokerName, JokerEffects> = {
 	},
 	'Fibonacci': {
 		rarity: 'uncommon',
-		applyCardMultiplier ({ value, card }) {
+		applyCardPlusMultiplier ({ value, card }) {
 			return value + (isRank({ card }, ['Ace', '2', '3', '5', '8']) ? 8 : 0)
 		},
 	},
 	'Steel Joker': {
 		rarity: 'uncommon',
-		applyMultiplier ({ value }) {
+		applyTimesMultiplier ({ value }) {
 			return value * this.timesMult
 		},
 	},
 	'Scary Face': {
 		rarity: 'common',
-		applyCardChips ({ value, state, card }) {
+		applyCardPlusChips ({ value, state, card }) {
 			return value + (isFaceCard({ state, card }) ? 30 : 0)
 		},
 	},
 	'Abstract Joker': {
 		rarity: 'common',
-		applyMultiplier ({ value, state }) {
+		applyPlusMultiplier ({ value, state }) {
 			return value + state.jokers.length
 		},
 	},
@@ -353,12 +353,6 @@ export const JOKER_NAME_TO_JOKER_MAP: Record<JokerName, JokerEffects> = {
 	},
 	'Hack': {
 		rarity: 'uncommon',
-		applyCardChips ({ value, card }) {
-			return value * (isRank({ card }, ['2', '3', '4', '5']) ? 2 : 1)
-		},
-		applyCardMultiplier ({ value, card }) {
-			return value * (isRank({ card }, ['2', '3', '4', '5']) ? 2 : 1)
-		},
 	},
 	'Pareidolia': {
 		rarity: 'uncommon',
@@ -369,28 +363,28 @@ export const JOKER_NAME_TO_JOKER_MAP: Record<JokerName, JokerEffects> = {
 			numerator: 1,
 			denominator: 4,
 		},
-		applyMultiplier ({ value }) {
+		applyPlusMultiplier ({ value }) {
 			return value + 15
 		},
 	},
 	'Even Steven': {
 		rarity: 'common',
-		applyCardMultiplier ({ value, card }) {
+		applyCardPlusMultiplier ({ value, card }) {
 			return value + (isRank({ card }, ['10', '8', '6', '4', '2']) ? 4 : 0)
 		},
 	},
 	'Odd Todd': {
 		rarity: 'common',
-		applyCardChips ({ value, card }) {
+		applyCardPlusChips ({ value, card }) {
 			return value + (isRank({ card }, ['Ace', '9', '7', '5', '3']) ? 30 : 0)
 		},
 	},
 	'Scholar': {
 		rarity: 'common',
-		applyCardChips ({ value, card }) {
+		applyCardPlusChips ({ value, card }) {
 			return value + (isRank({ card }, 'Ace') ? 20 : 0)
 		},
-		applyCardMultiplier ({ value, card }) {
+		applyCardPlusMultiplier ({ value, card }) {
 			return value + (isRank({ card }, 'Ace') ? 4 : 0)
 		},
 	},
@@ -403,7 +397,7 @@ export const JOKER_NAME_TO_JOKER_MAP: Record<JokerName, JokerEffects> = {
 	},
 	'Supernova': {
 		rarity: 'common',
-		applyMultiplier ({ value, state }) {
+		applyPlusMultiplier ({ value, state }) {
 			// TODO: Remove the following by instead incrementing `plays` after determining the played hand.
 			// Note: This is counting one extra play because the Joker takes *the current played hand* into account for the calculation.
 			return value + state.handLevels[state.playedHand].plays + 1
@@ -411,7 +405,7 @@ export const JOKER_NAME_TO_JOKER_MAP: Record<JokerName, JokerEffects> = {
 	},
 	'Ride the Bus': {
 		rarity: 'common',
-		applyMultiplier ({ value }) {
+		applyPlusMultiplier ({ value }) {
 			return value + this.plusMult
 		},
 	},
@@ -430,20 +424,20 @@ export const JOKER_NAME_TO_JOKER_MAP: Record<JokerName, JokerEffects> = {
 	},
 	'Blackboard': {
 		rarity: 'uncommon',
-		applyMultiplier ({ value, state }) {
+		applyTimesMultiplier ({ value, state }) {
 			const allHandCardsAreSpadesOrClubs = state.heldCards.every((card) => isSuit({ card }, ['Spades', 'Clubs']))
 			return value * (allHandCardsAreSpadesOrClubs ? 3 : 1)
 		},
 	},
 	'Runner': {
 		rarity: 'common',
-		applyChips ({ value }) {
+		applyPlusChips ({ value }) {
 			return value + this.plusChips
 		},
 	},
 	'Ice Cream': {
 		rarity: 'common',
-		applyChips ({ value }) {
+		applyPlusChips ({ value }) {
 			return value + this.plusChips
 		},
 	},
@@ -455,7 +449,7 @@ export const JOKER_NAME_TO_JOKER_MAP: Record<JokerName, JokerEffects> = {
 	},
 	'Blue Joker': {
 		rarity: 'common',
-		applyChips ({ value }) {
+		applyPlusChips ({ value }) {
 			return value + this.plusChips
 		},
 	},
@@ -464,13 +458,13 @@ export const JOKER_NAME_TO_JOKER_MAP: Record<JokerName, JokerEffects> = {
 	},
 	'Constellation': {
 		rarity: 'uncommon',
-		applyMultiplier ({ value }) {
+		applyTimesMultiplier ({ value }) {
 			return value * this.timesMult
 		},
 	},
 	'Hiker': {
 		rarity: 'common',
-		applyChips ({ value }) {
+		applyPlusChips ({ value }) {
 			return value + this.plusChips
 		},
 	},
@@ -479,7 +473,7 @@ export const JOKER_NAME_TO_JOKER_MAP: Record<JokerName, JokerEffects> = {
 	},
 	'Green Joker': {
 		rarity: 'common',
-		applyMultiplier ({ value }) {
+		applyPlusMultiplier ({ value }) {
 			return value + this.plusMult
 		},
 	},
@@ -495,31 +489,31 @@ export const JOKER_NAME_TO_JOKER_MAP: Record<JokerName, JokerEffects> = {
 			numerator: 1,
 			denominator: 1000,
 		},
-		applyMultiplier ({ value }) {
+		applyTimesMultiplier ({ value }) {
 			return value * 3
 		},
 	},
 	'Card Sharp': {
 		rarity: 'uncommon',
-		applyMultiplier ({ value }) {
+		applyTimesMultiplier ({ value }) {
 			return value * (this.isActive ? 3 : 1)
 		},
 	},
 	'Red Card': {
 		rarity: 'common',
-		applyMultiplier ({ value }) {
+		applyPlusMultiplier ({ value }) {
 			return value + this.plusMult
 		},
 	},
 	'Madness': {
 		rarity: 'uncommon',
-		applyMultiplier ({ value }) {
+		applyTimesMultiplier ({ value }) {
 			return value * this.timesMult
 		},
 	},
 	'Square Joker': {
 		rarity: 'common',
-		applyChips ({ value }) {
+		applyPlusChips ({ value }) {
 			return value + this.plusChips
 		},
 	},
@@ -531,7 +525,7 @@ export const JOKER_NAME_TO_JOKER_MAP: Record<JokerName, JokerEffects> = {
 	},
 	'Vampire': {
 		rarity: 'uncommon',
-		applyMultiplier ({ value }) {
+		applyTimesMultiplier ({ value }) {
 			return value * this.timesMult
 		},
 	},
@@ -540,7 +534,7 @@ export const JOKER_NAME_TO_JOKER_MAP: Record<JokerName, JokerEffects> = {
 	},
 	'Hologram': {
 		rarity: 'uncommon',
-		applyMultiplier ({ value }) {
+		applyTimesMultiplier ({ value }) {
 			return value * this.timesMult
 		},
 	},
@@ -549,7 +543,7 @@ export const JOKER_NAME_TO_JOKER_MAP: Record<JokerName, JokerEffects> = {
 	},
 	'Baron': {
 		rarity: 'rare',
-		applyHeldCardMultiplier ({ value, card }) {
+		applyHeldCardTimesMultiplier ({ value, card }) {
 			return value * (card.rank === 'King' ? 1.5 : 1)
 		},
 	},
@@ -561,7 +555,7 @@ export const JOKER_NAME_TO_JOKER_MAP: Record<JokerName, JokerEffects> = {
 	},
 	'Obelisk': {
 		rarity: 'rare',
-		applyMultiplier ({ value }) {
+		applyTimesMultiplier ({ value }) {
 			return value * this.timesMult
 		},
 	},
@@ -573,7 +567,7 @@ export const JOKER_NAME_TO_JOKER_MAP: Record<JokerName, JokerEffects> = {
 	},
 	'Photograph': {
 		rarity: 'common',
-		applyCardMultiplier ({ value, state, card }) {
+		applyCardTimesMultiplier ({ value, state, card }) {
 			const firstPlayedFaceCard = state.playedCards.find((playedCard) => ['King', 'Queen', 'Jack'].includes(playedCard.rank))
 			const isFirstPlayedFaceCard = card.index === firstPlayedFaceCard?.index
 			return value * (isFirstPlayedFaceCard ? 2 : 1)
@@ -587,7 +581,7 @@ export const JOKER_NAME_TO_JOKER_MAP: Record<JokerName, JokerEffects> = {
 	},
 	'Erosion': {
 		rarity: 'uncommon',
-		applyMultiplier ({ value }) {
+		applyPlusMultiplier ({ value }) {
 			return value + this.plusMult
 		},
 	},
@@ -613,7 +607,7 @@ export const JOKER_NAME_TO_JOKER_MAP: Record<JokerName, JokerEffects> = {
 	},
 	'Fortune Teller': {
 		rarity: 'common',
-		applyMultiplier ({ value }) {
+		applyPlusMultiplier ({ value }) {
 			return value + this.plusMult
 		},
 	},
@@ -625,7 +619,7 @@ export const JOKER_NAME_TO_JOKER_MAP: Record<JokerName, JokerEffects> = {
 	},
 	'Stone Joker': {
 		rarity: 'uncommon',
-		applyChips ({ value }) {
+		applyPlusChips ({ value }) {
 			return value + this.plusChips
 		},
 	},
@@ -634,7 +628,7 @@ export const JOKER_NAME_TO_JOKER_MAP: Record<JokerName, JokerEffects> = {
 	},
 	'Lucky Cat': {
 		rarity: 'uncommon',
-		applyMultiplier ({ value }) {
+		applyTimesMultiplier ({ value }) {
 			return value * this.timesMult
 		},
 	},
@@ -643,7 +637,7 @@ export const JOKER_NAME_TO_JOKER_MAP: Record<JokerName, JokerEffects> = {
 	},
 	'Bull': {
 		rarity: 'uncommon',
-		applyChips ({ value, state }) {
+		applyPlusChips ({ value, state }) {
 			return value + (state.money * 2)
 		},
 	},
@@ -655,41 +649,41 @@ export const JOKER_NAME_TO_JOKER_MAP: Record<JokerName, JokerEffects> = {
 	},
 	'Flash Card': {
 		rarity: 'uncommon',
-		applyMultiplier ({ value }) {
+		applyPlusMultiplier ({ value }) {
 			return value + this.plusMult
 		},
 	},
 	'Popcorn': {
 		rarity: 'common',
-		applyMultiplier ({ value }) {
+		applyPlusMultiplier ({ value }) {
 			return value + this.plusMult
 		},
 	},
 	'Spare Trousers': {
 		rarity: 'uncommon',
-		applyMultiplier ({ value }) {
+		applyPlusMultiplier ({ value }) {
 			return value + this.plusMult
 		},
 	},
 	'Ancient Joker': {
 		rarity: 'rare',
-		applyMultiplier ({ value, state }) {
+		applyTimesMultiplier ({ value, state }) {
 			const playedCardsWithMatchingSuits = state.playedCards.filter((card) => isSuit({ card }, this.suit!))
 			return value * playedCardsWithMatchingSuits.length * 1.5
 		},
 	},
 	'Ramen': {
 		rarity: 'uncommon',
-		applyMultiplier ({ value }) {
+		applyTimesMultiplier ({ value }) {
 			return value * this.timesMult
 		},
 	},
 	'Walkie Talkie': {
 		rarity: 'common',
-		applyCardChips ({ value, card }) {
+		applyCardPlusChips ({ value, card }) {
 			return value + (['6', '10'].includes(card.rank) ? 10 : 0)
 		},
-		applyCardMultiplier ({ value, card }) {
+		applyCardPlusMultiplier ({ value, card }) {
 			return value + (['6', '10'].includes(card.rank) ? 4 : 0)
 		},
 	},
@@ -698,19 +692,19 @@ export const JOKER_NAME_TO_JOKER_MAP: Record<JokerName, JokerEffects> = {
 	},
 	'Castle': {
 		rarity: 'uncommon',
-		applyChips ({ value }) {
+		applyPlusChips ({ value }) {
 			return value + this.plusChips
 		},
 	},
 	'Smiley Face': {
 		rarity: 'common',
-		applyCardMultiplier ({ value, state, card }) {
+		applyCardPlusMultiplier ({ value, state, card }) {
 			return value + (isFaceCard({ state, card }) ? 4 : 0)
 		},
 	},
 	'Campfire': {
 		rarity: 'rare',
-		applyMultiplier ({ value }) {
+		applyTimesMultiplier ({ value }) {
 			return value * this.timesMult
 		},
 	},
@@ -722,7 +716,7 @@ export const JOKER_NAME_TO_JOKER_MAP: Record<JokerName, JokerEffects> = {
 	},
 	'Acrobat': {
 		rarity: 'uncommon',
-		applyMultiplier ({ value, state }) {
+		applyTimesMultiplier ({ value, state }) {
 			return value * (state.hands === 1 ? 3 : 1)
 		},
 	},
@@ -731,7 +725,7 @@ export const JOKER_NAME_TO_JOKER_MAP: Record<JokerName, JokerEffects> = {
 	},
 	'Swashbuckler': {
 		rarity: 'common',
-		applyMultiplier ({ value }) {
+		applyPlusMultiplier ({ value }) {
 			return value + this.plusMult
 		},
 	},
@@ -746,7 +740,7 @@ export const JOKER_NAME_TO_JOKER_MAP: Record<JokerName, JokerEffects> = {
 	},
 	'Throwback': {
 		rarity: 'uncommon',
-		applyMultiplier ({ value }) {
+		applyTimesMultiplier ({ value }) {
 			return value * this.timesMult
 		},
 	},
@@ -762,25 +756,25 @@ export const JOKER_NAME_TO_JOKER_MAP: Record<JokerName, JokerEffects> = {
 			numerator: 1,
 			denominator: 3,
 		},
-		applyCardMultiplier ({ value, card }) {
+		applyCardTimesMultiplier ({ value, card }) {
 			return value * (isSuit({ card }, 'Hearts') ? 1 : 1)
 		},
 	},
 	'Arrowhead': {
 		rarity: 'uncommon',
-		applyCardChips ({ value, card }) {
+		applyCardPlusChips ({ value, card }) {
 			return value + (isSuit({ card }, 'Spades') ? 50 : 0)
 		},
 	},
 	'Onyx Agate': {
 		rarity: 'uncommon',
-		applyCardMultiplier ({ value, card }) {
+		applyCardPlusMultiplier ({ value, card }) {
 			return value + (isSuit({ card }, 'Clubs') ? 8 : 0)
 		},
 	},
 	'Glass Joker': {
 		rarity: 'uncommon',
-		applyMultiplier ({ value }) {
+		applyPlusMultiplier ({ value }) {
 			return value * this.timesMult
 		},
 	},
@@ -789,7 +783,7 @@ export const JOKER_NAME_TO_JOKER_MAP: Record<JokerName, JokerEffects> = {
 	},
 	'Flowerpot': {
 		rarity: 'uncommon',
-		applyMultiplier ({ value, state }) {
+		applyTimesMultiplier ({ value, state }) {
 			const hasAllSuits = (['Spades', 'Hearts', 'Clubs', 'Diamonds'] as const).every((suit) => {
 				return state.scoringCards.some((card) => isSuit({ card }, suit))
 			})
@@ -802,7 +796,7 @@ export const JOKER_NAME_TO_JOKER_MAP: Record<JokerName, JokerEffects> = {
 	},
 	'Wee Joker': {
 		rarity: 'rare',
-		applyChips ({ value }) {
+		applyPlusChips ({ value }) {
 			return value + this.plusChips
 		},
 	},
@@ -814,13 +808,13 @@ export const JOKER_NAME_TO_JOKER_MAP: Record<JokerName, JokerEffects> = {
 	},
 	'The Idol': {
 		rarity: 'uncommon',
-		applyCardMultiplier ({ value, card }) {
+		applyCardTimesMultiplier ({ value, card }) {
 			return value * (this.suit && isSuit({ card }, this.suit) && card.rank === this.rank ? 2 : 1)
 		},
 	},
 	'Seeing Double': {
 		rarity: 'uncommon',
-		applyMultiplier ({ value, state }) {
+		applyTimesMultiplier ({ value, state }) {
 			const hasScoringClubsCard = state.scoringCards.some((card) => isSuit({ card }, 'Clubs'))
 			const hasScoringCardOfOtherSuit = state.scoringCards.some((card) => isSuit({ card }, ['Spades', 'Hearts', 'Diamonds']))
 
@@ -832,34 +826,34 @@ export const JOKER_NAME_TO_JOKER_MAP: Record<JokerName, JokerEffects> = {
 	},
 	'Hit the Road': {
 		rarity: 'rare',
-		applyMultiplier ({ value }) {
+		applyTimesMultiplier ({ value }) {
 			return value * this.timesMult
 		},
 	},
 	'The Duo': {
 		rarity: 'rare',
-		applyMultiplier ({ value, state }) {
+		applyTimesMultiplier ({ value, state }) {
 			const cards = nOfAKind(state.playedCards, 2)
 			return value * (cards.length > 0 ? 2 : 1)
 		},
 	},
 	'The Trio': {
 		rarity: 'rare',
-		applyMultiplier ({ value, state }) {
+		applyTimesMultiplier ({ value, state }) {
 			const cards = nOfAKind(state.playedCards, 3)
 			return value * (cards.length > 0 ? 3 : 1)
 		},
 	},
 	'The Family': {
 		rarity: 'rare',
-		applyMultiplier ({ value, state }) {
+		applyTimesMultiplier ({ value, state }) {
 			const cards = nOfAKind(state.playedCards, 4)
 			return value * (cards.length > 0 ? 4 : 1)
 		},
 	},
 	'The Order': {
 		rarity: 'common',
-		applyMultiplier ({ value, state }) {
+		applyTimesMultiplier ({ value, state }) {
 			const hasFourFingers = state.jokerSet.has('Four Fingers')
 			const hasShortcut = state.jokerSet.has('Shortcut')
 			const cards = straight(state.playedCards, hasFourFingers, hasShortcut)
@@ -868,17 +862,16 @@ export const JOKER_NAME_TO_JOKER_MAP: Record<JokerName, JokerEffects> = {
 	},
 	'The Tribe': {
 		rarity: 'rare',
-		applyMultiplier ({ value, state }) {
+		applyTimesMultiplier ({ value, state }) {
 			const hasFourFingers = state.jokerSet.has('Four Fingers')
 			const hasSmearedJoker = state.jokerSet.has('Smeared Joker')
 			const cards = flush(state.playedCards, hasFourFingers, hasSmearedJoker)
-
 			return value * (cards.length > 0 ? 2 : 1)
 		},
 	},
 	'Stuntman': {
 		rarity: 'uncommon',
-		applyChips ({ value }) {
+		applyPlusChips ({ value }) {
 			return value + 300
 		},
 	},
@@ -893,13 +886,13 @@ export const JOKER_NAME_TO_JOKER_MAP: Record<JokerName, JokerEffects> = {
 	},
 	'Shoot the Moon': {
 		rarity: 'common',
-		applyCardMultiplier ({ value, card }) {
+		applyCardPlusMultiplier ({ value, card }) {
 			return value + (card.rank === 'Queen' ? 13 : 0)
 		},
 	},
 	'Driver\'s license': {
 		rarity: 'rare',
-		applyMultiplier ({ value }) {
+		applyTimesMultiplier ({ value }) {
 			return value * this.timesMult
 		},
 	},
@@ -914,7 +907,7 @@ export const JOKER_NAME_TO_JOKER_MAP: Record<JokerName, JokerEffects> = {
 	},
 	'Bootstraps': {
 		rarity: 'common',
-		applyMultiplier ({ value, state }) {
+		applyPlusMultiplier ({ value, state }) {
 			// Note: I'm assuming here that this can't *subtract* multiplier if money is negative.
 			const factor = Math.max(0, Math.floor(state.money / 5))
 			return value + (factor * 2)
@@ -922,19 +915,19 @@ export const JOKER_NAME_TO_JOKER_MAP: Record<JokerName, JokerEffects> = {
 	},
 	'Canio': {
 		rarity: 'legendary',
-		applyMultiplier ({ value }) {
+		applyTimesMultiplier ({ value }) {
 			return value * this.timesMult
 		},
 	},
 	'Triboulet': {
 		rarity: 'legendary',
-		applyCardMultiplier ({ value, card }) {
+		applyCardTimesMultiplier ({ value, card }) {
 			return value * (['King', 'Queen'].includes(card.rank) ? 2 : 0)
 		},
 	},
 	'Yorick': {
 		rarity: 'legendary',
-		applyMultiplier ({ value }) {
+		applyTimesMultiplier ({ value }) {
 			return value * this.timesMult
 		},
 	},

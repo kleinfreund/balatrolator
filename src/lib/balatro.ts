@@ -1,9 +1,10 @@
 import { isFaceCard } from '#utilities/isFaceCard.js'
 import { log, logGroup, logGroupEnd } from '#utilities/log.js'
-import { RANK_TO_CHIP_MAP, DEFAULT_HAND_SCORE_SETS, PLANET_SCORE_SETS, JOKER_NAME_TO_JOKER_MAP, MODIFIER_DEFAULTS } from './data.js'
+import { RANK_TO_CHIP_MAP, DEFAULT_HAND_SCORE_SETS, PLANET_SCORE_SETS, JOKER_DEFINITIONS, MODIFIER_DEFAULTS } from './data.js'
 import { formatScore } from '#utilities/formatScore.js'
 import { getHand } from './getHand.js'
 import type { Card, CardJokerEffect, HandLevel, HandLevels, HandName, HandScoreSets, InitialCard, InitialHandLevels, InitialJoker, InitialState, Joker, JokerEffect, Score, ScoreSet, State } from './types.js'
+import { isRank } from '../utilities/isRank.js'
 
 export function calculateScore (initialState: InitialState): Score {
 	const state = getState(initialState)
@@ -29,8 +30,6 @@ export function calculateScore (initialState: InitialState): Score {
 
 function getChips (state: State): number {
 	log('\nCHIPS')
-	const jokersWithCardEffects = state.jokers.filter((joker) => joker.applyCardChips)
-
 	const plusChipsPerCard = state.scoringCards.map((card) => {
 		logGroup(`Card effects: ${card}`)
 		let chips = 0
@@ -45,6 +44,7 @@ function getChips (state: State): number {
 		if (state.jokerSet.has('Seltzer')) numberOfTriggers++
 		if (state.jokerSet.has('Sock and Buskin') && isFaceCard({ state, card })) numberOfTriggers++
 		if (state.jokerSet.has('Hanging Chad') && card.index === 0) numberOfTriggers++
+		if (state.jokerSet.has('Hack') && isRank({ card }, ['2', '3', '4', '5'])) numberOfTriggers++
 		if (card.seal === 'red') numberOfTriggers *= 2
 
 		while (numberOfTriggers--) {
@@ -54,10 +54,10 @@ function getChips (state: State): number {
 			chips += MODIFIER_DEFAULTS.edition[card.edition].plusChips ?? 0
 
 			// 2. Jokers
-			for (const joker of jokersWithCardEffects) {
+			for (const joker of state.jokers) {
 				logGroup(`Card effects: ${joker}`)
 				log('→', chips)
-				chips = joker.applyCardChips({ state, value: chips, card })
+				chips = joker.applyCardPlusChips({ state, value: chips, card })
 				logGroupEnd('←', chips)
 			}
 		}
@@ -79,7 +79,7 @@ function getChips (state: State): number {
 		log('→', chips)
 		let numberOfTriggers = 1
 		while (numberOfTriggers--) {
-			chips = joker.applyChips({ state, value: chips })
+			chips = joker.applyPlusChips({ state, value: chips })
 		}
 		logGroupEnd('←', chips)
 
@@ -113,6 +113,7 @@ function getMultiplier (state: State): number {
 		if (state.jokerSet.has('Seltzer')) numberOfTriggers++
 		if (state.jokerSet.has('Sock and Buskin') && isFaceCard({ state, card })) numberOfTriggers++
 		if (state.jokerSet.has('Hanging Chad') && card.index === 0) numberOfTriggers++
+		if (state.jokerSet.has('Hack') && isRank({ card }, ['2', '3', '4', '5'])) numberOfTriggers++
 		if (card.seal === 'red') numberOfTriggers *= 2
 
 		while (numberOfTriggers--) {
@@ -128,7 +129,8 @@ function getMultiplier (state: State): number {
 			for (const joker of state.jokers) {
 				logGroup(`Card effects: ${joker}`)
 				log('→', multiplier)
-				multiplier = joker.applyCardMultiplier({ state, value: multiplier, card })
+				multiplier = joker.applyCardPlusMultiplier({ state, value: multiplier, card })
+				multiplier = joker.applyCardTimesMultiplier({ state, value: multiplier, card })
 				logGroupEnd('←', multiplier)
 			}
 		}
@@ -161,7 +163,8 @@ function getMultiplier (state: State): number {
 			for (const joker of state.jokers) {
 				logGroup(`Card effects: ${joker}`)
 				log('→', multiplier)
-				multiplier = joker.applyHeldCardMultiplier({ state, value: multiplier, card })
+				multiplier = joker.applyHeldCardPlusMultiplier({ state, value: multiplier, card })
+				multiplier = joker.applyHeldCardTimesMultiplier({ state, value: multiplier, card })
 				logGroupEnd('←', multiplier)
 			}
 		}
@@ -178,7 +181,8 @@ function getMultiplier (state: State): number {
 		log('→', multiplier)
 		let numberOfTriggers = 1
 		while (numberOfTriggers--) {
-			multiplier = joker.applyMultiplier({ state, value: multiplier })
+			multiplier = joker.applyPlusMultiplier({ state, value: multiplier })
+			multiplier = joker.applyTimesMultiplier({ state, value: multiplier })
 		}
 		logGroupEnd('←', multiplier)
 
@@ -293,26 +297,38 @@ function getJokers (initialJokers: InitialJoker[]): Joker[] {
 		const toString = () => `${initialJoker.name}`
 			+ (modifiers.length > 0 ? ` (${modifiers.join(', ')})` : '')
 
-		const effects = JOKER_NAME_TO_JOKER_MAP[initialJoker.name]
-		const applyChips = createEffect(effects.applyChips)
-		const applyMultiplier = createEffect(effects.applyMultiplier)
-		const applyCardChips = createCardEffect(effects.applyCardChips)
-		const applyCardMultiplier = createCardEffect(effects.applyCardMultiplier)
-		const applyHeldCardChips = createCardEffect(effects.applyHeldCardChips)
-		const applyHeldCardMultiplier = createCardEffect(effects.applyHeldCardMultiplier)
-		const rarity = effects.rarity
-		const probability = effects.probability ?? { numerator: 1, denominator: 1 }
+		const definition = JOKER_DEFINITIONS[initialJoker.name]
+
+		const applyPlusChips = createEffect(definition.applyPlusChips)
+		const applyCardPlusChips = createCardEffect(definition.applyCardPlusChips)
+		const applyHeldCardPlusChips = createCardEffect(definition.applyHeldCardPlusChips)
+
+		const applyPlusMultiplier = createEffect(definition.applyPlusMultiplier)
+		const applyCardPlusMultiplier = createCardEffect(definition.applyCardPlusMultiplier)
+		const applyHeldCardPlusMultiplier = createCardEffect(definition.applyHeldCardPlusMultiplier)
+
+		const applyTimesMultiplier = createEffect(definition.applyTimesMultiplier)
+		const applyCardTimesMultiplier = createCardEffect(definition.applyCardTimesMultiplier)
+		const applyHeldCardTimesMultiplier = createCardEffect(definition.applyHeldCardTimesMultiplier)
+
+		const {
+			rarity,
+			probability = { numerator: 1, denominator: 1 },
+		} = definition
 
 		return {
 			...initialJoker,
 			rarity,
 			probability,
-			applyChips,
-			applyMultiplier,
-			applyCardChips,
-			applyCardMultiplier,
-			applyHeldCardChips,
-			applyHeldCardMultiplier,
+			applyPlusChips,
+			applyCardPlusChips,
+			applyHeldCardPlusChips,
+			applyPlusMultiplier,
+			applyCardPlusMultiplier,
+			applyHeldCardPlusMultiplier,
+			applyTimesMultiplier,
+			applyCardTimesMultiplier,
+			applyHeldCardTimesMultiplier,
 			toString,
 			index,
 			edition,

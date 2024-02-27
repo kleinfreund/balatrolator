@@ -79,12 +79,18 @@ export interface JokerEffects {
 	toString(): string
 	rarity: 'common' | 'uncommon' | 'rare' | 'legendary'
 	probability?: Probability
-	applyChips?: JokerEffect
-	applyMultiplier?: JokerEffect
-	applyCardChips?: CardJokerEffect
-	applyCardMultiplier?: CardJokerEffect
-	applyHeldCardChips?: CardJokerEffect
-	applyHeldCardMultiplier?: CardJokerEffect
+
+	applyPlusChips?: JokerEffect
+	applyCardPlusChips?: CardJokerEffect
+	applyHeldCardPlusChips?: CardJokerEffect
+
+	applyPlusMultiplier?: JokerEffect
+	applyCardPlusMultiplier?: CardJokerEffect
+	applyHeldCardPlusMultiplier?: CardJokerEffect
+
+	applyTimesMultiplier?: JokerEffect
+	applyCardTimesMultiplier?: CardJokerEffect
+	applyHeldCardTimesMultiplier?: CardJokerEffect
 }
 
 export interface Probability {
