@@ -1,5 +1,6 @@
 import { isFaceCard } from '#utilities/isFaceCard.js'
 import { isSuit } from '#utilities/isSuit.js'
+import { isRank } from '../utilities/isRank.js'
 import { flush, nOfAKind, straight } from './getHand.js'
 import { Blind, BlindName, HandName, JokerEffects, JokerName, ModifierDefaults, Rank, ScoreSet } from './types.js'
 
@@ -326,8 +327,7 @@ export const JOKER_NAME_TO_JOKER_MAP: Record<JokerName, JokerEffects> = {
 	'Fibonacci': {
 		rarity: 'uncommon',
 		applyCardMultiplier ({ value, card }) {
-			if (card.enhancement === 'stone') return value
-			return value + (['Ace', '2', '3', '5', '8'].includes(card.rank) ? 8 : 0)
+			return value + (isRank({ card }, ['Ace', '2', '3', '5', '8']) ? 8 : 0)
 		},
 	},
 	'Steel Joker': {
@@ -339,7 +339,6 @@ export const JOKER_NAME_TO_JOKER_MAP: Record<JokerName, JokerEffects> = {
 	'Scary Face': {
 		rarity: 'common',
 		applyCardChips ({ value, state, card }) {
-			if (card.enhancement === 'stone') return value
 			return value + (isFaceCard({ state, card }) ? 30 : 0)
 		},
 	},
@@ -355,12 +354,10 @@ export const JOKER_NAME_TO_JOKER_MAP: Record<JokerName, JokerEffects> = {
 	'Hack': {
 		rarity: 'uncommon',
 		applyCardChips ({ value, card }) {
-			if (card.enhancement === 'stone') return value
-			return value * (['2', '3', '4', '5'].includes(card.rank) ? 2 : 1)
+			return value * (isRank({ card }, ['2', '3', '4', '5']) ? 2 : 1)
 		},
 		applyCardMultiplier ({ value, card }) {
-			if (card.enhancement === 'stone') return value
-			return value * (['2', '3', '4', '5'].includes(card.rank) ? 2 : 1)
+			return value * (isRank({ card }, ['2', '3', '4', '5']) ? 2 : 1)
 		},
 	},
 	'Pareidolia': {
@@ -379,26 +376,22 @@ export const JOKER_NAME_TO_JOKER_MAP: Record<JokerName, JokerEffects> = {
 	'Even Steven': {
 		rarity: 'common',
 		applyCardMultiplier ({ value, card }) {
-			if (card.enhancement === 'stone') return value
-			return value + (['10', '8', '6', '4', '2'].includes(card.rank) ? 4 : 0)
+			return value + (isRank({ card }, ['10', '8', '6', '4', '2']) ? 4 : 0)
 		},
 	},
 	'Odd Todd': {
 		rarity: 'common',
 		applyCardChips ({ value, card }) {
-			if (card.enhancement === 'stone') return value
-			return value + (['Ace', '9', '7', '5', '3'].includes(card.rank) ? 30 : 0)
+			return value + (isRank({ card }, ['Ace', '9', '7', '5', '3']) ? 30 : 0)
 		},
 	},
 	'Scholar': {
 		rarity: 'common',
 		applyCardChips ({ value, card }) {
-			if (card.enhancement === 'stone') return value
-			return value + (card.rank === 'Ace' ? 20 : 0)
+			return value + (isRank({ card }, 'Ace') ? 20 : 0)
 		},
 		applyCardMultiplier ({ value, card }) {
-			if (card.enhancement === 'stone') return value
-			return value + (card.rank === 'Ace' ? 4 : 0)
+			return value + (isRank({ card }, 'Ace') ? 4 : 0)
 		},
 	},
 	'Business Card': {
