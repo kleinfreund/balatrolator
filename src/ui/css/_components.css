@@ -55,19 +55,80 @@
 	gap: 0.25rem;
 }
 
-.rank-input {
+/* CARDS */
+
+.c-rank-input {
 	width: 50px;
 	text-align: right;
 }
 
-.edition-input {
+.c-edition-input {
 	width: 100px;
 }
 
-.enhancement-input {
+.c-enhancement-input {
 	width: 65px;
 }
 
-.seal-input {
+.c-seal-input {
 	width: 65px;
+}
+
+/* JOKERS */
+
+.joker:not(.--has-plus-chips):not(.--has-plus-multiplier):not(.--has-times-multiplier):not(.--has-is-active):not(.--has-rank):not(.--has-suit) .joker-effects {
+	display: none;
+}
+
+.joker:not(.--has-plus-chips) .j-plus-chips {
+	display: none;
+}
+
+.joker:not(.--has-plus-multiplier) .j-plus-multiplier {
+	display: none;
+}
+
+.joker:not(.--has-times-multiplier) .j-times-multiplier {
+	display: none;
+}
+
+.joker:not(.--has-is-active) .j-is-active {
+	display: none;
+}
+
+.joker:not(.--has-rank):not(.--has-suit) .j-card {
+	display: none;
+}
+
+.joker:not(.--has-rank) .j-rank {
+	display: none;
+}
+
+.joker.--has-rank:not(.--has-suit) .j-card-of,
+.joker:not(.--has-rank).--has-suit .j-card-of {
+	display: none;
+}
+
+.joker:not(.--has-suit) .j-suit {
+	display: none;
+}
+
+.j-plus-chips-input {
+	width: 75px;
+	text-align: right;
+}
+
+.j-plus-multiplier-input {
+	width: 75px;
+	text-align: right;
+}
+
+.j-times-multiplier-input {
+	width: 75px;
+	text-align: right;
+}
+
+.j-rank-input {
+	width: 50px;
+	text-align: right;
 }

@@ -1,24 +1,24 @@
+import { flush, nOfAKind, straight } from '#lib/getHand.js'
+import type { Blind, BlindName, HandName, JokerEffects, JokerName, ModifierDefaults, Rank, ScoreSet } from '#lib/types.js'
 import { isFaceCard } from '#utilities/isFaceCard.js'
+import { isRank } from '#utilities/isRank.js'
 import { isSuit } from '#utilities/isSuit.js'
-import { isRank } from '../utilities/isRank.js'
-import { flush, nOfAKind, straight } from './getHand.js'
-import { Blind, BlindName, HandName, JokerEffects, JokerName, ModifierDefaults, Rank, ScoreSet } from './types.js'
 
 export const MODIFIER_DEFAULTS: ModifierDefaults = {
 	edition: {
 		base: {},
 		foil: { plusChips: 50 },
-		holographic: { plusMult: 10 },
-		polychrome: { timesMult: 1.5 },
+		holographic: { plusMultiplier: 10 },
+		polychrome: { timesMultiplier: 1.5 },
 		negative: {},
 	},
 	enhancement: {
 		none: {},
 		bonus: { plusChips: 30 },
-		mult: { plusMult: 4 },
+		mult: { plusMultiplier: 4 },
 		wild: {},
-		glass: { timesMult: 2 },
-		steel: { timesMult: 1.5 },
+		glass: { timesMultiplier: 2 },
+		steel: { timesMultiplier: 1.5 },
 		stone: { plusChips: 50 },
 		gold: {},
 		lucky: {},
@@ -26,7 +26,7 @@ export const MODIFIER_DEFAULTS: ModifierDefaults = {
 	seal: {
 		none: {},
 		gold: {},
-		red: { timesMult: 2 },
+		red: { timesMultiplier: 2 },
 		blue: {},
 		purple: {},
 	},
@@ -275,8 +275,9 @@ export const JOKER_DEFINITIONS: Record<JokerName, JokerEffects> = {
 	},
 	'Ceremonial Dagger': {
 		rarity: 'uncommon',
+		hasPlusMultiplierInput: true,
 		applyPlusMultiplier ({ value }) {
-			return value + this.plusMult
+			return value + this.plusMultiplier
 		},
 	},
 	'Banner': {
@@ -296,6 +297,7 @@ export const JOKER_DEFINITIONS: Record<JokerName, JokerEffects> = {
 	},
 	'Loyalty Card': {
 		rarity: 'uncommon',
+		hasIsActiveInput: true,
 		applyTimesMultiplier ({ value }) {
 			return value * (this.isActive ? 4 : 0)
 		},
@@ -332,8 +334,9 @@ export const JOKER_DEFINITIONS: Record<JokerName, JokerEffects> = {
 	},
 	'Steel Joker': {
 		rarity: 'uncommon',
+		hasTimesMultiplierInput: true,
 		applyTimesMultiplier ({ value }) {
-			return value * this.timesMult
+			return value * this.timesMultiplier
 		},
 	},
 	'Scary Face': {
@@ -405,8 +408,9 @@ export const JOKER_DEFINITIONS: Record<JokerName, JokerEffects> = {
 	},
 	'Ride the Bus': {
 		rarity: 'common',
+		hasPlusMultiplierInput: true,
 		applyPlusMultiplier ({ value }) {
-			return value + this.plusMult
+			return value + this.plusMultiplier
 		},
 	},
 	'Space Joker': {
@@ -431,12 +435,14 @@ export const JOKER_DEFINITIONS: Record<JokerName, JokerEffects> = {
 	},
 	'Runner': {
 		rarity: 'common',
+		hasPlusChipsInput: true,
 		applyPlusChips ({ value }) {
 			return value + this.plusChips
 		},
 	},
 	'Ice Cream': {
 		rarity: 'common',
+		hasPlusChipsInput: true,
 		applyPlusChips ({ value }) {
 			return value + this.plusChips
 		},
@@ -449,6 +455,7 @@ export const JOKER_DEFINITIONS: Record<JokerName, JokerEffects> = {
 	},
 	'Blue Joker': {
 		rarity: 'common',
+		hasPlusChipsInput: true,
 		applyPlusChips ({ value }) {
 			return value + this.plusChips
 		},
@@ -458,12 +465,14 @@ export const JOKER_DEFINITIONS: Record<JokerName, JokerEffects> = {
 	},
 	'Constellation': {
 		rarity: 'uncommon',
+		hasTimesMultiplierInput: true,
 		applyTimesMultiplier ({ value }) {
-			return value * this.timesMult
+			return value * this.timesMultiplier
 		},
 	},
 	'Hiker': {
 		rarity: 'common',
+		hasPlusChipsInput: true,
 		applyPlusChips ({ value }) {
 			return value + this.plusChips
 		},
@@ -473,8 +482,9 @@ export const JOKER_DEFINITIONS: Record<JokerName, JokerEffects> = {
 	},
 	'Green Joker': {
 		rarity: 'common',
+		hasPlusMultiplierInput: true,
 		applyPlusMultiplier ({ value }) {
-			return value + this.plusMult
+			return value + this.plusMultiplier
 		},
 	},
 	'Superposition': {
@@ -501,18 +511,21 @@ export const JOKER_DEFINITIONS: Record<JokerName, JokerEffects> = {
 	},
 	'Red Card': {
 		rarity: 'common',
+		hasPlusMultiplierInput: true,
 		applyPlusMultiplier ({ value }) {
-			return value + this.plusMult
+			return value + this.plusMultiplier
 		},
 	},
 	'Madness': {
 		rarity: 'uncommon',
+		hasTimesMultiplierInput: true,
 		applyTimesMultiplier ({ value }) {
-			return value * this.timesMult
+			return value * this.timesMultiplier
 		},
 	},
 	'Square Joker': {
 		rarity: 'common',
+		hasPlusChipsInput: true,
 		applyPlusChips ({ value }) {
 			return value + this.plusChips
 		},
@@ -525,8 +538,9 @@ export const JOKER_DEFINITIONS: Record<JokerName, JokerEffects> = {
 	},
 	'Vampire': {
 		rarity: 'uncommon',
+		hasTimesMultiplierInput: true,
 		applyTimesMultiplier ({ value }) {
-			return value * this.timesMult
+			return value * this.timesMultiplier
 		},
 	},
 	'Shortcut': {
@@ -534,8 +548,9 @@ export const JOKER_DEFINITIONS: Record<JokerName, JokerEffects> = {
 	},
 	'Hologram': {
 		rarity: 'uncommon',
+		hasTimesMultiplierInput: true,
 		applyTimesMultiplier ({ value }) {
-			return value * this.timesMult
+			return value * this.timesMultiplier
 		},
 	},
 	'Vagabond': {
@@ -555,8 +570,9 @@ export const JOKER_DEFINITIONS: Record<JokerName, JokerEffects> = {
 	},
 	'Obelisk': {
 		rarity: 'rare',
+		hasTimesMultiplierInput: true,
 		applyTimesMultiplier ({ value }) {
-			return value * this.timesMult
+			return value * this.timesMultiplier
 		},
 	},
 	'Midas Mask': {
@@ -581,8 +597,9 @@ export const JOKER_DEFINITIONS: Record<JokerName, JokerEffects> = {
 	},
 	'Erosion': {
 		rarity: 'uncommon',
+		hasPlusMultiplierInput: true,
 		applyPlusMultiplier ({ value }) {
-			return value + this.plusMult
+			return value + this.plusMultiplier
 		},
 	},
 	'Reserved Parking': {
@@ -607,8 +624,9 @@ export const JOKER_DEFINITIONS: Record<JokerName, JokerEffects> = {
 	},
 	'Fortune Teller': {
 		rarity: 'common',
+		hasPlusMultiplierInput: true,
 		applyPlusMultiplier ({ value }) {
-			return value + this.plusMult
+			return value + this.plusMultiplier
 		},
 	},
 	'Juggler': {
@@ -619,6 +637,7 @@ export const JOKER_DEFINITIONS: Record<JokerName, JokerEffects> = {
 	},
 	'Stone Joker': {
 		rarity: 'uncommon',
+		hasPlusChipsInput: true,
 		applyPlusChips ({ value }) {
 			return value + this.plusChips
 		},
@@ -628,8 +647,9 @@ export const JOKER_DEFINITIONS: Record<JokerName, JokerEffects> = {
 	},
 	'Lucky Cat': {
 		rarity: 'uncommon',
+		hasTimesMultiplierInput: true,
 		applyTimesMultiplier ({ value }) {
-			return value * this.timesMult
+			return value * this.timesMultiplier
 		},
 	},
 	'Baseball Card': {
@@ -649,24 +669,28 @@ export const JOKER_DEFINITIONS: Record<JokerName, JokerEffects> = {
 	},
 	'Flash Card': {
 		rarity: 'uncommon',
+		hasPlusMultiplierInput: true,
 		applyPlusMultiplier ({ value }) {
-			return value + this.plusMult
+			return value + this.plusMultiplier
 		},
 	},
 	'Popcorn': {
 		rarity: 'common',
+		hasPlusMultiplierInput: true,
 		applyPlusMultiplier ({ value }) {
-			return value + this.plusMult
+			return value + this.plusMultiplier
 		},
 	},
 	'Spare Trousers': {
 		rarity: 'uncommon',
+		hasPlusMultiplierInput: true,
 		applyPlusMultiplier ({ value }) {
-			return value + this.plusMult
+			return value + this.plusMultiplier
 		},
 	},
 	'Ancient Joker': {
 		rarity: 'rare',
+		hasSuitInput: true,
 		applyTimesMultiplier ({ value, state }) {
 			const playedCardsWithMatchingSuits = state.playedCards.filter((card) => isSuit({ card }, this.suit!))
 			return value * playedCardsWithMatchingSuits.length * 1.5
@@ -674,8 +698,9 @@ export const JOKER_DEFINITIONS: Record<JokerName, JokerEffects> = {
 	},
 	'Ramen': {
 		rarity: 'uncommon',
+		hasTimesMultiplierInput: true,
 		applyTimesMultiplier ({ value }) {
-			return value * this.timesMult
+			return value * this.timesMultiplier
 		},
 	},
 	'Walkie Talkie': {
@@ -692,6 +717,7 @@ export const JOKER_DEFINITIONS: Record<JokerName, JokerEffects> = {
 	},
 	'Castle': {
 		rarity: 'uncommon',
+		hasPlusChipsInput: true,
 		applyPlusChips ({ value }) {
 			return value + this.plusChips
 		},
@@ -704,8 +730,9 @@ export const JOKER_DEFINITIONS: Record<JokerName, JokerEffects> = {
 	},
 	'Campfire': {
 		rarity: 'rare',
+		hasTimesMultiplierInput: true,
 		applyTimesMultiplier ({ value }) {
-			return value * this.timesMult
+			return value * this.timesMultiplier
 		},
 	},
 	'Golden Ticket': {
@@ -725,8 +752,9 @@ export const JOKER_DEFINITIONS: Record<JokerName, JokerEffects> = {
 	},
 	'Swashbuckler': {
 		rarity: 'common',
+		hasPlusMultiplierInput: true,
 		applyPlusMultiplier ({ value }) {
-			return value + this.plusMult
+			return value + this.plusMultiplier
 		},
 	},
 	'Troubador': {
@@ -740,8 +768,9 @@ export const JOKER_DEFINITIONS: Record<JokerName, JokerEffects> = {
 	},
 	'Throwback': {
 		rarity: 'uncommon',
+		hasTimesMultiplierInput: true,
 		applyTimesMultiplier ({ value }) {
-			return value * this.timesMult
+			return value * this.timesMultiplier
 		},
 	},
 	'Hanging Chad': {
@@ -774,8 +803,9 @@ export const JOKER_DEFINITIONS: Record<JokerName, JokerEffects> = {
 	},
 	'Glass Joker': {
 		rarity: 'uncommon',
+		hasTimesMultiplierInput: true,
 		applyPlusMultiplier ({ value }) {
-			return value * this.timesMult
+			return value * this.timesMultiplier
 		},
 	},
 	'Showman': {
@@ -796,6 +826,7 @@ export const JOKER_DEFINITIONS: Record<JokerName, JokerEffects> = {
 	},
 	'Wee Joker': {
 		rarity: 'rare',
+		hasPlusChipsInput: true,
 		applyPlusChips ({ value }) {
 			return value + this.plusChips
 		},
@@ -808,6 +839,8 @@ export const JOKER_DEFINITIONS: Record<JokerName, JokerEffects> = {
 	},
 	'The Idol': {
 		rarity: 'uncommon',
+		hasRankInput: true,
+		hasSuitInput: true,
 		applyCardTimesMultiplier ({ value, card }) {
 			return value * (this.suit && isSuit({ card }, this.suit) && card.rank === this.rank ? 2 : 1)
 		},
@@ -826,8 +859,9 @@ export const JOKER_DEFINITIONS: Record<JokerName, JokerEffects> = {
 	},
 	'Hit the Road': {
 		rarity: 'rare',
+		hasTimesMultiplierInput: true,
 		applyTimesMultiplier ({ value }) {
-			return value * this.timesMult
+			return value * this.timesMultiplier
 		},
 	},
 	'The Duo': {
@@ -892,8 +926,9 @@ export const JOKER_DEFINITIONS: Record<JokerName, JokerEffects> = {
 	},
 	'Driver\'s license': {
 		rarity: 'rare',
+		hasTimesMultiplierInput: true,
 		applyTimesMultiplier ({ value }) {
-			return value * this.timesMult
+			return value * this.timesMultiplier
 		},
 	},
 	'Cartomancer': {
@@ -915,8 +950,9 @@ export const JOKER_DEFINITIONS: Record<JokerName, JokerEffects> = {
 	},
 	'Canio': {
 		rarity: 'legendary',
+		hasTimesMultiplierInput: true,
 		applyTimesMultiplier ({ value }) {
-			return value * this.timesMult
+			return value * this.timesMultiplier
 		},
 	},
 	'Triboulet': {
@@ -927,8 +963,9 @@ export const JOKER_DEFINITIONS: Record<JokerName, JokerEffects> = {
 	},
 	'Yorick': {
 		rarity: 'legendary',
+		hasTimesMultiplierInput: true,
 		applyTimesMultiplier ({ value }) {
-			return value * this.timesMult
+			return value * this.timesMultiplier
 		},
 	},
 	'Chicot': {

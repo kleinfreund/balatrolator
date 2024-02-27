@@ -1,10 +1,10 @@
-import { isFaceCard } from '#utilities/isFaceCard.js'
-import { log, logGroup, logGroupEnd } from '#utilities/log.js'
-import { RANK_TO_CHIP_MAP, DEFAULT_HAND_SCORE_SETS, PLANET_SCORE_SETS, JOKER_DEFINITIONS, MODIFIER_DEFAULTS } from './data.js'
+import { RANK_TO_CHIP_MAP, DEFAULT_HAND_SCORE_SETS, PLANET_SCORE_SETS, JOKER_DEFINITIONS, MODIFIER_DEFAULTS } from '#lib/data.js'
+import { getHand } from '#lib/getHand.js'
+import type { Card, CardJokerEffect, HandLevel, HandLevels, HandName, HandScoreSets, InitialCard, InitialHandLevels, InitialJoker, InitialState, Joker, JokerEffect, Score, ScoreSet, State } from '#lib/types.js'
 import { formatScore } from '#utilities/formatScore.js'
-import { getHand } from './getHand.js'
-import type { Card, CardJokerEffect, HandLevel, HandLevels, HandName, HandScoreSets, InitialCard, InitialHandLevels, InitialJoker, InitialState, Joker, JokerEffect, Score, ScoreSet, State } from './types.js'
-import { isRank } from '../utilities/isRank.js'
+import { isFaceCard } from '#utilities/isFaceCard.js'
+import { isRank } from '#/utilities/isRank.js'
+import { log, logGroup, logGroupEnd } from '#utilities/log.js'
 
 export function calculateScore (initialState: InitialState): Score {
 	const state = getState(initialState)
@@ -118,12 +118,12 @@ function getMultiplier (state: State): number {
 
 		while (numberOfTriggers--) {
 			// 1. +Mult
-			multiplier += MODIFIER_DEFAULTS.enhancement[card.enhancement].plusMult ?? 0
-			multiplier += MODIFIER_DEFAULTS.edition[card.edition].plusMult ?? 0
+			multiplier += MODIFIER_DEFAULTS.enhancement[card.enhancement].plusMultiplier ?? 0
+			multiplier += MODIFIER_DEFAULTS.edition[card.edition].plusMultiplier ?? 0
 
 			// 2. xMult
-			multiplier *= MODIFIER_DEFAULTS.edition[card.edition].timesMult ?? 1
-			multiplier *= MODIFIER_DEFAULTS.enhancement[card.enhancement].timesMult ?? 1
+			multiplier *= MODIFIER_DEFAULTS.edition[card.edition].timesMultiplier ?? 1
+			multiplier *= MODIFIER_DEFAULTS.enhancement[card.enhancement].timesMultiplier ?? 1
 
 			// 3. Jokers
 			for (const joker of state.jokers) {
@@ -157,7 +157,7 @@ function getMultiplier (state: State): number {
 		if (card.seal === 'red') numberOfTriggers *= 2
 
 		while (numberOfTriggers--) {
-			multiplier *= MODIFIER_DEFAULTS.enhancement[card.enhancement].timesMult ?? 1
+			multiplier *= MODIFIER_DEFAULTS.enhancement[card.enhancement].timesMultiplier ?? 1
 
 			// 3. Jokers
 			for (const joker of state.jokers) {
@@ -194,8 +194,8 @@ function getMultiplier (state: State): number {
 			const rightJoker = blueprintIndex !== -1 ? state.jokers[blueprintIndex + 1] : undefined
 			multiplier *= 1.5 * (rightJoker?.name === 'Baseball Card' ? 1.5 : 1)
 		}
-		multiplier += MODIFIER_DEFAULTS.edition[joker.edition].plusMult ?? 0
-		multiplier *= MODIFIER_DEFAULTS.edition[joker.edition].timesMult ?? 1
+		multiplier += MODIFIER_DEFAULTS.edition[joker.edition].plusMultiplier ?? 0
+		multiplier *= MODIFIER_DEFAULTS.edition[joker.edition].timesMultiplier ?? 1
 		logGroupEnd('←', multiplier)
 	}
 
@@ -288,8 +288,8 @@ function getJokers (initialJokers: InitialJoker[]): Joker[] {
 		const {
 			edition = 'base',
 			plusChips = 0,
-			plusMult = 0,
-			timesMult = 1,
+			plusMultiplier = 0,
+			timesMultiplier = 1,
 			isActive = false,
 		} = initialJoker
 
@@ -333,8 +333,8 @@ function getJokers (initialJokers: InitialJoker[]): Joker[] {
 			index,
 			edition,
 			plusChips,
-			plusMult,
-			timesMult,
+			plusMultiplier,
+			timesMultiplier,
 			isActive,
 		}
 	})

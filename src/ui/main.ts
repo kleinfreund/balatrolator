@@ -1,5 +1,9 @@
+import { calculateScore } from '#lib/balatro.js'
+import { JOKER_DEFINITIONS } from '#lib/data.js'
+import type { BlindName, InitialState, JokerName } from '#lib/types.js'
+import { getRandomInt } from '#utilities/getRandomInt.js'
 import { log } from '#utilities/log.js'
-import { BlindName, InitialState } from '../lib/types.js'
+import { notNullish } from '#utilities/notNullish.js'
 
 const form = document.querySelector('.form') as HTMLFormElement
 
@@ -28,12 +32,10 @@ function start () {
 function addRandomJoker () {
 	addJokerButton.click()
 	const lastJoker = jokerContainer.children[jokerContainer.children.length - 1]!
-
-	const jokerDatalist = document.querySelector('datalist#jokers') as HTMLDataListElement
-	const randomJokerNameIndex = getRandomInt(0, jokerDatalist.children.length - 1)
-	const randomJokerNameOption = jokerDatalist.children[randomJokerNameIndex] as HTMLOptionElement
-	const nameInput = lastJoker.querySelector('[name^="joker-name-"]') as HTMLInputElement
-	nameInput.value = randomJokerNameOption.value
+	const jokerSelect = lastJoker.querySelector('.j-name-input') as HTMLSelectElement
+	const randomJokerNameIndex = getRandomInt(0, jokerSelect.children.length - 1)
+	const randomJokerNameOption = jokerSelect.children[randomJokerNameIndex] as HTMLOptionElement
+	jokerSelect.value = randomJokerNameOption.value
 }
 
 function addRandomCard () {
@@ -43,58 +45,89 @@ function addRandomCard () {
 	const rankDatalist = document.querySelector('datalist#ranks') as HTMLDataListElement
 	const randomRankIndex = getRandomInt(0, rankDatalist.children.length - 1)
 	const randomRankOption = rankDatalist.children[randomRankIndex] as HTMLOptionElement
-	const rankInput = lastCard.querySelector('[name^="card-rank-"]') as HTMLInputElement
+	const rankInput = lastCard.querySelector('.c-rank-input') as HTMLInputElement
 	rankInput.value = randomRankOption.value
 
 	const suitDatalist = document.querySelector('datalist#suits') as HTMLDataListElement
 	const randomSuitIndex = getRandomInt(0, suitDatalist.children.length - 1)
 	const randomSuitOption = suitDatalist.children[randomSuitIndex] as HTMLOptionElement
-	const suitInput = lastCard.querySelector('[name^="card-suit-"]') as HTMLInputElement
+	const suitInput = lastCard.querySelector('.c-suit-input') as HTMLInputElement
 	suitInput.value = randomSuitOption.value
 
-	const isPlayedInput = lastCard.querySelector('[name^="card-isPlayed-"]') as HTMLInputElement
+	const isPlayedInput = lastCard.querySelector('.c-is-played-input') as HTMLInputElement
 	isPlayedInput.checked = getRandomInt(0, 1) === 1
-}
-
-function getRandomInt (min: number, max: number): number {
-	min = Math.ceil(min)
-	max = Math.floor(max)
-	return Math.floor(Math.random() * (max - min + 1)) + min
 }
 
 function handleAddJokerClick () {
 	const joker = jokerTemplate.content.cloneNode(true) as HTMLElement
 	const index = jokerContainer.children.length
 
-	const nameInput = joker.querySelector('input[list="jokers"]') as HTMLInputElement
-	nameInput.name = `joker-name-${index}`
+	const nameInput = joker.querySelector('.j-name-input') as HTMLInputElement
+	const editionInput = joker.querySelector('.j-edition-input') as HTMLSelectElement
+	const plusChipsInput = joker.querySelector('.j-plus-chips-input') as HTMLInputElement
+	const plusMultiplierInput = joker.querySelector('.j-plus-multiplier-input') as HTMLInputElement
+	const timesMultiplierInput = joker.querySelector('.j-times-multiplier-input') as HTMLInputElement
+	const isActiveInput = joker.querySelector('.j-is-active-input') as HTMLInputElement
+	const rankInput = joker.querySelector('.j-rank-input') as HTMLInputElement
+	const suitInput = joker.querySelector('.j-suit-input') as HTMLInputElement
 
-	const editionInput = joker.querySelector('.edition-input') as HTMLSelectElement
+	nameInput.name = `joker-name-${index}`
 	editionInput.name = `joker-edition-${index}`
+	plusChipsInput.name = `joker-plusChips-${index}`
+	plusMultiplierInput.name = `joker-plusMultiplier-${index}`
+	timesMultiplierInput.name = `joker-timesMultiplier-${index}`
+	isActiveInput.name = `joker-isActive-${index}`
+	rankInput.name = `joker-rank-${index}`
+	suitInput.name = `joker-suit-${index}`
+
+	joker.addEventListener('click', handleJokerClick)
+	nameInput.addEventListener('change', handleJokerNameChange)
 
 	jokerContainer.appendChild(joker)
+}
+
+function handleJokerClick () {}
+
+function handleJokerNameChange (event: Event) {
+	const input = event.currentTarget as HTMLInputElement
+	const jokerName = input.value as JokerName
+	const definition = JOKER_DEFINITIONS[jokerName]
+	const jokerEl = input.closest('.joker') as HTMLElement
+
+	jokerEl.classList.remove(
+		'--has-plus-chips',
+		'--has-plus-multiplier',
+		'--has-times-multiplier',
+		'--has-is-active',
+		'--has-rank',
+		'--has-suit',
+	)
+	;[
+		definition.hasPlusChipsInput ? '--has-plus-chips' : null,
+		definition.hasPlusMultiplierInput ? '--has-plus-multiplier': null,
+		definition.hasTimesMultiplierInput ? '--has-times-multiplier': null,
+		definition.hasIsActiveInput ? '--has-is-active': null,
+		definition.hasRankInput ? '--has-rank': null,
+		definition.hasSuitInput ? '--has-suit': null,
+	].filter(notNullish).forEach((className) => jokerEl.classList.add(className))
 }
 
 function handleAddCardClick () {
 	const card = cardTemplate.content.cloneNode(true) as HTMLElement
 	const index = cardContainer.children.length
 
-	const isPlayedInput = card.querySelector('input[type="checkbox"]') as HTMLInputElement
+	const isPlayedInput = card.querySelector('.c-is-played-input') as HTMLInputElement
+	const rankInput = card.querySelector('.c-rank-input') as HTMLInputElement
+	const suitInput = card.querySelector('.c-suit-input') as HTMLInputElement
+	const editionInput = card.querySelector('.c-edition-input') as HTMLSelectElement
+	const enhancementInput = card.querySelector('.c-enhancement-input') as HTMLSelectElement
+	const sealInput = card.querySelector('.c-seal-input') as HTMLSelectElement
+
 	isPlayedInput.name = `card-isPlayed-${index}`
-
-	const rankInput = card.querySelector('input[list="ranks"]') as HTMLInputElement
 	rankInput.name = `card-rank-${index}`
-
-	const suitInput = card.querySelector('input[list="suits"]') as HTMLInputElement
 	suitInput.name = `card-suit-${index}`
-
-	const editionInput = card.querySelector('.edition-input') as HTMLSelectElement
 	editionInput.name = `card-edition-${index}`
-
-	const enhancementInput = card.querySelector('.enhancement-input') as HTMLSelectElement
 	enhancementInput.name = `card-enhancement-${index}`
-
-	const sealInput = card.querySelector('.seal-input') as HTMLSelectElement
 	sealInput.name = `card-seal-${index}`
 
 	cardContainer.appendChild(card)
@@ -147,7 +180,7 @@ function handleSubmit (event: SubmitEvent) {
 	initialState.heldCards.push(...heldCards)
 
 	log(JSON.stringify(initialState, null, 2))
-	// log(calculateScore(initialState))
+	log(calculateScore(initialState))
 }
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any

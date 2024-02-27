@@ -1,8 +1,8 @@
 import { describe, test, expect } from 'vitest'
 
+import { getCards } from '#lib/balatro.js'
 import { GetHandOptions, getHand } from './getHand.js'
-import { HandName, InitialCard } from './types.js'
-import { getCards } from './balatro.js'
+import type { HandName, InitialCard } from '#lib/types.js'
 
 type TestCase = {
 	message: string

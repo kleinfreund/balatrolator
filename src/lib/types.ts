@@ -29,8 +29,8 @@ export interface ModifierDefaults {
 
 export interface Modifiers {
 	plusChips?: number
-	plusMult?: number
-	timesMult?: number
+	plusMultiplier?: number
+	timesMultiplier?: number
 }
 
 export interface Blind {
@@ -56,8 +56,8 @@ export interface InitialJoker {
 	name: JokerName
 	edition?: JokerEdition
 	plusChips?: number
-	plusMult?: number
-	timesMult?: number
+	plusMultiplier?: number
+	timesMultiplier?: number
 	rank?: Rank
 	suit?: Suit
 	isActive?: boolean
@@ -79,6 +79,13 @@ export interface JokerEffects {
 	toString(): string
 	rarity: 'common' | 'uncommon' | 'rare' | 'legendary'
 	probability?: Probability
+
+	hasPlusChipsInput?: boolean
+	hasPlusMultiplierInput?: boolean
+	hasTimesMultiplierInput?: boolean
+	hasIsActiveInput?: boolean
+	hasRankInput?: boolean
+	hasSuitInput?: boolean
 
 	applyPlusChips?: JokerEffect
 	applyCardPlusChips?: CardJokerEffect
@@ -103,8 +110,8 @@ export interface Joker extends Required<JokerEffects> {
 	name: JokerName
 	edition: JokerEdition
 	plusChips: number
-	plusMult: number
-	timesMult: number
+	plusMultiplier: number
+	timesMultiplier: number
 	rank?: Rank
 	suit?: Suit
 	isActive: boolean

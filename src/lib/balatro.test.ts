@@ -1,7 +1,7 @@
 import { describe, test, expect } from 'vitest'
 
 import { calculateScore } from './balatro.js'
-import { InitialCard } from './types.js'
+import type { InitialCard } from '#lib/types.js'
 
 type Expected = Omit<ReturnType<typeof calculateScore>, 'scoringCards'> & { scoringCards: InitialCard[] }
 
@@ -317,8 +317,8 @@ describe('calculateScore', () => {
 				jokers: [
 					{ name: 'Sixth Sense' },
 					{ name: 'Odd Todd' },
-					{ name: 'Swashbuckler', edition: 'foil', plusMult: 5 },
-					{ name: 'Ceremonial Dagger', plusMult: 0 },
+					{ name: 'Swashbuckler', edition: 'foil', plusMultiplier: 5 },
+					{ name: 'Ceremonial Dagger', plusMultiplier: 0 },
 				],
 			}],
 			expected: {
@@ -348,9 +348,9 @@ describe('calculateScore', () => {
 				jokers: [
 					{ name: 'Sixth Sense' },
 					{ name: 'Odd Todd' },
-					{ name: 'Fortune Teller', plusMult: 9 },
-					{ name: 'Swashbuckler', edition: 'foil', plusMult: 8 },
-					{ name: 'Ceremonial Dagger', plusMult: 6 },
+					{ name: 'Fortune Teller', plusMultiplier: 9 },
+					{ name: 'Swashbuckler', edition: 'foil', plusMultiplier: 8 },
+					{ name: 'Ceremonial Dagger', plusMultiplier: 6 },
 				],
 			}],
 			expected: {
@@ -382,7 +382,7 @@ describe('calculateScore', () => {
 					{ name: 'Odd Todd' },
 					{ name: 'Smiley Face' },
 					{ name: 'Pareidolia', edition: 'polychrome' },
-					{ name: 'Swashbuckler', edition: 'foil', plusMult: 12 },
+					{ name: 'Swashbuckler', edition: 'foil', plusMultiplier: 12 },
 				],
 				handLevels: {
 					'Five of a Kind': {
@@ -420,7 +420,7 @@ describe('calculateScore', () => {
 					{ name: 'Smiley Face' },
 					{ name: 'Pareidolia', edition: 'polychrome' },
 					{ name: 'The Family' },
-					{ name: 'Swashbuckler', edition: 'foil', plusMult: 14 },
+					{ name: 'Swashbuckler', edition: 'foil', plusMultiplier: 14 },
 				],
 				handLevels: {
 					'Flush Five': {
@@ -545,9 +545,9 @@ describe('calculateScore', () => {
 					{ name: 'DNA' },
 					{ name: 'Blueprint' },
 					{ name: 'The Idol', rank: 'Ace', suit: 'Diamonds' },
-					{ name: 'Hologram', timesMult: 12.25 },
+					{ name: 'Hologram', timesMultiplier: 12.25 },
 					{ name: 'The Family' },
-					{ name: 'Glass Joker', timesMult: 5.5 },
+					{ name: 'Glass Joker', timesMultiplier: 5.5 },
 				],
 				handLevels: {
 					'Flush Five': {
