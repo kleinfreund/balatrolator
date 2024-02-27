@@ -14,154 +14,170 @@
 	<main>
 		<h1>Balatrolator</h1>
 
-		<p>Besides it being the shittest UI you'll see all day, it's also not functional, yet. Come back later. 🃏</p>
+		<div class="stack">
+			<div class="panel">
+				<p>Besides it being the shittest UI you'll see all day, it's also not functional, yet. Come back later. 🃏</p>
 
-		<p>Balatrolator is a score calculator for <a href="https://www.playbalatro.com/">Balatro</a>. Go, buy it!</p>
-
-		<form class="form" method="POST" enctype="multipart/form-data">
-			<div>
-				<h2>Round data</h2>
-
-				<label>
-					Hands
-					<span>Influences: Acrobat</span>
-					<input name="hands" type="number" min="0" value="0">
-				</label>
-
-				<label>
-					Discards
-					<span>Influences: Banner, Mystic Summit</span>
-					<input name="discards" type="number" min="0" value="0">
-				</label>
-
-				<label>
-					Money
-					<span>Influences: Bull, Bootstraps</span>
-					<input name="money" type="number" value="0">
-				</label>
-
-				<label>
-					Blind
-					<input name="blind" list="blinds" value="Small Blind">
-				</label>
-
-				<label>
-					Joker slots
-					<span>Influences: Joker Stencil</span>
-					<input name="jokerSlots" type="number" value="5">
-				</label>
+				<p>Balatrolator is a score calculator for <a href="https://www.playbalatro.com/">Balatro</a>. Go, buy it!</p>
 			</div>
 
-			<div>
-				<h2>Jokers</h2>
+			<form class="form" method="POST" enctype="multipart/form-data">
+				<div class="stack">
+					<div class="panel">
+						<h2>Round data</h2>
 
-				<div class="joker-container list">
-					<div class="joker">
-						<label>
-							Joker name
-							<input list="jokers" value="">
-						</label>
+						<div class="list">
+							<label>
+								Hands
+								<span>Influences: Acrobat</span>
+								<input name="hands" type="number" min="0" value="0">
+							</label>
+
+							<label>
+								Discards
+								<span>Influences: Banner, Mystic Summit</span>
+								<input name="discards" type="number" min="0" value="0">
+							</label>
+
+							<label>
+								Money
+								<span>Influences: Bull, Bootstraps</span>
+								<input name="money" type="number" value="0">
+							</label>
+
+							<label>
+								Blind
+								<input name="blind" list="blinds" value="Small Blind">
+							</label>
+
+							<label>
+								Joker slots
+								<span>Influences: Joker Stencil</span>
+								<input name="jokerSlots" type="number" value="5">
+							</label>
+						</div>
 					</div>
 
-					<div class="joker">
-						<label>
-							Joker name
-							<input list="jokers" value="">
-						</label>
+					<div class="panel">
+						<div class="stack">
+							<h2>Jokers</h2>
+
+							<div class="joker-container list">
+								<div class="joker">
+									<label>
+										Joker name
+										<input list="jokers" value="">
+									</label>
+								</div>
+
+								<div class="joker">
+									<label>
+										Joker name
+										<input list="jokers" value="">
+									</label>
+								</div>
+							</div>
+
+							<button class="add-joker-button" type="button">Add</button>
+						</div>
 					</div>
+
+					<div class="panel">
+						<div class="stack">
+							<h2>Hand</h2>
+
+							<div class="card-container list">
+								<div class="card">
+									<label>
+										Is played?
+										<input type="checkbox" value="is-played" checked>
+									</label>
+
+									<label>
+										Rank
+										<input list="ranks" value="Ace">
+									</label>
+
+									<label>
+										Suit
+										<input list="suits" value="Clubs">
+									</label>
+								</div>
+
+								<div class="card">
+									<label>
+										Is played?
+										<input type="checkbox" value="is-played" checked>
+									</label>
+
+									<label>
+										Rank
+										<input list="ranks" value="Ace">
+									</label>
+
+									<label>
+										Suit
+										<input list="suits" value="Hearts">
+									</label>
+								</div>
+
+								<div class="card">
+									<label>
+										Is played?
+										<input type="checkbox" value="is-played">
+									</label>
+
+									<label>
+										Rank
+										<input list="ranks" value="5">
+									</label>
+
+									<label>
+										Suit
+										<input list="suits" value="Diamonds">
+									</label>
+								</div>
+							</div>
+
+							<button class="add-card-button" type="button">Add</button>
+						</div>
+					</div>
+
+					<button>Submit</button>
 				</div>
-
-				<button class="add-joker-button" type="button">Add</button>
-			</div>
-
-			<div>
-				<h2>Hand</h2>
-
-				<div class="card-container list">
-					<div class="card">
-						<label>
-							Is played?
-							<input type="checkbox" value="is-played" checked>
-						</label>
-
-						<label>
-							Rank
-							<input list="ranks" value="Ace">
-						</label>
-
-						<label>
-							Suit
-							<input list="suits" value="Clubs">
-						</label>
-					</div>
-
-					<div class="card">
-						<label>
-							Is played?
-							<input type="checkbox" value="is-played" checked>
-						</label>
-
-						<label>
-							Rank
-							<input list="ranks" value="Ace">
-						</label>
-
-						<label>
-							Suit
-							<input list="suits" value="Hearts">
-						</label>
-					</div>
-
-					<div class="card">
-						<label>
-							Is played?
-							<input type="checkbox" value="is-played">
-						</label>
-
-						<label>
-							Rank
-							<input list="ranks" value="5">
-						</label>
-
-						<label>
-							Suit
-							<input list="suits" value="Diamonds">
-						</label>
-					</div>
-				</div>
-
-				<button class="add-card-button" type="button">Add</button>
-			</div>
-
-			<button>Submit</button>
-		</form>
+			</form>
+		</div>
 	</main>
 
 	<template id="joker">
 		<div class="joker">
-			<label>
-				Joker name
-				<input list="jokers" value="">
-			</label>
+			<div class="stack">
+				<label>
+					Joker name
+					<input list="jokers" value="">
+				</label>
+			</div>
 		</div>
 	</template>
 
 	<template id="card">
 		<div class="card">
-			<label>
-				Is played?
-				<input type="checkbox" value="is-played" checked>
-			</label>
+			<div class="stack">
+				<label>
+					Is played?
+					<input type="checkbox" value="is-played" checked>
+				</label>
 
-			<label>
-				Rank
-				<input list="ranks" value="Ace">
-			</label>
+				<label>
+					Rank
+					<input list="ranks" value="Ace">
+				</label>
 
-			<label>
-				Suit
-				<input list="suits" value="Clubs">
-			</label>
+				<label>
+					Suit
+					<input list="suits" value="Clubs">
+				</label>
+			</div>
 		</div>
 	</template>
 

@@ -4,12 +4,25 @@ body {
 	font-family: Lato, Numero, sans-serif;
 }
 
-main {
-	padding: 1.5rem;
+h1:not(:first-child),
+h2:not(:first-child),
+h3:not(:first-child),
+h4:not(:first-child),
+h5:not(:first-child),
+h6:not(:first-child),
+p:not(:first-child),
+blockquote:not(:first-child),
+pre:not(:first-child),
+ul:not(:first-child),
+ol:not(:first-child),
+dl:not(:first-child),
+table:not(:first-child),
+figure:not(:first-child) {
+	margin-top: 0.5rem;
 }
 
-label+label {
-	margin-top: 0.5rem;
+main {
+	padding: 1.5rem;
 }
 
 label {

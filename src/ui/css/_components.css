@@ -1,5 +1,29 @@
+.stack>*+* {
+	margin-block-start: 0.5rem;
+}
+
+.columns {
+	--threshold: 40rem;
+
+	display: flex;
+	flex-wrap: wrap;
+	gap: 0.5rem;
+}
+
+.columns>* {
+	flex-grow: 1;
+	flex-basis: calc((var(--threshold) - 100%) * 999);
+	min-inline-size: 0;
+}
+
 .list {
 	display: flex;
 	align-items: stretch;
 	gap: 0.5rem;
+}
+
+.panel {
+	padding: 0.5rem;
+	border: 1px solid #000;
+	border-radius: 5px;
 }
