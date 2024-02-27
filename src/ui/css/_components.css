@@ -1,3 +1,7 @@
+.main-content {
+	margin: 0.5rem;
+}
+
 .stack>*+* {
 	margin-block-start: 0.5rem;
 }
@@ -26,4 +30,44 @@
 	padding: 0.5rem;
 	border: 1px solid #000;
 	border-radius: 5px;
+}
+
+.panel-header {
+	display: inline-flex;
+	align-items: center;
+	gap: 0.5rem;
+}
+
+.card {
+	width: 170px;
+}
+
+.label--horizontal {
+	display: flex;
+	justify-content: space-between;
+	align-items: baseline;
+	gap: 0.25rem;
+}
+
+.input-list {
+	display: flex;
+	align-items: baseline;
+	gap: 0.25rem;
+}
+
+.rank-input {
+	width: 50px;
+	text-align: right;
+}
+
+.edition-input {
+	width: 100px;
+}
+
+.enhancement-input {
+	width: 65px;
+}
+
+.seal-input {
+	width: 65px;
 }

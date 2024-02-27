@@ -11,14 +11,14 @@
 </head>
 
 <body>
-	<main>
-		<h1>Balatrolator</h1>
+	<main class="main-content">
+		<h1>Balatrolator 🃏🧮</h1>
 
 		<div class="stack">
 			<div class="panel">
-				<p>Besides it being the shittest UI you'll see all day, it's also not functional, yet. Come back later. 🃏</p>
-
 				<p>Balatrolator is a score calculator for <a href="https://www.playbalatro.com/">Balatro</a>. Go, buy it!</p>
+
+				<p>Besides it being the shittest UI you'll see all day, it's also not functional, yet. Come back later.</p>
 			</div>
 
 			<form class="form" method="POST" enctype="multipart/form-data">
@@ -27,69 +27,105 @@
 						<h2>Round data</h2>
 
 						<div class="list">
-							<label>
-								Hands
-								<span>Influences: Acrobat</span>
-								<input name="hands" type="number" min="0" value="0">
-							</label>
+							<div class="card">
+								<label class="label">
+									Hands
 
-							<label>
-								Discards
-								<span>Influences: Banner, Mystic Summit</span>
-								<input name="discards" type="number" min="0" value="0">
-							</label>
+									<span>Influences: Acrobat</span>
 
-							<label>
-								Money
-								<span>Influences: Bull, Bootstraps</span>
-								<input name="money" type="number" value="0">
-							</label>
+									<input class="hands-input" name="hands" type="number" min="0" value="0">
+								</label>
+							</div>
 
-							<label>
-								Blind
-								<input name="blind" list="blinds" value="Small Blind">
-							</label>
+							<div class="card">
+								<label class="label">
+									Discards
 
-							<label>
-								Joker slots
-								<span>Influences: Joker Stencil</span>
-								<input name="jokerSlots" type="number" value="5">
-							</label>
+									<span>Influences: Banner, Mystic Summit</span>
+
+									<input class="discards-input" name="discards" type="number" min="0" value="0">
+								</label>
+							</div>
+
+							<div class="card">
+								<label class="label">
+									Money
+
+									<span>Influences: Bull, Bootstraps</span>
+
+									<input class="money-input" name="money" type="number" value="0">
+								</label>
+							</div>
+
+							<div class="card">
+								<label class="label">
+									Blind
+
+									<input class="blind-input" name="blind" type="text" list="blinds" value="Small Blind">
+								</label>
+							</div>
+
+							<div class="card">
+								<label class="label">
+									Joker slots
+
+									<span>Influences: Joker Stencil</span>
+
+									<input class="joker-slots-input" name="jokerSlots" type="number" value="5">
+								</label>
+							</div>
 						</div>
 					</div>
 
 					<div class="panel">
 						<div class="stack">
-							<h2>Jokers</h2>
+							<header class="panel-header">
+								<h2>Jokers</h2>
+
+								<button class="add-joker-button" type="button">Add</button>
+							</header>
 
 							<div class="joker-container list"></div>
-
-							<button class="add-joker-button" type="button">Add</button>
 						</div>
 					</div>
 
 					<div class="panel">
 						<div class="stack">
-							<h2>Hand</h2>
+							<header class="panel-header">
+								<h2>Hand</h2>
+
+								<button class="add-card-button" type="button">Add</button>
+							</header>
 
 							<div class="card-container list"></div>
-
-							<button class="add-card-button" type="button">Add</button>
 						</div>
 					</div>
 
-					<button>Submit</button>
+					<button type="submit">Submit</button>
 				</div>
 			</form>
 		</div>
 	</main>
 
 	<template id="joker">
-		<div class="joker">
+		<div class="card">
 			<div class="stack">
-				<label>
+				<label class="label">
 					Joker name
-					<input list="jokers" value="">
+
+					<input class="joker-name-input" type="text" value="" list="jokers">
+				</label>
+
+				<label class="label label--horizontal">
+					Edition
+
+					<select class="edition-input">
+						<option value="base" selected>Base</option>
+						<option value="foil">Foil</option>
+						<option value="holographic">Holographic</option>
+						<option value="polychrome">Polychrome</option>
+						<option value="negative">Negative</option>
+					</select>
 				</label>
 			</div>
 		</div>
@@ -98,19 +134,63 @@
 	<template id="card">
 		<div class="card">
 			<div class="stack">
-				<label>
+				<label class="label">
+					<input class="is-played-input" type="checkbox" value="is-played" checked>
+
 					Is played?
-					<input type="checkbox" value="is-played" checked>
 				</label>
 
-				<label>
-					Rank
-					<input list="ranks" value="Ace">
+				<div class="input-list">
+					<label class="label">
+						<span class="visually-hidden">Rank</span>
+						<input class="rank-input" type="text" value="Ace" list="ranks">
+					</label>
+
+					of
+
+					<label class="label">
+						<span class="visually-hidden">Suit</span>
+						<input class="suit-input" type="text" value="Clubs" list="suits">
+					</label>
+				</div>
+
+				<label class="label label--horizontal">
+					Edition
+
+					<select class="edition-input">
+						<option value="base" selected>Base</option>
+						<option value="foil">Foil</option>
+						<option value="holographic">Holographic</option>
+						<option value="polychrome">Polychrome</option>
+					</select>
 				</label>
 
-				<label>
-					Suit
-					<input list="suits" value="Clubs">
+				<label class="label label--horizontal">
+					Enhancement
+
+					<select class="enhancement-input">
+						<option value="none" selected>None</option>
+						<option value="bonus">Bonus</option>
+						<option value="mult">Mult</option>
+						<option value="wild">Wild</option>
+						<option value="glass">Glass</option>
+						<option value="steel">Steel</option>
+						<option value="stone">Stone</option>
+						<option value="gold">Gold</option>
+						<option value="lucky">Lucky</option>
+					</select>
+				</label>
+
+				<label class="label label--horizontal">
+					Seal
+
+					<select class="seal-input">
+						<option value="none" selected>None</option>
+						<option value="gold">Gold</option>
+						<option value="red">Red</option>
+						<option value="blue">Blue</option>
+						<option value="purple">Purple</option>
+					</select>
 				</label>
 			</div>
 		</div>

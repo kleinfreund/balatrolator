@@ -21,10 +21,6 @@ figure:not(:first-child) {
 	margin-top: 0.5rem;
 }
 
-main {
-	padding: 1.5rem;
-}
-
 label {
 	display: block;
 }
@@ -33,7 +29,8 @@ label>span {
 	display: block;
 }
 
-input {
+input:where([type="number"]),
+input:where([type="text"]) {
 	display: block;
-	min-width: 0;
+	width: 100%;
 }

@@ -64,24 +64,38 @@ function getRandomInt (min: number, max: number): number {
 
 function handleAddJokerClick () {
 	const joker = jokerTemplate.content.cloneNode(true) as HTMLElement
+	const index = jokerContainer.children.length
 
-	const nameInput = joker.querySelector(`input[list="jokers"]`) as HTMLInputElement
-	nameInput.name = `joker-name-${jokerContainer.children.length}`
+	const nameInput = joker.querySelector('input[list="jokers"]') as HTMLInputElement
+	nameInput.name = `joker-name-${index}`
+
+	const editionInput = joker.querySelector('.edition-input') as HTMLSelectElement
+	editionInput.name = `joker-edition-${index}`
 
 	jokerContainer.appendChild(joker)
 }
 
 function handleAddCardClick () {
 	const card = cardTemplate.content.cloneNode(true) as HTMLElement
+	const index = cardContainer.children.length
 
 	const isPlayedInput = card.querySelector('input[type="checkbox"]') as HTMLInputElement
-	isPlayedInput.name = `card-isPlayed-${cardContainer.children.length}`
+	isPlayedInput.name = `card-isPlayed-${index}`
 
 	const rankInput = card.querySelector('input[list="ranks"]') as HTMLInputElement
-	rankInput.name = `card-rank-${cardContainer.children.length}`
+	rankInput.name = `card-rank-${index}`
 
 	const suitInput = card.querySelector('input[list="suits"]') as HTMLInputElement
-	suitInput.name = `card-suit-${cardContainer.children.length}`
+	suitInput.name = `card-suit-${index}`
+
+	const editionInput = card.querySelector('.edition-input') as HTMLSelectElement
+	editionInput.name = `card-edition-${index}`
+
+	const enhancementInput = card.querySelector('.enhancement-input') as HTMLSelectElement
+	enhancementInput.name = `card-enhancement-${index}`
+
+	const sealInput = card.querySelector('.seal-input') as HTMLSelectElement
+	sealInput.name = `card-seal-${index}`
 
 	cardContainer.appendChild(card)
 }
