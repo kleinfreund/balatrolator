@@ -12,15 +12,61 @@ const addCardButton = document.querySelector('.add-card-button') as HTMLButtonEl
 const cardTemplate = document.querySelector('template#card') as HTMLTemplateElement
 
 form.addEventListener('submit', handleSubmit)
-
 addJokerButton.addEventListener('click', handleAddJokerClick)
 addCardButton.addEventListener('click', handleAddCardClick)
+
+start()
+
+function start () {
+	let numberOfJokers = 3
+	while (numberOfJokers--) addRandomJoker()
+
+	let numberOfCards = 5
+	while (numberOfCards--) addRandomCard()
+}
+
+function addRandomJoker () {
+	addJokerButton.click()
+	const lastJoker = jokerContainer.children[jokerContainer.children.length - 1]!
+
+	const jokerDatalist = document.querySelector('datalist#jokers') as HTMLDataListElement
+	const randomJokerNameIndex = getRandomInt(0, jokerDatalist.children.length - 1)
+	const randomJokerNameOption = jokerDatalist.children[randomJokerNameIndex] as HTMLOptionElement
+	const nameInput = lastJoker.querySelector('[name^="joker-name-"]') as HTMLInputElement
+	nameInput.value = randomJokerNameOption.value
+}
+
+function addRandomCard () {
+	addCardButton.click()
+	const lastCard = cardContainer.children[cardContainer.children.length - 1]!
+
+	const rankDatalist = document.querySelector('datalist#ranks') as HTMLDataListElement
+	const randomRankIndex = getRandomInt(0, rankDatalist.children.length - 1)
+	const randomRankOption = rankDatalist.children[randomRankIndex] as HTMLOptionElement
+	const rankInput = lastCard.querySelector('[name^="card-rank-"]') as HTMLInputElement
+	rankInput.value = randomRankOption.value
+
+	const suitDatalist = document.querySelector('datalist#suits') as HTMLDataListElement
+	const randomSuitIndex = getRandomInt(0, suitDatalist.children.length - 1)
+	const randomSuitOption = suitDatalist.children[randomSuitIndex] as HTMLOptionElement
+	const suitInput = lastCard.querySelector('[name^="card-suit-"]') as HTMLInputElement
+	suitInput.value = randomSuitOption.value
+
+	const isPlayedInput = lastCard.querySelector('[name^="card-isPlayed-"]') as HTMLInputElement
+	isPlayedInput.checked = getRandomInt(0, 1) === 1
+}
+
+function getRandomInt (min: number, max: number): number {
+	min = Math.ceil(min)
+	max = Math.floor(max)
+	return Math.floor(Math.random() * (max - min + 1)) + min
+}
 
 function handleAddJokerClick () {
 	const joker = jokerTemplate.content.cloneNode(true) as HTMLElement
 
 	const nameInput = joker.querySelector(`input[list="jokers"]`) as HTMLInputElement
-	nameInput.name = `joker-${jokerContainer.children.length}-name`
+	nameInput.name = `joker-name-${jokerContainer.children.length}`
 
 	jokerContainer.appendChild(joker)
 }
@@ -29,13 +75,13 @@ function handleAddCardClick () {
 	const card = cardTemplate.content.cloneNode(true) as HTMLElement
 
 	const isPlayedInput = card.querySelector('input[type="checkbox"]') as HTMLInputElement
-	isPlayedInput.name = `card-${cardContainer.children.length}-isPlayed`
+	isPlayedInput.name = `card-isPlayed-${cardContainer.children.length}`
 
 	const rankInput = card.querySelector('input[list="ranks"]') as HTMLInputElement
-	rankInput.name = `card-${cardContainer.children.length}-rank`
+	rankInput.name = `card-rank-${cardContainer.children.length}`
 
 	const suitInput = card.querySelector('input[list="suits"]') as HTMLInputElement
-	suitInput.name = `card-${cardContainer.children.length}-suit`
+	suitInput.name = `card-suit-${cardContainer.children.length}`
 
 	cardContainer.appendChild(card)
 }
@@ -96,7 +142,7 @@ function parseListEntries (entries: [string, string][]): any[] {
 
 	for (const [name, value] of entries) {
 		const input = form.querySelector(`[name="${name}"]`) as HTMLInputElement
-		const [, index, field] = name.split('-')
+		const [, field, index] = name.split('-')
 		const key = Number(index)
 
 		if (!map.has(key)) map.set(key, {})
