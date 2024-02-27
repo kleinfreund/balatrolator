@@ -1,4 +1,4 @@
-const shouldLog = import.meta.env.NODE_ENV === 'debug'
+const shouldLog = import.meta.env.VITE_DEBUG === 'true'
 
 export function logGroup (...parameters: Parameters<typeof console.log>) {
 	if (shouldLog) console.group()
