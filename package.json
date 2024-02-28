@@ -22,6 +22,7 @@
 		"start": "vite",
 		"start:debug": "cross-env VITE_DEBUG=true npm run start",
 		"test": "vitest run --coverage",
+		"test:debug": "cross-env VITE_DEBUG=true npm run test",
 		"test:watch": "vitest watch",
 		"test:watch:debug": "cross-env VITE_DEBUG=true npm run test:watch",
 		"lint:code": "eslint --ext .ts .",

@@ -2,7 +2,7 @@
 
 Score calculator for [Balatro](https://www.playbalatro.com/).
 
-Very much work in progress. There is no user interface of any kind, yet. I'm currently working on the math. If you're eager to contribute and/or learn, feel free to add a test case to `src/lib/balatro.test.ts`.
+Very much work in progress. There's a just about functional user interface (that's probably laden with bugs) that you can summon by running `npm start` (see CONTRIBUTING.md for details).
 
 ## Plans
 

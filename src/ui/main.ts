@@ -40,9 +40,9 @@ function start () {
 	} else {
 		const initialState = Storage.get('initialState')
 		if (initialState) {
-			setInitialState(JSON.parse(initialState))
+			// setInitialState(JSON.parse(initialState))
 			// For testing
-			/* setInitialState({
+			setInitialState({
 				blind: 'Big Blind',
 				playedCards: [
 					{ rank: 'Ace', suit: 'Diamonds', seal: 'red' },
@@ -71,7 +71,7 @@ function start () {
 						plays: 0,
 					},
 				},
-			}) */
+			})
 		}
 	}
 }

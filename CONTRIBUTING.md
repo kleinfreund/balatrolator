@@ -23,13 +23,26 @@ npm install
 ### Start development server
 
 ```sh
-npm start
+npm run start
 ```
+
+In debug mode:
+
+```sh
+npm run start:debug
+```
+
 
 ### Run tests
 
 ```sh
-npm test
+npm run test
+```
+
+In debug mode:
+
+```sh
+npm run test:debug
 ```
 
 ### Committing changes
