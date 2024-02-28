@@ -1,5 +1,5 @@
 import { flush, nOfAKind, straight } from '#lib/getHand.js'
-import type { Blind, BlindName, HandName, JokerEffects, JokerName, ModifierDefaults, Rank, ScoreSet } from '#lib/types.js'
+import type { Blind, BlindName, HandName, JokerDefinition, JokerName, ModifierDefaults, Rank, ScoreSet, Suit } from '#lib/types.js'
 import { isFaceCard } from '#utilities/isFaceCard.js'
 import { isRank } from '#utilities/isRank.js'
 import { isSuit } from '#utilities/isSuit.js'
@@ -126,6 +126,9 @@ export const RANK_TO_CHIP_MAP: Record<Rank, number> = {
 	'2': 2,
 }
 
+export const RANKS: Rank[] = Object.keys(RANK_TO_CHIP_MAP) as Rank[]
+export const SUITS: Suit[] = ['Clubs', 'Spades', 'Hearts', 'Diamonds']
+
 export const RANK_TO_INDEX_MAP: Record<Rank, number> = {
 	'King': 13,
 	'Queen': 12,
@@ -142,7 +145,7 @@ export const RANK_TO_INDEX_MAP: Record<Rank, number> = {
 	'Ace': 1,
 }
 
-export const JOKER_DEFINITIONS: Record<JokerName, JokerEffects> = {
+export const JOKER_DEFINITIONS: Record<JokerName, JokerDefinition> = {
 	'Joker': {
 		rarity: 'common',
 		applyPlusMultiplier ({ value }) {
@@ -975,3 +978,5 @@ export const JOKER_DEFINITIONS: Record<JokerName, JokerEffects> = {
 		rarity: 'legendary',
 	},
 }
+
+export const JOKER_NAMES = Object.keys(JOKER_DEFINITIONS) as JokerName[]

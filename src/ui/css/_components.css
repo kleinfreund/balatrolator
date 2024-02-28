@@ -42,17 +42,64 @@
 	width: 170px;
 }
 
-.label--horizontal {
+.input-list {
+	display: flex;
+	align-items: baseline;
+	gap: 0.25rem;
+}
+
+.input-list>* {
+	flex-grow: 1;
+}
+
+.label {
+	font-weight: bold;
+}
+
+.select-control:where(.--flat),
+.text-control:where(.--flat) {
 	display: flex;
 	justify-content: space-between;
 	align-items: baseline;
 	gap: 0.25rem;
 }
 
-.input-list {
+.select-control:where(.--flat)>.select,
+.text-control:where(.--flat)>.text-input {
+	flex-grow: 1;
+}
+
+.select,
+.text-input {
+	display: block;
+	width: 100%;
+}
+
+.text-control>.label,
+.text-control>.secondary-label {
+	display: block;
+}
+
+.checkbox-control {
 	display: flex;
-	align-items: baseline;
 	gap: 0.25rem;
+	align-items: center;
+}
+
+.checkbox-control>.label {
+	flex-grow: 1;
+}
+
+/* HAND LEVELS */
+
+.h-level-input {
+	text-align: right;
+	width: 50px;
+}
+
+.h-plays-input {
+	text-align: right;
+	width: 50px;
 }
 
 /* CARDS */

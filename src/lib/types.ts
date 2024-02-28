@@ -52,17 +52,6 @@ export interface Card extends Required<InitialCard> {
 	index: number
 }
 
-export interface InitialJoker {
-	name: JokerName
-	edition?: JokerEdition
-	plusChips?: number
-	plusMultiplier?: number
-	timesMultiplier?: number
-	rank?: Rank
-	suit?: Suit
-	isActive?: boolean
-}
-
 export interface JokerEffectOptions {
 	state: State
 	value: number
@@ -75,8 +64,23 @@ export interface CardJokerEffectOptions extends JokerEffectOptions {
 export type JokerEffect = (this: Joker, options: JokerEffectOptions) => number
 export type CardJokerEffect = (this: Joker, options: CardJokerEffectOptions) => number
 
-export interface JokerEffects {
-	toString(): string
+export interface Probability {
+	numerator: number
+	denominator: number
+}
+
+export interface InitialJoker {
+	name: JokerName
+	edition?: JokerEdition
+	plusChips?: number
+	plusMultiplier?: number
+	timesMultiplier?: number
+	rank?: Rank
+	suit?: Suit
+	isActive?: boolean
+}
+
+export interface JokerDefinition {
 	rarity: 'common' | 'uncommon' | 'rare' | 'legendary'
 	probability?: Probability
 
@@ -100,13 +104,7 @@ export interface JokerEffects {
 	applyHeldCardTimesMultiplier?: CardJokerEffect
 }
 
-export interface Probability {
-	numerator: number
-	denominator: number
-}
-
-export interface Joker extends Required<JokerEffects> {
-	index: number
+export interface Joker {
 	name: JokerName
 	edition: JokerEdition
 	plusChips: number
@@ -115,6 +113,23 @@ export interface Joker extends Required<JokerEffects> {
 	rank?: Rank
 	suit?: Suit
 	isActive: boolean
+
+	index: number
+	toString(): string
+	rarity: 'common' | 'uncommon' | 'rare' | 'legendary'
+	probability?: Probability
+
+	applyPlusChips: JokerEffect
+	applyCardPlusChips: CardJokerEffect
+	applyHeldCardPlusChips: CardJokerEffect
+
+	applyPlusMultiplier: JokerEffect
+	applyCardPlusMultiplier: CardJokerEffect
+	applyHeldCardPlusMultiplier: CardJokerEffect
+
+	applyTimesMultiplier: JokerEffect
+	applyCardTimesMultiplier: CardJokerEffect
+	applyHeldCardTimesMultiplier: CardJokerEffect
 }
 
 export type HandLevel = { level: number, plays: number }

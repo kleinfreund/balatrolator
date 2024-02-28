@@ -20,17 +20,3 @@ table:not(:first-child),
 figure:not(:first-child) {
 	margin-top: 0.5rem;
 }
-
-label {
-	display: block;
-}
-
-label>span {
-	display: block;
-}
-
-input:where([type="number"]),
-input:where([type="text"]) {
-	display: block;
-	width: 100%;
-}
