@@ -19,11 +19,11 @@
 		"#*": "./src/*"
 	},
 	"scripts": {
-		"start": "cross-env VITE_DEBUG=true vite",
-		"start:debug": "cross-env VITE_DEBUG=true vite",
+		"start": "vite",
+		"start:debug": "cross-env VITE_DEBUG=true npm run start",
 		"test": "vitest run --coverage",
 		"test:watch": "vitest watch",
-		"test:watch:debug": "cross-env VITE_DEBUG=true vitest watch",
+		"test:watch:debug": "cross-env VITE_DEBUG=true npm run test:watch",
 		"lint:code": "eslint --ext .ts .",
 		"lint:code:fix": "npm run lint:code -- --fix",
 		"lint:lockfile": "lockfile-lint --path package-lock.json --validate-hosts --allowed-hosts npm",
