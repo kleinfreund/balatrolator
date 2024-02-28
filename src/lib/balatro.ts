@@ -16,7 +16,12 @@ export function calculateScore (initialState: InitialState): Score {
 	log('\nExpected', { chips: 670, multiplier: 1685e13 })
 	log('Received', { chips, multiplier })
 
-	const actualScore = chips * multiplier
+	let actualScore
+	if (state.deck === 'Plasma Deck') {
+		actualScore = Math.pow((chips + multiplier) / 2, 2)
+	} else {
+		actualScore = chips * multiplier
+	}
 	// Balatro seems to round values starting at a certain threshold and it seems to round down. 🤔
 	const score = actualScore > 10000 ? Math.floor(actualScore) : actualScore
 
@@ -210,6 +215,7 @@ export function getState (initialState: InitialState): State {
 		discards = 0,
 		money = 0,
 		blind = 'Small Blind',
+		deck = 'Red Deck',
 		handLevels: initialHandLevels = {},
 		jokers: initialJokers = [],
 		jokerSlots = 5,
@@ -245,9 +251,10 @@ export function getState (initialState: InitialState): State {
 		hands,
 		discards,
 		money,
+		blind,
+		deck,
 		handLevels,
 		handScoreSets,
-		blind,
 		jokers,
 		jokerSet,
 		jokerSlots,
