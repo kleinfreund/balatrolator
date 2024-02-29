@@ -13,7 +13,8 @@ export function calculateScore (initialState: InitialState): Score {
 
 	const chips = getChips(state)
 	const multiplier = getMultiplier(state)
-	log('\nExpected', { chips: 670, multiplier: 1685e13 })
+	log('\nExpected', { chips: 340, multiplier: 1685e13 })
+	log('Balanced', { chips: 2.470e16, multiplier: 2.470e16 })
 	log('Received', { chips, multiplier })
 
 	let actualScore
