@@ -709,10 +709,10 @@ export const JOKER_DEFINITIONS: Record<JokerName, JokerDefinition> = {
 	'Walkie Talkie': {
 		rarity: 'common',
 		applyCardPlusChips ({ value, card }) {
-			return value + (['6', '10'].includes(card.rank) ? 10 : 0)
+			return value + (isRank({ card }, ['4', '10']) ? 10 : 0)
 		},
 		applyCardPlusMultiplier ({ value, card }) {
-			return value + (['6', '10'].includes(card.rank) ? 4 : 0)
+			return value + (isRank({ card }, ['4', '10']) ? 4 : 0)
 		},
 	},
 	'Seltzer': {
@@ -961,7 +961,7 @@ export const JOKER_DEFINITIONS: Record<JokerName, JokerDefinition> = {
 	'Triboulet': {
 		rarity: 'legendary',
 		applyCardTimesMultiplier ({ value, card }) {
-			return value * (['King', 'Queen'].includes(card.rank) ? 2 : 0)
+			return value * (isRank({ card }, ['King', 'Queen']) ? 2 : 0)
 		},
 	},
 	'Yorick': {
