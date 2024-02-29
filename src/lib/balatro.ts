@@ -8,21 +8,20 @@ import { log, logGroup, logGroupEnd } from '#utilities/log.js'
 
 export function calculateScore (initialState: InitialState): Result {
 	const state = getState(initialState)
-	log('state', state)
-	log('\nHand levels', state.handBaseScores[state.playedHand])
 
-	const chips = getChips(state)
-	const multiplier = getMultiplier(state)
-	log('\nExpected', { chips: 340, multiplier: 1685e13 })
-	log('Balanced', { chips: 2.470e16, multiplier: 2.470e16 })
-	log('Received', { chips, multiplier })
+	const { chips, multiplier } = getScore(state)
+
+	log('\nReceived:', { chips, multiplier })
+	log('Expected:', { chips: 340, multiplier: 1685e13 })
 
 	let actualScore
 	if (state.deck === 'Plasma Deck') {
+		log('Balanced:', { chips: 2.470e16, multiplier: 2.470e16 })
 		actualScore = Math.pow((chips + multiplier) / 2, 2)
 	} else {
 		actualScore = chips * multiplier
 	}
+
 	// Balatro seems to round values starting at a certain threshold and it seems to round down. 🤔
 	const score = actualScore > 10000 ? Math.floor(actualScore) : actualScore
 
@@ -34,180 +33,203 @@ export function calculateScore (initialState: InitialState): Result {
 	}
 }
 
-function getChips (state: State): number {
-	log('\nCHIPS')
-	const plusChipsPerCard = state.scoringCards.map((card) => {
-		logGroup(`Card effects: ${card}`)
-		let chips = 0
-		log('→', chips)
-		// 0. Debuffed cards don't participate in scoring period
-		if (card.isDebuffed) {
-			logGroupEnd('← Debuffed.')
-			return 0
-		}
+function getScore (state: State): Score {
+	const { chips: baseChips, multiplier: baseMultiplier } = state.handBaseScores[state.playedHand]
 
-		let numberOfTriggers = 1
-		if (state.jokerSet.has('Seltzer')) numberOfTriggers++
-		if (state.jokerSet.has('Sock and Buskin') && isFaceCard({ state, card })) numberOfTriggers++
-		if (state.jokerSet.has('Hanging Chad') && card.index === 0) numberOfTriggers++
-		if (state.jokerSet.has('Hack') && isRank({ card }, ['2', '3', '4', '5'])) numberOfTriggers++
-		if (card.seal === 'red') numberOfTriggers *= 2
-
-		while (numberOfTriggers--) {
-			// 1. +Chips
-			chips += card.enhancement !== 'stone' ? RANK_TO_CHIP_MAP[card.rank] : 0
-			chips += MODIFIER_DEFAULTS.enhancement[card.enhancement].plusChips ?? 0
-			chips += MODIFIER_DEFAULTS.edition[card.edition].plusChips ?? 0
-
-			// 2. Jokers
-			for (const joker of state.jokers) {
-				logGroup(`Card effects: ${joker}`)
-				log('→', chips)
-				chips = joker.applyCardPlusChips({ state, value: chips, card })
-				logGroupEnd('←', chips)
-			}
-		}
-
-		logGroupEnd('←', chips)
-
-		return chips
-	})
-
-	// TODO: There should be a better way to apply blind effects
-	// Yes, this value is indeed rounded here.
-	const baseChips = Math.round(state.handBaseScores[state.playedHand].chips * (state.blind === 'The Flint' ? 0.5 : 1))
-	let chips = plusChipsPerCard.reduce((total, chips) => total + chips, baseChips)
-
-	log('=>', chips)
-
-	for (const joker of state.jokers) {
-		logGroup(`Effects: ${joker}`)
-		log('→', chips)
-		let numberOfTriggers = 1
-		while (numberOfTriggers--) {
-			chips = joker.applyPlusChips({ state, value: chips })
-		}
-		logGroupEnd('←', chips)
-
-		logGroup(`Enhancements: ${joker}`)
-		log('→', chips)
-		chips += MODIFIER_DEFAULTS.edition[joker.edition].plusChips ?? 0
-		logGroupEnd('←', chips)
+	// Step 0. Determine base chips and multiplier.
+	log('\n0. Determining base score …')
+	// The Flint halves the base chips and multiplier.
+	// The base score seems to be rounded here.
+	const baseFactor = (state.blind === 'The Flint' ? 0.5 : 1)
+	const score: Score = {
+		chips: Math.round(baseChips * baseFactor),
+		multiplier: Math.round(baseMultiplier * baseFactor),
 	}
+	log('\n0. BASE SCORE =>', score)
 
-	log('=>', chips)
+	log('\n1. Scoring played cards …')
+	for (const card of state.scoringCards) {
+		logGroup(`\n→ ${card}`, score)
+		scoreScoringCard(state, card, score)
+		logGroupEnd(`← ${card}`, score)
+	}
+	log('\n1. PLAYED CARD SCORE =>', score)
 
-	return chips
+	log('\n2. Scoring held cards …')
+	for (const card of state.heldCards) {
+		logGroup(`\n→ ${card}`, score)
+		scoreHeldCard(state, card, score)
+		logGroupEnd(`← ${card}`, score)
+	}
+	log('\n2. HELD CARD SCORE =>', score)
+
+	log('\n3. Scoring jokers …')
+	for (const joker of state.jokers) {
+		logGroup(`\n→ ${joker}`, score)
+		scoreJoker(state, joker, score)
+		logGroupEnd(`← ${joker}`, score)
+	}
+	log('\n3. JOKER SCORE =>', score)
+
+	return score
 }
 
-function getMultiplier (state: State): number {
-	log('\nMULTIPLIER')
-	// TODO: There should be a better way to apply blind effects
-	// Yes, this value is indeed rounded here.
-	const baseMultiplier = Math.round(state.handBaseScores[state.playedHand].multiplier * (state.blind === 'The Flint' ? 0.5 : 1))
-
-	let multiplier = state.scoringCards.reduce((multiplier, card) => {
-		logGroup(`Card effects: ${card}`)
-		log('→', multiplier)
-		// 0. Debuffed cards don't participate in scoring period
-		if (card.isDebuffed) {
-			logGroupEnd('← Debuffed.')
-			return multiplier
-		}
-
-		let numberOfTriggers = 1
-		if (state.jokerSet.has('Seltzer')) numberOfTriggers++
-		if (state.jokerSet.has('Sock and Buskin') && isFaceCard({ state, card })) numberOfTriggers++
-		if (state.jokerSet.has('Hanging Chad') && card.index === 0) numberOfTriggers++
-		if (state.jokerSet.has('Hack') && isRank({ card }, ['2', '3', '4', '5'])) numberOfTriggers++
-		if (card.seal === 'red') numberOfTriggers *= 2
-
-		while (numberOfTriggers--) {
-			// 1. +Mult
-			multiplier += MODIFIER_DEFAULTS.enhancement[card.enhancement].plusMultiplier ?? 0
-			multiplier += MODIFIER_DEFAULTS.edition[card.edition].plusMultiplier ?? 0
-
-			// 2. xMult
-			multiplier *= MODIFIER_DEFAULTS.edition[card.edition].timesMultiplier ?? 1
-			multiplier *= MODIFIER_DEFAULTS.enhancement[card.enhancement].timesMultiplier ?? 1
-
-			// 3. Jokers
-			for (const joker of state.jokers) {
-				logGroup(`Card effects: ${joker}`)
-				log('→', multiplier)
-				multiplier = joker.applyCardPlusMultiplier({ state, value: multiplier, card })
-				multiplier = joker.applyCardTimesMultiplier({ state, value: multiplier, card })
-				logGroupEnd('←', multiplier)
-			}
-		}
-
-		logGroupEnd('←', multiplier)
-
-		return multiplier
-	}, baseMultiplier)
-
-	log('=>', multiplier)
-
-	multiplier = state.heldCards.reduce((multiplier, card) => {
-		logGroup(`Held card effects: ${card}`)
-		log('→', multiplier)
-		if (card.isDebuffed) {
-			logGroupEnd('← Debuffed.')
-			return multiplier
-		}
-
-		let numberOfTriggers = 1
-		if (state.jokerSet.has('Seltzer')) numberOfTriggers++
-		if (state.jokerSet.has('Sock and Buskin') && isFaceCard({ state, card })) numberOfTriggers++
-		if (state.jokerSet.has('Mime')) numberOfTriggers++
-		if (card.seal === 'red') numberOfTriggers *= 2
-
-		while (numberOfTriggers--) {
-			multiplier *= MODIFIER_DEFAULTS.enhancement[card.enhancement].timesMultiplier ?? 1
-
-			// 3. Jokers
-			for (const joker of state.jokers) {
-				logGroup(`Card effects: ${joker}`)
-				log('→', multiplier)
-				multiplier = joker.applyHeldCardPlusMultiplier({ state, value: multiplier, card })
-				multiplier = joker.applyHeldCardTimesMultiplier({ state, value: multiplier, card })
-				logGroupEnd('←', multiplier)
-			}
-		}
-
-		logGroupEnd('←', multiplier)
-
-		return multiplier
-	}, multiplier)
-
-	log('=>', multiplier)
-
-	for (const joker of state.jokers) {
-		logGroup(`General effects: ${joker}`)
-		log('→', multiplier)
-		let numberOfTriggers = 1
-		while (numberOfTriggers--) {
-			multiplier = joker.applyPlusMultiplier({ state, value: multiplier })
-			multiplier = joker.applyTimesMultiplier({ state, value: multiplier })
-		}
-		logGroupEnd('←', multiplier)
-
-		logGroup(`Enhancements: ${joker}`)
-		log('→', multiplier)
-		if (joker.rarity === 'uncommon' && state.jokerSet.has('Baseball Card')) {
-			// This is SUPER whacky. Blueprint applying to Baseball Card is very difficult to model because the Baseball Card effect applies when applying the general effects of Jokers and *not* when applying general effects of Baseball Card.
-			const blueprintIndex = state.jokers.findIndex(({ name }) => name === 'Blueprint')
-			const rightJoker = blueprintIndex !== -1 ? state.jokers[blueprintIndex + 1] : undefined
-			multiplier *= 1.5 * (rightJoker?.name === 'Baseball Card' ? 1.5 : 1)
-		}
-		multiplier += MODIFIER_DEFAULTS.edition[joker.edition].plusMultiplier ?? 0
-		multiplier *= MODIFIER_DEFAULTS.edition[joker.edition].timesMultiplier ?? 1
-		logGroupEnd('←', multiplier)
+function scoreScoringCard (state: State, card: Card, score: Score): Score {
+	// 1.0. Debuffed cards don't participate in scoring period
+	if (card.isDebuffed) {
+		logGroupEnd('!!! Debuffed !!!')
+		return score
 	}
 
-	log('=>', multiplier)
+	let numberOfTriggers = 1
+	if (state.jokerSet.has('Seltzer')) numberOfTriggers++
+	if (state.jokerSet.has('Sock and Buskin') && isFaceCard({ state, card })) numberOfTriggers++
+	if (state.jokerSet.has('Hanging Chad') && card.index === 0) numberOfTriggers++
+	if (state.jokerSet.has('Hack') && isRank({ card }, ['2', '3', '4', '5'])) numberOfTriggers++
+	if (card.seal === 'red') numberOfTriggers *= 2
 
-	return multiplier
+	for (let trigger = 0; trigger < numberOfTriggers; trigger++) {
+		log(`Trigger: ${trigger + 1} Score:`, score)
+
+		// 1.1. +Chips
+		if (card.enhancement !== 'stone') {
+			score.chips += RANK_TO_CHIP_MAP[card.rank]
+			log(score, '(+Chips from rank)')
+		}
+
+		const { plusChips: plusChipsEnhancement } = MODIFIER_DEFAULTS.enhancement[card.enhancement]
+		if (plusChipsEnhancement) {
+			score.chips += plusChipsEnhancement
+			log(score, '(+Chips from enhancement)')
+		}
+
+		const { plusChips: plusChipsEdition } = MODIFIER_DEFAULTS.edition[card.edition]
+		if (plusChipsEdition) {
+			score.chips += plusChipsEdition
+			log(score, '(+Chips from edition)')
+		}
+
+		// 1.2. +Mult
+		const { plusMultiplier: plusMultiplierEnhancement } = MODIFIER_DEFAULTS.enhancement[card.enhancement]
+		if (plusMultiplierEnhancement) {
+			score.multiplier += plusMultiplierEnhancement
+			log(score, '(+Mult from enhancement)')
+		}
+
+		const { plusMultiplier: plusMultiplierEdition } = MODIFIER_DEFAULTS.edition[card.edition]
+		if (plusMultiplierEdition) {
+			score.multiplier += plusMultiplierEdition
+			log(score, '(+Mult from edition)')
+		}
+
+		// 1.3. xMult
+		const { timesMultiplier: timesMultiplierEnhancement } = MODIFIER_DEFAULTS.enhancement[card.enhancement]
+		if (timesMultiplierEnhancement) {
+			score.multiplier *= timesMultiplierEnhancement
+			log(score, '(xMult from enhancement)')
+		}
+
+		const { timesMultiplier: timesMultiplierEdition } = MODIFIER_DEFAULTS.edition[card.edition]
+		if (timesMultiplierEdition) {
+			score.multiplier *= timesMultiplierEdition
+			log(score, '(xMult from edition)')
+		}
+
+		// 1.4. Jokers
+		for (const joker of state.jokers) {
+			score.chips = joker.applyCardPlusChips({ state, value: score.chips, card })
+			log(score, '(+Chips from Joker)')
+			score.multiplier = joker.applyCardPlusMultiplier({ state, value: score.multiplier, card })
+			log(score, '(+Mult from Joker)')
+			score.multiplier = joker.applyCardTimesMultiplier({ state, value: score.multiplier, card })
+			log(score, '(xMult from Joker)')
+			log(score, `(${joker})`)
+		}
+	}
+
+	return score
+}
+
+function scoreHeldCard (state: State, card: Card, score: Score): Score {
+	// 2.0. Debuffed cards don't participate in scoring period
+	if (card.isDebuffed) {
+		logGroupEnd('!!! Debuffed !!!')
+		return score
+	}
+
+	let numberOfTriggers = 1
+	if (state.jokerSet.has('Seltzer')) numberOfTriggers++
+	if (state.jokerSet.has('Sock and Buskin') && isFaceCard({ state, card })) numberOfTriggers++
+	if (state.jokerSet.has('Mime')) numberOfTriggers++
+	if (card.seal === 'red') numberOfTriggers *= 2
+
+	for (let trigger = 0; trigger < numberOfTriggers; trigger++) {
+		log(`Trigger: ${trigger + 1} Score:`, score)
+
+		// TODO: Almost certain this is a bug. Held cards don't score enhancements *except* for steel cards (possibly with red seal). So this needs to be locked down more precisely.
+		const { timesMultiplier: timesMultiplierEnhancement } = MODIFIER_DEFAULTS.enhancement[card.enhancement]
+		if (timesMultiplierEnhancement) {
+			score.multiplier *= timesMultiplierEnhancement
+			log(score, '(xMult from enhancement)')
+		}
+
+		for (const joker of state.jokers) {
+			// TODO: This is probably a bug. There are no +Mult effects from Jokers applying to held cards that I can think of.
+			score.multiplier = joker.applyHeldCardPlusMultiplier({ state, value: score.multiplier, card })
+			log(score, '(+Mult from Joker)')
+			// TODO: This is probably a bug. E.g. glass cards held in hand don't score.
+			score.multiplier = joker.applyHeldCardTimesMultiplier({ state, value: score.multiplier, card })
+			log(score, '(xMult from Joker)')
+			log(score, `(${joker})`)
+		}
+	}
+
+	return score
+}
+
+function scoreJoker (state: State, joker: Joker, score: Score): Score {
+	const numberOfTriggers = 1
+	for (let trigger = 0; trigger < numberOfTriggers; trigger++) {
+		log(`Trigger: ${trigger + 1} Score:`, score)
+		score.chips = joker.applyPlusChips({ state, value: score.chips })
+		log(score, '(+Chips from Joker)')
+		score.multiplier = joker.applyPlusMultiplier({ state, value: score.multiplier })
+		log(score, '(+Mult from Joker)')
+		score.multiplier = joker.applyTimesMultiplier({ state, value: score.multiplier })
+		log(score, '(xMult from Joker)')
+		log(score, `(${joker})`)
+	}
+
+	// TODO: Move this into the new effects system (that doesn't exist yet)
+	if (joker.rarity === 'uncommon' && state.jokerSet.has('Baseball Card')) {
+		// This is SUPER whacky. Blueprint applying to Baseball Card is very difficult to model because the Baseball Card effect applies when applying the general effects of Jokers and *not* when applying general effects of Baseball Card.
+		const blueprintIndex = state.jokers.findIndex(({ name }) => name === 'Blueprint')
+		const rightJoker = blueprintIndex !== -1 ? state.jokers[blueprintIndex + 1] : undefined
+		score.multiplier *= 1.5 * (rightJoker?.name === 'Baseball Card' ? 1.5 : 1)
+	}
+
+	// 3.1. +Chips
+	const { plusChips: plusChipsEdition } = MODIFIER_DEFAULTS.edition[joker.edition]
+	if (plusChipsEdition) {
+		score.chips += plusChipsEdition
+		log(score, '(+Chips from edition)')
+	}
+
+	// 3.2. +Mult
+	const { plusMultiplier: plusMultiplierEdition } = MODIFIER_DEFAULTS.edition[joker.edition]
+	if (plusMultiplierEdition) {
+		score.multiplier += plusMultiplierEdition
+		log(score, '(+Mult from edition)')
+	}
+
+	// 3.3. xMult
+	const { timesMultiplier: timesMultiplierEdition } = MODIFIER_DEFAULTS.edition[joker.edition]
+	if (timesMultiplierEdition) {
+		score.multiplier *= timesMultiplierEdition
+		log(score, '(xMult from edition)')
+	}
+
+	return score
 }
 
 export function getState (initialState: InitialState): State {
