@@ -1,5 +1,5 @@
 import { flush, nOfAKind, straight } from '#lib/getHand.js'
-import type { Blind, BlindName, HandName, JokerDefinition, JokerName, ModifierDefaults, Rank, ScoreSet, Suit } from '#lib/types.js'
+import type { Blind, BlindName, HandName, JokerDefinition, JokerName, ModifierDefaults, Rank, Score, Suit } from '#lib/types.js'
 import { isFaceCard } from '#utilities/isFaceCard.js'
 import { isRank } from '#utilities/isRank.js'
 import { isSuit } from '#utilities/isSuit.js'
@@ -65,7 +65,7 @@ export const BLINDS: Record<BlindName, Blind> = {
 	'Cerulean Bell': { reward: 8, multFactor: 2 },
 }
 
-export const PLANET_SCORE_SETS: Record<HandName, ScoreSet> = {
+export const PLANET_SCORE_SETS: Record<HandName, Score> = {
 	'Flush Five': { chips: 40, multiplier: 3 },
 	'Flush House': { chips: 40, multiplier: 3 },
 	'Five of a Kind': { chips: 35, multiplier: 3 },
@@ -80,7 +80,7 @@ export const PLANET_SCORE_SETS: Record<HandName, ScoreSet> = {
 	'High Card': { chips: 10, multiplier: 1 },
 }
 
-export const DEFAULT_HAND_SCORE_SETS: Record<HandName, ScoreSet> = {
+export const DEFAULT_HAND_SCORE_SETS: Record<HandName, Score> = {
 	'Flush Five': { chips: 160, multiplier: 16 },
 	'Flush House': { chips: 140, multiplier: 14 }, // TODO: Verify values
 	'Five of a Kind': { chips: 120, multiplier: 12 },

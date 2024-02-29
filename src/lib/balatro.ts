@@ -1,15 +1,15 @@
 import { RANK_TO_CHIP_MAP, DEFAULT_HAND_SCORE_SETS, PLANET_SCORE_SETS, JOKER_DEFINITIONS, MODIFIER_DEFAULTS } from '#lib/data.js'
 import { getHand } from '#lib/getHand.js'
-import type { Card, CardJokerEffect, HandLevel, HandLevels, HandName, HandScoreSets, InitialCard, InitialHandLevels, InitialJoker, InitialState, Joker, JokerEffect, Score, ScoreSet, State } from '#lib/types.js'
+import type { Card, CardJokerEffect, HandLevel, HandLevels, HandName, HandScore, InitialCard, InitialHandLevels, InitialJoker, InitialState, Joker, JokerEffect, Result, Score, State } from '#lib/types.js'
 import { formatScore } from '#utilities/formatScore.js'
 import { isFaceCard } from '#utilities/isFaceCard.js'
 import { isRank } from '#/utilities/isRank.js'
 import { log, logGroup, logGroupEnd } from '#utilities/log.js'
 
-export function calculateScore (initialState: InitialState): Score {
+export function calculateScore (initialState: InitialState): Result {
 	const state = getState(initialState)
 	log('state', state)
-	log('\nHand levels', state.handScoreSets[state.playedHand])
+	log('\nHand levels', state.handBaseScores[state.playedHand])
 
 	const chips = getChips(state)
 	const multiplier = getMultiplier(state)
@@ -75,7 +75,7 @@ function getChips (state: State): number {
 
 	// TODO: There should be a better way to apply blind effects
 	// Yes, this value is indeed rounded here.
-	const baseChips = Math.round(state.handScoreSets[state.playedHand].chips * (state.blind === 'The Flint' ? 0.5 : 1))
+	const baseChips = Math.round(state.handBaseScores[state.playedHand].chips * (state.blind === 'The Flint' ? 0.5 : 1))
 	let chips = plusChipsPerCard.reduce((total, chips) => total + chips, baseChips)
 
 	log('=>', chips)
@@ -104,7 +104,7 @@ function getMultiplier (state: State): number {
 	log('\nMULTIPLIER')
 	// TODO: There should be a better way to apply blind effects
 	// Yes, this value is indeed rounded here.
-	const baseMultiplier = Math.round(state.handScoreSets[state.playedHand].multiplier * (state.blind === 'The Flint' ? 0.5 : 1))
+	const baseMultiplier = Math.round(state.handBaseScores[state.playedHand].multiplier * (state.blind === 'The Flint' ? 0.5 : 1))
 
 	let multiplier = state.scoringCards.reduce((multiplier, card) => {
 		logGroup(`Card effects: ${card}`)
@@ -225,7 +225,7 @@ export function getState (initialState: InitialState): State {
 	} = initialState
 
 	const handLevels = getHandLevels(initialHandLevels)
-	const handScoreSets = getHandScoreSets(handLevels)
+	const handBaseScores = getHandBaseScores(handLevels)
 	const jokers = getJokers(initialJokers)
 	const jokerSet = new Set(jokers.map(({ name }) => name))
 	const playedCards = getCards(initialPlayedCards)
@@ -255,7 +255,7 @@ export function getState (initialState: InitialState): State {
 		blind,
 		deck,
 		handLevels,
-		handScoreSets,
+		handBaseScores,
 		jokers,
 		jokerSet,
 		jokerSlots,
@@ -275,20 +275,20 @@ function getHandLevels (initialHandLevels: InitialHandLevels): HandLevels {
 	return Object.fromEntries(handLevelEntries) as HandLevels
 }
 
-function getHandScoreSets (handLevels: HandLevels): HandScoreSets {
+function getHandBaseScores (handLevels: HandLevels): HandScore {
 	const handLevelEntries = Object.entries(handLevels) as [HandName, HandLevel][]
-	const handScoreSetEntries = handLevelEntries.map<[HandName, ScoreSet]>(([handName, { level }]) => {
-		const defaultScoreSet = DEFAULT_HAND_SCORE_SETS[handName]
-		const levelBasedScoreSet = PLANET_SCORE_SETS[handName]
+	const handBaseScoresEntries = handLevelEntries.map<[HandName, Score]>(([handName, { level }]) => {
+		const defaultScore = DEFAULT_HAND_SCORE_SETS[handName]
+		const levelBasedScore = PLANET_SCORE_SETS[handName]
 
 		// Hand levels start at level 1 which effectively adds the default score sets. It is, however, possible that hand levels are set to 0. Then, the default score set doesn't apply
-		const chips = level === 0 ? 0 : (defaultScoreSet.chips + (level - 1) * levelBasedScoreSet.chips)
-		const multiplier = level === 0 ? 0 : (defaultScoreSet.multiplier + (level - 1) * levelBasedScoreSet.multiplier)
+		const chips = level === 0 ? 0 : (defaultScore.chips + (level - 1) * levelBasedScore.chips)
+		const multiplier = level === 0 ? 0 : (defaultScore.multiplier + (level - 1) * levelBasedScore.multiplier)
 
 		return [handName, { chips, multiplier }]
 	})
 
-	return Object.fromEntries(handScoreSetEntries) as HandScoreSets
+	return Object.fromEntries(handBaseScoresEntries) as HandScore
 }
 
 function getJokers (initialJokers: InitialJoker[]): Joker[] {

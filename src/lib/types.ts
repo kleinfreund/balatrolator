@@ -18,7 +18,7 @@ export type Seal = 'none' | 'gold' | 'red' | 'blue' | 'purple'
 
 export type Enhancement = 'none' | 'bonus' | 'mult' | 'wild' | 'glass' | 'steel' | 'stone' | 'gold' | 'lucky'
 
-export interface ScoreSet {
+export interface Score {
 	chips: number
 	multiplier: number
 }
@@ -137,7 +137,7 @@ export interface Joker {
 export type HandLevel = { level: number, plays: number }
 export type InitialHandLevels = Partial<HandLevels>
 export type HandLevels = Record<HandName, HandLevel>
-export type HandScoreSets = Record<HandName, ScoreSet>
+export type HandScore = Record<HandName, Score>
 
 export type InitialState = {
 	hands?: number
@@ -159,7 +159,7 @@ export interface State {
 	blind: BlindName
 	deck: DeckName
 	handLevels: HandLevels
-	handScoreSets: HandScoreSets
+	handBaseScores: HandScore
 	jokers: Joker[]
 	jokerSet: Set<JokerName>
 	jokerSlots: number
@@ -171,7 +171,7 @@ export interface State {
 	scoringCards: Card[]
 }
 
-export interface Score {
+export interface Result {
 	hand: HandName
 	scoringCards: Card[]
 	score: number
