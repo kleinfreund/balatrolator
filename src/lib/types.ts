@@ -56,15 +56,15 @@ export interface Card extends Required<InitialCard> {
 
 export interface JokerEffectOptions {
 	state: State
-	value: number
+	score: Score
 }
 
 export interface CardJokerEffectOptions extends JokerEffectOptions {
 	card: Card
 }
 
-export type JokerEffect = (this: Joker, options: JokerEffectOptions) => number
-export type CardJokerEffect = (this: Joker, options: CardJokerEffectOptions) => number
+export type JokerEffect = (this: Joker, options: JokerEffectOptions) => void
+export type CardJokerEffect = (this: Joker, options: CardJokerEffectOptions) => void
 
 export interface Probability {
 	numerator: number
@@ -93,17 +93,9 @@ export interface JokerDefinition {
 	hasRankInput?: boolean
 	hasSuitInput?: boolean
 
-	applyPlusChips?: JokerEffect
-	applyCardPlusChips?: CardJokerEffect
-	applyHeldCardPlusChips?: CardJokerEffect
-
-	applyPlusMultiplier?: JokerEffect
-	applyCardPlusMultiplier?: CardJokerEffect
-	applyHeldCardPlusMultiplier?: CardJokerEffect
-
-	applyTimesMultiplier?: JokerEffect
-	applyCardTimesMultiplier?: CardJokerEffect
-	applyHeldCardTimesMultiplier?: CardJokerEffect
+	effect?: JokerEffect
+	cardEffect?: CardJokerEffect
+	heldCardEffect?: CardJokerEffect
 }
 
 export interface Joker {
@@ -121,17 +113,9 @@ export interface Joker {
 	rarity: 'common' | 'uncommon' | 'rare' | 'legendary'
 	probability?: Probability
 
-	applyPlusChips: JokerEffect
-	applyCardPlusChips: CardJokerEffect
-	applyHeldCardPlusChips: CardJokerEffect
-
-	applyPlusMultiplier: JokerEffect
-	applyCardPlusMultiplier: CardJokerEffect
-	applyHeldCardPlusMultiplier: CardJokerEffect
-
-	applyTimesMultiplier: JokerEffect
-	applyCardTimesMultiplier: CardJokerEffect
-	applyHeldCardTimesMultiplier: CardJokerEffect
+	effect: JokerEffect
+	cardEffect: CardJokerEffect
+	heldCardEffect: CardJokerEffect
 }
 
 export type HandLevel = { level: number, plays: number }

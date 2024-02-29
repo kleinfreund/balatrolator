@@ -137,12 +137,7 @@ function scoreScoringCard (state: State, card: Card, score: Score): Score {
 
 		// 1.4. Jokers
 		for (const joker of state.jokers) {
-			score.chips = joker.applyCardPlusChips({ state, value: score.chips, card })
-			log(score, '(+Chips from Joker)')
-			score.multiplier = joker.applyCardPlusMultiplier({ state, value: score.multiplier, card })
-			log(score, '(+Mult from Joker)')
-			score.multiplier = joker.applyCardTimesMultiplier({ state, value: score.multiplier, card })
-			log(score, '(xMult from Joker)')
+			joker.cardEffect({ state, score, card })
 			log(score, `(${joker})`)
 		}
 	}
@@ -174,12 +169,8 @@ function scoreHeldCard (state: State, card: Card, score: Score): Score {
 		}
 
 		for (const joker of state.jokers) {
-			// TODO: This is probably a bug. There are no +Mult effects from Jokers applying to held cards that I can think of.
-			score.multiplier = joker.applyHeldCardPlusMultiplier({ state, value: score.multiplier, card })
-			log(score, '(+Mult from Joker)')
-			// TODO: This is probably a bug. E.g. glass cards held in hand don't score.
-			score.multiplier = joker.applyHeldCardTimesMultiplier({ state, value: score.multiplier, card })
-			log(score, '(xMult from Joker)')
+			// TODO: This is probably a bug. There are no +Mult effects from Jokers applying to held cards that I can think of. E.g. glass cards held in hand don't score.
+			joker.heldCardEffect({ state, score, card })
 			log(score, `(${joker})`)
 		}
 	}
@@ -191,12 +182,7 @@ function scoreJoker (state: State, joker: Joker, score: Score): Score {
 	const numberOfTriggers = 1
 	for (let trigger = 0; trigger < numberOfTriggers; trigger++) {
 		log(`Trigger: ${trigger + 1} Score:`, score)
-		score.chips = joker.applyPlusChips({ state, value: score.chips })
-		log(score, '(+Chips from Joker)')
-		score.multiplier = joker.applyPlusMultiplier({ state, value: score.multiplier })
-		log(score, '(+Mult from Joker)')
-		score.multiplier = joker.applyTimesMultiplier({ state, value: score.multiplier })
-		log(score, '(xMult from Joker)')
+		joker.effect({ state, score })
 		log(score, `(${joker})`)
 	}
 
@@ -329,17 +315,9 @@ function getJokers (initialJokers: InitialJoker[]): Joker[] {
 
 		const definition = JOKER_DEFINITIONS[initialJoker.name]
 
-		const applyPlusChips = createEffect(definition.applyPlusChips)
-		const applyCardPlusChips = createCardEffect(definition.applyCardPlusChips)
-		const applyHeldCardPlusChips = createCardEffect(definition.applyHeldCardPlusChips)
-
-		const applyPlusMultiplier = createEffect(definition.applyPlusMultiplier)
-		const applyCardPlusMultiplier = createCardEffect(definition.applyCardPlusMultiplier)
-		const applyHeldCardPlusMultiplier = createCardEffect(definition.applyHeldCardPlusMultiplier)
-
-		const applyTimesMultiplier = createEffect(definition.applyTimesMultiplier)
-		const applyCardTimesMultiplier = createCardEffect(definition.applyCardTimesMultiplier)
-		const applyHeldCardTimesMultiplier = createCardEffect(definition.applyHeldCardTimesMultiplier)
+		const effect = createEffect(definition.effect)
+		const cardEffect = createCardEffect(definition.cardEffect)
+		const heldCardEffect = createCardEffect(definition.heldCardEffect)
 
 		const {
 			rarity,
@@ -350,15 +328,9 @@ function getJokers (initialJokers: InitialJoker[]): Joker[] {
 			...initialJoker,
 			rarity,
 			probability,
-			applyPlusChips,
-			applyCardPlusChips,
-			applyHeldCardPlusChips,
-			applyPlusMultiplier,
-			applyCardPlusMultiplier,
-			applyHeldCardPlusMultiplier,
-			applyTimesMultiplier,
-			applyCardTimesMultiplier,
-			applyHeldCardTimesMultiplier,
+			effect,
+			cardEffect,
+			heldCardEffect,
 			toString,
 			index,
 			edition,
@@ -373,33 +345,33 @@ function getJokers (initialJokers: InitialJoker[]): Joker[] {
 function createEffect (effect?: JokerEffect): JokerEffect {
 	if (effect) {
 		return function (options) {
-			const value = effect.call(this, options)
+			let triggers = 1
+			if (options.state.blueprintTarget === this.name) triggers *= 2
+			if (options.state.brainstormTarget === this.name) triggers *= 2
 
-			let factor = 1
-			if (options.state.blueprintTarget === this.name) factor *= 2
-			if (options.state.brainstormTarget === this.name) factor *= 2
-
-			return value * factor
+			while (triggers--) {
+				effect.call(this, options)
+			}
 		}
 	}
 
-	return ({ value }) => value
+	return () => {}
 }
 
 function createCardEffect (effect?: CardJokerEffect): CardJokerEffect {
 	if (effect) {
 		return function (options) {
-			const value = effect.call(this, options)
+			let triggers = 1
+			if (options.state.blueprintTarget === this.name) triggers *= 2
+			if (options.state.brainstormTarget === this.name) triggers *= 2
 
-			let factor = 1
-			if (options.state.blueprintTarget === this.name) factor *= 2
-			if (options.state.brainstormTarget === this.name) factor *= 2
-
-			return value * factor
+			while (triggers--) {
+				effect.call(this, options)
+			}
 		}
 	}
 
-	return ({ value }) => value
+	return () => {}
 }
 
 export function getCards (cards: InitialCard[]): Card[] {
