@@ -1,10 +1,11 @@
 import { RANK_TO_CHIP_MAP, DEFAULT_HAND_SCORE_SETS, PLANET_SCORE_SETS, JOKER_DEFINITIONS, MODIFIER_DEFAULTS } from '#lib/data.js'
 import { getHand } from '#lib/getHand.js'
-import type { Card, CardJokerEffect, HandLevel, HandLevels, HandName, HandScore, InitialCard, InitialHandLevels, InitialJoker, InitialState, Joker, JokerEffect, Result, Score, State } from '#lib/types.js'
+import type { Card, CardEffect, HandLevel, HandLevels, HandName, HandScore, InitialCard, InitialHandLevels, InitialJoker, InitialState, Joker, Effect, Result, Score, State, IndirectEffect } from '#lib/types.js'
 import { formatScore } from '#utilities/formatScore.js'
 import { isFaceCard } from '#utilities/isFaceCard.js'
 import { isRank } from '#/utilities/isRank.js'
 import { log, logGroup, logGroupEnd } from '#utilities/log.js'
+import { notNullish } from '../utilities/notNullish.js'
 
 export function calculateScore (initialState: InitialState): Result {
 	const state = getState(initialState)
@@ -179,36 +180,24 @@ function scoreHeldCard (state: State, card: Card, score: Score): Score {
 }
 
 function scoreJoker (state: State, joker: Joker, score: Score): Score {
-	const numberOfTriggers = 1
-	for (let trigger = 0; trigger < numberOfTriggers; trigger++) {
-		log(`Trigger: ${trigger + 1} Score:`, score)
-		joker.effect({ state, score })
-		log(score, `(${joker})`)
-	}
+	// 1. Joker effect
+	joker.effect({ state, score })
 
-	// TODO: Move this into the new effects system (that doesn't exist yet)
-	if (joker.rarity === 'uncommon' && state.jokerSet.has('Baseball Card')) {
-		// This is SUPER whacky. Blueprint applying to Baseball Card is very difficult to model because the Baseball Card effect applies when applying the general effects of Jokers and *not* when applying general effects of Baseball Card.
-		const blueprintIndex = state.jokers.findIndex(({ name }) => name === 'Blueprint')
-		const rightJoker = blueprintIndex !== -1 ? state.jokers[blueprintIndex + 1] : undefined
-		score.multiplier *= 1.5 * (rightJoker?.name === 'Baseball Card' ? 1.5 : 1)
-	}
-
-	// 3.1. +Chips
+	// 2. +Chips
 	const { plusChips: plusChipsEdition } = MODIFIER_DEFAULTS.edition[joker.edition]
 	if (plusChipsEdition) {
 		score.chips += plusChipsEdition
 		log(score, '(+Chips from edition)')
 	}
 
-	// 3.2. +Mult
+	// 3. +Mult
 	const { plusMultiplier: plusMultiplierEdition } = MODIFIER_DEFAULTS.edition[joker.edition]
 	if (plusMultiplierEdition) {
 		score.multiplier += plusMultiplierEdition
 		log(score, '(+Mult from edition)')
 	}
 
-	// 3.3. xMult
+	// 4. xMult
 	const { timesMultiplier: timesMultiplierEdition } = MODIFIER_DEFAULTS.edition[joker.edition]
 	if (timesMultiplierEdition) {
 		score.multiplier *= timesMultiplierEdition
@@ -245,17 +234,6 @@ export function getState (initialState: InitialState): State {
 
 	const scoringCards = jokerSet.has('Splash') ? playedCards : preliminaryScoringCards
 
-	const blueprintIndex = jokers.findIndex((joker) => joker.name === 'Blueprint')
-	let blueprintTarget
-	if (blueprintIndex !== -1 && jokers[blueprintIndex + 1]) {
-		blueprintTarget = jokers[blueprintIndex + 1]!.name
-	}
-
-	let brainstormTarget
-	if (jokerSet.has('Brainstorm') && jokers[0]) {
-		brainstormTarget = jokers[0]!.name
-	}
-
 	return {
 		hands,
 		discards,
@@ -267,8 +245,6 @@ export function getState (initialState: InitialState): State {
 		jokers,
 		jokerSet,
 		jokerSlots,
-		blueprintTarget,
-		brainstormTarget,
 		playedCards,
 		heldCards,
 		playedHand,
@@ -316,6 +292,7 @@ function getJokers (initialJokers: InitialJoker[]): Joker[] {
 		const definition = JOKER_DEFINITIONS[initialJoker.name]
 
 		const effect = createEffect(definition.effect)
+		const indirectEffect = createIndirectEffect(definition.indirectEffect)
 		const cardEffect = createCardEffect(definition.cardEffect)
 		const heldCardEffect = createCardEffect(definition.heldCardEffect)
 
@@ -329,6 +306,7 @@ function getJokers (initialJokers: InitialJoker[]): Joker[] {
 			rarity,
 			probability,
 			effect,
+			indirectEffect,
 			cardEffect,
 			heldCardEffect,
 			toString,
@@ -342,36 +320,97 @@ function getJokers (initialJokers: InitialJoker[]): Joker[] {
 	})
 }
 
-function createEffect (effect?: JokerEffect): JokerEffect {
-	if (effect) {
-		return function (options) {
-			let triggers = 1
-			if (options.state.blueprintTarget === this.name) triggers *= 2
-			if (options.state.brainstormTarget === this.name) triggers *= 2
+// When scoring Mime:
+// 1. Blueprint triggers Baseball Card effect
+// 2. Baseball Card effect triggers
 
-			while (triggers--) {
+function createEffect (effect?: Effect): Effect {
+	return function (options) {
+		let triggers = 1
+
+		// Increase triggers from Blueprint
+		const blueprintTargets = options.state.jokers
+			.filter(({ name }) => name === 'Blueprint')
+			.map(({ index }) => options.state.jokers[index + 1])
+			.filter(notNullish)
+
+		for (const { name } of blueprintTargets) {
+			if (name === this.name) triggers++
+		}
+
+		// Increase triggers from Brainstorm
+		const brainstormTargets = options.state.jokers
+			.filter(({ name }) => name === 'Brainstorm')
+			.map(() => options.state.jokers[0])
+			.filter(notNullish)
+
+		for (const { name } of brainstormTargets) {
+			if (name === this.name) triggers++
+		}
+
+		for (let trigger = 0; trigger < triggers; trigger++) {
+			log(`Trigger: ${trigger + 1} Score:`, options.score)
+			if (effect) {
 				effect.call(this, options)
+				log(options.score, `(${this.name})`)
+			}
+
+			for (const blueprintTarget of blueprintTargets) {
+				blueprintTarget.indirectEffect({ ...options, joker: this })
+				log(options.score, `(Blueprint copying ${blueprintTarget.name})`)
+			}
+
+			// TODO: Add Brainstorm
+
+			const baseballCards = options.state.jokers.filter(({ name }) => name === 'Baseball Card')
+			for (const baseballCard of baseballCards) {
+				baseballCard.indirectEffect({ ...options, joker: this })
+				log(options.score, `(${baseballCard.name})`)
 			}
 		}
 	}
-
-	return () => {}
 }
 
-function createCardEffect (effect?: CardJokerEffect): CardJokerEffect {
-	if (effect) {
-		return function (options) {
-			let triggers = 1
-			if (options.state.blueprintTarget === this.name) triggers *= 2
-			if (options.state.brainstormTarget === this.name) triggers *= 2
+function createIndirectEffect (effect?: IndirectEffect): IndirectEffect {
+	return function (options) {
+		if (effect) {
+			effect.call(this, options)
+		}
+	}
+}
 
-			while (triggers--) {
+function createCardEffect (effect?: CardEffect): CardEffect {
+	return function (options) {
+		let triggers = 1
+
+		// Increase triggers from Blueprint
+		const blueprintTargets = options.state.jokers
+			.filter(({ name }) => name === 'Blueprint')
+			.map(({ index }) => options.state.jokers[index + 1])
+			.filter(notNullish)
+
+		for (const { name } of blueprintTargets) {
+			if (name === this.name) triggers++
+		}
+
+		// Increase triggers from Brainstorm
+		const brainstormTargets = options.state.jokers
+			.filter(({ name }) => name === 'Brainstorm')
+			.map(() => options.state.jokers[0])
+			.filter(notNullish)
+
+		for (const { name } of brainstormTargets) {
+			if (name === this.name) triggers++
+		}
+
+		for (let trigger = 0; trigger < triggers; trigger++) {
+			log(`Trigger: ${trigger + 1} Score:`, options.score)
+			if (effect) {
 				effect.call(this, options)
+				log(options.score, `(${this.name})`)
 			}
 		}
 	}
-
-	return () => {}
 }
 
 export function getCards (cards: InitialCard[]): Card[] {

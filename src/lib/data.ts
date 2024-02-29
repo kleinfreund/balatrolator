@@ -272,6 +272,10 @@ export const JOKER_DEFINITIONS: Record<JokerName, JokerDefinition> = {
 	},
 	'Mime': {
 		rarity: 'uncommon',
+		// TODO: Implement card effects
+		/* heldCardEffect (options) {
+			options.card.effect(options)
+		}, */
 	},
 	'Credit Card': {
 		rarity: 'common',
@@ -656,6 +660,9 @@ export const JOKER_DEFINITIONS: Record<JokerName, JokerDefinition> = {
 	},
 	'Baseball Card': {
 		rarity: 'rare',
+		indirectEffect ({ score, joker }) {
+			score.multiplier *= (joker.rarity === 'uncommon' ? 1.5 : 1)
+		},
 	},
 	'Bull': {
 		rarity: 'uncommon',

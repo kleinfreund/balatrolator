@@ -54,17 +54,22 @@ export interface Card extends Required<InitialCard> {
 	index: number
 }
 
-export interface JokerEffectOptions {
+export interface EffectOptions {
 	state: State
 	score: Score
 }
 
-export interface CardJokerEffectOptions extends JokerEffectOptions {
+export interface CardEffectOptions extends EffectOptions {
 	card: Card
 }
 
-export type JokerEffect = (this: Joker, options: JokerEffectOptions) => void
-export type CardJokerEffect = (this: Joker, options: CardJokerEffectOptions) => void
+export interface IndirectEffectOptions extends EffectOptions {
+	joker: Joker
+}
+
+export type Effect = (this: Joker, options: EffectOptions) => void
+export type CardEffect = (this: Joker, options: CardEffectOptions) => void
+export type IndirectEffect = (this: Joker, options: IndirectEffectOptions) => void
 
 export interface Probability {
 	numerator: number
@@ -93,9 +98,10 @@ export interface JokerDefinition {
 	hasRankInput?: boolean
 	hasSuitInput?: boolean
 
-	effect?: JokerEffect
-	cardEffect?: CardJokerEffect
-	heldCardEffect?: CardJokerEffect
+	effect?: Effect
+	indirectEffect?: IndirectEffect
+	cardEffect?: CardEffect
+	heldCardEffect?: CardEffect
 }
 
 export interface Joker {
@@ -113,9 +119,10 @@ export interface Joker {
 	rarity: 'common' | 'uncommon' | 'rare' | 'legendary'
 	probability?: Probability
 
-	effect: JokerEffect
-	cardEffect: CardJokerEffect
-	heldCardEffect: CardJokerEffect
+	effect: Effect
+	indirectEffect: IndirectEffect
+	cardEffect: CardEffect
+	heldCardEffect: CardEffect
 }
 
 export type HandLevel = { level: number, plays: number }
@@ -147,8 +154,6 @@ export interface State {
 	jokers: Joker[]
 	jokerSet: Set<JokerName>
 	jokerSlots: number
-	blueprintTarget: JokerName | undefined
-	brainstormTarget: JokerName | undefined
 	playedCards: Card[]
 	heldCards: Card[]
 	playedHand: HandName
