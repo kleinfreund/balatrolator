@@ -1,6 +1,6 @@
 import { calculateScore } from '#lib/balatro.js'
 import { JOKER_DEFINITIONS, JOKER_NAMES, RANKS, SUITS } from '#lib/data.js'
-import type { BlindName, Edition, Enhancement, HandName, InitialCard, InitialJoker, InitialState, JokerDefinition, JokerEdition, JokerName, Rank, Seal, Suit } from '#lib/types.js'
+import type { BlindName, DeckName, Edition, Enhancement, HandName, InitialCard, InitialJoker, InitialState, JokerDefinition, JokerEdition, JokerName, Rank, Seal, Suit } from '#lib/types.js'
 import { getRandomInt } from '#utilities/getRandomInt.js'
 import { log } from '#utilities/log.js'
 import { notNullish } from '#utilities/notNullish.js'
@@ -12,6 +12,7 @@ const handsEl = form.querySelector('[data-r-hands]') as HTMLInputElement
 const discardsEl = form.querySelector('[data-r-discards]') as HTMLInputElement
 const moneyEl = form.querySelector('[data-r-money]') as HTMLInputElement
 const blindEl = form.querySelector('[data-r-blind]') as HTMLInputElement
+const deckEl = form.querySelector('[data-r-deck]') as HTMLInputElement
 const jokerSlotsEl = form.querySelector('[data-r-joker-slots]') as HTMLInputElement
 
 const handsContainer = form.querySelector('[data-h-container]') as HTMLElement
@@ -255,6 +256,7 @@ function getInitialState (): InitialState {
 	const discards = Number(discardsEl.value)
 	const money = Number(moneyEl.value)
 	const blind = blindEl.value as BlindName
+	const deck = deckEl.value as DeckName
 	const jokerSlots = Number(jokerSlotsEl.value)
 
 	const initialState: Required<InitialState> = {
@@ -262,6 +264,7 @@ function getInitialState (): InitialState {
 		discards,
 		money,
 		blind,
+		deck,
 		handLevels: {},
 		jokers: [],
 		jokerSlots,
@@ -345,6 +348,7 @@ function setInitialState (initialState: InitialState) {
 		discards = 0,
 		money = 0,
 		blind = 'Small Blind',
+		deck = 'Red Deck',
 		handLevels = {},
 		jokers = [],
 		jokerSlots = 5,
@@ -356,6 +360,7 @@ function setInitialState (initialState: InitialState) {
 	discardsEl.value = String(discards)
 	moneyEl.value = String(money)
 	blindEl.value = blind
+	deckEl.value = deck
 	jokerSlotsEl.value = String(jokerSlots)
 
 	for (const hand of handsContainer.children) {
