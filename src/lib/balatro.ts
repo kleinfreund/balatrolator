@@ -1,10 +1,10 @@
 import { RANK_TO_CHIP_MAP, DEFAULT_HAND_SCORE_SETS, PLANET_SCORE_SETS, JOKER_DEFINITIONS, MODIFIER_DEFAULTS } from '#lib/data.js'
 import { getHand } from '#lib/getHand.js'
-import type { Card, CardEffect, HandLevel, HandLevels, HandName, HandScore, InitialCard, InitialHandLevels, InitialJoker, InitialState, Joker, Effect, Result, Score, State, IndirectEffect } from '#lib/types.js'
+import type { Card, CardEffect, HandLevel, HandLevels, HandName, HandScore, InitialCard, InitialHandLevels, InitialJoker, InitialState, Joker, JokerCardEffect, JokerEffect, JokerIndirectEffect, Result, Score, State } from '#lib/types.js'
 import { formatScore } from '#utilities/formatScore.js'
-import { isFaceCard } from '#utilities/isFaceCard.js'
-import { isRank } from '#/utilities/isRank.js'
 import { log, logGroup, logGroupEnd } from '#utilities/log.js'
+import { isFaceCard } from '../utilities/isFaceCard.js'
+import { isRank } from '../utilities/isRank.js'
 import { notNullish } from '../utilities/notNullish.js'
 
 export function calculateScore (initialState: InitialState): Result {
@@ -75,108 +75,58 @@ function getScore (state: State): Score {
 	return score
 }
 
-function scoreScoringCard (state: State, card: Card, score: Score): Score {
+function scoreScoringCard (state: State, card: Card, score: Score) {
 	// 1.0. Debuffed cards don't participate in scoring period
 	if (card.isDebuffed) {
-		logGroupEnd('!!! Debuffed !!!')
-		return score
+		log('!!! Debuffed !!!')
+		return
 	}
 
-	let numberOfTriggers = 1
-	if (state.jokerSet.has('Seltzer')) numberOfTriggers++
-	if (state.jokerSet.has('Sock and Buskin') && isFaceCard({ state, card })) numberOfTriggers++
-	if (state.jokerSet.has('Hanging Chad') && card.index === 0) numberOfTriggers++
-	if (state.jokerSet.has('Hack') && isRank({ card }, ['2', '3', '4', '5'])) numberOfTriggers++
-	if (card.seal === 'red') numberOfTriggers *= 2
+	let triggers = 1
 
-	for (let trigger = 0; trigger < numberOfTriggers; trigger++) {
+	const seltzers = state.jokers.filter(({ name }) => name === 'Seltzer')
+	triggers += seltzers.length
+
+	const sockAndBuskins = state.jokers.filter(({ name }) => name === 'Sock and Buskin')
+	if (isFaceCard({ state, card })) triggers += sockAndBuskins.length
+
+	if (state.jokerSet.has('Hanging Chad') && card.index === 0) triggers++
+
+	const hacks = state.jokers.filter(({ name }) => name === 'Hack')
+	if (isRank({ card }, ['2', '3', '4', '5'])) triggers += hacks.length
+
+	if (card.seal === 'red') triggers++
+
+	for (let trigger = 0; trigger < triggers; trigger++) {
 		log(`Trigger: ${trigger + 1} Score:`, score)
-
-		// 1.1. +Chips
-		if (card.enhancement !== 'stone') {
-			score.chips += RANK_TO_CHIP_MAP[card.rank]
-			log(score, '(+Chips from rank)')
-		}
-
-		const { plusChips: plusChipsEnhancement } = MODIFIER_DEFAULTS.enhancement[card.enhancement]
-		if (plusChipsEnhancement) {
-			score.chips += plusChipsEnhancement
-			log(score, '(+Chips from enhancement)')
-		}
-
-		const { plusChips: plusChipsEdition } = MODIFIER_DEFAULTS.edition[card.edition]
-		if (plusChipsEdition) {
-			score.chips += plusChipsEdition
-			log(score, '(+Chips from edition)')
-		}
-
-		// 1.2. +Mult
-		const { plusMultiplier: plusMultiplierEnhancement } = MODIFIER_DEFAULTS.enhancement[card.enhancement]
-		if (plusMultiplierEnhancement) {
-			score.multiplier += plusMultiplierEnhancement
-			log(score, '(+Mult from enhancement)')
-		}
-
-		const { plusMultiplier: plusMultiplierEdition } = MODIFIER_DEFAULTS.edition[card.edition]
-		if (plusMultiplierEdition) {
-			score.multiplier += plusMultiplierEdition
-			log(score, '(+Mult from edition)')
-		}
-
-		// 1.3. xMult
-		const { timesMultiplier: timesMultiplierEnhancement } = MODIFIER_DEFAULTS.enhancement[card.enhancement]
-		if (timesMultiplierEnhancement) {
-			score.multiplier *= timesMultiplierEnhancement
-			log(score, '(xMult from enhancement)')
-		}
-
-		const { timesMultiplier: timesMultiplierEdition } = MODIFIER_DEFAULTS.edition[card.edition]
-		if (timesMultiplierEdition) {
-			score.multiplier *= timesMultiplierEdition
-			log(score, '(xMult from edition)')
-		}
-
-		// 1.4. Jokers
-		for (const joker of state.jokers) {
-			joker.cardEffect({ state, score, card })
-			log(score, `(${joker})`)
-		}
+		card.playedEffect({ state, score })
 	}
-
-	return score
 }
 
-function scoreHeldCard (state: State, card: Card, score: Score): Score {
+function scoreHeldCard (state: State, card: Card, score: Score) {
 	// 2.0. Debuffed cards don't participate in scoring period
 	if (card.isDebuffed) {
-		logGroupEnd('!!! Debuffed !!!')
-		return score
+		log('!!! Debuffed !!!')
+		return
 	}
 
-	let numberOfTriggers = 1
-	if (state.jokerSet.has('Seltzer')) numberOfTriggers++
-	if (state.jokerSet.has('Sock and Buskin') && isFaceCard({ state, card })) numberOfTriggers++
-	if (state.jokerSet.has('Mime')) numberOfTriggers++
-	if (card.seal === 'red') numberOfTriggers *= 2
+	let triggers = 1
 
-	for (let trigger = 0; trigger < numberOfTriggers; trigger++) {
+	const seltzers = state.jokers.filter(({ name }) => name === 'Seltzer')
+	triggers += seltzers.length
+
+	const sockAndBuskins = state.jokers.filter(({ name }) => name === 'Sock and Buskin')
+	if (isFaceCard({ state, card })) triggers += sockAndBuskins.length
+
+	const mimes = state.jokers.filter(({ name }) => name === 'Mime')
+	triggers += mimes.length
+
+	if (card.seal === 'red') triggers++
+
+	for (let trigger = 0; trigger < triggers; trigger++) {
 		log(`Trigger: ${trigger + 1} Score:`, score)
-
-		// TODO: Almost certain this is a bug. Held cards don't score enhancements *except* for steel cards (possibly with red seal). So this needs to be locked down more precisely.
-		const { timesMultiplier: timesMultiplierEnhancement } = MODIFIER_DEFAULTS.enhancement[card.enhancement]
-		if (timesMultiplierEnhancement) {
-			score.multiplier *= timesMultiplierEnhancement
-			log(score, '(xMult from enhancement)')
-		}
-
-		for (const joker of state.jokers) {
-			// TODO: This is probably a bug. There are no +Mult effects from Jokers applying to held cards that I can think of. E.g. glass cards held in hand don't score.
-			joker.heldCardEffect({ state, score, card })
-			log(score, `(${joker})`)
-		}
+		card.heldEffect({ state, score })
 	}
-
-	return score
 }
 
 function scoreJoker (state: State, joker: Joker, score: Score): Score {
@@ -291,10 +241,10 @@ function getJokers (initialJokers: InitialJoker[]): Joker[] {
 
 		const definition = JOKER_DEFINITIONS[initialJoker.name]
 
-		const effect = createEffect(definition.effect)
-		const indirectEffect = createIndirectEffect(definition.indirectEffect)
-		const cardEffect = createCardEffect(definition.cardEffect)
-		const heldCardEffect = createCardEffect(definition.heldCardEffect)
+		const effect = createJokerEffect(definition.effect)
+		const indirectEffect = createJokerIndirectEffect(definition.indirectEffect)
+		const playedCardEffect = createPlayedCardEffect(definition.playedCardEffect)
+		const heldCardEffect = createPlayedCardEffect(definition.heldCardEffect)
 
 		const {
 			rarity,
@@ -307,7 +257,7 @@ function getJokers (initialJokers: InitialJoker[]): Joker[] {
 			probability,
 			effect,
 			indirectEffect,
-			cardEffect,
+			playedCardEffect,
 			heldCardEffect,
 			toString,
 			index,
@@ -320,11 +270,7 @@ function getJokers (initialJokers: InitialJoker[]): Joker[] {
 	})
 }
 
-// When scoring Mime:
-// 1. Blueprint triggers Baseball Card effect
-// 2. Baseball Card effect triggers
-
-function createEffect (effect?: Effect): Effect {
+function createJokerEffect (effect?: JokerEffect): JokerEffect {
 	return function (options) {
 		let triggers = 1
 
@@ -371,7 +317,7 @@ function createEffect (effect?: Effect): Effect {
 	}
 }
 
-function createIndirectEffect (effect?: IndirectEffect): IndirectEffect {
+function createJokerIndirectEffect (effect?: JokerIndirectEffect): JokerIndirectEffect {
 	return function (options) {
 		if (effect) {
 			effect.call(this, options)
@@ -379,8 +325,9 @@ function createIndirectEffect (effect?: IndirectEffect): IndirectEffect {
 	}
 }
 
-function createCardEffect (effect?: CardEffect): CardEffect {
+function createPlayedCardEffect (effect?: JokerCardEffect): JokerCardEffect {
 	return function (options) {
+		logGroup(`→ ${this}`)
 		let triggers = 1
 
 		// Increase triggers from Blueprint
@@ -404,12 +351,13 @@ function createCardEffect (effect?: CardEffect): CardEffect {
 		}
 
 		for (let trigger = 0; trigger < triggers; trigger++) {
-			log(`Trigger: ${trigger + 1} Score:`, options.score)
 			if (effect) {
+				log(`Trigger: ${trigger + 1} Score:`, options.score)
 				effect.call(this, options)
 				log(options.score, `(${this.name})`)
 			}
 		}
+		logGroupEnd('←', options.score)
 	}
 }
 
@@ -426,6 +374,9 @@ export function getCards (cards: InitialCard[]): Card[] {
 		const toString = () => `${card.rank} of ${card.suit}`
 			+ (modifiers.length > 0 ? ` (${modifiers.join(', ')})` : '')
 
+		const playedEffect = createPlayedEffect()
+		const heldEffect = createHeldEffect()
+
 		return {
 			...card,
 			toString,
@@ -434,6 +385,78 @@ export function getCards (cards: InitialCard[]): Card[] {
 			enhancement,
 			seal,
 			isDebuffed,
+			playedEffect,
+			heldEffect,
 		}
 	})
+}
+
+function createPlayedEffect (): CardEffect {
+	return function ({ state, score }) {
+		// 1. +Chips
+		if (this.enhancement !== 'stone') {
+			score.chips += RANK_TO_CHIP_MAP[this.rank]
+			log(score, '(+Chips from rank)')
+		}
+
+		const { plusChips: plusChipsEnhancement } = MODIFIER_DEFAULTS.enhancement[this.enhancement]
+		if (plusChipsEnhancement) {
+			score.chips += plusChipsEnhancement
+			log(score, '(+Chips from enhancement)')
+		}
+
+		const { plusChips: plusChipsEdition } = MODIFIER_DEFAULTS.edition[this.edition]
+		if (plusChipsEdition) {
+			score.chips += plusChipsEdition
+			log(score, '(+Chips from edition)')
+		}
+
+		// 2. +Mult
+		const { plusMultiplier: plusMultiplierEnhancement } = MODIFIER_DEFAULTS.enhancement[this.enhancement]
+		if (plusMultiplierEnhancement) {
+			score.multiplier += plusMultiplierEnhancement
+			log(score, '(+Mult from enhancement)')
+		}
+
+		const { plusMultiplier: plusMultiplierEdition } = MODIFIER_DEFAULTS.edition[this.edition]
+		if (plusMultiplierEdition) {
+			score.multiplier += plusMultiplierEdition
+			log(score, '(+Mult from edition)')
+		}
+
+		// 3. xMult
+		const { timesMultiplier: timesMultiplierEnhancement } = MODIFIER_DEFAULTS.enhancement[this.enhancement]
+		if (timesMultiplierEnhancement) {
+			score.multiplier *= timesMultiplierEnhancement
+			log(score, '(xMult from enhancement)')
+		}
+
+		const { timesMultiplier: timesMultiplierEdition } = MODIFIER_DEFAULTS.edition[this.edition]
+		if (timesMultiplierEdition) {
+			score.multiplier *= timesMultiplierEdition
+			log(score, '(xMult from edition)')
+		}
+
+		// 4. Jokers
+		for (const joker of state.jokers) {
+			joker.playedCardEffect({ state, score, card: this })
+		}
+	}
+}
+
+function createHeldEffect (): CardEffect {
+	return function ({ state, score }) {
+		// TODO: Almost certain this is a bug. Held cards don't score enhancements *except* for steel cards (possibly with red seal). So this needs to be locked down more precisely.
+		const { timesMultiplier: timesMultiplierEnhancement } = MODIFIER_DEFAULTS.enhancement[this.enhancement]
+		if (timesMultiplierEnhancement) {
+			score.multiplier *= timesMultiplierEnhancement
+			log(score, '(xMult from enhancement)')
+		}
+
+		for (const joker of state.jokers) {
+			// TODO: This is probably a bug. There are no +Mult effects from Jokers applying to held cards that I can think of. E.g. glass cards held in hand don't score.
+			joker.heldCardEffect({ state, score, card: this })
+			log(score, `(${joker})`)
+		}
+	}
 }

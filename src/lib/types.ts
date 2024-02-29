@@ -49,9 +49,13 @@ export interface InitialCard {
 	isDebuffed?: boolean
 }
 
+export type CardEffect = (this: Card, options: EffectOptions) => void
+
 export interface Card extends Required<InitialCard> {
 	toString(): string
 	index: number
+	playedEffect: CardEffect
+	heldEffect: CardEffect
 }
 
 export interface EffectOptions {
@@ -67,9 +71,9 @@ export interface IndirectEffectOptions extends EffectOptions {
 	joker: Joker
 }
 
-export type Effect = (this: Joker, options: EffectOptions) => void
-export type CardEffect = (this: Joker, options: CardEffectOptions) => void
-export type IndirectEffect = (this: Joker, options: IndirectEffectOptions) => void
+export type JokerEffect = (this: Joker, options: EffectOptions) => void
+export type JokerCardEffect = (this: Joker, options: CardEffectOptions) => void
+export type JokerIndirectEffect = (this: Joker, options: IndirectEffectOptions) => void
 
 export interface Probability {
 	numerator: number
@@ -98,10 +102,10 @@ export interface JokerDefinition {
 	hasRankInput?: boolean
 	hasSuitInput?: boolean
 
-	effect?: Effect
-	indirectEffect?: IndirectEffect
-	cardEffect?: CardEffect
-	heldCardEffect?: CardEffect
+	effect?: JokerEffect
+	indirectEffect?: JokerIndirectEffect
+	playedCardEffect?: JokerCardEffect
+	heldCardEffect?: JokerCardEffect
 }
 
 export interface Joker {
@@ -119,10 +123,10 @@ export interface Joker {
 	rarity: 'common' | 'uncommon' | 'rare' | 'legendary'
 	probability?: Probability
 
-	effect: Effect
-	indirectEffect: IndirectEffect
-	cardEffect: CardEffect
-	heldCardEffect: CardEffect
+	effect: JokerEffect
+	indirectEffect: JokerIndirectEffect
+	playedCardEffect: JokerCardEffect
+	heldCardEffect: JokerCardEffect
 }
 
 export type HandLevel = { level: number, plays: number }
