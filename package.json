@@ -28,6 +28,7 @@
 		"lint:code": "eslint --ext .ts .",
 		"lint:code:fix": "npm run lint:code -- --fix",
 		"lint:lockfile": "lockfile-lint --path package-lock.json --validate-hosts --allowed-hosts npm",
+		"build": "vite build",
 		"prepare": "husky install"
 	},
 	"devDependencies": {
