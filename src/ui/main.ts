@@ -4,7 +4,7 @@ import type { BlindName, DeckName, Edition, Enhancement, HandName, InitialCard, 
 import { getRandomInt } from '#utilities/getRandomInt.js'
 import { log } from '#utilities/log.js'
 import { notNullish } from '#utilities/notNullish.js'
-import { Storage } from '#utilities/Storage.js'
+import { fetchState, saveState } from '#utilities/Storage.js'
 
 const form = document.querySelector('[data-form]') as HTMLFormElement
 
@@ -39,7 +39,7 @@ function start () {
 		let numberOfCards = 5
 		while (numberOfCards--) addRandomCard()
 	} else {
-		const initialState = Storage.get('initialState')
+		const initialState = fetchState('initialState')
 		if (initialState) {
 			// setInitialState(JSON.parse(initialState))
 			// For testing
@@ -173,7 +173,6 @@ function handleJokerNameChange (event: Event) {
 }
 
 function applyJokerState (jokerEl: HTMLElement, definition: JokerDefinition) {
-	console.log(jokerEl)
 	jokerEl.classList.remove(
 		'--has-plus-chips',
 		'--has-plus-multiplier',
@@ -244,7 +243,7 @@ function handleSubmit (event: SubmitEvent) {
 	event.preventDefault()
 
 	const initialState = getInitialState()
-	Storage.set('initialState', JSON.stringify(initialState))
+	saveState('initialState', initialState)
 
 	const score = calculateScore(initialState)
 	log(score)
