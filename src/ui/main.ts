@@ -28,53 +28,18 @@ const cardTemplate = document.querySelector('template#card') as HTMLTemplateElem
 form.addEventListener('submit', handleSubmit)
 addJokerButton.addEventListener('click', () => addJoker())
 addCardButton.addEventListener('click', () => addCard())
+window.addEventListener('popstate', () => {
+	populateUiWithState()
+})
 
-start()
+if (import.meta.env.VITE_DEBUG === 'true') {
+	let numberOfJokers = 3
+	while (numberOfJokers--) addRandomJoker()
 
-function start () {
-	if (import.meta.env.VITE_DEBUG === 'true') {
-		let numberOfJokers = 3
-		while (numberOfJokers--) addRandomJoker()
-
-		let numberOfCards = 5
-		while (numberOfCards--) addRandomCard()
-	} else {
-		const initialState = fetchState('initialState')
-		if (initialState) {
-			// setInitialState(JSON.parse(initialState))
-			// For testing
-			setInitialState({
-				blind: 'Big Blind',
-				playedCards: [
-					{ rank: 'Ace', suit: 'Diamonds', seal: 'red' },
-					{ rank: 'Ace', suit: 'Diamonds', enhancement: 'glass', seal: 'red' },
-					{ rank: 'Ace', suit: 'Diamonds', enhancement: 'glass', seal: 'red' },
-					{ rank: 'Ace', suit: 'Diamonds', enhancement: 'glass', seal: 'red' },
-					{ rank: 'Ace', suit: 'Diamonds', enhancement: 'glass', seal: 'red' },
-				],
-				heldCards: [
-					{ rank: 'Ace', suit: 'Diamonds', enhancement: 'mult' },
-					{ rank: 'Ace', suit: 'Diamonds', enhancement: 'steel', seal: 'red' },
-					{ rank: 'Ace', suit: 'Diamonds', enhancement: 'steel', seal: 'red' },
-					{ rank: 'Ace', suit: 'Diamonds', seal: 'red' },
-				],
-				jokers: [
-					{ name: 'DNA' },
-					{ name: 'Blueprint' },
-					{ name: 'The Idol', rank: 'Ace', suit: 'Diamonds' },
-					{ name: 'Hologram', timesMultiplier: 12.25 },
-					{ name: 'The Family' },
-					{ name: 'Glass Joker', timesMultiplier: 5.5 },
-				],
-				handLevels: {
-					'Flush Five': {
-						level: 11,
-						plays: 0,
-					},
-				},
-			})
-		}
-	}
+	let numberOfCards = 5
+	while (numberOfCards--) addRandomCard()
+} else {
+	populateUiWithState()
 }
 
 function addRandomJoker () {
@@ -94,6 +59,170 @@ function addRandomCard () {
 		rank,
 		suit,
 	}, isPlayed)
+}
+
+function handleSubmit (event: SubmitEvent) {
+	event.preventDefault()
+
+	const initialState = readStateFromUi()
+	saveState('state', initialState)
+	const score = calculateScore(initialState)
+	log(score)
+	document.querySelector('textarea')!.textContent = JSON.stringify(score, null, 2)
+}
+
+/**
+ * Assembles an `InitialState` object from the various form elements in the UI.
+ *
+ * Inverse operation of `populateUiWithState`
+ */
+function readStateFromUi (): InitialState {
+	const hands = Number(handsEl.value)
+	const discards = Number(discardsEl.value)
+	const money = Number(moneyEl.value)
+	const blind = blindEl.value as BlindName
+	const deck = deckEl.value as DeckName
+	const jokerSlots = Number(jokerSlotsEl.value)
+
+	const initialState: Required<InitialState> = {
+		hands,
+		discards,
+		money,
+		blind,
+		deck,
+		handLevels: {},
+		jokers: [],
+		jokerSlots,
+		playedCards: [],
+		heldCards: [],
+	}
+
+	for (const hand of handsContainer.children) {
+		const nameEl = hand.querySelector('[data-h-name]') as HTMLElement
+		const levelEl = hand.querySelector('[data-h-level]') as HTMLInputElement
+		const playsEl = hand.querySelector('[data-h-plays]') as HTMLInputElement
+
+		const name = nameEl.textContent as HandName
+		const level = Number(levelEl.value)
+		const plays = Number(playsEl.value)
+
+		initialState.handLevels[name] = { level, plays }
+	}
+
+	for (const joker of jokerContainer.children) {
+		const nameEl = joker.querySelector('[data-j-name]') as HTMLSelectElement
+		const editionEl = joker.querySelector('[data-j-edition]') as HTMLSelectElement
+		const plusChipsEl = joker.querySelector('[data-j-plus-chips]') as HTMLInputElement
+		const plusMultiplierEl = joker.querySelector('[data-j-plus-multiplier]') as HTMLInputElement
+		const timesMultiplierEl = joker.querySelector('[data-j-times-multiplier]') as HTMLInputElement
+		const rankEl = joker.querySelector('[data-j-rank]') as HTMLInputElement
+		const suitEl = joker.querySelector('[data-j-suit]') as HTMLInputElement
+		const isActiveEl = joker.querySelector('[data-j-is-active]') as HTMLInputElement
+
+		const name = nameEl.value as JokerName
+		const edition = editionEl.value as JokerEdition
+		const plusChips = Number(plusChipsEl.value)
+		const plusMultiplier = Number(plusMultiplierEl.value)
+		const timesMultiplier = Number(timesMultiplierEl.value)
+		const rank = rankEl.value as Rank
+		const suit = suitEl.value as Suit
+		const isActive = isActiveEl.checked
+
+		initialState.jokers.push({
+			name,
+			edition,
+			plusChips,
+			plusMultiplier,
+			timesMultiplier,
+			rank,
+			suit,
+			isActive,
+		})
+	}
+
+	for (const card of cardContainer.children) {
+		const rankEl = card.querySelector('[data-c-rank]') as HTMLInputElement
+		const suitEl = card.querySelector('[data-c-suit]') as HTMLInputElement
+		const editionEl = card.querySelector('[data-c-edition]') as HTMLSelectElement
+		const enhancementEl = card.querySelector('[data-c-enhancement]') as HTMLSelectElement
+		const sealEl = card.querySelector('[data-c-seal]') as HTMLSelectElement
+		const isPlayedEl = card.querySelector('[data-c-is-played]') as HTMLInputElement
+
+		const rank = rankEl.value as Rank
+		const suit = suitEl.value as Suit
+		const edition = editionEl.value as Edition
+		const enhancement = enhancementEl.value as Enhancement
+		const seal = sealEl.value as Seal
+		const isPlayed = isPlayedEl.checked
+
+		initialState[isPlayed ? 'playedCards' : 'heldCards'].push({
+			rank,
+			suit,
+			edition,
+			enhancement,
+			seal,
+		})
+	}
+
+	return initialState
+}
+
+/**
+ * Populates the UI using an `InitialState` object. Tries to retrieve this object from the URL or local storage.
+ */
+function populateUiWithState () {
+	const initialState = fetchState('initialState')
+	if (!initialState) {
+		return
+	}
+
+	saveState('state', initialState)
+
+	const {
+		hands = 0,
+		discards = 0,
+		money = 0,
+		blind = 'Small Blind',
+		deck = 'Red Deck',
+		handLevels = {},
+		jokers = [],
+		jokerSlots = 5,
+		playedCards = [],
+		heldCards = [],
+	} = initialState
+
+	handsEl.value = String(hands)
+	discardsEl.value = String(discards)
+	moneyEl.value = String(money)
+	blindEl.value = blind
+	deckEl.value = deck
+	jokerSlotsEl.value = String(jokerSlots)
+
+	for (const hand of handsContainer.children) {
+		const nameEl = hand.querySelector('[data-h-name]') as HTMLElement
+		const levelEl = hand.querySelector('[data-h-level]') as HTMLInputElement
+		const playsEl = hand.querySelector('[data-h-plays]') as HTMLInputElement
+
+		const name = nameEl.textContent as HandName
+		const { level, plays } = handLevels[name] ?? { level: 1, plays: 0 }
+
+		levelEl.value = String(level)
+		playsEl.value = String(plays)
+	}
+
+	jokerContainer.innerHTML = ''
+	for (const joker of jokers) {
+		addJoker(joker)
+	}
+
+	cardContainer.innerHTML = ''
+	for (const card of playedCards) {
+		addCard(card, true)
+	}
+
+	for (const card of heldCards) {
+		addCard(card, false)
+	}
 }
 
 function addJoker (initialJoker?: InitialJoker) {
@@ -236,153 +365,5 @@ function addCard (initialCard?: InitialCard, isPlayed?: boolean) {
 function handleRemoveCardClick (event: Event) {
 	if (event.currentTarget instanceof HTMLElement) {
 		event.currentTarget.closest('[data-card]')!.remove()
-	}
-}
-
-function handleSubmit (event: SubmitEvent) {
-	event.preventDefault()
-
-	const initialState = getInitialState()
-	saveState('initialState', initialState)
-
-	const score = calculateScore(initialState)
-	log(score)
-	document.querySelector('textarea')!.textContent = JSON.stringify(score, null, 2)
-}
-
-function getInitialState (): InitialState {
-	const hands = Number(handsEl.value)
-	const discards = Number(discardsEl.value)
-	const money = Number(moneyEl.value)
-	const blind = blindEl.value as BlindName
-	const deck = deckEl.value as DeckName
-	const jokerSlots = Number(jokerSlotsEl.value)
-
-	const initialState: Required<InitialState> = {
-		hands,
-		discards,
-		money,
-		blind,
-		deck,
-		handLevels: {},
-		jokers: [],
-		jokerSlots,
-		playedCards: [],
-		heldCards: [],
-	}
-
-	for (const hand of handsContainer.children) {
-		const nameEl = hand.querySelector('[data-h-name]') as HTMLElement
-		const levelEl = hand.querySelector('[data-h-level]') as HTMLInputElement
-		const playsEl = hand.querySelector('[data-h-plays]') as HTMLInputElement
-
-		const name = nameEl.textContent as HandName
-		const level = Number(levelEl.value)
-		const plays = Number(playsEl.value)
-
-		initialState.handLevels[name] = { level, plays }
-	}
-
-	for (const joker of jokerContainer.children) {
-		const nameEl = joker.querySelector('[data-j-name]') as HTMLSelectElement
-		const editionEl = joker.querySelector('[data-j-edition]') as HTMLSelectElement
-		const plusChipsEl = joker.querySelector('[data-j-plus-chips]') as HTMLInputElement
-		const plusMultiplierEl = joker.querySelector('[data-j-plus-multiplier]') as HTMLInputElement
-		const timesMultiplierEl = joker.querySelector('[data-j-times-multiplier]') as HTMLInputElement
-		const rankEl = joker.querySelector('[data-j-rank]') as HTMLInputElement
-		const suitEl = joker.querySelector('[data-j-suit]') as HTMLInputElement
-		const isActiveEl = joker.querySelector('[data-j-is-active]') as HTMLInputElement
-
-		const name = nameEl.value as JokerName
-		const edition = editionEl.value as JokerEdition
-		const plusChips = Number(plusChipsEl.value)
-		const plusMultiplier = Number(plusMultiplierEl.value)
-		const timesMultiplier = Number(timesMultiplierEl.value)
-		const rank = rankEl.value as Rank
-		const suit = suitEl.value as Suit
-		const isActive = isActiveEl.checked
-
-		initialState.jokers.push({
-			name,
-			edition,
-			plusChips,
-			plusMultiplier,
-			timesMultiplier,
-			rank,
-			suit,
-			isActive,
-		})
-	}
-
-	for (const card of cardContainer.children) {
-		const rankEl = card.querySelector('[data-c-rank]') as HTMLInputElement
-		const suitEl = card.querySelector('[data-c-suit]') as HTMLInputElement
-		const editionEl = card.querySelector('[data-c-edition]') as HTMLSelectElement
-		const enhancementEl = card.querySelector('[data-c-enhancement]') as HTMLSelectElement
-		const sealEl = card.querySelector('[data-c-seal]') as HTMLSelectElement
-		const isPlayedEl = card.querySelector('[data-c-is-played]') as HTMLInputElement
-
-		const rank = rankEl.value as Rank
-		const suit = suitEl.value as Suit
-		const edition = editionEl.value as Edition
-		const enhancement = enhancementEl.value as Enhancement
-		const seal = sealEl.value as Seal
-		const isPlayed = isPlayedEl.checked
-
-		initialState[isPlayed ? 'playedCards' : 'heldCards'].push({
-			rank,
-			suit,
-			edition,
-			enhancement,
-			seal,
-		})
-	}
-
-	return initialState
-}
-
-function setInitialState (initialState: InitialState) {
-	const {
-		hands = 0,
-		discards = 0,
-		money = 0,
-		blind = 'Small Blind',
-		deck = 'Red Deck',
-		handLevels = {},
-		jokers = [],
-		jokerSlots = 5,
-		playedCards = [],
-		heldCards = [],
-	} = initialState
-
-	handsEl.value = String(hands)
-	discardsEl.value = String(discards)
-	moneyEl.value = String(money)
-	blindEl.value = blind
-	deckEl.value = deck
-	jokerSlotsEl.value = String(jokerSlots)
-
-	for (const hand of handsContainer.children) {
-		const nameEl = hand.querySelector('[data-h-name]') as HTMLElement
-		const levelEl = hand.querySelector('[data-h-level]') as HTMLInputElement
-		const playsEl = hand.querySelector('[data-h-plays]') as HTMLInputElement
-
-		const name = nameEl.textContent as HandName
-		const { level, plays } = handLevels[name] ?? { level: 1, plays: 0 }
-
-		levelEl.value = String(level)
-		playsEl.value = String(plays)
-	}
-
-	for (const joker of jokers) {
-		addJoker(joker)
-	}
-
-	for (const card of playedCards) {
-		addCard(card, true)
-	}
-
-	for (const card of heldCards) {
-		addCard(card, false)
 	}
 }

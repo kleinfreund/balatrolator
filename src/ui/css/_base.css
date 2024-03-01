@@ -20,3 +20,7 @@ table:not(:first-child),
 figure:not(:first-child) {
 	margin-top: 0.5rem;
 }
+
+ul {
+	padding-left: 1rem;
+}

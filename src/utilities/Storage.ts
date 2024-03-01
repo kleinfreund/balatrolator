@@ -31,7 +31,7 @@ export function saveState (key: string, initialState: InitialState) {
 
 	const urlParams = new URLSearchParams(window.location.search)
 	urlParams.set(QUERY_PARAMETER, btoa(stringified))
-	window.history.replaceState({}, '', `?${urlParams.toString()}`)
+	window.history.pushState({}, '', `?${urlParams.toString()}`)
 
 	Storage.set(key, stringified)
 }

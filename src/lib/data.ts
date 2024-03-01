@@ -332,7 +332,7 @@ export const JOKER_DEFINITIONS: Record<JokerName, JokerDefinition> = {
 	'8 Ball': {
 		rarity: 'common',
 	},
-	'Misprint': { // TODO:
+	'Misprint': {
 		rarity: 'common',
 		effect ({ score }) {
 			score.multiplier += 0
