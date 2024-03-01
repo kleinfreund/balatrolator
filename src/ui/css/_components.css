@@ -24,6 +24,7 @@
 	display: flex;
 	align-items: stretch;
 	gap: 0.5rem;
+	flex-wrap: wrap;
 }
 
 .panel {
