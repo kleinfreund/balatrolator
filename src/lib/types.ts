@@ -25,7 +25,8 @@ export interface Score {
 
 export interface ModifierDefaults {
 	edition: Record<JokerEdition, Modifiers>
-	enhancement: Record<Enhancement, Modifiers>
+	playedEnhancement: Record<Enhancement, Modifiers>
+	heldEnhancement: Record<Enhancement, Modifiers>
 	seal: Record<Seal, Modifiers>
 }
 
@@ -49,13 +50,9 @@ export interface InitialCard {
 	isDebuffed?: boolean
 }
 
-export type CardEffect = (this: Card, options: EffectOptions) => void
-
 export interface Card extends Required<InitialCard> {
 	toString(): string
 	index: number
-	playedEffect: CardEffect
-	heldEffect: CardEffect
 }
 
 export interface EffectOptions {
@@ -103,6 +100,12 @@ export interface JokerDefinition {
 	hasSuitInput?: boolean
 
 	effect?: JokerEffect
+
+	/**
+	 * Joker effects triggered during the score calculation of _other_ Jokers
+	 *
+	 * **Example**: Baseball Card does **not** trigger when Baseball Card is scored but when the uncommon jokers it affects are scored.
+	 */
 	indirectEffect?: JokerIndirectEffect
 	playedCardEffect?: JokerCardEffect
 	heldCardEffect?: JokerCardEffect
@@ -124,7 +127,7 @@ export interface Joker {
 	probability?: Probability
 
 	effect: JokerEffect
-	indirectEffect: JokerIndirectEffect
+	indirectEffect?: JokerIndirectEffect
 	playedCardEffect: JokerCardEffect
 	heldCardEffect: JokerCardEffect
 }

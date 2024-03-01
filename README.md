@@ -22,8 +22,8 @@ I'm going to work on a graphical user interface allowing you to input all data n
 - **Sock and Busking**: Does it trigger on held cards? (probably yes)
 - **Dusk**: Implement. (I need to implement a better model that allows me to re-trigger card effects easily (specifically from the point of applying a general joker effect).)
 - **Splash**: What wins? Splash effect or debuffed? (probably debuffed)
-- **Card Sharp**:  Implement. I'll probably need to let people provide whether they played this hand before as input.
 - **Bloodstone**: Implement (needs probability model).
 - **Matador**: Rarity?
 - **Cartomancer**: Rarity?
 - **Pareidolia**: How do stone cards interact with Pareidolia? (probably they're treated as stone cards and not face cards)
+- **Hiker**: Implement (FML)

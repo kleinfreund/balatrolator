@@ -12,14 +12,25 @@ export const MODIFIER_DEFAULTS: ModifierDefaults = {
 		polychrome: { timesMultiplier: 1.5 },
 		negative: {},
 	},
-	enhancement: {
+	playedEnhancement: {
 		none: {},
 		bonus: { plusChips: 30 },
 		mult: { plusMultiplier: 4 },
 		wild: {},
 		glass: { timesMultiplier: 2 },
-		steel: { timesMultiplier: 1.5 },
+		steel: {},
 		stone: { plusChips: 50 },
+		gold: {},
+		lucky: {},
+	},
+	heldEnhancement: {
+		none: {},
+		bonus: {},
+		mult: {},
+		wild: {},
+		glass: {},
+		steel: { timesMultiplier: 1.5 },
+		stone: {},
 		gold: {},
 		lucky: {},
 	},
@@ -144,6 +155,19 @@ export const RANK_TO_INDEX_MAP: Record<Rank, number> = {
 	'2': 2,
 	'Ace': 1,
 }
+
+export const PLAYED_CARD_RETRIGGER_JOKER_NAMES: JokerName[] = [
+	'Seltzer',
+	'Sock and Buskin',
+	'Dusk',
+	'Hanging Chad',
+	'Hack',
+]
+export const HELD_CARD_RETRIGGER_JOKER_NAMES: JokerName[] = [
+	'Seltzer',
+	'Sock and Buskin',
+	'Mime',
+]
 
 export const JOKER_DEFINITIONS: Record<JokerName, JokerDefinition> = {
 	'Joker': {

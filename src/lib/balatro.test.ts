@@ -19,7 +19,9 @@ import case014 from './test-files/014.js'
 import case015 from './test-files/015.js'
 import case016 from './test-files/016.js'
 import case017 from './test-files/017.js'
-// import case018 from './test-files/018.js'
+import case018 from './test-files/018.js'
+import case019 from './test-files/019.js'
+import case020 from './test-files/020.js'
 
 type Expected = Omit<ReturnType<typeof calculateScore>, 'scoringCards'> & { scoringCards: InitialCard[] }
 
@@ -48,7 +50,9 @@ describe('calculateScore', () => {
 		case015('Flush Five 2'),
 		case016('Flush Five 3'),
 		case017('Flush Five (played by haelian on 2024-02-26 18:13 UTC)'),
-		// case018('Full House (played by haelian on 2024-02-28 20:54 UTC)'),
+		case018('Pair, 1x Blueprint, Sly Joker'),
+		case019('Pair, 2x Blueprint, Sly Joker'),
+		case020('Pair, 2x Blueprint, Sly Joker, Brainstorm'),
 	])('$message', ({ parameters, expected }) => {
 		expect(calculateScore(...parameters)).toMatchObject(expected)
 	})

@@ -13,7 +13,9 @@ export default (message: string): TestCase => {
 			],
 			jokers: [
 				{ name: 'Blueprint' },
+				{ name: 'Blueprint' },
 				{ name: 'Sly Joker' },
+				{ name: 'Brainstorm' },
 			],
 		}],
 		expected: {
@@ -22,8 +24,8 @@ export default (message: string): TestCase => {
 				{ rank: '7', suit: 'Spades' },
 				{ rank: '7', suit: 'Hearts', isDebuffed: true },
 			],
-			score: 234,
-			formattedScore: '234',
+			score: 434,
+			formattedScore: '434',
 		},
 	}
 }

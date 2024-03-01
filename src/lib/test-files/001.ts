@@ -5,17 +5,20 @@ export default (message: string): TestCase => {
 		message,
 		parameters: [{
 			playedCards: [
-				{ rank: 'King', suit: 'Hearts' },
+				{ rank: 'King', suit: 'Hearts', enhancement: 'steel' },
 				{ rank: 'King', suit: 'Clubs' },
 				{ rank: '7', suit: 'Clubs' },
 				{ rank: '7', suit: 'Diamonds' },
 				{ rank: '5', suit: 'Spades' },
 			],
+			heldCards: [
+				{ rank: '2', suit: 'Spades', enhancement: 'glass' },
+			],
 		}],
 		expected: {
 			hand: 'Two Pair',
 			scoringCards: [
-				{ rank: 'King', suit: 'Hearts' },
+				{ rank: 'King', suit: 'Hearts', enhancement: 'steel' },
 				{ rank: 'King', suit: 'Clubs' },
 				{ rank: '7', suit: 'Clubs' },
 				{ rank: '7', suit: 'Diamonds' },
