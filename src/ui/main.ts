@@ -252,6 +252,10 @@ function addJoker (initialJoker?: InitialJoker) {
 	nameInput.addEventListener('change', handleJokerNameChange)
 	const removeButton = jokerEl.querySelector('[data-j-remove-button]') as HTMLButtonElement
 	removeButton.addEventListener('click', handleRemoveJokerClick)
+	const moveLeftButton = jokerEl.querySelector('[data-j-move-left-button]') as HTMLButtonElement
+	moveLeftButton.addEventListener('click', handleMoveJokerLeftClick)
+	const moveRightButton = jokerEl.querySelector('[data-j-move-right-button]') as HTMLButtonElement
+	moveRightButton.addEventListener('click', handleMoveJokerRightClick)
 
 	if (initialJoker) {
 		const {
@@ -291,6 +295,47 @@ function handleRemoveJokerClick (event: Event) {
 		event.currentTarget.closest('[data-joker]')!.remove()
 	}
 }
+
+function handleMoveJokerLeftClick (event: Event) {
+	if (event.currentTarget instanceof HTMLElement) {
+		move(jokerContainer, event.currentTarget.closest('[data-joker]')!, -1)
+	}
+}
+
+function handleMoveJokerRightClick (event: Event) {
+	if (event.currentTarget instanceof HTMLElement) {
+		move(jokerContainer, event.currentTarget.closest('[data-joker]')!, 1)
+	}
+}
+
+function handleMoveCardLeftClick (event: Event) {
+	if (event.currentTarget instanceof HTMLElement) {
+		move(cardContainer, event.currentTarget.closest('[data-card]')!, -1)
+	}
+}
+
+function handleMoveCardRightClick (event: Event) {
+	if (event.currentTarget instanceof HTMLElement) {
+		move(cardContainer, event.currentTarget.closest('[data-card]')!, 1)
+	}
+}
+
+function move (container: Element, el: Element, direction: 1 | -1) {
+	const index = Array.from(container.children).findIndex((el) => el === el)
+
+	if (direction === -1 ? index === 0 : index === (container.children.length - 1)) {
+		return
+	}
+
+	const otherEl = container.children[index + direction]!
+
+	if (direction === -1) {
+		container.insertBefore(el, otherEl)
+	} else {
+		container.insertBefore(otherEl, el)
+	}
+}
+
 
 function handleJokerNameChange (event: Event) {
 	const input = event.currentTarget as HTMLInputElement
@@ -341,6 +386,10 @@ function addCard (initialCard?: InitialCard, isPlayed?: boolean) {
 
 	const removeButton = cardEl.querySelector('[data-c-remove-button]') as HTMLButtonElement
 	removeButton.addEventListener('click', handleRemoveCardClick)
+	const moveLeftButton = cardEl.querySelector('[data-c-move-left-button]') as HTMLButtonElement
+	moveLeftButton.addEventListener('click', handleMoveCardLeftClick)
+	const moveRightButton = cardEl.querySelector('[data-c-move-right-button]') as HTMLButtonElement
+	moveRightButton.addEventListener('click', handleMoveCardRightClick)
 
 	if (initialCard) {
 		const {

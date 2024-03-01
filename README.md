@@ -14,6 +14,7 @@ I'm going to work on a graphical user interface allowing you to input all data n
 
 - How to model cards with probablities? Always return two scores if probabilities are at play?
 - Implement blind effects (e.g. Which suit is debuffed? Are base chips and multipliers halved?)
+- UI: Drag'n'drop jokers & cards.
 
 ### Jokers
 
