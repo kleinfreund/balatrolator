@@ -29,9 +29,9 @@ export function fetchState (key: string): InitialState | null {
 export function saveState (key: string, initialState: InitialState) {
 	const stringified = JSON.stringify(initialState)
 
-	const urlParams = new URLSearchParams()
+	const urlParams = new URLSearchParams(window.location.search)
 	urlParams.set(QUERY_PARAMETER, btoa(stringified))
-	window.location.search = urlParams.toString()
+	window.history.replaceState({}, '', `?${urlParams.toString()}`)
 
 	Storage.set(key, stringified)
 }
