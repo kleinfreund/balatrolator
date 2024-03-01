@@ -68,6 +68,7 @@ function handleSubmit (event: SubmitEvent) {
 	saveState('state', initialState)
 	const score = calculateScore(initialState)
 	log(score)
+	document.querySelector('[data-score]')!.textContent = score.formattedScore
 	document.querySelector('textarea')!.textContent = JSON.stringify(score, null, 2)
 }
 
