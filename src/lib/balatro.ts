@@ -7,6 +7,7 @@ import { isFaceCard } from '#utilities/isFaceCard.js'
 import { isRank } from '#utilities/isRank.js'
 import { notNullish } from '#utilities/notNullish.js'
 import { resolveJoker } from '#utilities/resolveJokers.js'
+import { isDebuffed } from '#utilities/isDebuffed.js'
 
 export function calculateScore (initialState: InitialState): Result {
 	const state = getState(initialState)
@@ -42,7 +43,7 @@ function getScore (state: State): Score {
 	log('\n0. Determining base score …')
 	// The Flint halves the base chips and multiplier.
 	// The base score seems to be rounded here.
-	const baseFactor = (state.blind === 'The Flint' ? 0.5 : 1)
+	const baseFactor = (state.blind.name === 'The Flint' && state.blind.isActive ? 0.5 : 1)
 	const score: Score = {
 		chips: Math.round(baseChips * baseFactor),
 		multiplier: Math.round(baseMultiplier * baseFactor),
@@ -54,7 +55,7 @@ function getScore (state: State): Score {
 		logGroup(`\n→ ${card}`, score)
 
 		// Debuffed cards don't participate in scoring at all.
-		if (card.isDebuffed) {
+		if (isDebuffed({ state, card })) {
 			logGroupEnd('!!! Debuffed !!!')
 			continue
 		}
@@ -74,7 +75,7 @@ function getScore (state: State): Score {
 		logGroup(`\n→ ${card}`, score)
 
 		// Debuffed cards don't participate in scoring at all.
-		if (card.isDebuffed) {
+		if (isDebuffed({ state, card })) {
 			logGroupEnd('!!! Debuffed !!!')
 			continue
 		}
@@ -232,7 +233,7 @@ export function getState (initialState: InitialState): State {
 		hands = 0,
 		discards = 0,
 		money = 0,
-		blind = 'Small Blind',
+		blind: initialBlind,
 		deck = 'Red Deck',
 		handLevels: initialHandLevels = {},
 		jokers: initialJokers = [],
@@ -241,6 +242,10 @@ export function getState (initialState: InitialState): State {
 		heldCards: initialHeldCards = [],
 	} = initialState
 
+	const blind = {
+		name: initialBlind?.name ?? 'Small Blind',
+		isActive: initialBlind?.isActive ?? true,
+	}
 	const handLevels = getHandLevels(initialHandLevels)
 	const handBaseScores = getHandBaseScores(handLevels)
 	const jokers = getJokers(initialJokers)

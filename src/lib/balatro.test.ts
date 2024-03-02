@@ -25,6 +25,8 @@ import case020 from './test-files/020.js'
 import case021 from './test-files/021.js'
 import case022 from './test-files/022.js'
 import case023 from './test-files/023.js'
+import case024 from './test-files/024.js'
+import case025 from './test-files/025.js'
 
 type Expected = Omit<ReturnType<typeof calculateScore>, 'scoringCards'> & { scoringCards: InitialCard[] }
 
@@ -59,6 +61,8 @@ describe('calculateScore', () => {
 		case021('Four of a Kind'),
 		case022('Four of a Kind, Flowerpot'),
 		case023('Four of a Kind, Flowerpot, Wild card'),
+		case024('Pair, inactive Verdant Leaf'),
+		case025('Pair, active Verdant Leaf'),
 	])('$message', ({ parameters, expected }) => {
 		expect(calculateScore(...parameters)).toMatchObject(expected)
 	})

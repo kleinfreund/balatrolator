@@ -1,4 +1,4 @@
-export type BlindName = 'Small Blind' | 'Big Blind' | 'The Hook' | 'The Ox' | 'The House' | 'The Wall' | 'The Wheel' | 'The Arm' | 'The Club' | 'The Fish' | 'The Psychic' | 'The Goad' | 'The Water' | 'The Window' | 'The Manacle' | 'The Eye' | 'The Mouth' | 'The Plant' | 'The Serpent' | 'The Pillar' | 'The Needle' | 'The Head' | 'The Tooth' | 'The Flint' | 'The Mark' | 'Amber Acorn' | 'Unknown One' | 'Violet Vessel' | 'Unknown Two' | 'Cerulean Bell'
+export type BlindName = 'Small Blind' | 'Big Blind' | 'The Hook' | 'The Ox' | 'The House' | 'The Wall' | 'The Wheel' | 'The Arm' | 'The Club' | 'The Fish' | 'The Psychic' | 'The Goad' | 'The Water' | 'The Window' | 'The Manacle' | 'The Eye' | 'The Mouth' | 'The Plant' | 'The Serpent' | 'The Pillar' | 'The Needle' | 'The Head' | 'The Tooth' | 'The Flint' | 'The Mark' | 'Amber Acorn' | 'Verdant Leaf' | 'Violet Vessel' | 'Crimson Heart' | 'Cerulean Bell'
 
 export type DeckName = 'Red Deck' | 'Blue Deck' | 'Yellow Deck' | 'Green Deck' | 'Black Deck' | 'Magic Deck' | 'Nebula Deck' | 'Ghost Deck' | 'Abandoned Deck' | 'Checkered Deck' | 'Zodiac Deck' | 'Painted Deck' | 'Anaglyph Deck' | 'Plasma Deck' | 'Erratic Deck' | 'Challenge Deck'
 
@@ -38,7 +38,7 @@ export interface Modifier {
 
 export interface Blind {
 	reward: number
-	multFactor: number
+	baseMultiplier: number
 }
 
 export interface InitialCard {
@@ -141,7 +141,10 @@ export type InitialState = {
 	hands?: number
 	discards?: number
 	money?: number
-	blind?: BlindName
+	blind?: {
+		name?: BlindName
+		isActive?: boolean
+	}
 	deck?: DeckName
 	handLevels?: InitialHandLevels
 	jokers?: InitialJoker[]
@@ -154,7 +157,10 @@ export interface State {
 	hands: number
 	discards: number
 	money: number
-	blind: BlindName
+	blind: {
+		name: BlindName
+		isActive: boolean
+	}
 	deck: DeckName
 	handLevels: HandLevels
 	handBaseScores: HandScore
