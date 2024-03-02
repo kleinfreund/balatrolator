@@ -949,7 +949,7 @@ export const JOKER_DEFINITIONS: Record<JokerName, JokerDefinition> = {
 	},
 	'Shoot the Moon': {
 		rarity: 'common',
-		playedCardEffect ({ score, card }) {
+		heldCardEffect ({ score, card }) {
 			score.multiplier += (card.rank === 'Queen' ? 13 : 0)
 		},
 	},
