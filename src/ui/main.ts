@@ -126,23 +126,23 @@ function readStateFromUi (): InitialState {
 	}
 
 	for (const joker of jokerContainer.children) {
-		const nameEl = joker.querySelector('[data-j-name]') as HTMLSelectElement
-		const editionEl = joker.querySelector('[data-j-edition]') as HTMLSelectElement
-		const plusChipsEl = joker.querySelector('[data-j-plus-chips]') as HTMLInputElement
-		const plusMultiplierEl = joker.querySelector('[data-j-plus-multiplier]') as HTMLInputElement
-		const timesMultiplierEl = joker.querySelector('[data-j-times-multiplier]') as HTMLInputElement
-		const rankEl = joker.querySelector('[data-j-rank]') as HTMLSelectElement
-		const suitEl = joker.querySelector('[data-j-suit]') as HTMLSelectElement
-		const isActiveEl = joker.querySelector('[data-j-is-active]') as HTMLInputElement
+		const nameSelect = joker.querySelector('[data-j-name]') as HTMLSelectElement
+		const editionSelect = joker.querySelector('[data-j-edition]') as HTMLSelectElement
+		const plusChipsInput = joker.querySelector('[data-j-plus-chips]') as HTMLInputElement
+		const plusMultiplierInput = joker.querySelector('[data-j-plus-multiplier]') as HTMLInputElement
+		const timesMultiplierInput = joker.querySelector('[data-j-times-multiplier]') as HTMLInputElement
+		const rankSelect = joker.querySelector('[data-j-rank]') as HTMLSelectElement
+		const suitSelect = joker.querySelector('[data-j-suit]') as HTMLSelectElement
+		const isActiveCheckbox = joker.querySelector('[data-j-is-active]') as HTMLInputElement
 
-		const name = nameEl.value as JokerName
-		const edition = editionEl.value as JokerEdition
-		const plusChips = Number(plusChipsEl.value)
-		const plusMultiplier = Number(plusMultiplierEl.value)
-		const timesMultiplier = Number(timesMultiplierEl.value)
-		const rank = rankEl.value as Rank
-		const suit = suitEl.value as Suit
-		const isActive = isActiveEl.checked
+		const name = nameSelect.value as JokerName
+		const edition = editionSelect.value as JokerEdition
+		const plusChips = Number(plusChipsInput.value)
+		const plusMultiplier = Number(plusMultiplierInput.value)
+		const timesMultiplier = Number(timesMultiplierInput.value)
+		const rank = rankSelect.value as Rank
+		const suit = suitSelect.value as Suit
+		const isActive = isActiveCheckbox.checked
 
 		initialState.jokers.push({
 			name,
@@ -156,22 +156,22 @@ function readStateFromUi (): InitialState {
 		})
 	}
 
-	for (const card of cardContainer.children) {
-		const rankEl = card.querySelector('[data-c-rank]') as HTMLSelectElement
-		const suitEl = card.querySelector('[data-c-suit]') as HTMLSelectElement
-		const editionEl = card.querySelector('[data-c-edition]') as HTMLSelectElement
-		const enhancementEl = card.querySelector('[data-c-enhancement]') as HTMLSelectElement
-		const sealEl = card.querySelector('[data-c-seal]') as HTMLSelectElement
-		const isPlayedEl = card.querySelector('[data-c-is-played]') as HTMLInputElement
-		const isDebuffedEl = card.querySelector('[data-c-is-debuffed]') as HTMLInputElement
+	for (const cardEl of cardContainer.children) {
+		const rankSelect = cardEl.querySelector('[data-c-rank]') as HTMLSelectElement
+		const suitSelect = cardEl.querySelector('[data-c-suit]') as HTMLSelectElement
+		const editionSelect = cardEl.querySelector('[data-c-edition]') as HTMLSelectElement
+		const enhancementSelect = cardEl.querySelector('[data-c-enhancement]') as HTMLSelectElement
+		const sealSelect = cardEl.querySelector('[data-c-seal]') as HTMLSelectElement
+		const isPlayedCheckbox = cardEl.querySelector('[data-c-is-played]') as HTMLInputElement
+		const isDebuffedCheckbox = cardEl.querySelector('[data-c-is-debuffed]') as HTMLInputElement
 
-		const rank = rankEl.value as Rank
-		const suit = suitEl.value as Suit
-		const edition = editionEl.value as Edition
-		const enhancement = enhancementEl.value as Enhancement
-		const seal = sealEl.value as Seal
-		const isPlayed = isPlayedEl.checked
-		const isDebuffed = isDebuffedEl.checked
+		const rank = rankSelect.value as Rank
+		const suit = suitSelect.value as Suit
+		const edition = editionSelect.value as Edition
+		const enhancement = enhancementSelect.value as Enhancement
+		const seal = sealSelect.value as Seal
+		const isPlayed = isPlayedCheckbox.checked
+		const isDebuffed = isDebuffedCheckbox.checked
 
 		initialState[isPlayed ? 'playedCards' : 'heldCards'].push({
 			rank,
@@ -401,25 +401,25 @@ function addCard (initialCard?: InitialCard, isPlayed?: boolean) {
 	const cardEl = template.querySelector('[data-playing-card]') as HTMLElement
 	const index = cardContainer.children.length
 
-	const isPlayedInput = cardEl.querySelector('.c-is-played-input') as HTMLInputElement
-	const isDebuffedInput = cardEl.querySelector('.c-is-debuffed-input') as HTMLInputElement
+	const isPlayedCheckbox = cardEl.querySelector('.c-is-played-input') as HTMLInputElement
+	const isDebuffedCheckbox = cardEl.querySelector('.c-is-debuffed-input') as HTMLInputElement
 	const rankInput = cardEl.querySelector('.c-rank-input') as HTMLInputElement
 	const suitInput = cardEl.querySelector('.c-suit-input') as HTMLInputElement
-	const editionInput = cardEl.querySelector('.c-edition-input') as HTMLSelectElement
-	const enhancementInput = cardEl.querySelector('.c-enhancement-input') as HTMLSelectElement
-	const sealInput = cardEl.querySelector('.c-seal-input') as HTMLSelectElement
+	const editionSelect = cardEl.querySelector('.c-edition-input') as HTMLSelectElement
+	const enhancementSelect = cardEl.querySelector('.c-enhancement-input') as HTMLSelectElement
+	const sealSelect = cardEl.querySelector('.c-seal-input') as HTMLSelectElement
 
-	isPlayedInput.name = `card-is-played-${index}`
-	isDebuffedInput.name = `card-is-debuffed-${index}`
+	isPlayedCheckbox.name = `card-is-played-${index}`
+	isDebuffedCheckbox.name = `card-is-debuffed-${index}`
 	rankInput.name = `card-rank-${index}`
 	suitInput.name = `card-suit-${index}`
-	editionInput.name = `card-edition-${index}`
-	enhancementInput.name = `card-enhancement-${index}`
-	sealInput.name = `card-seal-${index}`
+	editionSelect.name = `card-edition-${index}`
+	enhancementSelect.name = `card-enhancement-${index}`
+	sealSelect.name = `card-seal-${index}`
 
 	cardEl.addEventListener('click', function (event) {
 		if (event.currentTarget && !isInteractive(event)) {
-			isPlayedInput.click()
+			isPlayedCheckbox.click()
 		}
 	}, { capture: true })
 
@@ -439,14 +439,16 @@ function addCard (initialCard?: InitialCard, isPlayed?: boolean) {
 			edition,
 			enhancement,
 			seal,
+			isDebuffed,
 		} = initialCard
 
-		isPlayedInput.checked = Boolean(isPlayed)
+		isPlayedCheckbox.checked = Boolean(isPlayed)
+		isDebuffedCheckbox.checked = Boolean(isDebuffed)
 		rankInput.value = rank
 		suitInput.value = suit
-		editionInput.value = edition ?? 'base'
-		enhancementInput.value = enhancement ?? 'none'
-		sealInput.value = seal ?? 'none'
+		editionSelect.value = edition ?? 'base'
+		enhancementSelect.value = enhancement ?? 'none'
+		sealSelect.value = seal ?? 'none'
 	}
 
 	cardContainer.appendChild(template)
@@ -476,8 +478,8 @@ function isInteractive (event: Event): boolean {
 }
 
 function updateCardState (el: Element) {
-	const isPlayedEl = el.querySelector('[data-c-is-played]') as HTMLInputElement
-	const isDebuffedEl = el.querySelector('[data-c-is-debuffed]') as HTMLInputElement
+	const isPlayedCheckbox = el.querySelector('[data-c-is-played]') as HTMLInputElement
+	const isDebuffedCheckbox = el.querySelector('[data-c-is-debuffed]') as HTMLInputElement
 
 	el.classList.remove(
 		'--is-played',
@@ -486,8 +488,8 @@ function updateCardState (el: Element) {
 	)
 
 	;[
-		isPlayedEl.checked ? '--is-played' : null,
-		isDebuffedEl.checked ? '--is-debuffed' : null,
+		isPlayedCheckbox.checked ? '--is-played' : null,
+		isDebuffedCheckbox.checked ? '--is-debuffed' : null,
 		blindNameEl.value === 'The Pillar' && blindIsActiveEl.checked ? '--is-blind-the-pillar' : undefined,
 	].filter(notNullish).forEach((className) => el.classList.add(className))
 }
