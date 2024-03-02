@@ -36,9 +36,10 @@
 
 .panel {
 	padding: 0.5rem;
-	border: 4px solid #e8d1d1;
+	border: 2px solid #e8d1d1;
 	border-radius: 5px;
 	background-color: #fcecec;
+	box-shadow: 0 0 3px #e8bdbd;
 }
 
 .panel-header {
