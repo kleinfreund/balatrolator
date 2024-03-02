@@ -91,6 +91,10 @@
 	margin-top: 1.5rem;
 }
 
+.playing-card:not(.--has-verdant-leaf) .c-is-debuffed {
+	display: none;
+}
+
 .c-rank-input {
 	width: 5rem;
 }

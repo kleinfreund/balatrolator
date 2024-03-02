@@ -1,6 +1,6 @@
 import { calculateScore } from '#lib/balatro.js'
 import { JOKER_DEFINITIONS, JOKER_NAMES, RANKS, SUITS } from '#lib/data.js'
-import type { BlindName, DeckName, Edition, Enhancement, HandName, InitialCard, InitialJoker, InitialState, JokerDefinition, JokerEdition, JokerName, Rank, Seal, Suit } from '#lib/types.js'
+import type { BlindName, DeckName, Edition, Enhancement, HandName, InitialCard, InitialJoker, InitialState, JokerEdition, JokerName, Rank, Seal, Suit } from '#lib/types.js'
 import { getRandomInt } from '#utilities/getRandomInt.js'
 import { log } from '#utilities/log.js'
 import { notNullish } from '#utilities/notNullish.js'
@@ -11,7 +11,8 @@ const form = document.querySelector('[data-form]') as HTMLFormElement
 const handsEl = form.querySelector('[data-r-hands]') as HTMLInputElement
 const discardsEl = form.querySelector('[data-r-discards]') as HTMLInputElement
 const moneyEl = form.querySelector('[data-r-money]') as HTMLInputElement
-const blindEl = form.querySelector('[data-r-blind]') as HTMLSelectElement
+const blindNameEl = form.querySelector('[data-r-blind-name]') as HTMLSelectElement
+const blindIsActiveEl = form.querySelector('[data-r-blind-is-active]') as HTMLInputElement
 const deckEl = form.querySelector('[data-r-deck]') as HTMLSelectElement
 const jokerSlotsEl = form.querySelector('[data-r-joker-slots]') as HTMLInputElement
 
@@ -26,6 +27,16 @@ const addCardButton = document.querySelector('[data-c-add-button]') as HTMLButto
 const cardTemplate = document.querySelector('template#card') as HTMLTemplateElement
 
 form.addEventListener('submit', handleSubmit)
+// Quick and dirty way to update the state whenever necessary
+form.addEventListener('change', function () {
+	for (const cardEl of cardContainer.children) {
+		updateCardState(cardEl)
+	}
+
+	for (const jokerEl of jokerContainer.children) {
+		updateJokerState(jokerEl)
+	}
+})
 addJokerButton.addEventListener('click', () => addJoker())
 addCardButton.addEventListener('click', () => addCard())
 window.addEventListener('popstate', () => {
@@ -81,7 +92,8 @@ function readStateFromUi (): InitialState {
 	const hands = Number(handsEl.value)
 	const discards = Number(discardsEl.value)
 	const money = Number(moneyEl.value)
-	const blind = blindEl.value as BlindName
+	const blindName = blindNameEl.value as BlindName
+	const blindIsActive = blindIsActiveEl.checked
 	const deck = deckEl.value as DeckName
 	const jokerSlots = Number(jokerSlotsEl.value)
 
@@ -89,7 +101,10 @@ function readStateFromUi (): InitialState {
 		hands,
 		discards,
 		money,
-		blind,
+		blind: {
+			name: blindName,
+			isActive: blindIsActive,
+		},
 		deck,
 		handLevels: {},
 		jokers: [],
@@ -148,6 +163,7 @@ function readStateFromUi (): InitialState {
 		const enhancementEl = card.querySelector('[data-c-enhancement]') as HTMLSelectElement
 		const sealEl = card.querySelector('[data-c-seal]') as HTMLSelectElement
 		const isPlayedEl = card.querySelector('[data-c-is-played]') as HTMLInputElement
+		const isDebuffedEl = card.querySelector('[data-c-is-debuffed]') as HTMLInputElement
 
 		const rank = rankEl.value as Rank
 		const suit = suitEl.value as Suit
@@ -155,6 +171,7 @@ function readStateFromUi (): InitialState {
 		const enhancement = enhancementEl.value as Enhancement
 		const seal = sealEl.value as Seal
 		const isPlayed = isPlayedEl.checked
+		const isDebuffed = isDebuffedEl.checked
 
 		initialState[isPlayed ? 'playedCards' : 'heldCards'].push({
 			rank,
@@ -162,6 +179,7 @@ function readStateFromUi (): InitialState {
 			edition,
 			enhancement,
 			seal,
+			isDebuffed,
 		})
 	}
 
@@ -183,7 +201,7 @@ function populateUiWithState () {
 		hands = 0,
 		discards = 0,
 		money = 0,
-		blind = 'Small Blind',
+		blind: initialBlind,
 		deck = 'Red Deck',
 		handLevels = {},
 		jokers = [],
@@ -192,10 +210,16 @@ function populateUiWithState () {
 		heldCards = [],
 	} = initialState
 
+	const blind = {
+		name: initialBlind?.name ?? 'Small Blind',
+		isActive: initialBlind?.isActive ?? true,
+	}
+
 	handsEl.value = String(hands)
 	discardsEl.value = String(discards)
 	moneyEl.value = String(money)
-	blindEl.value = blind
+	blindNameEl.value = blind.name
+	blindIsActiveEl.checked = blind.isActive
 	deckEl.value = deck
 	jokerSlotsEl.value = String(jokerSlots)
 
@@ -249,8 +273,6 @@ function addJoker (initialJoker?: InitialJoker) {
 	rankInput.name = `joker-rank-${index}`
 	suitInput.name = `joker-suit-${index}`
 
-	nameInput.addEventListener('change', handleJokerNameChange)
-
 	const removeButton = jokerEl.querySelector('[data-remove-button]') as HTMLButtonElement
 	removeButton.addEventListener('click', handleRemoveJokerClick)
 
@@ -286,7 +308,7 @@ function addJoker (initialJoker?: InitialJoker) {
 	jokerContainer.appendChild(template)
 
 	setButtonDisabledStates(jokerContainer)
-	applyJokerState(jokerEl, initialJoker ? JOKER_DEFINITIONS[initialJoker.name] : undefined)
+	updateJokerState(jokerEl)
 }
 
 function setButtonDisabledStates (container: Element) {
@@ -319,13 +341,13 @@ function handleMoveJokerRightClick (event: Event) {
 
 function handleMoveCardLeftClick (event: Event) {
 	if (event.currentTarget instanceof HTMLElement) {
-		move(cardContainer, event.currentTarget.closest('[data-card]')!, -1)
+		move(cardContainer, event.currentTarget.closest('[data-playing-card]')!, -1)
 	}
 }
 
 function handleMoveCardRightClick (event: Event) {
 	if (event.currentTarget instanceof HTMLElement) {
-		move(cardContainer, event.currentTarget.closest('[data-card]')!, 1)
+		move(cardContainer, event.currentTarget.closest('[data-playing-card]')!, 1)
 	}
 }
 
@@ -347,16 +369,10 @@ function move (container: Element, currentEl: Element, direction: 1 | -1) {
 	setButtonDisabledStates(container)
 }
 
-function handleJokerNameChange (event: Event) {
-	const input = event.currentTarget as HTMLInputElement
-	const jokerName = input.value as JokerName
+function updateJokerState (el: Element) {
+	const jokerNameEl = el.querySelector('[data-j-name]') as HTMLInputElement
+	const jokerName = jokerNameEl.value as JokerName
 	const definition = JOKER_DEFINITIONS[jokerName]
-	const jokerEl = input.closest('.joker')!
-
-	applyJokerState(jokerEl, definition)
-}
-
-function applyJokerState (el: Element, definition?: JokerDefinition) {
 	if (!definition) {
 		return
 	}
@@ -382,17 +398,19 @@ function applyJokerState (el: Element, definition?: JokerDefinition) {
 
 function addCard (initialCard?: InitialCard, isPlayed?: boolean) {
 	const template = cardTemplate.content.cloneNode(true) as HTMLElement
-	const cardEl = template.querySelector('[data-card]') as HTMLElement
+	const cardEl = template.querySelector('[data-playing-card]') as HTMLElement
 	const index = cardContainer.children.length
 
 	const isPlayedInput = cardEl.querySelector('.c-is-played-input') as HTMLInputElement
+	const isDebuffedInput = cardEl.querySelector('.c-is-debuffed-input') as HTMLInputElement
 	const rankInput = cardEl.querySelector('.c-rank-input') as HTMLInputElement
 	const suitInput = cardEl.querySelector('.c-suit-input') as HTMLInputElement
 	const editionInput = cardEl.querySelector('.c-edition-input') as HTMLSelectElement
 	const enhancementInput = cardEl.querySelector('.c-enhancement-input') as HTMLSelectElement
 	const sealInput = cardEl.querySelector('.c-seal-input') as HTMLSelectElement
 
-	isPlayedInput.name = `card-isPlayed-${index}`
+	isPlayedInput.name = `card-is-played-${index}`
+	isDebuffedInput.name = `card-is-debuffed-${index}`
 	rankInput.name = `card-rank-${index}`
 	suitInput.name = `card-suit-${index}`
 	editionInput.name = `card-edition-${index}`
@@ -404,8 +422,6 @@ function addCard (initialCard?: InitialCard, isPlayed?: boolean) {
 			isPlayedInput.click()
 		}
 	}, { capture: true })
-
-	isPlayedInput.addEventListener('change', handleIsPlayedChange)
 
 	const removeButton = cardEl.querySelector('[data-remove-button]') as HTMLButtonElement
 	removeButton.addEventListener('click', handleRemoveCardClick)
@@ -436,7 +452,7 @@ function addCard (initialCard?: InitialCard, isPlayed?: boolean) {
 	cardContainer.appendChild(template)
 
 	setButtonDisabledStates(cardContainer)
-	applyCardState(cardEl, Boolean(isPlayed))
+	updateCardState(cardEl)
 }
 
 function isInteractive (event: Event): boolean {
@@ -459,25 +475,25 @@ function isInteractive (event: Event): boolean {
 	return false
 }
 
-function handleIsPlayedChange (event: Event) {
-	const checkbox = event.currentTarget as HTMLInputElement
-	const cardEl = checkbox.closest('.playing-card')!
+function updateCardState (el: Element) {
+	const isPlayedEl = el.querySelector('[data-c-is-played]') as HTMLInputElement
+	const isDebuffedEl = el.querySelector('[data-c-is-debuffed]') as HTMLInputElement
 
-	applyCardState(cardEl, checkbox.checked)
-}
-
-function applyCardState (el: Element, isPlayed: boolean) {
 	el.classList.remove(
 		'--is-played',
+		'--is-debuffed',
+		'--has-verdant-leaf'
 	)
 
 	;[
-		isPlayed ? '--is-played' : null,
+		isPlayedEl.checked ? '--is-played' : null,
+		isDebuffedEl.checked ? '--is-debuffed' : null,
+		blindNameEl.value === 'Verdant Leaf' && blindIsActiveEl.checked ? '--has-verdant-leaf' : undefined,
 	].filter(notNullish).forEach((className) => el.classList.add(className))
 }
 
 function handleRemoveCardClick (event: Event) {
 	if (event.currentTarget instanceof HTMLElement) {
-		event.currentTarget.closest('[data-card]')!.remove()
+		event.currentTarget.closest('[data-playing-card]')!.remove()
 	}
 }

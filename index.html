@@ -59,42 +59,50 @@
 						</div>
 
 						<div class="card">
-							<label class="r-blind text-control">
-								<span class="label truncate">Blind</span>
+							<div class="stack">
+								<label class="r-blind-name text-control">
+									<span class="label truncate">Blind</span>
 
-								<select class="r-blind-input select" data-r-blind>
-									<option value="Small Blind" selected>Small Blind</option>
-									<option value="Big Blind">Big Blind</option>
-									<option value="The Hook">The Hook</option>
-									<option value="The Ox">The Ox</option>
-									<option value="The House">The House</option>
-									<option value="The Wall">The Wall</option>
-									<option value="The Wheel">The Wheel</option>
-									<option value="The Arm">The Arm</option>
-									<option value="The Club">The Club</option>
-									<option value="The Fish">The Fish</option>
-									<option value="The Psychic">The Psychic</option>
-									<option value="The Goad">The Goad</option>
-									<option value="The Water">The Water</option>
-									<option value="The Window">The Window</option>
-									<option value="The Manacle">The Manacle</option>
-									<option value="The Eye">The Eye</option>
-									<option value="The Mouth">The Mouth</option>
-									<option value="The Plant">The Plant</option>
-									<option value="The Serpent">The Serpent</option>
-									<option value="The Pillar">The Pillar</option>
-									<option value="The Needle">The Needle</option>
-									<option value="The Head">The Head</option>
-									<option value="The Tooth">The Tooth</option>
-									<option value="The Flint">The Flint</option>
-									<option value="The Mark">The Mark</option>
-									<option value="Amber Acorn">Amber Acorn</option>
-									<option value="Unknown One">Unknown One</option>
-									<option value="Violet Vessel">Violet Vessel</option>
-									<option value="Unknown Two">Unknown Two</option>
-									<option value="Cerulean Bell">Cerulean Bell</option>
-								</select>
-							</label>
+									<select class="r-blind-name-input select" data-r-blind-name>
+										<option value="Small Blind" selected>Small Blind</option>
+										<option value="Big Blind">Big Blind</option>
+										<option value="The Hook">The Hook</option>
+										<option value="The Ox">The Ox</option>
+										<option value="The House">The House</option>
+										<option value="The Wall">The Wall</option>
+										<option value="The Wheel">The Wheel</option>
+										<option value="The Arm">The Arm</option>
+										<option value="The Club">The Club</option>
+										<option value="The Fish">The Fish</option>
+										<option value="The Psychic">The Psychic</option>
+										<option value="The Goad">The Goad</option>
+										<option value="The Water">The Water</option>
+										<option value="The Window">The Window</option>
+										<option value="The Manacle">The Manacle</option>
+										<option value="The Eye">The Eye</option>
+										<option value="The Mouth">The Mouth</option>
+										<option value="The Plant">The Plant</option>
+										<option value="The Serpent">The Serpent</option>
+										<option value="The Pillar">The Pillar</option>
+										<option value="The Needle">The Needle</option>
+										<option value="The Head">The Head</option>
+										<option value="The Tooth">The Tooth</option>
+										<option value="The Flint">The Flint</option>
+										<option value="The Mark">The Mark</option>
+										<option value="Amber Acorn">Amber Acorn</option>
+										<option value="Verdant Leaf">Verdant Leaf</option>
+										<option value="Violet Vessel">Violet Vessel</option>
+										<option value="Crimson Heart">Crimson Heart</option>
+										<option value="Cerulean Bell">Cerulean Bell</option>
+									</select>
+								</label>
+
+								<label class="r-blind-is-active checkbox-control">
+									<input class="r-blind-is-active-input checkbox" type="checkbox" value="is-active" checked data-r-blind-is-active>
+
+									<span class="label">Active?</span>
+								</label>
+							</div>
 						</div>
 
 						<div class="card">
@@ -678,7 +686,7 @@
 	</template>
 
 	<template id="card">
-		<div class="card playing-card" data-card>
+		<div class="card playing-card" data-playing-card>
 			<div class="stack">
 				<div class="actions">
 					<button class="c-move-left-button --icon" type="button" data-move-left-button>
@@ -701,6 +709,12 @@
 					<input class="c-is-played-input checkbox" type="checkbox" value="is-played" checked data-c-is-played>
 
 					<span class="label">Play?</span>
+				</label>
+
+				<label class="c-is-debuffed checkbox-control">
+					<input class="c-is-debuffed-input checkbox" type="checkbox" value="is-debuffed" data-c-is-debuffed>
+
+					<span class="label">Debuffed?</span>
 				</label>
 
 				<div class="input-list">
