@@ -242,16 +242,18 @@ export function getState (initialState: InitialState): State {
 		heldCards: initialHeldCards = [],
 	} = initialState
 
-	const blind = {
-		name: initialBlind?.name ?? 'Small Blind',
-		isActive: initialBlind?.isActive ?? true,
-	}
 	const handLevels = getHandLevels(initialHandLevels)
 	const handBaseScores = getHandBaseScores(handLevels)
 	const jokers = getJokers(initialJokers)
 	const jokerSet = new Set(jokers.map(({ name }) => name))
 	const playedCards = getCards(initialPlayedCards)
 	const heldCards = getCards(initialHeldCards)
+
+	const blindIsActive = jokerSet.has('Chicot') ? false : (initialBlind?.isActive ?? true)
+	const blind = {
+		name: initialBlind?.name ?? 'Small Blind',
+		isActive: blindIsActive,
+	}
 
 	const hasFourFingers = jokerSet.has('Four Fingers')
 	const hasShortcut = jokerSet.has('Shortcut')
