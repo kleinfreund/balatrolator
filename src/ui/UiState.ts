@@ -150,6 +150,7 @@ export class UiState {
 			const enhancementSelect = cardEl.querySelector('[data-c-enhancement]') as HTMLSelectElement
 			const sealSelect = cardEl.querySelector('[data-c-seal]') as HTMLSelectElement
 			const isPlayedCheckbox = cardEl.querySelector('[data-c-is-played]') as HTMLInputElement
+			const isDebuffedCheckbox = cardEl.querySelector('[data-c-is-debuffed]') as HTMLInputElement
 
 			const rank = rankSelect.value as Rank
 			const suit = suitSelect.value as Suit
@@ -157,6 +158,7 @@ export class UiState {
 			const enhancement = enhancementSelect.value as Enhancement
 			const seal = sealSelect.value as Seal
 			const isPlayed = isPlayedCheckbox.checked
+			const isDebuffed = isDebuffedCheckbox.checked
 
 			initialState[isPlayed ? 'playedCards' : 'heldCards'].push({
 				rank,
@@ -164,6 +166,7 @@ export class UiState {
 				edition,
 				enhancement,
 				seal,
+				isDebuffed,
 			})
 		}
 

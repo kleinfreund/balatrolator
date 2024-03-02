@@ -255,11 +255,11 @@ export function getState (initialState: InitialState): State {
 
 	const playedCards = getCards(initialPlayedCards).map((card) => ({
 		...card,
-		isDebuffed: isDebuffed(card, blind, jokerSet.has('Pareidolia')),
+		isDebuffed: card.isDebuffed ? true : isDebuffed(card, blind, jokerSet.has('Pareidolia')),
 	}))
 	const heldCards = getCards(initialHeldCards).map((card) => ({
 		...card,
-		isDebuffed: isDebuffed(card, blind, jokerSet.has('Pareidolia')),
+		isDebuffed: card.isDebuffed ? true : isDebuffed(card, blind, jokerSet.has('Pareidolia')),
 	}))
 
 	const hasFourFingers = jokerSet.has('Four Fingers')
@@ -438,6 +438,7 @@ export function getCards (cards: InitialCard[]): Card[] {
 			edition = 'base',
 			enhancement = 'none',
 			seal = 'none',
+			isDebuffed = false,
 		} = card
 
 		const modifiers = [card.edition, card.enhancement, card.seal].filter((modifier) => modifier !== undefined)
@@ -451,7 +452,7 @@ export function getCards (cards: InitialCard[]): Card[] {
 			edition,
 			enhancement,
 			seal,
-			isDebuffed: false,
+			isDebuffed,
 		}
 	})
 }

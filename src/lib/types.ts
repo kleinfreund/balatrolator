@@ -42,6 +42,7 @@ export interface InitialCard {
 	edition?: Edition
 	seal?: Seal
 	enhancement?: Enhancement
+	isDebuffed?: boolean
 }
 
 export interface Card extends Required<InitialCard> {
