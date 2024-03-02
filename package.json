@@ -29,6 +29,7 @@
 		"lint:code": "eslint --ext .ts .",
 		"lint:code:fix": "npm run lint:code -- --fix",
 		"lint:lockfile": "lockfile-lint --path package-lock.json --validate-hosts --allowed-hosts npm",
+		"lint:types": "tsc --noEmit",
 		"build": "vite build",
 		"prepare": "husky install"
 	},
@@ -43,6 +44,7 @@
 		"husky": "^9.0.11",
 		"jsdom": "^24.0.0",
 		"lockfile-lint": "^4.13.2",
+		"tsc": "^2.0.4",
 		"vite": "^5.1.4",
 		"vitest": "^1.3.1"
 	},

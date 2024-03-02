@@ -32,4 +32,5 @@ jobs:
       - run: npm audit signatures
       - run: npm run lint:lockfile
       - run: npm run lint:code
+      - run: npm run lint:types
       - run: npm run test
