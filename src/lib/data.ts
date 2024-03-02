@@ -955,9 +955,9 @@ export const JOKER_DEFINITIONS: Record<JokerName, JokerDefinition> = {
 	},
 	'Driver\'s license': {
 		rarity: 'rare',
-		hasTimesMultiplierInput: true,
+		hasIsActiveInput: true,
 		effect ({ score }) {
-			score.multiplier *= this.timesMultiplier
+			score.multiplier *= (this.isActive ? 3 : 1)
 		},
 	},
 	'Cartomancer': {
