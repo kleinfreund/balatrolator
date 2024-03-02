@@ -1,6 +1,6 @@
 import type { Card, Suit } from '#lib/types.js'
 
-export function isSuit ({ card }: { card: Card }, suit: Suit | Suit[]): boolean {
+export function isSuit (card: Card, suit: Suit | Suit[]): boolean {
 	if (card.enhancement === 'stone') {
 		return false
 	}

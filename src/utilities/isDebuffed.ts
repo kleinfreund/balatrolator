@@ -1,20 +1,20 @@
-import type { Card, State } from '#lib/types.js'
+import type { Blind, Card } from '#lib/types.js'
 import { isFaceCard } from './isFaceCard.js'
 import { isSuit } from './isSuit.js'
 
-export function isDebuffed ({ state, card }: { state: State, card: Card }) {
-	if (state.blind.isActive) {
+export function isDebuffed (card: Card, blind: Blind, hasPareidolia: boolean) {
+	if (blind.isActive) {
 		if (
-			(state.blind.name === 'Verdant Leaf') ||
-			(state.blind.name === 'The Club' && isSuit({ card }, 'Clubs')) ||
-			(state.blind.name === 'The Goad' && isSuit({ card }, 'Spades')) ||
-			(state.blind.name === 'The Head' && isSuit({ card }, 'Hearts')) ||
-			(state.blind.name === 'The Window' && isSuit({ card }, 'Diamonds')) ||
-			(state.blind.name === 'The Plant' && isFaceCard({ state, card}))
+			(blind.name === 'Verdant Leaf') ||
+			(blind.name === 'The Club' && isSuit(card, 'Clubs')) ||
+			(blind.name === 'The Goad' && isSuit(card, 'Spades')) ||
+			(blind.name === 'The Head' && isSuit(card, 'Hearts')) ||
+			(blind.name === 'The Window' && isSuit(card, 'Diamonds')) ||
+			(blind.name === 'The Plant' && isFaceCard(card, hasPareidolia))
 		) {
 			return true
 		}
 	}
 
-	return card.isDebuffed
+	return false
 }

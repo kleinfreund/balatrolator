@@ -36,23 +36,18 @@ export interface Modifier {
 	timesMultiplier?: number
 }
 
-export interface Blind {
-	reward: number
-	baseMultiplier: number
-}
-
 export interface InitialCard {
 	rank: Rank
 	suit: Suit
 	edition?: Edition
 	seal?: Seal
 	enhancement?: Enhancement
-	isDebuffed?: boolean
 }
 
 export interface Card extends Required<InitialCard> {
 	toString(): string
 	index: number
+	isDebuffed: boolean
 }
 
 export interface EffectOptions {
@@ -137,14 +132,16 @@ export type InitialHandLevels = Partial<HandLevels>
 export type HandLevels = Record<HandName, HandLevel>
 export type HandScore = Record<HandName, Score>
 
+export interface Blind {
+	name: BlindName
+	isActive: boolean
+}
+
 export type InitialState = {
 	hands?: number
 	discards?: number
 	money?: number
-	blind?: {
-		name?: BlindName
-		isActive?: boolean
-	}
+	blind?: Partial<Blind>
 	deck?: DeckName
 	handLevels?: InitialHandLevels
 	jokers?: InitialJoker[]
@@ -157,10 +154,7 @@ export interface State {
 	hands: number
 	discards: number
 	money: number
-	blind: {
-		name: BlindName
-		isActive: boolean
-	}
+	blind: Blind
 	deck: DeckName
 	handLevels: HandLevels
 	handBaseScores: HandScore

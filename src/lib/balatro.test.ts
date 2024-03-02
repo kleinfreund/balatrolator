@@ -1,7 +1,7 @@
 import { describe, test, expect } from 'vitest'
 
 import { calculateScore } from './balatro.js'
-import type { InitialCard } from '#lib/types.js'
+import type { Card } from '#lib/types.js'
 import case001 from './test-files/001.js'
 import case002 from './test-files/002.js'
 import case003 from './test-files/003.js'
@@ -28,7 +28,7 @@ import case023 from './test-files/023.js'
 import case024 from './test-files/024.js'
 import case025 from './test-files/025.js'
 
-type Expected = Omit<ReturnType<typeof calculateScore>, 'scoringCards'> & { scoringCards: InitialCard[] }
+type Expected = Omit<ReturnType<typeof calculateScore>, 'scoringCards'> & { scoringCards: Partial<Card>[] }
 
 export type TestCase = {
 	message: string

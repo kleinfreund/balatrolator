@@ -4,8 +4,9 @@ export default (message: string): TestCase => {
 	return {
 		message,
 		parameters: [{
+			blind: { name: 'The Window' },
 			playedCards: [
-				{ rank: 'Queen', suit: 'Diamonds', isDebuffed: true },
+				{ rank: 'Queen', suit: 'Diamonds' },
 				{ rank: '10', suit: 'Hearts' },
 				{ rank: '8', suit: 'Spades' },
 			],

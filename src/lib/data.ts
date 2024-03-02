@@ -1,5 +1,5 @@
 import { flush, nOfAKind, straight } from '#lib/getHand.js'
-import type { Blind, BlindName, HandName, JokerDefinition, JokerName, ModifierDefaults, Rank, Score, Suit } from '#lib/types.js'
+import type { HandName, JokerDefinition, JokerName, ModifierDefaults, Rank, Score, Suit } from '#lib/types.js'
 import { isFaceCard } from '#utilities/isFaceCard.js'
 import { isRank } from '#utilities/isRank.js'
 import { isSuit } from '#utilities/isSuit.js'
@@ -41,39 +41,6 @@ export const MODIFIER_DEFAULTS: ModifierDefaults = {
 		blue: {},
 		purple: {},
 	},
-}
-
-export const BLINDS: Record<BlindName, Blind> = {
-	'Small Blind': { reward: 3, baseMultiplier: 1 },
-	'Big Blind': { reward: 4, baseMultiplier: 1.5 },
-	'The Hook': { reward: 5, baseMultiplier: 2 },
-	'The Ox': { reward: 5, baseMultiplier: 2 },
-	'The House': { reward: 5, baseMultiplier: 2 },
-	'The Wall': { reward: 5, baseMultiplier: 4 },
-	'The Wheel': { reward: 5, baseMultiplier: 2 },
-	'The Arm': { reward: 5, baseMultiplier: 2 },
-	'The Club': { reward: 5, baseMultiplier: 2 },
-	'The Fish': { reward: 5, baseMultiplier: 2 },
-	'The Psychic': { reward: 5, baseMultiplier: 2 },
-	'The Goad': { reward: 5, baseMultiplier: 2 },
-	'The Water': { reward: 5, baseMultiplier: 2 },
-	'The Window': { reward: 5, baseMultiplier: 2 },
-	'The Manacle': { reward: 5, baseMultiplier: 2 },
-	'The Eye': { reward: 5, baseMultiplier: 2 },
-	'The Mouth': { reward: 5, baseMultiplier: 2 },
-	'The Plant': { reward: 5, baseMultiplier: 2 },
-	'The Serpent': { reward: 5, baseMultiplier: 2 },
-	'The Pillar': { reward: 5, baseMultiplier: 2 },
-	'The Needle': { reward: 5, baseMultiplier: 1 },
-	'The Head': { reward: 5, baseMultiplier: 2 },
-	'The Tooth': { reward: 5, baseMultiplier: 2 },
-	'The Flint': { reward: 5, baseMultiplier: 2 },
-	'The Mark': { reward: 5, baseMultiplier: 2 },
-	'Amber Acorn': { reward: 8, baseMultiplier: 2 },
-	'Unknown One': { reward: 8, baseMultiplier: 2 },
-	'Violet Vessel': { reward: 8, baseMultiplier: 6 },
-	'Unknown Two': { reward: 8, baseMultiplier: 2 },
-	'Cerulean Bell': { reward: 8, baseMultiplier: 2 },
 }
 
 export const PLANET_SCORE_SETS: Record<HandName, Score> = {
@@ -179,25 +146,25 @@ export const JOKER_DEFINITIONS: Record<JokerName, JokerDefinition> = {
 	'Greedy Joker': {
 		rarity: 'common',
 		playedCardEffect ({ score, card }) {
-			score.multiplier += (isSuit({ card }, 'Diamonds') ? 4 : 0)
+			score.multiplier += (isSuit(card, 'Diamonds') ? 4 : 0)
 		},
 	},
 	'Lusty Joker': {
 		rarity: 'common',
 		playedCardEffect ({ score, card }) {
-			score.multiplier += (isSuit({ card }, 'Hearts') ? 4 : 0)
+			score.multiplier += (isSuit(card, 'Hearts') ? 4 : 0)
 		},
 	},
 	'Wrathful Joker': {
 		rarity: 'common',
 		playedCardEffect ({ score, card }) {
-			score.multiplier += (isSuit({ card }, 'Spades') ? 4 : 0)
+			score.multiplier += (isSuit(card, 'Spades') ? 4 : 0)
 		},
 	},
 	'Gluttonous Joker': {
 		rarity: 'common',
 		playedCardEffect ({ score, card }) {
-			score.multiplier += (isSuit({ card }, 'Clubs') ? 4 : 0)
+			score.multiplier += (isSuit(card, 'Clubs') ? 4 : 0)
 		},
 	},
 	'Jolly Joker': {
@@ -356,7 +323,7 @@ export const JOKER_DEFINITIONS: Record<JokerName, JokerDefinition> = {
 	'Fibonacci': {
 		rarity: 'uncommon',
 		playedCardEffect ({ score, card }) {
-			score.multiplier += (isRank({ card }, ['Ace', '2', '3', '5', '8']) ? 8 : 0)
+			score.multiplier += (isRank(card, ['Ace', '2', '3', '5', '8']) ? 8 : 0)
 		},
 	},
 	'Steel Joker': {
@@ -369,7 +336,7 @@ export const JOKER_DEFINITIONS: Record<JokerName, JokerDefinition> = {
 	'Scary Face': {
 		rarity: 'common',
 		playedCardEffect ({ score, state, card }) {
-			score.chips += (isFaceCard({ state, card }) ? 30 : 0)
+			score.chips += (isFaceCard(card, state.jokerSet.has('Pareidolia')) ? 30 : 0)
 		},
 	},
 	'Abstract Joker': {
@@ -400,19 +367,19 @@ export const JOKER_DEFINITIONS: Record<JokerName, JokerDefinition> = {
 	'Even Steven': {
 		rarity: 'common',
 		playedCardEffect ({ score, card }) {
-			score.multiplier += (isRank({ card }, ['10', '8', '6', '4', '2']) ? 4 : 0)
+			score.multiplier += (isRank(card, ['10', '8', '6', '4', '2']) ? 4 : 0)
 		},
 	},
 	'Odd Todd': {
 		rarity: 'common',
 		playedCardEffect ({ score, card }) {
-			score.chips += (isRank({ card }, ['Ace', '9', '7', '5', '3']) ? 30 : 0)
+			score.chips += (isRank(card, ['Ace', '9', '7', '5', '3']) ? 30 : 0)
 		},
 	},
 	'Scholar': {
 		rarity: 'common',
 		playedCardEffect ({ score, card }) {
-			const isAce = isRank({ card }, 'Ace')
+			const isAce = isRank(card, 'Ace')
 			score.chips += (isAce ? 20 : 0)
 			score.multiplier += (isAce ? 4 : 0)
 		},
@@ -455,7 +422,7 @@ export const JOKER_DEFINITIONS: Record<JokerName, JokerDefinition> = {
 	'Blackboard': {
 		rarity: 'uncommon',
 		effect ({ score, state }) {
-			const allHandCardsAreSpadesOrClubs = state.heldCards.every((card) => isSuit({ card }, ['Spades', 'Clubs']))
+			const allHandCardsAreSpadesOrClubs = state.heldCards.every((card) => isSuit(card, ['Spades', 'Clubs']))
 			score.multiplier *= (allHandCardsAreSpadesOrClubs ? 3 : 1)
 		},
 	},
@@ -723,7 +690,7 @@ export const JOKER_DEFINITIONS: Record<JokerName, JokerDefinition> = {
 		rarity: 'rare',
 		hasSuitInput: true,
 		playedCardEffect ({ score, card }) {
-			score.multiplier *= (isSuit({ card }, this.suit!) ? 1.5 : 1)
+			score.multiplier *= (isSuit(card, this.suit!) ? 1.5 : 1)
 		},
 	},
 	'Ramen': {
@@ -736,7 +703,7 @@ export const JOKER_DEFINITIONS: Record<JokerName, JokerDefinition> = {
 	'Walkie Talkie': {
 		rarity: 'common',
 		playedCardEffect ({ score, card }) {
-			const isFourOrTen = isRank({ card }, ['4', '10'])
+			const isFourOrTen = isRank(card, ['4', '10'])
 			score.chips += (isFourOrTen ? 10 : 0)
 			score.multiplier += (isFourOrTen ? 4 : 0)
 		},
@@ -754,7 +721,7 @@ export const JOKER_DEFINITIONS: Record<JokerName, JokerDefinition> = {
 	'Smiley Face': {
 		rarity: 'common',
 		playedCardEffect ({ score, state, card }) {
-			score.multiplier += (isFaceCard({ state, card }) ? 4 : 0)
+			score.multiplier += (isFaceCard(card, state.jokerSet.has('Pareidolia')) ? 4 : 0)
 		},
 	},
 	'Campfire': {
@@ -815,19 +782,19 @@ export const JOKER_DEFINITIONS: Record<JokerName, JokerDefinition> = {
 			denominator: 3,
 		},
 		playedCardEffect ({ score, card }) {
-			score.multiplier *= (isSuit({ card }, 'Hearts') ? 1 : 1)
+			score.multiplier *= (isSuit(card, 'Hearts') ? 1 : 1)
 		},
 	},
 	'Arrowhead': {
 		rarity: 'uncommon',
 		playedCardEffect ({ score, card }) {
-			score.chips += (isSuit({ card }, 'Spades') ? 50 : 0)
+			score.chips += (isSuit(card, 'Spades') ? 50 : 0)
 		},
 	},
 	'Onyx Agate': {
 		rarity: 'uncommon',
 		playedCardEffect ({ score, card }) {
-			score.multiplier += (isSuit({ card }, 'Clubs') ? 8 : 0)
+			score.multiplier += (isSuit(card, 'Clubs') ? 8 : 0)
 		},
 	},
 	'Glass Joker': {
@@ -844,7 +811,7 @@ export const JOKER_DEFINITIONS: Record<JokerName, JokerDefinition> = {
 		rarity: 'uncommon',
 		effect ({ score, state }) {
 			const hasAllSuits = (['Spades', 'Hearts', 'Clubs', 'Diamonds'] as const).every((suit) => {
-				return state.scoringCards.some((card) => isSuit({ card }, suit))
+				return state.scoringCards.some((card) => isSuit(card, suit))
 			})
 
 			score.multiplier *= (hasAllSuits ? 3 : 1)
@@ -871,14 +838,14 @@ export const JOKER_DEFINITIONS: Record<JokerName, JokerDefinition> = {
 		hasRankInput: true,
 		hasSuitInput: true,
 		playedCardEffect ({ score, card }) {
-			score.multiplier *= (this.suit && isSuit({ card }, this.suit) && card.rank === this.rank ? 2 : 1)
+			score.multiplier *= (this.suit && isSuit(card, this.suit) && card.rank === this.rank ? 2 : 1)
 		},
 	},
 	'Seeing Double': {
 		rarity: 'uncommon',
 		effect ({ score, state }) {
-			const hasScoringClubsCard = state.scoringCards.some((card) => isSuit({ card }, 'Clubs'))
-			const hasScoringCardOfOtherSuit = state.scoringCards.some((card) => isSuit({ card }, ['Spades', 'Hearts', 'Diamonds']))
+			const hasScoringClubsCard = state.scoringCards.some((card) => isSuit(card, 'Clubs'))
+			const hasScoringCardOfOtherSuit = state.scoringCards.some((card) => isSuit(card, ['Spades', 'Hearts', 'Diamonds']))
 
 			score.multiplier *= (hasScoringClubsCard && hasScoringCardOfOtherSuit ? 2 : 1)
 		},
@@ -987,7 +954,7 @@ export const JOKER_DEFINITIONS: Record<JokerName, JokerDefinition> = {
 	'Triboulet': {
 		rarity: 'legendary',
 		playedCardEffect ({ score, card }) {
-			score.multiplier *= (isRank({ card }, ['King', 'Queen']) ? 2 : 0)
+			score.multiplier *= (isRank(card, ['King', 'Queen']) ? 2 : 0)
 		},
 	},
 	'Yorick': {

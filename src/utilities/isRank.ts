@@ -1,6 +1,6 @@
 import type { Card, Rank } from '#lib/types.js'
 
-export function isRank ({ card }: { card: Card }, rank: Rank | Rank[]): boolean {
+export function isRank (card: Card, rank: Rank | Rank[]): boolean {
 	if (card.enhancement === 'stone') {
 		return false
 	}

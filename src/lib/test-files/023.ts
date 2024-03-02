@@ -4,10 +4,11 @@ export default (message: string): TestCase => {
 	return {
 		message,
 		parameters: [{
+			blind: { name: 'The Head' },
 			playedCards: [
 				{ rank: '7', suit: 'Spades' },
 				{ rank: '7', suit: 'Spades', enhancement: 'wild' },
-				{ rank: '7', suit: 'Hearts', isDebuffed: true },
+				{ rank: '7', suit: 'Hearts' },
 				{ rank: '7', suit: 'Diamonds' },
 				{ rank: '2', suit: 'Spades' },
 			],
@@ -24,8 +25,8 @@ export default (message: string): TestCase => {
 				{ rank: '7', suit: 'Hearts', isDebuffed: true },
 				{ rank: '7', suit: 'Diamonds' },
 			],
-			score: 1701,
-			formattedScore: '1,701',
+			score: 1554,
+			formattedScore: '1,554',
 		},
 	}
 }

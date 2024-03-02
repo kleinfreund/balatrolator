@@ -55,7 +55,7 @@ function getScore (state: State): Score {
 		logGroup(`\n→ ${card}`, score)
 
 		// Debuffed cards don't participate in scoring at all.
-		if (isDebuffed({ state, card })) {
+		if (card.isDebuffed) {
 			logGroupEnd('!!! Debuffed !!!')
 			continue
 		}
@@ -75,7 +75,7 @@ function getScore (state: State): Score {
 		logGroup(`\n→ ${card}`, score)
 
 		// Debuffed cards don't participate in scoring at all.
-		if (isDebuffed({ state, card })) {
+		if (card.isDebuffed) {
 			logGroupEnd('!!! Debuffed !!!')
 			continue
 		}
@@ -116,7 +116,7 @@ function getPlayedCardTriggers ({ state, card }: { state: State, card: Card }): 
 				break
 			}
 			case 'Hack': {
-				if (isRank({ card }, ['2', '3', '4', '5'])) triggers.push(name)
+				if (isRank(card, ['2', '3', '4', '5'])) triggers.push(name)
 				break
 			}
 			case 'Hanging Chad': {
@@ -128,7 +128,7 @@ function getPlayedCardTriggers ({ state, card }: { state: State, card: Card }): 
 				break
 			}
 			case 'Sock and Buskin': {
-				if (isFaceCard({ state, card })) triggers.push(name)
+				if (isFaceCard(card, state.jokerSet.has('Pareidolia'))) triggers.push(name)
 				break
 			}
 		}
@@ -160,7 +160,7 @@ function getHeldCardTriggers ({ state, card }: { state: State, card: Card }): st
 				break
 			}
 			case 'Sock and Buskin': {
-				if (isFaceCard({ state, card })) triggers.push(name)
+				if (isFaceCard(card, state.jokerSet.has('Pareidolia'))) triggers.push(name)
 				break
 			}
 		}
@@ -246,14 +246,21 @@ export function getState (initialState: InitialState): State {
 	const handBaseScores = getHandBaseScores(handLevels)
 	const jokers = getJokers(initialJokers)
 	const jokerSet = new Set(jokers.map(({ name }) => name))
-	const playedCards = getCards(initialPlayedCards)
-	const heldCards = getCards(initialHeldCards)
 
 	const blindIsActive = jokerSet.has('Chicot') ? false : (initialBlind?.isActive ?? true)
 	const blind = {
 		name: initialBlind?.name ?? 'Small Blind',
 		isActive: blindIsActive,
 	}
+
+	const playedCards = getCards(initialPlayedCards).map((card) => ({
+		...card,
+		isDebuffed: isDebuffed(card, blind, jokerSet.has('Pareidolia')),
+	}))
+	const heldCards = getCards(initialHeldCards).map((card) => ({
+		...card,
+		isDebuffed: isDebuffed(card, blind, jokerSet.has('Pareidolia')),
+	}))
 
 	const hasFourFingers = jokerSet.has('Four Fingers')
 	const hasShortcut = jokerSet.has('Shortcut')
@@ -431,7 +438,6 @@ export function getCards (cards: InitialCard[]): Card[] {
 			edition = 'base',
 			enhancement = 'none',
 			seal = 'none',
-			isDebuffed = false,
 		} = card
 
 		const modifiers = [card.edition, card.enhancement, card.seal].filter((modifier) => modifier !== undefined)
@@ -445,7 +451,7 @@ export function getCards (cards: InitialCard[]): Card[] {
 			edition,
 			enhancement,
 			seal,
-			isDebuffed,
+			isDebuffed: false,
 		}
 	})
 }

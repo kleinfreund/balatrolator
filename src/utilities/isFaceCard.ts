@@ -1,10 +1,10 @@
-import type { Card, State } from '#lib/types.js'
+import type { Card } from '#lib/types.js'
 import { isRank } from './isRank.js'
 
-export function isFaceCard ({ state, card }: { state: State, card: Card }) {
-	if (state.jokerSet.has('Pareidolia')) {
+export function isFaceCard (card: Card, hasPareidolia: boolean) {
+	if (hasPareidolia) {
 		return true
 	}
 
-	return isRank({ card }, ['King', 'Queen', 'Jack'])
+	return isRank(card, ['King', 'Queen', 'Jack'])
 }

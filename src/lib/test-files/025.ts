@@ -8,7 +8,7 @@ export default (message: string): TestCase => {
 			playedCards: [
 				{ rank: '8', suit: 'Spades' },
 				{ rank: '7', suit: 'Spades' },
-				{ rank: '7', suit: 'Hearts', isDebuffed: true },
+				{ rank: '7', suit: 'Hearts' },
 				{ rank: '5', suit: 'Spades' },
 				{ rank: '2', suit: 'Spades' },
 			],
@@ -20,7 +20,7 @@ export default (message: string): TestCase => {
 		expected: {
 			hand: 'Pair',
 			scoringCards: [
-				{ rank: '7', suit: 'Spades' },
+				{ rank: '7', suit: 'Spades', isDebuffed: true },
 				{ rank: '7', suit: 'Hearts', isDebuffed: true },
 			],
 			score: 220,

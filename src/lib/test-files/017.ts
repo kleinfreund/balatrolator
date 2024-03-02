@@ -4,7 +4,7 @@ export default (message: string): TestCase => {
 	return {
 		message,
 		parameters: [{
-			blind: 'Big Blind',
+			blind: { name: 'Big Blind' },
 			playedCards: [
 				{ rank: 'Ace', suit: 'Diamonds', seal: 'red' },
 				{ rank: 'Ace', suit: 'Diamonds', enhancement: 'glass', seal: 'red' },
