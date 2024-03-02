@@ -531,6 +531,7 @@ export const JOKER_DEFINITIONS: Record<JokerName, JokerDefinition> = {
 	},
 	'Card Sharp': {
 		rarity: 'uncommon',
+		hasIsActiveInput: true,
 		effect ({ score }) {
 			score.multiplier *= (this.isActive ? 3 : 1)
 		},
@@ -718,6 +719,7 @@ export const JOKER_DEFINITIONS: Record<JokerName, JokerDefinition> = {
 		},
 	},
 	'Ancient Joker': {
+		// Note: Its effect does **not** does not consider which suits exist in the deck
 		rarity: 'rare',
 		hasSuitInput: true,
 		playedCardEffect ({ score, card }) {
