@@ -1,3 +1,39 @@
+.stack>*+* {
+	margin-block-start: 0.5rem;
+}
+
+.columns {
+	--threshold: 40rem;
+
+	display: flex;
+	flex-wrap: wrap;
+	gap: 0.5rem;
+}
+
+.columns>* {
+	flex-grow: 1;
+	flex-basis: calc((var(--threshold) - 100%) * 999);
+	min-inline-size: 0;
+}
+
+.list {
+	display: flex;
+	align-items: stretch;
+	gap: 0.5rem;
+	flex-wrap: wrap;
+}
+
+.actions {
+	display: flex;
+	align-items: center;
+	gap: 0.25rem;
+	flex-wrap: wrap;
+}
+
+.push-left {
+	margin-left: auto;
+}
+
 .visually-hidden {
 	position: absolute;
 	overflow: hidden;

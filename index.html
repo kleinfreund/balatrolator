@@ -385,9 +385,22 @@
 	<template id="joker">
 		<div class="card joker" data-joker>
 			<div class="stack">
-				<button class="j-remove-button" type="button" data-j-remove-button>Remove</button>
-				<button class="j-move-left-button" type="button" data-j-move-left-button>←</button>
-				<button class="j-move-right-button" type="button" data-j-move-right-button>→</button>
+				<div class="actions">
+					<button class="j-move-left-button" type="button" data-j-move-left-button>
+						<span class="visually-hidden">Move left</span>
+						⬅️
+					</button>
+
+					<button class="j-remove-button push-left" type="button" data-j-remove-button>
+						<span class="visually-hidden">Remove</span>
+						🗑️
+					</button>
+
+					<button class="j-move-right-button" type="button" data-j-move-right-button>
+						<span class="visually-hidden">Move reft</span>
+						➡️
+					</button>
+				</div>
 
 				<label class="j-name select-control">
 					<span class="visually-hidden">Joker name</span>
@@ -606,9 +619,22 @@
 	<template id="card">
 		<div class="card" data-card>
 			<div class="stack">
-				<button class="c-remove-button" type="button" data-c-remove-button>Remove</button>
-				<button class="c-move-left-button" type="button" data-c-move-left-button>←</button>
-				<button class="c-move-right-button" type="button" data-c-move-right-button>→</button>
+				<div class="actions">
+					<button class="c-move-left-button" type="button" data-c-move-left-button>
+						<span class="visually-hidden">Move left</span>
+						⬅️
+					</button>
+
+					<button class="c-remove-button push-left" type="button" data-c-remove-button>
+						<span class="visually-hidden">Remove</span>
+						🗑️
+					</button>
+
+					<button class="c-move-right-button" type="button" data-c-move-right-button>
+						<span class="visually-hidden">Move reft</span>
+						➡️
+					</button>
+				</div>
 
 				<label class="c-is-played checkbox-control">
 					<input class="c-is-played-input checkbox" type="checkbox" value="is-played" checked data-c-is-played>
