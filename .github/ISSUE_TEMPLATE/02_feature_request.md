@@ -1,6 +1,7 @@
 ---
 name: Feature request
 about: Something is missing
+labels: ['enhancement']
 ---
 
 ## Description
