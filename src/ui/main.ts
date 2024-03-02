@@ -172,7 +172,7 @@ function readStateFromUi (): InitialState {
  * Populates the UI using an `InitialState` object. Tries to retrieve this object from the URL or local storage.
  */
 function populateUiWithState () {
-	const initialState = fetchState('initialState')
+	const initialState = fetchState('state')
 	if (!initialState) {
 		return
 	}
