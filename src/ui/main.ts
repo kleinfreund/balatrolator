@@ -482,13 +482,13 @@ function updateCardState (el: Element) {
 	el.classList.remove(
 		'--is-played',
 		'--is-debuffed',
-		'--has-verdant-leaf'
+		'--is-blind-the-pillar'
 	)
 
 	;[
 		isPlayedEl.checked ? '--is-played' : null,
 		isDebuffedEl.checked ? '--is-debuffed' : null,
-		blindNameEl.value === 'Verdant Leaf' && blindIsActiveEl.checked ? '--has-verdant-leaf' : undefined,
+		blindNameEl.value === 'The Pillar' && blindIsActiveEl.checked ? '--is-blind-the-pillar' : undefined,
 	].filter(notNullish).forEach((className) => el.classList.add(className))
 }
 
