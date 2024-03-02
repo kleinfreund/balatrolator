@@ -844,7 +844,7 @@ export const JOKER_DEFINITIONS: Record<JokerName, JokerDefinition> = {
 		rarity: 'uncommon',
 		effect ({ score, state }) {
 			const hasAllSuits = (['Spades', 'Hearts', 'Clubs', 'Diamonds'] as const).every((suit) => {
-				state.scoringCards.some((card) => isSuit({ card }, suit))
+				return state.scoringCards.some((card) => isSuit({ card }, suit))
 			})
 
 			score.multiplier *= (hasAllSuits ? 3 : 1)

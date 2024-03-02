@@ -22,6 +22,9 @@ import case017 from './test-files/017.js'
 import case018 from './test-files/018.js'
 import case019 from './test-files/019.js'
 import case020 from './test-files/020.js'
+import case021 from './test-files/021.js'
+import case022 from './test-files/022.js'
+import case023 from './test-files/023.js'
 
 type Expected = Omit<ReturnType<typeof calculateScore>, 'scoringCards'> & { scoringCards: InitialCard[] }
 
@@ -43,9 +46,9 @@ describe('calculateScore', () => {
 		case008('Straight, Sly Joker, Even Steven, Bootstraps, Joker, Crazy Joker'),
 		case009('Flush, glass, steel'),
 		case010('Two pair, stone'),
-		case011('Five of a kind 1'),
-		case012('Five of a kind 2'),
-		case013('Five of a kind 3'),
+		case011('Five of a Kind 1'),
+		case012('Five of a Kind 2'),
+		case013('Five of a Kind 3'),
 		case014('Flush Five 1'),
 		case015('Flush Five 2'),
 		case016('Flush Five 3'),
@@ -53,6 +56,9 @@ describe('calculateScore', () => {
 		case018('Pair, 1x Blueprint, Sly Joker'),
 		case019('Pair, 2x Blueprint, Sly Joker'),
 		case020('Pair, 2x Blueprint, Sly Joker, Brainstorm'),
+		case021('Four of a Kind'),
+		case022('Four of a Kind, Flowerpot'),
+		case023('Four of a Kind, Flowerpot, Wild card'),
 	])('$message', ({ parameters, expected }) => {
 		expect(calculateScore(...parameters)).toMatchObject(expected)
 	})
