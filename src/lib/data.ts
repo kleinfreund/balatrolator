@@ -884,7 +884,7 @@ export const JOKER_DEFINITIONS: Record<JokerName, JokerDefinition> = {
 		},
 	},
 	'Matador': {
-		rarity: 'common',
+		rarity: 'uncommon',
 	},
 	'Hit the Road': {
 		rarity: 'rare',
@@ -961,7 +961,7 @@ export const JOKER_DEFINITIONS: Record<JokerName, JokerDefinition> = {
 		},
 	},
 	'Cartomancer': {
-		rarity: 'common',
+		rarity: 'uncommon',
 	},
 	'Astronomer': {
 		rarity: 'uncommon',
