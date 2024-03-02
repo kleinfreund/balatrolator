@@ -720,9 +720,8 @@ export const JOKER_DEFINITIONS: Record<JokerName, JokerDefinition> = {
 	'Ancient Joker': {
 		rarity: 'rare',
 		hasSuitInput: true,
-		effect ({ score, state }) {
-			const playedCardsWithMatchingSuits = state.playedCards.filter((card) => isSuit({ card }, this.suit!))
-			score.multiplier *= playedCardsWithMatchingSuits.length * 1.5
+		playedCardEffect ({ score, card }) {
+			score.multiplier *= (isSuit({ card }, this.suit!) ? 1.5 : 1)
 		},
 	},
 	'Ramen': {
