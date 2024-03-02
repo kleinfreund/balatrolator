@@ -1,8 +1,9 @@
-body {
-	font-size: 0.8em;
-	line-height: 1.3;
-	font-family: Lato, Numero, sans-serif;
-	background-color: #eed9d9;
+html {
+	font-family: var(--f-family);
+	font-size: var(--f-size);
+	line-height: var(--f-line-height);
+	color: var(--c-text);
+	background-color: var(--c-background);
 }
 
 h1:not(:first-child),
@@ -24,8 +25,4 @@ figure:not(:first-child) {
 
 ul {
 	padding-left: 1rem;
-}
-
-label {
-	display: block;
 }

@@ -32,3 +32,25 @@ summary,
 main {
 	display: block;
 }
+
+button,
+input,
+select {
+	margin: 0;
+	padding: 0;
+	border: none;
+	font-size: 100%;
+	line-height: inherit;
+	font-family: inherit;
+	font-weight: inherit;
+	color: inherit;
+	background-color: #fff;
+}
+
+button {
+	border: none;
+}
+
+button:not(:disabled) {
+	cursor: pointer;
+}

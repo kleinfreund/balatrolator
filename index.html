@@ -24,350 +24,401 @@
 			</div>
 
 			<form class="form" method="POST" enctype="multipart/form-data" data-form>
-				<div class="stack">
-					<div class="panel">
-						<h2>Round data</h2>
+				<div class="form__round panel">
+					<h2>Round data</h2>
 
-						<div class="list">
-							<div class="card">
-								<label class="r-hands text-control">
-									<span class="label">Hands</span>
+					<div class="list">
+						<div class="card">
+							<label class="r-hands text-control">
+								<span class="label truncate">Hands</span>
 
-									<span class="secondary-label">Influences: Acrobat</span>
+								<input class="r-hands-input text-input" name="hands" type="number" min="0" value="0" data-r-hands>
 
-									<input class="r-hands-input text-input" name="hands" type="number" min="0" value="0" data-r-hands>
-								</label>
+								<span class="secondary-label">Influences: Acrobat</span>
+							</label>
+						</div>
+
+						<div class="card">
+							<label class="r-discards text-control">
+								<span class="label truncate">Discards</span>
+
+								<input class="r-discards-input text-input" name="discards" type="number" min="0" value="0" data-r-discards>
+
+								<span class="secondary-label">Influences: Banner, Mystic Summit</span>
+							</label>
+						</div>
+
+						<div class="card">
+							<label class="r-money text-control">
+								<span class="label truncate">Money</span>
+
+								<input class="r-money-input text-input" name="money" type="number" value="0" data-r-money>
+
+								<span class="secondary-label">Influences: Bull, Bootstraps</span>
+							</label>
+						</div>
+
+						<div class="card">
+							<label class="r-blind text-control">
+								<span class="label truncate">Blind</span>
+
+								<select class="r-blind-input select" data-r-blind>
+									<option value="Small Blind" selected>Small Blind</option>
+									<option value="Big Blind">Big Blind</option>
+									<option value="The Hook">The Hook</option>
+									<option value="The Ox">The Ox</option>
+									<option value="The House">The House</option>
+									<option value="The Wall">The Wall</option>
+									<option value="The Wheel">The Wheel</option>
+									<option value="The Arm">The Arm</option>
+									<option value="The Club">The Club</option>
+									<option value="The Fish">The Fish</option>
+									<option value="The Psychic">The Psychic</option>
+									<option value="The Goad">The Goad</option>
+									<option value="The Water">The Water</option>
+									<option value="The Window">The Window</option>
+									<option value="The Manacle">The Manacle</option>
+									<option value="The Eye">The Eye</option>
+									<option value="The Mouth">The Mouth</option>
+									<option value="The Plant">The Plant</option>
+									<option value="The Serpent">The Serpent</option>
+									<option value="The Pillar">The Pillar</option>
+									<option value="The Needle">The Needle</option>
+									<option value="The Head">The Head</option>
+									<option value="The Tooth">The Tooth</option>
+									<option value="The Flint">The Flint</option>
+									<option value="The Mark">The Mark</option>
+									<option value="Amber Acorn">Amber Acorn</option>
+									<option value="Unknown One">Unknown One</option>
+									<option value="Violet Vessel">Violet Vessel</option>
+									<option value="Unknown Two">Unknown Two</option>
+									<option value="Cerulean Bell">Cerulean Bell</option>
+								</select>
+							</label>
+						</div>
+
+						<div class="card">
+							<label class="r-deck text-control">
+								<span class="label truncate">Deck</span>
+
+								<select class="r-deck-input select" data-r-deck>
+									<option value="Red Deck" selected>Red Deck</option>
+									<option value="Blue Deck">Blue Deck</option>
+									<option value="Yellow Deck">Yellow Deck</option>
+									<option value="Green Deck">Green Deck</option>
+									<option value="Black Deck">Black Deck</option>
+									<option value="Magic Deck">Magic Deck</option>
+									<option value="Nebula Deck">Nebula Deck</option>
+									<option value="Ghost Deck">Ghost Deck</option>
+									<option value="Abandoned Deck">Abandoned Deck</option>
+									<option value="Checkered Deck">Checkered Deck</option>
+									<option value="Zodiac Deck">Zodiac Deck</option>
+									<option value="Painted Deck">Painted Deck</option>
+									<option value="Anaglyph Deck">Anaglyph Deck</option>
+									<option value="Plasma Deck">Plasma Deck</option>
+									<option value="Erratic Deck">Erratic Deck</option>
+									<option value="Challenge Deck">Challenge Deck</option>
+								</select>
+							</label>
+						</div>
+
+						<div class="card">
+							<label class="r-joker-slots text-control">
+								<span class="label truncate">Joker slots</span>
+
+								<input class="r-joker-slots-input text-input" name="joker-slots" type="number" value="5" data-r-joker-slots>
+
+								<span class="secondary-label">Influences: Joker Stencil</span>
+							</label>
+						</div>
+					</div>
+				</div>
+
+				<div class="form__hands panel">
+					<div class="stack">
+						<header class="panel-header">
+							<h2>Levels</h2>
+						</header>
+
+						<div class="hands-container stack" data-h-container>
+							<div class="hand-level">
+								<p><span data-h-name>Flush Five</span></p>
+
+								<div class="stack">
+									<div class="input-list">
+										<label class="h-level text-control --flat">
+											<span class="label">lvl</span>
+
+											<input class="h-level-input text-input" name="hand-level-Flush Five" type="number" value="1" min="1" data-h-level>
+										</label>
+
+										<label class="h-plays text-control --flat">
+											<span class="label">#<span class="visually-hidden">Plays</span></span>
+
+											<input class="h-plays-input text-input" name="hand-plays-Flush Five" type="number" value="0" min="0" data-h-plays>
+										</label>
+									</div>
+								</div>
 							</div>
 
-							<div class="card">
-								<label class="r-discards text-control">
-									<span class="label">Discards</span>
+							<div class="hand-level">
+								<p><span data-h-name>Flush House</span></p>
 
-									<span class="secondary-label">Influences: Banner, Mystic Summit</span>
+								<div class="stack">
+									<div class="input-list">
+										<label class="h-level text-control --flat">
+											<span class="label">lvl</span>
 
-									<input class="r-discards-input text-input" name="discards" type="number" min="0" value="0" data-r-discards>
-								</label>
+											<input class="h-level-input text-input" name="hand-level-Flush House" type="number" value="1" min="1" data-h-level>
+										</label>
+
+										<label class="h-plays text-control --flat">
+											<span class="label">#<span class="visually-hidden">Plays</span></span>
+
+											<input class="h-plays-input text-input" name="hand-plays-Flush House" type="number" value="0" min="0" data-h-plays>
+										</label>
+									</div>
+								</div>
 							</div>
 
-							<div class="card">
-								<label class="r-money text-control">
-									<span class="label">Money</span>
+							<div class="hand-level">
+								<p><span data-h-name>Five of a Kind</span></p>
 
-									<span class="secondary-label">Influences: Bull, Bootstraps</span>
+								<div class="stack">
+									<div class="input-list">
+										<label class="h-level text-control --flat">
+											<span class="label">lvl</span>
 
-									<input class="r-money-input text-input" name="money" type="number" value="0" data-r-money>
-								</label>
+											<input class="h-level-input text-input" name="hand-level-Five of a Kind" type="number" value="1" min="1" data-h-level>
+										</label>
+
+										<label class="h-plays text-control --flat">
+											<span class="label">#<span class="visually-hidden">Plays</span></span>
+
+											<input class="h-plays-input text-input" name="hand-plays-Five of a Kind" type="number" value="0" min="0" data-h-plays>
+										</label>
+									</div>
+								</div>
 							</div>
 
-							<div class="card">
-								<label class="r-blind text-control">
-									<span class="label">Blind</span>
+							<div class="hand-level">
+								<p><span data-h-name>Straight Flush</span></p>
 
-									<input class="r-blind-input text-input" name="blind" type="text" list="blinds" value="Small Blind" data-r-blind>
-								</label>
+								<div class="stack">
+									<div class="input-list">
+										<label class="h-level text-control --flat">
+											<span class="label">lvl</span>
+
+											<input class="h-level-input text-input" name="hand-level-Straight Flush" type="number" value="1" min="1" data-h-level>
+										</label>
+
+										<label class="h-plays text-control --flat">
+											<span class="label">#<span class="visually-hidden">Plays</span></span>
+
+											<input class="h-plays-input text-input" name="hand-plays-Straight Flush" type="number" value="0" min="0" data-h-plays>
+										</label>
+									</div>
+								</div>
 							</div>
 
-							<div class="card">
-								<label class="r-deck text-control">
-									<span class="label">Deck</span>
+							<div class="hand-level">
+								<p><span data-h-name>Four of a Kind</span></p>
 
-									<input class="r-deck-input text-input" name="deck" type="text" list="decks" value="Red Deck" data-r-deck>
-								</label>
+								<div class="stack">
+									<div class="input-list">
+										<label class="h-level text-control --flat">
+											<span class="label">lvl</span>
+
+											<input class="h-level-input text-input" name="hand-level-Four of a Kind" type="number" value="1" min="1" data-h-level>
+										</label>
+
+										<label class="h-plays text-control --flat">
+											<span class="label">#<span class="visually-hidden">Plays</span></span>
+
+											<input class="h-plays-input text-input" name="hand-plays-Four of a Kind" type="number" value="0" min="0" data-h-plays>
+										</label>
+									</div>
+								</div>
 							</div>
 
-							<div class="card">
-								<label class="r-joker-slots text-control">
-									<span class="label">Joker slots</span>
+							<div class="hand-level">
+								<p><span data-h-name>Full House</span></p>
 
-									<span class="secondary-label">Influences: Joker Stencil</span>
+								<div class="stack">
+									<div class="input-list">
+										<label class="h-level text-control --flat">
+											<span class="label">lvl</span>
 
-									<input class="r-joker-slots-input text-input" name="joker-slots" type="number" value="5" data-r-joker-slots>
-								</label>
+											<input class="h-level-input text-input" name="hand-level-Full House" type="number" value="1" min="1" data-h-level>
+										</label>
+
+										<label class="h-plays text-control --flat">
+											<span class="label">#<span class="visually-hidden">Plays</span></span>
+
+											<input class="h-plays-input text-input" name="hand-plays-Full House" type="number" value="0" min="0" data-h-plays>
+										</label>
+									</div>
+								</div>
+							</div>
+
+							<div class="hand-level">
+								<p><span data-h-name>Flush</span></p>
+
+								<div class="stack">
+									<div class="input-list">
+										<label class="h-level text-control --flat">
+											<span class="label">lvl</span>
+
+											<input class="h-level-input text-input" name="hand-level-Flush" type="number" value="1" min="1" data-h-level>
+										</label>
+
+										<label class="h-plays text-control --flat">
+											<span class="label">#<span class="visually-hidden">Plays</span></span>
+
+											<input class="h-plays-input text-input" name="hand-plays-Flush" type="number" value="0" min="0" data-h-plays>
+										</label>
+									</div>
+								</div>
+							</div>
+
+							<div class="hand-level">
+								<p><span data-h-name>Straight</span></p>
+
+								<div class="stack">
+									<div class="input-list">
+										<label class="h-level text-control --flat">
+											<span class="label">lvl</span>
+
+											<input class="h-level-input text-input" name="hand-level-Straight" type="number" value="1" min="1" data-h-level>
+										</label>
+
+										<label class="h-plays text-control --flat">
+											<span class="label">#<span class="visually-hidden">Plays</span></span>
+
+											<input class="h-plays-input text-input" name="hand-plays-Straight" type="number" value="0" min="0" data-h-plays>
+										</label>
+									</div>
+								</div>
+							</div>
+
+							<div class="hand-level">
+								<p><span data-h-name>Three of a Kind</span></p>
+
+								<div class="stack">
+									<div class="input-list">
+										<label class="h-level text-control --flat">
+											<span class="label">lvl</span>
+
+											<input class="h-level-input text-input" name="hand-level-Three of a Kind" type="number" value="1" min="1" data-h-level>
+										</label>
+
+										<label class="h-plays text-control --flat">
+											<span class="label">#<span class="visually-hidden">Plays</span></span>
+
+											<input class="h-plays-input text-input" name="hand-plays-Three of a Kind" type="number" value="0" min="0" data-h-plays>
+										</label>
+									</div>
+								</div>
+							</div>
+
+							<div class="hand-level">
+								<p><span data-h-name>Two Pair</span></p>
+
+								<div class="stack">
+									<div class="input-list">
+										<label class="h-level text-control --flat">
+											<span class="label">lvl</span>
+
+											<input class="h-level-input text-input" name="hand-level-Two Pair" type="number" value="1" min="1" data-h-level>
+										</label>
+
+										<label class="h-plays text-control --flat">
+											<span class="label">#<span class="visually-hidden">Plays</span></span>
+
+											<input class="h-plays-input text-input" name="hand-plays-Two Pair" type="number" value="0" min="0" data-h-plays>
+										</label>
+									</div>
+								</div>
+							</div>
+
+							<div class="hand-level">
+								<p><span data-h-name>Pair</span></p>
+
+								<div class="stack">
+									<div class="input-list">
+										<label class="h-level text-control --flat">
+											<span class="label">lvl</span>
+
+											<input class="h-level-input text-input" name="hand-level-Pair" type="number" value="1" min="1" data-h-level>
+										</label>
+
+										<label class="h-plays text-control --flat">
+											<span class="label">#<span class="visually-hidden">Plays</span></span>
+
+											<input class="h-plays-input text-input" name="hand-plays-Pair" type="number" value="0" min="0" data-h-plays>
+										</label>
+									</div>
+								</div>
+							</div>
+
+							<div class="hand-level">
+								<p><span data-h-name>High Card</span></p>
+
+								<div class="stack">
+									<div class="input-list">
+										<label class="h-level text-control --flat">
+											<span class="label">lvl</span>
+
+											<input class="h-level-input text-input" name="hand-level-High Card" type="number" value="1" min="1" data-h-level>
+										</label>
+
+										<label class="h-plays text-control --flat">
+											<span class="label">#<span class="visually-hidden">Plays</span></span>
+
+											<input class="h-plays-input text-input" name="hand-plays-High Card" type="number" value="0" min="0" data-h-plays>
+										</label>
+									</div>
+								</div>
 							</div>
 						</div>
 					</div>
+				</div>
 
-					<div class="panel">
-						<div class="stack">
-							<header class="panel-header">
-								<h2>Hands</h2>
-							</header>
+				<div class="form__jokers panel">
+					<div class="stack">
+						<header class="panel-header">
+							<h2>Jokers</h2>
 
-							<div class="hands-container list" data-h-container>
-								<div class="card hand">
-									<p><span data-h-name>Flush Five</span></p>
+							<button class="add-joker-button --icon" type="button" data-j-add-button>
+								<span class="visually-hidden">Add</span>
+								➕
+							</button>
+						</header>
 
-									<div class="stack">
-										<div class="input-list">
-											<label class="h-level text-control --flat">
-												<span class="label">lvl</span>
-
-												<input class="h-level-input text-input" name="hand-level-Flush Five" type="number" value="1" min="1" data-h-level>
-											</label>
-
-											<label class="h-plays text-control --flat">
-												<span class="label">#<span class="visually-hidden">Plays</span></span>
-
-												<input class="h-plays-input text-input" name="hand-plays-Flush Five" type="number" value="0" min="0" data-h-plays>
-											</label>
-										</div>
-									</div>
-								</div>
-
-								<div class="card hand">
-									<p><span data-h-name>Flush House</span></p>
-
-									<div class="stack">
-										<div class="input-list">
-											<label class="h-level text-control --flat">
-												<span class="label">lvl</span>
-
-												<input class="h-level-input text-input" name="hand-level-Flush House" type="number" value="1" min="1" data-h-level>
-											</label>
-
-											<label class="h-plays text-control --flat">
-												<span class="label">#<span class="visually-hidden">Plays</span></span>
-
-												<input class="h-plays-input text-input" name="hand-plays-Flush House" type="number" value="0" min="0" data-h-plays>
-											</label>
-										</div>
-									</div>
-								</div>
-
-								<div class="card hand">
-									<p><span data-h-name>Five of a Kind</span></p>
-
-									<div class="stack">
-										<div class="input-list">
-											<label class="h-level text-control --flat">
-												<span class="label">lvl</span>
-
-												<input class="h-level-input text-input" name="hand-level-Five of a Kind" type="number" value="1" min="1" data-h-level>
-											</label>
-
-											<label class="h-plays text-control --flat">
-												<span class="label">#<span class="visually-hidden">Plays</span></span>
-
-												<input class="h-plays-input text-input" name="hand-plays-Five of a Kind" type="number" value="0" min="0" data-h-plays>
-											</label>
-										</div>
-									</div>
-								</div>
-
-								<div class="card hand">
-									<p><span data-h-name>Straight Flush</span></p>
-
-									<div class="stack">
-										<div class="input-list">
-											<label class="h-level text-control --flat">
-												<span class="label">lvl</span>
-
-												<input class="h-level-input text-input" name="hand-level-Straight Flush" type="number" value="1" min="1" data-h-level>
-											</label>
-
-											<label class="h-plays text-control --flat">
-												<span class="label">#<span class="visually-hidden">Plays</span></span>
-
-												<input class="h-plays-input text-input" name="hand-plays-Straight Flush" type="number" value="0" min="0" data-h-plays>
-											</label>
-										</div>
-									</div>
-								</div>
-
-								<div class="card hand">
-									<p><span data-h-name>Four of a Kind</span></p>
-
-									<div class="stack">
-										<div class="input-list">
-											<label class="h-level text-control --flat">
-												<span class="label">lvl</span>
-
-												<input class="h-level-input text-input" name="hand-level-Four of a Kind" type="number" value="1" min="1" data-h-level>
-											</label>
-
-											<label class="h-plays text-control --flat">
-												<span class="label">#<span class="visually-hidden">Plays</span></span>
-
-												<input class="h-plays-input text-input" name="hand-plays-Four of a Kind" type="number" value="0" min="0" data-h-plays>
-											</label>
-										</div>
-									</div>
-								</div>
-
-								<div class="card hand">
-									<p><span data-h-name>Full House</span></p>
-
-									<div class="stack">
-										<div class="input-list">
-											<label class="h-level text-control --flat">
-												<span class="label">lvl</span>
-
-												<input class="h-level-input text-input" name="hand-level-Full House" type="number" value="1" min="1" data-h-level>
-											</label>
-
-											<label class="h-plays text-control --flat">
-												<span class="label">#<span class="visually-hidden">Plays</span></span>
-
-												<input class="h-plays-input text-input" name="hand-plays-Full House" type="number" value="0" min="0" data-h-plays>
-											</label>
-										</div>
-									</div>
-								</div>
-
-								<div class="card hand">
-									<p><span data-h-name>Flush</span></p>
-
-									<div class="stack">
-										<div class="input-list">
-											<label class="h-level text-control --flat">
-												<span class="label">lvl</span>
-
-												<input class="h-level-input text-input" name="hand-level-Flush" type="number" value="1" min="1" data-h-level>
-											</label>
-
-											<label class="h-plays text-control --flat">
-												<span class="label">#<span class="visually-hidden">Plays</span></span>
-
-												<input class="h-plays-input text-input" name="hand-plays-Flush" type="number" value="0" min="0" data-h-plays>
-											</label>
-										</div>
-									</div>
-								</div>
-
-								<div class="card hand">
-									<p><span data-h-name>Straight</span></p>
-
-									<div class="stack">
-										<div class="input-list">
-											<label class="h-level text-control --flat">
-												<span class="label">lvl</span>
-
-												<input class="h-level-input text-input" name="hand-level-Straight" type="number" value="1" min="1" data-h-level>
-											</label>
-
-											<label class="h-plays text-control --flat">
-												<span class="label">#<span class="visually-hidden">Plays</span></span>
-
-												<input class="h-plays-input text-input" name="hand-plays-Straight" type="number" value="0" min="0" data-h-plays>
-											</label>
-										</div>
-									</div>
-								</div>
-
-								<div class="card hand">
-									<p><span data-h-name>Three of a Kind</span></p>
-
-									<div class="stack">
-										<div class="input-list">
-											<label class="h-level text-control --flat">
-												<span class="label">lvl</span>
-
-												<input class="h-level-input text-input" name="hand-level-Three of a Kind" type="number" value="1" min="1" data-h-level>
-											</label>
-
-											<label class="h-plays text-control --flat">
-												<span class="label">#<span class="visually-hidden">Plays</span></span>
-
-												<input class="h-plays-input text-input" name="hand-plays-Three of a Kind" type="number" value="0" min="0" data-h-plays>
-											</label>
-										</div>
-									</div>
-								</div>
-
-								<div class="card hand">
-									<p><span data-h-name>Two Pair</span></p>
-
-									<div class="stack">
-										<div class="input-list">
-											<label class="h-level text-control --flat">
-												<span class="label">lvl</span>
-
-												<input class="h-level-input text-input" name="hand-level-Two Pair" type="number" value="1" min="1" data-h-level>
-											</label>
-
-											<label class="h-plays text-control --flat">
-												<span class="label">#<span class="visually-hidden">Plays</span></span>
-
-												<input class="h-plays-input text-input" name="hand-plays-Two Pair" type="number" value="0" min="0" data-h-plays>
-											</label>
-										</div>
-									</div>
-								</div>
-
-								<div class="card hand">
-									<p><span data-h-name>Pair</span></p>
-
-									<div class="stack">
-										<div class="input-list">
-											<label class="h-level text-control --flat">
-												<span class="label">lvl</span>
-
-												<input class="h-level-input text-input" name="hand-level-Pair" type="number" value="1" min="1" data-h-level>
-											</label>
-
-											<label class="h-plays text-control --flat">
-												<span class="label">#<span class="visually-hidden">Plays</span></span>
-
-												<input class="h-plays-input text-input" name="hand-plays-Pair" type="number" value="0" min="0" data-h-plays>
-											</label>
-										</div>
-									</div>
-								</div>
-
-								<div class="card hand">
-									<p><span data-h-name>High Card</span></p>
-
-									<div class="stack">
-										<div class="input-list">
-											<label class="h-level text-control --flat">
-												<span class="label">lvl</span>
-
-												<input class="h-level-input text-input" name="hand-level-High Card" type="number" value="1" min="1" data-h-level>
-											</label>
-
-											<label class="h-plays text-control --flat">
-												<span class="label">#<span class="visually-hidden">Plays</span></span>
-
-												<input class="h-plays-input text-input" name="hand-plays-High Card" type="number" value="0" min="0" data-h-plays>
-											</label>
-										</div>
-									</div>
-								</div>
-							</div>
-						</div>
+						<div class="joker-container list" data-j-container></div>
 					</div>
+				</div>
 
-					<div class="panel">
-						<div class="stack">
-							<header class="panel-header">
-								<h2>Jokers</h2>
+				<div class="form__cards panel">
+					<div class="stack">
+						<header class="panel-header">
+							<h2>Hand</h2>
 
-								<button class="add-joker-button" type="button" data-j-add-button>Add</button>
-							</header>
+							<button class="add-card-button --icon" type="button" data-c-add-button>
+								<span class="visually-hidden">Add</span>
+								➕
+							</button>
+						</header>
 
-							<div class="joker-container list" data-j-container></div>
-						</div>
+						<div class="card-container list" data-c-container></div>
 					</div>
+				</div>
 
-					<div class="panel">
-						<div class="stack">
-							<header class="panel-header">
-								<h2>Hand</h2>
+				<div class="form__score panel">
+					<button type="submit">Submit</button>
 
-								<button class="add-card-button" type="button" data-c-add-button>Add</button>
-							</header>
-
-							<div class="card-container list" data-c-container></div>
-						</div>
-					</div>
-
-					<div class="panel">
-						<button type="submit">Submit</button>
-
-						<p>Score: <code data-score></code></p>
-
-						<textarea style="display: block; width: 100%;" rows="16"></textarea>
-					</div>
+					<p class="score">Score: <code data-formatted-score>—</code></p>
+					<p>Actual: <code data-score>—</code></p>
 				</div>
 			</form>
 		</div>
@@ -377,17 +428,17 @@
 		<div class="card joker" data-joker>
 			<div class="stack">
 				<div class="actions">
-					<button class="j-move-left-button" type="button" data-j-move-left-button>
+					<button class="j-move-left-button --icon" type="button" data-move-left-button>
 						<span class="visually-hidden">Move left</span>
 						⬅️
 					</button>
 
-					<button class="j-remove-button push-left" type="button" data-j-remove-button>
+					<button class="j-remove-button --icon push-left" type="button" data-remove-button>
 						<span class="visually-hidden">Remove</span>
 						🗑️
 					</button>
 
-					<button class="j-move-right-button" type="button" data-j-move-right-button>
+					<button class="j-move-right-button --icon" type="button" data-move-right-button>
 						<span class="visually-hidden">Move reft</span>
 						➡️
 					</button>
@@ -551,7 +602,7 @@
 				</label>
 
 				<label class="j-edition select-control --flat">
-					<span class="label">Edition</span>
+					<span class="label truncate">Edition</span>
 
 					<select class="j-edition-input select" data-j-edition>
 						<option value="base" selected>Base</option>
@@ -564,19 +615,19 @@
 
 				<div class="joker-effects stack">
 					<label class="j-plus-chips text-control --flat">
-						<span class="label">+Chips</span>
+						<span class="label truncate">+Chips</span>
 
 						<input class="j-plus-chips-input text-input" type="number" value="0" min="0" data-j-plus-chips>
 					</label>
 
 					<label class="j-plus-multiplier text-control --flat">
-						<span class="label">+Mult</span>
+						<span class="label truncate">+Mult</span>
 
 						<input class="j-plus-multiplier-input text-input" type="number" value="0" min="0" data-j-plus-multiplier>
 					</label>
 
 					<label class="j-times-multiplier text-control --flat">
-						<span class="label">xMult</span>
+						<span class="label truncate">xMult</span>
 
 						<input class="j-times-multiplier-input text-input" type="number" value="1" min="1" step="0.25" data-j-times-multiplier>
 					</label>
@@ -591,7 +642,21 @@
 						<label class="j-rank text-control">
 							<span class="visually-hidden">Rank</span>
 
-							<input class="j-rank-input text-input" type="text" list="ranks" value="Ace" data-j-rank>
+							<select class="j-rank-input select" data-j-rank>
+								<option value="Ace" selected>Ace</option>
+								<option value="King">King</option>
+								<option value="Queen">Queen</option>
+								<option value="Jack">Jack</option>
+								<option value="10">10</option>
+								<option value="9">9</option>
+								<option value="8">8</option>
+								<option value="7">7</option>
+								<option value="6">6</option>
+								<option value="5">5</option>
+								<option value="4">4</option>
+								<option value="3">3</option>
+								<option value="2">2</option>
+							</select>
 						</label>
 
 						<span class="j-card-of">of</span>
@@ -599,7 +664,12 @@
 						<label class="j-suit text-control">
 							<span class="visually-hidden">Suit</span>
 
-							<input class="j-suit-input text-input" type="text" list="suits" value="Hearts" data-j-suit>
+							<select class="j-suit-input select" data-j-suit>
+								<option value="Clubs" selected>Clubs</option>
+								<option value="Spades">Spades</option>
+								<option value="Hearts">Hearts</option>
+								<option value="Diamonds">Diamonds</option>
+							</select>
 						</label>
 					</div>
 				</div>
@@ -608,20 +678,20 @@
 	</template>
 
 	<template id="card">
-		<div class="card" data-card>
+		<div class="card playing-card" data-card>
 			<div class="stack">
 				<div class="actions">
-					<button class="c-move-left-button" type="button" data-c-move-left-button>
+					<button class="c-move-left-button --icon" type="button" data-move-left-button>
 						<span class="visually-hidden">Move left</span>
 						⬅️
 					</button>
 
-					<button class="c-remove-button push-left" type="button" data-c-remove-button>
+					<button class="c-remove-button --icon push-left" type="button" data-remove-button>
 						<span class="visually-hidden">Remove</span>
 						🗑️
 					</button>
 
-					<button class="c-move-right-button" type="button" data-c-move-right-button>
+					<button class="c-move-right-button --icon" type="button" data-move-right-button>
 						<span class="visually-hidden">Move reft</span>
 						➡️
 					</button>
@@ -630,14 +700,28 @@
 				<label class="c-is-played checkbox-control">
 					<input class="c-is-played-input checkbox" type="checkbox" value="is-played" checked data-c-is-played>
 
-					<span class="label">Is played?</span>
+					<span class="label">Play?</span>
 				</label>
 
 				<div class="input-list">
 					<label class="c-rank text-control">
 						<span class="visually-hidden">Rank</span>
 
-						<input class="c-rank-input text-input" type="text" list="ranks" value="Ace" data-c-rank>
+						<select class="c-rank-input select" data-c-rank>
+							<option value="Ace" selected>Ace</option>
+							<option value="King">King</option>
+							<option value="Queen">Queen</option>
+							<option value="Jack">Jack</option>
+							<option value="10">10</option>
+							<option value="9">9</option>
+							<option value="8">8</option>
+							<option value="7">7</option>
+							<option value="6">6</option>
+							<option value="5">5</option>
+							<option value="4">4</option>
+							<option value="3">3</option>
+							<option value="2">2</option>
+						</select>
 					</label>
 
 					of
@@ -645,12 +729,17 @@
 					<label class="c-suit text-control">
 						<span class="visually-hidden">Suit</span>
 
-						<input class="c-suit-input text-input" type="text" list="suits" value="Hearts" data-c-suit>
+						<select class="c-suit-input select" data-c-suit>
+							<option value="Clubs" selected>Clubs</option>
+							<option value="Spades">Spades</option>
+							<option value="Hearts">Hearts</option>
+							<option value="Diamonds">Diamonds</option>
+						</select>
 					</label>
 				</div>
 
 				<label class="c-edition select-control --flat">
-					<span class="label">Edition</span>
+					<span class="label truncate">Edition</span>
 
 					<select class="c-edition-input select" data-c-edition>
 						<option value="base" selected>Base</option>
@@ -661,7 +750,7 @@
 				</label>
 
 				<label class="c-enhancement select-control --flat">
-					<span class="label">Enhancement</span>
+					<span class="label truncate">Enhancement</span>
 
 					<select class="c-enhancement-input select" data-c-enhancement>
 						<option value="none" selected>None</option>
@@ -677,7 +766,7 @@
 				</label>
 
 				<label class="c-seal select-control --flat">
-					<span class="label">Seal</span>
+					<span class="label truncate">Seal</span>
 
 					<select class="c-seal-input select" data-c-seal>
 						<option value="none" selected>None</option>
@@ -690,82 +779,6 @@
 			</div>
 		</div>
 	</template>
-
-	<datalist id="blinds">
-		<option value="Small Blind"></option>
-		<option value="Big Blind"></option>
-		<option value="The Hook"></option>
-		<option value="The Ox"></option>
-		<option value="The House"></option>
-		<option value="The Wall"></option>
-		<option value="The Wheel"></option>
-		<option value="The Arm"></option>
-		<option value="The Club"></option>
-		<option value="The Fish"></option>
-		<option value="The Psychic"></option>
-		<option value="The Goad"></option>
-		<option value="The Water"></option>
-		<option value="The Window"></option>
-		<option value="The Manacle"></option>
-		<option value="The Eye"></option>
-		<option value="The Mouth"></option>
-		<option value="The Plant"></option>
-		<option value="The Serpent"></option>
-		<option value="The Pillar"></option>
-		<option value="The Needle"></option>
-		<option value="The Head"></option>
-		<option value="The Tooth"></option>
-		<option value="The Flint"></option>
-		<option value="The Mark"></option>
-		<option value="Amber Acorn"></option>
-		<option value="Unknown One"></option>
-		<option value="Violet Vessel"></option>
-		<option value="Unknown Two"></option>
-		<option value="Cerulean Bell"></option>
-	</datalist>
-
-
-	<datalist id="decks">
-		<option value="Red Deck"></option>
-		<option value="Blue Deck"></option>
-		<option value="Yellow Deck"></option>
-		<option value="Green Deck"></option>
-		<option value="Black Deck"></option>
-		<option value="Magic Deck"></option>
-		<option value="Nebula Deck"></option>
-		<option value="Ghost Deck"></option>
-		<option value="Abandoned Deck"></option>
-		<option value="Checkered Deck"></option>
-		<option value="Zodiac Deck"></option>
-		<option value="Painted Deck"></option>
-		<option value="Anaglyph Deck"></option>
-		<option value="Plasma Deck"></option>
-		<option value="Erratic Deck"></option>
-		<option value="Challenge Deck"></option>
-	</datalist>
-
-	<datalist id="ranks">
-		<option value="Ace"></option>
-		<option value="King"></option>
-		<option value="Queen"></option>
-		<option value="Jack"></option>
-		<option value="10"></option>
-		<option value="9"></option>
-		<option value="8"></option>
-		<option value="7"></option>
-		<option value="6"></option>
-		<option value="5"></option>
-		<option value="4"></option>
-		<option value="3"></option>
-		<option value="2"></option>
-	</datalist>
-
-	<datalist id="suits">
-		<option value="Clubs"></option>
-		<option value="Spades"></option>
-		<option value="Hearts"></option>
-		<option value="Diamonds"></option>
-	</datalist>
 
 	<script src="./src/ui/main.ts" type="module"></script>
 </body>

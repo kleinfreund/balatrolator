@@ -11,8 +11,8 @@ const form = document.querySelector('[data-form]') as HTMLFormElement
 const handsEl = form.querySelector('[data-r-hands]') as HTMLInputElement
 const discardsEl = form.querySelector('[data-r-discards]') as HTMLInputElement
 const moneyEl = form.querySelector('[data-r-money]') as HTMLInputElement
-const blindEl = form.querySelector('[data-r-blind]') as HTMLInputElement
-const deckEl = form.querySelector('[data-r-deck]') as HTMLInputElement
+const blindEl = form.querySelector('[data-r-blind]') as HTMLSelectElement
+const deckEl = form.querySelector('[data-r-deck]') as HTMLSelectElement
 const jokerSlotsEl = form.querySelector('[data-r-joker-slots]') as HTMLInputElement
 
 const handsContainer = form.querySelector('[data-h-container]') as HTMLElement
@@ -68,8 +68,8 @@ function handleSubmit (event: SubmitEvent) {
 	saveState('state', initialState)
 	const score = calculateScore(initialState)
 	log(score)
-	document.querySelector('[data-score]')!.textContent = score.formattedScore
-	document.querySelector('textarea')!.textContent = JSON.stringify(score, null, 2)
+	document.querySelector('[data-formatted-score]')!.textContent = score.formattedScore
+	document.querySelector('[data-score]')!.textContent = new Intl.NumberFormat('en').format(score.score)
 }
 
 /**
@@ -116,8 +116,8 @@ function readStateFromUi (): InitialState {
 		const plusChipsEl = joker.querySelector('[data-j-plus-chips]') as HTMLInputElement
 		const plusMultiplierEl = joker.querySelector('[data-j-plus-multiplier]') as HTMLInputElement
 		const timesMultiplierEl = joker.querySelector('[data-j-times-multiplier]') as HTMLInputElement
-		const rankEl = joker.querySelector('[data-j-rank]') as HTMLInputElement
-		const suitEl = joker.querySelector('[data-j-suit]') as HTMLInputElement
+		const rankEl = joker.querySelector('[data-j-rank]') as HTMLSelectElement
+		const suitEl = joker.querySelector('[data-j-suit]') as HTMLSelectElement
 		const isActiveEl = joker.querySelector('[data-j-is-active]') as HTMLInputElement
 
 		const name = nameEl.value as JokerName
@@ -142,8 +142,8 @@ function readStateFromUi (): InitialState {
 	}
 
 	for (const card of cardContainer.children) {
-		const rankEl = card.querySelector('[data-c-rank]') as HTMLInputElement
-		const suitEl = card.querySelector('[data-c-suit]') as HTMLInputElement
+		const rankEl = card.querySelector('[data-c-rank]') as HTMLSelectElement
+		const suitEl = card.querySelector('[data-c-suit]') as HTMLSelectElement
 		const editionEl = card.querySelector('[data-c-edition]') as HTMLSelectElement
 		const enhancementEl = card.querySelector('[data-c-enhancement]') as HTMLSelectElement
 		const sealEl = card.querySelector('[data-c-seal]') as HTMLSelectElement
@@ -249,13 +249,15 @@ function addJoker (initialJoker?: InitialJoker) {
 	rankInput.name = `joker-rank-${index}`
 	suitInput.name = `joker-suit-${index}`
 
-	jokerEl.addEventListener('click', handleJokerClick)
 	nameInput.addEventListener('change', handleJokerNameChange)
-	const removeButton = jokerEl.querySelector('[data-j-remove-button]') as HTMLButtonElement
+
+	const removeButton = jokerEl.querySelector('[data-remove-button]') as HTMLButtonElement
 	removeButton.addEventListener('click', handleRemoveJokerClick)
-	const moveLeftButton = jokerEl.querySelector('[data-j-move-left-button]') as HTMLButtonElement
+
+	const moveLeftButton = jokerEl.querySelector('[data-move-left-button]') as HTMLButtonElement
 	moveLeftButton.addEventListener('click', handleMoveJokerLeftClick)
-	const moveRightButton = jokerEl.querySelector('[data-j-move-right-button]') as HTMLButtonElement
+
+	const moveRightButton = jokerEl.querySelector('[data-move-right-button]') as HTMLButtonElement
 	moveRightButton.addEventListener('click', handleMoveJokerRightClick)
 
 	if (initialJoker) {
@@ -283,13 +285,19 @@ function addJoker (initialJoker?: InitialJoker) {
 
 	jokerContainer.appendChild(template)
 
-	if (initialJoker) {
-		const definition = JOKER_DEFINITIONS[initialJoker.name]
-		applyJokerState(jokerEl, definition)
-	}
+	setButtonDisabledStates(jokerContainer)
+	applyJokerState(jokerEl, initialJoker ? JOKER_DEFINITIONS[initialJoker.name] : undefined)
 }
 
-function handleJokerClick () {}
+function setButtonDisabledStates (container: Element) {
+	for (const el of container.children) {
+		const moveLeftButton = el.querySelector('[data-move-left-button]') as HTMLButtonElement
+		moveLeftButton.disabled = el === container.children[0]
+
+		const moveRightButton = el.querySelector('[data-move-right-button]') as HTMLButtonElement
+		moveRightButton.disabled = el === container.children[container.children.length - 1]
+	}
+}
 
 function handleRemoveJokerClick (event: Event) {
 	if (event.currentTarget instanceof HTMLElement) {
@@ -321,8 +329,8 @@ function handleMoveCardRightClick (event: Event) {
 	}
 }
 
-function move (container: Element, el: Element, direction: 1 | -1) {
-	const index = Array.from(container.children).findIndex((el) => el === el)
+function move (container: Element, currentEl: Element, direction: 1 | -1) {
+	const index = Array.from(container.children).findIndex((el) => el === currentEl)
 
 	if (direction === -1 ? index === 0 : index === (container.children.length - 1)) {
 		return
@@ -331,24 +339,29 @@ function move (container: Element, el: Element, direction: 1 | -1) {
 	const otherEl = container.children[index + direction]!
 
 	if (direction === -1) {
-		container.insertBefore(el, otherEl)
+		container.insertBefore(currentEl, otherEl)
 	} else {
-		container.insertBefore(otherEl, el)
+		container.insertBefore(otherEl, currentEl)
 	}
-}
 
+	setButtonDisabledStates(container)
+}
 
 function handleJokerNameChange (event: Event) {
 	const input = event.currentTarget as HTMLInputElement
 	const jokerName = input.value as JokerName
 	const definition = JOKER_DEFINITIONS[jokerName]
-	const jokerEl = input.closest('.joker') as HTMLElement
+	const jokerEl = input.closest('.joker')!
 
 	applyJokerState(jokerEl, definition)
 }
 
-function applyJokerState (jokerEl: HTMLElement, definition: JokerDefinition) {
-	jokerEl.classList.remove(
+function applyJokerState (el: Element, definition?: JokerDefinition) {
+	if (!definition) {
+		return
+	}
+
+	el.classList.remove(
 		'--has-plus-chips',
 		'--has-plus-multiplier',
 		'--has-times-multiplier',
@@ -356,6 +369,7 @@ function applyJokerState (jokerEl: HTMLElement, definition: JokerDefinition) {
 		'--has-rank',
 		'--has-suit',
 	)
+
 	;[
 		definition.hasPlusChipsInput ? '--has-plus-chips' : null,
 		definition.hasPlusMultiplierInput ? '--has-plus-multiplier': null,
@@ -363,7 +377,7 @@ function applyJokerState (jokerEl: HTMLElement, definition: JokerDefinition) {
 		definition.hasIsActiveInput ? '--has-is-active': null,
 		definition.hasRankInput ? '--has-rank': null,
 		definition.hasSuitInput ? '--has-suit': null,
-	].filter(notNullish).forEach((className) => jokerEl.classList.add(className))
+	].filter(notNullish).forEach((className) => el.classList.add(className))
 }
 
 function addCard (initialCard?: InitialCard, isPlayed?: boolean) {
@@ -385,11 +399,21 @@ function addCard (initialCard?: InitialCard, isPlayed?: boolean) {
 	enhancementInput.name = `card-enhancement-${index}`
 	sealInput.name = `card-seal-${index}`
 
-	const removeButton = cardEl.querySelector('[data-c-remove-button]') as HTMLButtonElement
+	cardEl.addEventListener('click', function (event) {
+		if (event.currentTarget && !isInteractive(event)) {
+			isPlayedInput.click()
+		}
+	}, { capture: true })
+
+	isPlayedInput.addEventListener('change', handleIsPlayedChange)
+
+	const removeButton = cardEl.querySelector('[data-remove-button]') as HTMLButtonElement
 	removeButton.addEventListener('click', handleRemoveCardClick)
-	const moveLeftButton = cardEl.querySelector('[data-c-move-left-button]') as HTMLButtonElement
+
+	const moveLeftButton = cardEl.querySelector('[data-move-left-button]') as HTMLButtonElement
 	moveLeftButton.addEventListener('click', handleMoveCardLeftClick)
-	const moveRightButton = cardEl.querySelector('[data-c-move-right-button]') as HTMLButtonElement
+
+	const moveRightButton = cardEl.querySelector('[data-move-right-button]') as HTMLButtonElement
 	moveRightButton.addEventListener('click', handleMoveCardRightClick)
 
 	if (initialCard) {
@@ -410,6 +434,46 @@ function addCard (initialCard?: InitialCard, isPlayed?: boolean) {
 	}
 
 	cardContainer.appendChild(template)
+
+	setButtonDisabledStates(cardContainer)
+	applyCardState(cardEl, Boolean(isPlayed))
+}
+
+function isInteractive (event: Event): boolean {
+	for (const target of event.composedPath()) {
+		if (target === event.currentTarget) {
+			break
+		}
+
+		if (
+			target instanceof HTMLLabelElement ||
+			target instanceof HTMLSelectElement ||
+			target instanceof HTMLInputElement ||
+			target instanceof HTMLButtonElement ||
+			(target instanceof HTMLAnchorElement && target.href)
+		) {
+			return true
+		}
+	}
+
+	return false
+}
+
+function handleIsPlayedChange (event: Event) {
+	const checkbox = event.currentTarget as HTMLInputElement
+	const cardEl = checkbox.closest('.playing-card')!
+
+	applyCardState(cardEl, checkbox.checked)
+}
+
+function applyCardState (el: Element, isPlayed: boolean) {
+	el.classList.remove(
+		'--is-played',
+	)
+
+	;[
+		isPlayed ? '--is-played' : null,
+	].filter(notNullish).forEach((className) => el.classList.add(className))
 }
 
 function handleRemoveCardClick (event: Event) {

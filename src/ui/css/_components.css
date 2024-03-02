@@ -2,6 +2,38 @@
 	margin: 0.5rem;
 }
 
+.form {
+	display: grid;
+	grid-template-areas:
+		'hands round'
+		'hands jokers'
+		'hands cards'
+		'hands score'
+	;
+	grid-template-columns: 15rem minmax(0, 1fr);
+	gap: 0.5rem;
+}
+
+.form__round {
+	grid-area: round;
+}
+
+.form__hands {
+	grid-area: hands;
+}
+
+.form__jokers {
+	grid-area: jokers;
+}
+
+.form__cards {
+	grid-area: cards;
+}
+
+.form__score {
+	grid-area: score;
+}
+
 .panel {
 	padding: 0.5rem;
 	border: 4px solid #e8d1d1;
@@ -16,78 +48,55 @@
 }
 
 .card {
-	width: 170px;
+	min-width: 100px;
+	max-width: 200px;
 	padding: 0.25rem;
-	border: 1px solid transparent;
+	border: 2px solid transparent;
 	border-radius: 5px;
 	background-color: #fdf7f7;
 }
 
-.input-list {
-	display: flex;
-	align-items: baseline;
-	gap: 0.25rem;
-}
-
-.input-list>* {
-	flex-grow: 1;
-}
-
-.label {
+.score {
+	font-size: 1.5rem;
 	font-weight: bold;
-}
-
-.select-control:where(.--flat),
-.text-control:where(.--flat) {
-	display: flex;
-	justify-content: space-between;
-	align-items: baseline;
-	gap: 0.25rem;
-}
-
-.select-control:where(.--flat)>.select,
-.text-control:where(.--flat)>.text-input {
-	flex-grow: 1;
-}
-
-.select,
-.text-input {
-	display: block;
-	width: 100%;
-}
-
-.text-control>.label,
-.text-control>.secondary-label {
-	display: block;
-}
-
-.checkbox-control {
-	display: flex;
-	gap: 0.25rem;
-	align-items: center;
-}
-
-.checkbox-control>.label {
-	flex-grow: 1;
 }
 
 /* HAND LEVELS */
 
+.hand-level {
+	width: initial;
+}
+
 .h-level-input {
 	text-align: right;
-	width: 50px;
+	width: 4rem;
 }
 
 .h-plays-input {
 	text-align: right;
-	width: 50px;
+	width: 5rem;
 }
 
 /* CARDS */
 
+.playing-card {
+	border-color: #ccc;
+}
+
+.playing-card:where(.--is-played) {
+	margin-bottom: 1.5rem;
+}
+
+.playing-card:not(:where(.--is-played)) {
+	margin-top: 1.5rem;
+}
+
 .c-rank-input {
-	width: 50px;
-	text-align: right;
+	width: 5rem;
+}
+
+.c-suit-input {
+	width: 6.5rem;
 }
 
 .c-edition-input {
@@ -103,6 +112,14 @@
 }
 
 /* JOKERS */
+
+.joker {
+	border-color: #ccc;
+}
+
+.j-edition-input {
+	width: 100px;
+}
 
 .joker:not(.--has-plus-chips):not(.--has-plus-multiplier):not(.--has-times-multiplier):not(.--has-is-active):not(.--has-rank):not(.--has-suit) .joker-effects {
 	display: none;
@@ -157,6 +174,9 @@
 }
 
 .j-rank-input {
-	width: 50px;
-	text-align: right;
+	width: 5rem;
+}
+
+.j-suit-input {
+	width: 6.5rem;
 }
