@@ -1,6 +1,6 @@
 import { RANK_TO_CHIP_MAP, DEFAULT_HAND_SCORE_SETS, PLANET_SCORE_SETS, JOKER_DEFINITIONS, MODIFIER_DEFAULTS, PLAYED_CARD_RETRIGGER_JOKER_NAMES, HELD_CARD_RETRIGGER_JOKER_NAMES } from '#lib/data.js'
 import { getHand } from '#lib/getHand.js'
-import type { Card, HandLevel, HandLevels, HandName, HandScore, InitialCard, InitialHandLevels, InitialJoker, InitialState, Joker, JokerCardEffect, JokerEffect, Result, Score, State } from '#lib/types.js'
+import type { Card, HandLevel, HandLevels, HandName, HandScore, InitialCard, InitialHandLevels, InitialJoker, InitialState, Joker, JokerCardEffect, JokerEffect, Modifier, Result, Score, State } from '#lib/types.js'
 import { formatScore } from '#utilities/formatScore.js'
 import { log, logGroup, logGroupEnd } from '#utilities/log.js'
 import { isFaceCard } from '#utilities/isFaceCard.js'
@@ -173,65 +173,22 @@ function getHeldCardTriggers ({ state, card }: { state: State, card: Card }): st
 }
 
 function scorePlayedCard ({ state, score, card }: { state: State, score: Score, card: Card }) {
-	// 1. +Chips
 	if (card.enhancement !== 'stone') {
 		score.chips += RANK_TO_CHIP_MAP[card.rank]
 		log(score, '(+Chips from rank)')
 	}
 
-	const { plusChips: plusChipsEnhancement } = MODIFIER_DEFAULTS.playedEnhancement[card.enhancement]
-	if (plusChipsEnhancement) {
-		score.chips += plusChipsEnhancement
-		log(score, '(+Chips from enhancement)')
-	}
+	scoreModifiers(score, MODIFIER_DEFAULTS.playedEnhancement[card.enhancement])
+	scoreModifiers(score, MODIFIER_DEFAULTS.edition[card.edition])
 
-	const { plusChips: plusChipsEdition } = MODIFIER_DEFAULTS.edition[card.edition]
-	if (plusChipsEdition) {
-		score.chips += plusChipsEdition
-		log(score, '(+Chips from edition)')
-	}
-
-	// 2. +Mult
-	const { plusMultiplier: plusMultiplierEnhancement } = MODIFIER_DEFAULTS.playedEnhancement[card.enhancement]
-	if (plusMultiplierEnhancement) {
-		score.multiplier += plusMultiplierEnhancement
-		log(score, '(+Mult from enhancement)')
-	}
-
-	const { plusMultiplier: plusMultiplierEdition } = MODIFIER_DEFAULTS.edition[card.edition]
-	if (plusMultiplierEdition) {
-		score.multiplier += plusMultiplierEdition
-		log(score, '(+Mult from edition)')
-	}
-
-	// 3. xMult
-	const { timesMultiplier: timesMultiplierEnhancement } = MODIFIER_DEFAULTS.playedEnhancement[card.enhancement]
-	if (timesMultiplierEnhancement) {
-		score.multiplier *= timesMultiplierEnhancement
-		log(score, '(xMult from enhancement)')
-	}
-
-	const { timesMultiplier: timesMultiplierEdition } = MODIFIER_DEFAULTS.edition[card.edition]
-	if (timesMultiplierEdition) {
-		score.multiplier *= timesMultiplierEdition
-		log(score, '(xMult from edition)')
-	}
-
-	// 4. Jokers
 	for (const joker of state.jokers) {
 		joker.playedCardEffect({ state, score, card })
 	}
 }
 
 function scoreHeldCard ({ state, score, card }: { state: State, score: Score, card: Card }) {
-	// 1. xMult
-	const { timesMultiplier: timesMultiplierEnhancement } = MODIFIER_DEFAULTS.heldEnhancement[card.enhancement]
-	if (timesMultiplierEnhancement) {
-		score.multiplier *= timesMultiplierEnhancement
-		log(score, '(xMult from enhancement)')
-	}
+	scoreModifiers(score, MODIFIER_DEFAULTS.heldEnhancement[card.enhancement])
 
-	// 2. Effects
 	for (const joker of state.jokers) {
 		joker.heldCardEffect({ state, score, card })
 		log(score, `(${joker})`)
@@ -239,27 +196,33 @@ function scoreHeldCard ({ state, score, card }: { state: State, score: Score, ca
 }
 
 function scoreJoker ({ state, score, joker }: { state: State, score: Score, joker: Joker }) {
-	// 1. Joker effect
 	joker.effect({ state, score })
 
-	// 2. +Chips
-	const { plusChips: plusChipsEdition } = MODIFIER_DEFAULTS.edition[joker.edition]
-	if (plusChipsEdition) {
-		score.chips += plusChipsEdition
+	scoreModifiers(score, MODIFIER_DEFAULTS.edition[joker.edition])
+}
+
+function scoreModifiers (score: Score, modifier: Modifier) {
+	const {
+		plusChips,
+		plusMultiplier,
+		timesMultiplier,
+	} = modifier
+
+	// 1. +Chips
+	if (plusChips !== undefined) {
+		score.chips += plusChips
 		log(score, '(+Chips from edition)')
 	}
 
-	// 3. +Mult
-	const { plusMultiplier: plusMultiplierEdition } = MODIFIER_DEFAULTS.edition[joker.edition]
-	if (plusMultiplierEdition) {
-		score.multiplier += plusMultiplierEdition
+	// 2. +Mult
+	if (plusMultiplier !== undefined) {
+		score.multiplier += plusMultiplier
 		log(score, '(+Mult from edition)')
 	}
 
-	// 4. xMult
-	const { timesMultiplier: timesMultiplierEdition } = MODIFIER_DEFAULTS.edition[joker.edition]
-	if (timesMultiplierEdition) {
-		score.multiplier *= timesMultiplierEdition
+	// 3. xMult
+	if (timesMultiplier !== undefined) {
+		score.multiplier *= timesMultiplier
 		log(score, '(xMult from edition)')
 	}
 }

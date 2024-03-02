@@ -24,13 +24,13 @@ export interface Score {
 }
 
 export interface ModifierDefaults {
-	edition: Record<JokerEdition, Modifiers>
-	playedEnhancement: Record<Enhancement, Modifiers>
-	heldEnhancement: Record<Enhancement, Modifiers>
-	seal: Record<Seal, Modifiers>
+	edition: Record<JokerEdition, Modifier>
+	playedEnhancement: Record<Enhancement, Modifier>
+	heldEnhancement: Record<Enhancement, Modifier>
+	seal: Record<Seal, Modifier>
 }
 
-export interface Modifiers {
+export interface Modifier {
 	plusChips?: number
 	plusMultiplier?: number
 	timesMultiplier?: number
