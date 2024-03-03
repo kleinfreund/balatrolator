@@ -1,7 +1,10 @@
 name: Deploy
 
 on:
-  push:
+  workflow_run:
+    # Runs when the workflow named “Tests” completes
+    workflows: [Tests]
+    types: [completed]
     branches: [main]
 
 permissions:
@@ -9,11 +12,14 @@ permissions:
 
 concurrency:
   cancel-in-progress: true
-  group: ${{ github.workflow }}-${{ github.ref }}
+  group: ${{ github.workflow }}-${{ github.event.workflow_run.head_branch }}
 
 jobs:
   deploy:
+    # Only runs this job when the triggering workflow run was successful (i.e. the workflow with name “Tests” succeeded).
+    if: github.event.workflow_run.conclusion == 'success'
     runs-on: ubuntu-latest
+    timeout-minutes: 10
     permissions:
       contents: read
       pages: write # to deploy to Pages
