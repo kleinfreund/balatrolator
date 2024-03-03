@@ -6,4 +6,10 @@ html {
 	--c-text: #000;
 	--c-background: #eed9d9;
 	--c-border-neutral: #e7e5e5;
+	--c-card-border: #ccc;
+	--c-input-background: #fff;
+
+	--c-panel-border: #e8d1d1;
+	--c-panel-background: #fcecec;
+	--c-panel-box-shadow: #e8bdbd;
 }

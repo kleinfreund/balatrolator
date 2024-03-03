@@ -44,7 +44,7 @@ select {
 	font-family: inherit;
 	font-weight: inherit;
 	color: inherit;
-	background-color: #fff;
+	background-color: var(--c-input-background);
 }
 
 button {

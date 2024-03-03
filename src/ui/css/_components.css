@@ -36,10 +36,10 @@
 
 .panel {
 	padding: 0.5rem;
-	border: 2px solid #e8d1d1;
+	border: 2px solid var(--c-panel-border);
 	border-radius: 5px;
-	background-color: #fcecec;
-	box-shadow: 0 0 3px #e8bdbd;
+	background-color: var(--c-panel-background);
+	box-shadow: 0 0 3px var(--c-panel-box-shadow);
 }
 
 .panel-header {
@@ -48,7 +48,8 @@
 	gap: 0.5rem;
 }
 
-.card {
+joker-card,
+playing-card {
 	min-width: 100px;
 	max-width: 200px;
 	padding: 0.25rem;
@@ -64,7 +65,8 @@
 
 /* HAND LEVELS */
 
-.hand-level {
+hand-level {
+	display: block;
 	width: initial;
 }
 
@@ -80,23 +82,24 @@
 
 /* CARDS */
 
-.playing-card {
-	border-color: #ccc;
+playing-card {
+	display: block;
+	border-color: var(--c-card-border);
 }
 
-.playing-card[draggable="true"] {
+playing-card[draggable="true"] {
 	cursor: ew-resize;
 }
 
-.playing-card:where(.--is-played) {
+playing-card:where(.--is-played) {
 	margin-bottom: 1.5rem;
 }
 
-.playing-card:not(:where(.--is-played)) {
+playing-card:not(:where(.--is-played)) {
 	margin-top: 1.5rem;
 }
 
-.playing-card:not(.--is-blind-the-pillar) .c-is-debuffed {
+playing-card:not(.--is-blind-the-pillar) .c-is-debuffed {
 	display: none;
 }
 
@@ -122,11 +125,12 @@
 
 /* JOKERS */
 
-.joker {
-	border-color: #ccc;
+joker-card {
+	display: block;
+	border-color: var(--c-card-border);
 }
 
-.joker[draggable="true"] {
+joker-card[draggable="true"] {
 	cursor: ew-resize;
 }
 
@@ -134,40 +138,40 @@
 	width: 100px;
 }
 
-.joker:not(.--has-plus-chips):not(.--has-plus-multiplier):not(.--has-times-multiplier):not(.--has-is-active):not(.--has-rank):not(.--has-suit) .joker-effects {
+joker-card:not(.--has-plus-chips):not(.--has-plus-multiplier):not(.--has-times-multiplier):not(.--has-is-active):not(.--has-rank):not(.--has-suit) .joker-effects {
 	display: none;
 }
 
-.joker:not(.--has-plus-chips) .j-plus-chips {
+joker-card:not(.--has-plus-chips) .j-plus-chips {
 	display: none;
 }
 
-.joker:not(.--has-plus-multiplier) .j-plus-multiplier {
+joker-card:not(.--has-plus-multiplier) .j-plus-multiplier {
 	display: none;
 }
 
-.joker:not(.--has-times-multiplier) .j-times-multiplier {
+joker-card:not(.--has-times-multiplier) .j-times-multiplier {
 	display: none;
 }
 
-.joker:not(.--has-is-active) .j-is-active {
+joker-card:not(.--has-is-active) .j-is-active {
 	display: none;
 }
 
-.joker:not(.--has-rank):not(.--has-suit) .j-card {
+joker-card:not(.--has-rank):not(.--has-suit) .j-card {
 	display: none;
 }
 
-.joker:not(.--has-rank) .j-rank {
+joker-card:not(.--has-rank) .j-rank {
 	display: none;
 }
 
-.joker.--has-rank:not(.--has-suit) .j-card-of,
-.joker:not(.--has-rank).--has-suit .j-card-of {
+joker-card.--has-rank:not(.--has-suit) .j-card-of,
+joker-card:not(.--has-rank).--has-suit .j-card-of {
 	display: none;
 }
 
-.joker:not(.--has-suit) .j-suit {
+joker-card:not(.--has-suit) .j-suit {
 	display: none;
 }
 

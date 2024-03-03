@@ -1,8 +1,9 @@
-import type { BlindName, Card, DeckName, Edition, Enhancement, HandName, InitialState, Joker, JokerEdition, JokerName, Rank, Seal, State, Suit } from '#lib/types.js'
-import { notNullish } from '#utilities/notNullish.js'
-import { JOKER_DEFINITIONS } from '#lib/data.js'
+import { HandLevel } from './components/HandLevel.js'
+import { JokerCard } from './components/JokerCard.js'
+import { PlayingCard } from './components/PlayingCard.js'
 import { log } from '#utilities/log.js'
 import { calculateScore } from '#lib/balatro.js'
+import type { BlindName, Card, DeckName, HandName, InitialState, Joker, State } from '#lib/types.js'
 
 export class UiState {
 	handsInput: HTMLInputElement
@@ -13,15 +14,13 @@ export class UiState {
 	deckSelect: HTMLSelectElement
 	jokerSlotsInput: HTMLInputElement
 
-	handsContainer: HTMLElement
+	handLevelContainer: HTMLElement
 
 	jokerContainer: HTMLElement
 	addJokerButton: HTMLButtonElement
-	jokerTemplate: HTMLTemplateElement
 
-	cardContainer: HTMLElement
+	playingCardContainer: HTMLElement
 	addCardButton: HTMLButtonElement
-	cardTemplate: HTMLTemplateElement
 
 	formattedScoreEl: HTMLElement
 	scoreEl: HTMLElement
@@ -35,33 +34,31 @@ export class UiState {
 		this.deckSelect = form.querySelector('[data-r-deck]') as HTMLSelectElement
 		this.jokerSlotsInput = form.querySelector('[data-r-joker-slots]') as HTMLInputElement
 
-		this.handsContainer = form.querySelector('[data-h-container]') as HTMLElement
+		this.handLevelContainer = form.querySelector('[data-h-container]') as HTMLElement
 
 		this.jokerContainer = form.querySelector('[data-j-container]') as HTMLElement
-		this.jokerContainer.addEventListener('dragenter', handleDragOver)
-		this.jokerContainer.addEventListener('dragover', handleDragOver)
 		this.addJokerButton = form.querySelector('[data-j-add-button]') as HTMLButtonElement
 		this.addJokerButton.addEventListener('click', () => this.addJoker())
-		this.jokerTemplate = document.querySelector('template#joker') as HTMLTemplateElement
 
-		this.cardContainer = form.querySelector('[data-c-container]') as HTMLElement
-		this.cardContainer.addEventListener('dragenter', handleDragOver)
-		this.cardContainer.addEventListener('dragover', handleDragOver)
+		this.playingCardContainer = form.querySelector('[data-c-container]') as HTMLElement
 		this.addCardButton = form.querySelector('[data-c-add-button]') as HTMLButtonElement
 		this.addCardButton.addEventListener('click', () => this.addCard())
-		this.cardTemplate = document.querySelector('template#card') as HTMLTemplateElement
 
 		this.formattedScoreEl = form.querySelector('[data-formatted-score]') as HTMLElement
 		this.scoreEl = form.querySelector('[data-score]') as HTMLElement
 
 		// Quick and dirty way to update the state whenever necessary
 		form.addEventListener('change', () => {
-			for (const cardEl of this.cardContainer.children) {
-				this.updateCardState(cardEl)
+			for (const el of this.playingCardContainer.children) {
+				if (el instanceof PlayingCard) {
+					el.updateState()
+				}
 			}
 
-			for (const jokerEl of this.jokerContainer.children) {
-				this.updateJokerState(jokerEl)
+			for (const el of this.jokerContainer.children) {
+				if (el instanceof JokerCard) {
+					el.updateState()
+				}
 			}
 		})
 	}
@@ -104,73 +101,40 @@ export class UiState {
 			heldCards: [],
 		}
 
-		for (const hand of this.handsContainer.children) {
-			const nameEl = hand.querySelector('[data-h-name]') as HTMLElement
-			const levelEl = hand.querySelector('[data-h-level]') as HTMLInputElement
-			const playsEl = hand.querySelector('[data-h-plays]') as HTMLInputElement
+		for (const handLevel of this.handLevelContainer.children) {
+			if (!(handLevel instanceof HandLevel)) continue
 
-			const name = nameEl.textContent as HandName
-			const level = Number(levelEl.value)
-			const plays = Number(playsEl.value)
-
-			initialState.handLevels[name] = { level, plays }
+			initialState.handLevels[handLevel.handName] = {
+				level: handLevel.level,
+				plays: handLevel.plays,
+			}
 		}
 
-		for (const joker of this.jokerContainer.children) {
-			const nameSelect = joker.querySelector('[data-j-name]') as HTMLSelectElement
-			const editionSelect = joker.querySelector('[data-j-edition]') as HTMLSelectElement
-			const plusChipsInput = joker.querySelector('[data-j-plus-chips]') as HTMLInputElement
-			const plusMultiplierInput = joker.querySelector('[data-j-plus-multiplier]') as HTMLInputElement
-			const timesMultiplierInput = joker.querySelector('[data-j-times-multiplier]') as HTMLInputElement
-			const rankSelect = joker.querySelector('[data-j-rank]') as HTMLSelectElement
-			const suitSelect = joker.querySelector('[data-j-suit]') as HTMLSelectElement
-			const isActiveCheckbox = joker.querySelector('[data-j-is-active]') as HTMLInputElement
-
-			const name = nameSelect.value as JokerName
-			const edition = editionSelect.value as JokerEdition
-			const plusChips = Number(plusChipsInput.value)
-			const plusMultiplier = Number(plusMultiplierInput.value)
-			const timesMultiplier = Number(timesMultiplierInput.value)
-			const rank = rankSelect.value as Rank
-			const suit = suitSelect.value as Suit
-			const isActive = isActiveCheckbox.checked
+		for (const jokerCard of this.jokerContainer.children) {
+			if (!(jokerCard instanceof JokerCard)) continue
 
 			initialState.jokers.push({
-				name,
-				edition,
-				plusChips,
-				plusMultiplier,
-				timesMultiplier,
-				rank,
-				suit,
-				isActive,
+				name: jokerCard.jokerName,
+				edition: jokerCard.edition,
+				plusChips: jokerCard.plusChips,
+				plusMultiplier: jokerCard.plusMultiplier,
+				timesMultiplier: jokerCard.timesMultiplier,
+				rank: jokerCard.rank,
+				suit: jokerCard.suit,
+				isActive: jokerCard.isActive,
 			})
 		}
 
-		for (const cardEl of this.cardContainer.children) {
-			const rankSelect = cardEl.querySelector('[data-c-rank]') as HTMLSelectElement
-			const suitSelect = cardEl.querySelector('[data-c-suit]') as HTMLSelectElement
-			const editionSelect = cardEl.querySelector('[data-c-edition]') as HTMLSelectElement
-			const enhancementSelect = cardEl.querySelector('[data-c-enhancement]') as HTMLSelectElement
-			const sealSelect = cardEl.querySelector('[data-c-seal]') as HTMLSelectElement
-			const isPlayedCheckbox = cardEl.querySelector('[data-c-is-played]') as HTMLInputElement
-			const isDebuffedCheckbox = cardEl.querySelector('[data-c-is-debuffed]') as HTMLInputElement
+		for (const cardEl of this.playingCardContainer.children) {
+			if (!(cardEl instanceof PlayingCard)) continue
 
-			const rank = rankSelect.value as Rank
-			const suit = suitSelect.value as Suit
-			const edition = editionSelect.value as Edition
-			const enhancement = enhancementSelect.value as Enhancement
-			const seal = sealSelect.value as Seal
-			const isPlayed = isPlayedCheckbox.checked
-			const isDebuffed = isDebuffedCheckbox.checked
-
-			initialState[isPlayed ? 'playedCards' : 'heldCards'].push({
-				rank,
-				suit,
-				edition,
-				enhancement,
-				seal,
-				isDebuffed,
+			initialState[cardEl.isPlayed ? 'playedCards' : 'heldCards'].push({
+				rank: cardEl.rank,
+				suit: cardEl.suit,
+				edition: cardEl.edition,
+				enhancement: cardEl.enhancement,
+				seal: cardEl.seal,
+				isDebuffed: cardEl.isDebuffed,
 			})
 		}
 
@@ -189,16 +153,9 @@ export class UiState {
 		this.deckSelect.value = state.deck
 		this.jokerSlotsInput.value = String(state.jokerSlots)
 
-		for (const hand of this.handsContainer.children) {
-			const nameEl = hand.querySelector('[data-h-name]') as HTMLElement
-			const levelEl = hand.querySelector('[data-h-level]') as HTMLInputElement
-			const playsEl = hand.querySelector('[data-h-plays]') as HTMLInputElement
-
-			const name = nameEl.textContent as HandName
-			const { level, plays } = state.handLevels[name]
-
-			levelEl.value = String(level)
-			playsEl.value = String(plays)
+		this.handLevelContainer.innerHTML = ''
+		for (const [handName, handLevel] of Object.entries(state.handLevels)) {
+			this.addHandLevel(handName as HandName, handLevel)
 		}
 
 		this.jokerContainer.innerHTML = ''
@@ -206,7 +163,7 @@ export class UiState {
 			this.addJoker(joker)
 		}
 
-		this.cardContainer.innerHTML = ''
+		this.playingCardContainer.innerHTML = ''
 		for (const card of state.playedCards) {
 			this.addCard(card, true)
 		}
@@ -217,260 +174,26 @@ export class UiState {
 	}
 
 	addJoker (joker?: Joker) {
-		const template = this.jokerTemplate.content.cloneNode(true) as HTMLElement
-		const jokerEl = template.querySelector('[data-joker]') as HTMLElement
-		const index = this.jokerContainer.children.length
-
-		const nameSelect = jokerEl.querySelector('[data-j-name]') as HTMLSelectElement
-		const editionSelect = jokerEl.querySelector('[data-j-edition]') as HTMLSelectElement
-		const plusChipsInput = jokerEl.querySelector('[data-j-plus-chips]') as HTMLInputElement
-		const plusMultiplierInput = jokerEl.querySelector('[data-j-plus-multiplier]') as HTMLInputElement
-		const timesMultiplierInput = jokerEl.querySelector('[data-j-times-multiplier]') as HTMLInputElement
-		const isActiveCheckbox = jokerEl.querySelector('[data-j-is-active]') as HTMLInputElement
-		const rankSelect = jokerEl.querySelector('[data-j-rank]') as HTMLSelectElement
-		const suitSelect = jokerEl.querySelector('[data-j-suit]') as HTMLSelectElement
-
-		nameSelect.name = `joker-name-${index}`
-		editionSelect.name = `joker-edition-${index}`
-		plusChipsInput.name = `joker-plusChips-${index}`
-		plusMultiplierInput.name = `joker-plusMultiplier-${index}`
-		timesMultiplierInput.name = `joker-timesMultiplier-${index}`
-		isActiveCheckbox.name = `joker-isActive-${index}`
-		rankSelect.name = `joker-rank-${index}`
-		suitSelect.name = `joker-suit-${index}`
-
-		jokerEl.addEventListener('dragstart', handleDragStart)
-		jokerEl.addEventListener('dragend', handleDragEnd)
-
-		const removeButton = jokerEl.querySelector('[data-remove-button]') as HTMLButtonElement
-		removeButton.addEventListener('click', this.handleRemoveJokerClick)
-
-		if (joker) {
-			const {
-				name,
-				edition,
-				plusChips,
-				plusMultiplier,
-				timesMultiplier,
-				isActive,
-				rank,
-				suit,
-			} = joker
-			const definition = JOKER_DEFINITIONS[name]
-
-			nameSelect.value = name
-			editionSelect.value = edition
-			if (definition.hasPlusChipsInput) plusChipsInput.value = String(plusChips)
-			if (definition.hasPlusMultiplierInput) plusMultiplierInput.value = String(plusMultiplier)
-			if (definition.hasTimesMultiplierInput) timesMultiplierInput.value = String(timesMultiplier)
-			if (definition.hasIsActiveInput) isActiveCheckbox.checked = Boolean(isActive)
-			if (definition.hasRankInput) rankSelect.value = String(rank)
-			if (definition.hasSuitInput) suitSelect.value = String(suit)
+		this.jokerContainer.insertAdjacentHTML('beforeend', '<joker-card></joker-card>')
+		const jokerEl = this.jokerContainer.children[this.jokerContainer.children.length - 1]
+		if (joker && jokerEl instanceof JokerCard) {
+			jokerEl.setJoker(joker)
 		}
-
-		this.jokerContainer.appendChild(template)
-		this.updateJokerState(jokerEl)
-	}
-
-	updateJokerState (el: Element) {
-		const jokerNameEl = el.querySelector('[data-j-name]') as HTMLInputElement
-		const jokerName = jokerNameEl.value as JokerName
-		const definition = JOKER_DEFINITIONS[jokerName]
-		if (!definition) {
-			return
-		}
-
-		el.classList.remove(
-			'--has-plus-chips',
-			'--has-plus-multiplier',
-			'--has-times-multiplier',
-			'--has-is-active',
-			'--has-rank',
-			'--has-suit',
-		)
-
-		;[
-			definition.hasPlusChipsInput ? '--has-plus-chips' : null,
-			definition.hasPlusMultiplierInput ? '--has-plus-multiplier': null,
-			definition.hasTimesMultiplierInput ? '--has-times-multiplier': null,
-			definition.hasIsActiveInput ? '--has-is-active': null,
-			definition.hasRankInput ? '--has-rank': null,
-			definition.hasSuitInput ? '--has-suit': null,
-		].filter(notNullish).forEach((className) => el.classList.add(className))
 	}
 
 	addCard (card?: Card, isPlayed?: boolean) {
-		const template = this.cardTemplate.content.cloneNode(true) as HTMLElement
-		const cardEl = template.querySelector('[data-playing-card]') as HTMLElement
-		const index = this.cardContainer.children.length
-
-		const isPlayedCheckbox = cardEl.querySelector('[data-c-is-played]') as HTMLInputElement
-		const isDebuffedCheckbox = cardEl.querySelector('[data-c-is-debuffed]') as HTMLInputElement
-		const rankSelect = cardEl.querySelector('[data-c-rank]') as HTMLSelectElement
-		const suitSelect = cardEl.querySelector('[data-c-suit]') as HTMLSelectElement
-		const editionSelect = cardEl.querySelector('[data-c-edition]') as HTMLSelectElement
-		const enhancementSelect = cardEl.querySelector('[data-c-enhancement]') as HTMLSelectElement
-		const sealSelect = cardEl.querySelector('[data-c-seal]') as HTMLSelectElement
-
-		isPlayedCheckbox.name = `card-is-played-${index}`
-		isDebuffedCheckbox.name = `card-is-debuffed-${index}`
-		rankSelect.name = `card-rank-${index}`
-		suitSelect.name = `card-suit-${index}`
-		editionSelect.name = `card-edition-${index}`
-		enhancementSelect.name = `card-enhancement-${index}`
-		sealSelect.name = `card-seal-${index}`
-
-		cardEl.addEventListener('click', function (event) {
-			if (event.currentTarget && !isInteractive(event)) {
-				isPlayedCheckbox.click()
-			}
-		}, { capture: true })
-		cardEl.addEventListener('dragstart', handleDragStart)
-		cardEl.addEventListener('dragend', handleDragEnd)
-
-		const removeButton = cardEl.querySelector('[data-remove-button]') as HTMLButtonElement
-		removeButton.addEventListener('click', this.handleRemoveCardClick)
-
-		if (card) {
-			const {
-				rank,
-				suit,
-				edition,
-				enhancement,
-				seal,
-				isDebuffed,
-			} = card
-
-			isPlayedCheckbox.checked = Boolean(isPlayed)
-			isDebuffedCheckbox.checked = isDebuffed
-			rankSelect.value = rank
-			suitSelect.value = suit
-			editionSelect.value = edition
-			enhancementSelect.value = enhancement
-			sealSelect.value = seal
-		}
-
-		this.cardContainer.appendChild(template)
-		this.updateCardState(cardEl)
-	}
-
-	updateCardState (el: Element) {
-		const isPlayedCheckbox = el.querySelector('[data-c-is-played]') as HTMLInputElement
-		const isDebuffedCheckbox = el.querySelector('[data-c-is-debuffed]') as HTMLInputElement
-
-		el.classList.remove(
-			'--is-played',
-			'--is-debuffed',
-			'--is-blind-the-pillar'
-		)
-
-		;[
-			isPlayedCheckbox.checked ? '--is-played' : null,
-			isDebuffedCheckbox.checked ? '--is-debuffed' : null,
-			this.blindNameSelect.value === 'The Pillar' && this.blindIsActiveCheckbox.checked ? '--is-blind-the-pillar' : undefined,
-		].filter(notNullish).forEach((className) => el.classList.add(className))
-	}
-
-	handleRemoveJokerClick = (event: Event) => {
-		if (event.currentTarget instanceof HTMLElement) {
-			event.currentTarget.closest('[data-joker]')!.remove()
+		this.playingCardContainer.insertAdjacentHTML('beforeend', '<playing-card></playing-card>')
+		const el = this.playingCardContainer.children[this.playingCardContainer.children.length - 1]
+		if (card && el instanceof PlayingCard) {
+			el.setCard(card, isPlayed)
 		}
 	}
 
-	handleRemoveCardClick = (event: Event) => {
-		if (event.currentTarget instanceof HTMLElement) {
-			event.currentTarget.closest('[data-playing-card]')!.remove()
+	addHandLevel (handName: HandName, handLevel: { level: number, plays: number }) {
+		this.handLevelContainer.insertAdjacentHTML('beforeend', '<hand-level></hand-level>')
+		const el = this.handLevelContainer.children[this.handLevelContainer.children.length - 1]
+		if (el instanceof HandLevel) {
+			el.setHandLevel(handName, handLevel)
 		}
 	}
-}
-
-function isInteractive (event: Event): boolean {
-	for (const target of event.composedPath()) {
-		if (target === event.currentTarget) {
-			break
-		}
-
-		if (
-			target instanceof HTMLLabelElement ||
-			target instanceof HTMLSelectElement ||
-			target instanceof HTMLInputElement ||
-			target instanceof HTMLButtonElement ||
-			(target instanceof HTMLAnchorElement && target.href)
-		) {
-			return true
-		}
-	}
-
-	return false
-}
-
-function handleDragStart (event: DragEvent) {
-	if (event.dataTransfer === null || !(event.target instanceof Element)) {
-		return
-	}
-
-	const container = event.target.closest('[data-drop-zone]')
-	if (container) {
-		const draggedElIndex = Array.from(container.children).findIndex((el) => el === event.target)
-		if (draggedElIndex !== -1) {
-			event.dataTransfer.effectAllowed = 'move'
-			event.dataTransfer.dropEffect = 'move'
-			event.dataTransfer.setData('text/plain', String(draggedElIndex))
-		}
-	}
-}
-
-function handleDragEnd (event: DragEvent) {
-	const data = getDragEventData(event)
-	if (data) {
-		drop(data.container, data.draggedEl, event.clientX)
-	}
-}
-
-function handleDragOver (event: DragEvent) {
-	if (getDragEventData(event)) {
-		event.preventDefault()
-	}
-}
-
-function getDragEventData (event: DragEvent): { container: Element, draggedEl: Element } | null {
-	if (event.dataTransfer === null || !(event.target instanceof Element)) {
-		return null
-	}
-
-	const container = event.target.closest('[data-drop-zone]')
-	if (container) {
-		const draggedElIndex = Number(event.dataTransfer.getData('text/plain'))
-		if (!Number.isNaN(draggedElIndex)) {
-			const draggedEl = container.children[draggedElIndex]
-
-			if (draggedEl) {
-				return { container, draggedEl }
-			}
-		}
-	}
-
-	return null
-}
-
-function drop (container: Element, draggedEl: Element, dragClientX: number) {
-	// Determining the insertion coordinate for the element …
-	const containerRect = container.getBoundingClientRect()
-	// The drop target X coordinate relative to the container.
-	const dropTargetX = dragClientX - containerRect.left
-
-	for (const el of container.children) {
-		const { left, width } = el.getBoundingClientRect()
-		// The element's X coordinate relative to the container.
-		const elStartX = left - containerRect.left
-		// The element's halfway point X coordinate relative the container.
-		const halfwayPointX = elStartX + width / 2
-
-		if (dropTargetX < halfwayPointX) {
-			el.insertAdjacentElement('beforebegin', draggedEl)
-			return
-		}
-	}
-
-	container.insertAdjacentElement('beforeend', draggedEl)
 }
