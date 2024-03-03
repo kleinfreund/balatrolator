@@ -40,6 +40,10 @@ select {
 	align-items: center;
 }
 
+.input-list:where(.--items-grow)>* {
+	flex-grow: 1;
+}
+
 .select-control:where(.--flat),
 .text-control:where(.--flat) {
 	display: flex;
