@@ -73,21 +73,6 @@ export const DEFAULT_HAND_SCORE_SETS: Record<HandName, Score> = {
 	'High Card': { chips: 5, multiplier: 1 },
 }
 
-export const PLANET_TO_HAND_MAP = {
-	Eris: 'Flush Five',
-	Ceres: 'Flush House',
-	'Planet X': 'Five of a Kind',
-	Neptune: 'Straight Flush',
-	Mars: 'Four of a Kind',
-	Earth: 'Full House',
-	Jupiter: 'Flush',
-	Saturn: 'Straight',
-	Venus: 'Three of a Kind',
-	Uranus: 'Two Pair',
-	Mercury: 'Pair',
-	Pluto: 'High Card',
-} as const
-
 export const RANK_TO_CHIP_MAP: Record<Rank, number> = {
 	'Ace': 11,
 	'King': 10,
