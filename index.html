@@ -435,179 +435,169 @@
 	<template id="joker">
 		<div class="card joker" draggable="true" data-joker>
 			<div class="stack">
-				<div class="actions">
-					<button class="j-move-left-button --icon" type="button" data-move-left-button>
-						<span class="visually-hidden">Move left</span>
-						⬅️
-					</button>
+				<div class="input-list">
+					<label class="j-name select-control">
+						<span class="visually-hidden">Joker name</span>
 
-					<button class="j-remove-button --icon push-left" type="button" data-remove-button>
+						<select class="j-name-input select" data-j-name>
+							<option value="8 Ball">8 Ball</option>
+							<option value="Abstract Joker">Abstract Joker</option>
+							<option value="Acrobat">Acrobat</option>
+							<option value="Ancient Joker">Ancient Joker</option>
+							<option value="Arrowhead">Arrowhead</option>
+							<option value="Astronomer">Astronomer</option>
+							<option value="Banner">Banner</option>
+							<option value="Baron">Baron</option>
+							<option value="Baseball Card">Baseball Card</option>
+							<option value="Blackboard">Blackboard</option>
+							<option value="Bloodstone">Bloodstone</option>
+							<option value="Blue Joker">Blue Joker</option>
+							<option value="Blueprint">Blueprint</option>
+							<option value="Bootstraps">Bootstraps</option>
+							<option value="Brainstorm">Brainstorm</option>
+							<option value="Bull">Bull</option>
+							<option value="Burglar">Burglar</option>
+							<option value="Burnt Joker">Burnt Joker</option>
+							<option value="Business Card">Business Card</option>
+							<option value="Campfire">Campfire</option>
+							<option value="Canio">Canio</option>
+							<option value="Card Sharp">Card Sharp</option>
+							<option value="Cartomancer">Cartomancer</option>
+							<option value="Castle">Castle</option>
+							<option value="Cavendish">Cavendish</option>
+							<option value="Ceremonial Dagger">Ceremonial Dagger</option>
+							<option value="Certificate">Certificate</option>
+							<option value="Chaos the Clown">Chaos the Clown</option>
+							<option value="Chicot">Chicot</option>
+							<option value="Clever Joker">Clever Joker</option>
+							<option value="Cloud 9">Cloud 9</option>
+							<option value="Constellation">Constellation</option>
+							<option value="Crafty Joker">Crafty Joker</option>
+							<option value="Crazy Joker">Crazy Joker</option>
+							<option value="Credit Card">Credit Card</option>
+							<option value="Delayed Gratification">Delayed Gratification</option>
+							<option value="Devious Joker">Devious Joker</option>
+							<option value="Diet Cola">Diet Cola</option>
+							<option value="DNA">DNA</option>
+							<option value="Driver's license">Driver's license</option>
+							<option value="Droll Joker">Droll Joker</option>
+							<option value="Drunkard">Drunkard</option>
+							<option value="Dusk">Dusk</option>
+							<option value="Egg">Egg</option>
+							<option value="Erosion">Erosion</option>
+							<option value="Even Steven">Even Steven</option>
+							<option value="Faceless Joker">Faceless Joker</option>
+							<option value="Fibonacci">Fibonacci</option>
+							<option value="Flash Card">Flash Card</option>
+							<option value="Flowerpot">Flowerpot</option>
+							<option value="Fortune Teller">Fortune Teller</option>
+							<option value="Four Fingers">Four Fingers</option>
+							<option value="Gift Card">Gift Card</option>
+							<option value="Glass Joker">Glass Joker</option>
+							<option value="Gluttonous Joker">Gluttonous Joker</option>
+							<option value="Golden Joker">Golden Joker</option>
+							<option value="Golden Ticket">Golden Ticket</option>
+							<option value="Greedy Joker">Greedy Joker</option>
+							<option value="Green Joker">Green Joker</option>
+							<option value="Gros Michel">Gros Michel</option>
+							<option value="Hack">Hack</option>
+							<option value="Half Joker">Half Joker</option>
+							<option value="Hallucination">Hallucination</option>
+							<option value="Hanging Chad">Hanging Chad</option>
+							<option value="Hiker">Hiker</option>
+							<option value="Hit the Road">Hit the Road</option>
+							<option value="Hologram">Hologram</option>
+							<option value="Ice Cream">Ice Cream</option>
+							<option value="Invisible Joker">Invisible Joker</option>
+							<option value="Joker Stencil">Joker Stencil</option>
+							<option value="Joker">Joker</option>
+							<option value="Jolly Joker">Jolly Joker</option>
+							<option value="Juggler">Juggler</option>
+							<option value="Loyalty Card">Loyalty Card</option>
+							<option value="Luchador">Luchador</option>
+							<option value="Lucky Cat">Lucky Cat</option>
+							<option value="Lusty Joker">Lusty Joker</option>
+							<option value="Mad Joker">Mad Joker</option>
+							<option value="Madness">Madness</option>
+							<option value="Mail-in Rebate">Mail-in Rebate</option>
+							<option value="Marble Joker">Marble Joker</option>
+							<option value="Matador">Matador</option>
+							<option value="Merry Andy">Merry Andy</option>
+							<option value="Midas Mask">Midas Mask</option>
+							<option value="Mime">Mime</option>
+							<option value="Misprint">Misprint</option>
+							<option value="Mr. Bones">Mr. Bones</option>
+							<option value="Mystic Summit">Mystic Summit</option>
+							<option value="Obelisk">Obelisk</option>
+							<option value="Odd Todd">Odd Todd</option>
+							<option value="Onyx Agate">Onyx Agate</option>
+							<option value="Oops! All 6s">Oops! All 6s</option>
+							<option value="Pareidolia">Pareidolia</option>
+							<option value="Perkeo">Perkeo</option>
+							<option value="Photograph">Photograph</option>
+							<option value="Popcorn">Popcorn</option>
+							<option value="Raised Fist">Raised Fist</option>
+							<option value="Ramen">Ramen</option>
+							<option value="Red Card">Red Card</option>
+							<option value="Reserved Parking">Reserved Parking</option>
+							<option value="Ride the Bus">Ride the Bus</option>
+							<option value="Riff-Raff">Riff-Raff</option>
+							<option value="Rocket">Rocket</option>
+							<option value="Rough Gem">Rough Gem</option>
+							<option value="Runner">Runner</option>
+							<option value="Satellite">Satellite</option>
+							<option value="Scary Face">Scary Face</option>
+							<option value="Scholar">Scholar</option>
+							<option value="Séance">Séance</option>
+							<option value="Seeing Double">Seeing Double</option>
+							<option value="Seltzer">Seltzer</option>
+							<option value="Shoot the Moon">Shoot the Moon</option>
+							<option value="Shortcut">Shortcut</option>
+							<option value="Showman">Showman</option>
+							<option value="Sixth Sense">Sixth Sense</option>
+							<option value="Sly Joker">Sly Joker</option>
+							<option value="Smeared Joker">Smeared Joker</option>
+							<option value="Smiley Face">Smiley Face</option>
+							<option value="Sock and Buskin">Sock and Buskin</option>
+							<option value="Space Joker">Space Joker</option>
+							<option value="Spare Trousers">Spare Trousers</option>
+							<option value="Splash">Splash</option>
+							<option value="Square Joker">Square Joker</option>
+							<option value="Steel Joker">Steel Joker</option>
+							<option value="Stone Joker">Stone Joker</option>
+							<option value="Stuntman">Stuntman</option>
+							<option value="Supernova">Supernova</option>
+							<option value="Superposition">Superposition</option>
+							<option value="Swashbuckler">Swashbuckler</option>
+							<option value="The Duo">The Duo</option>
+							<option value="The Family">The Family</option>
+							<option value="The Idol">The Idol</option>
+							<option value="The Order">The Order</option>
+							<option value="The Tribe">The Tribe</option>
+							<option value="The Trio">The Trio</option>
+							<option value="Throwback">Throwback</option>
+							<option value="To Do List">To Do List</option>
+							<option value="To the Moon">To the Moon</option>
+							<option value="Trading Card">Trading Card</option>
+							<option value="Triboulet">Triboulet</option>
+							<option value="Troubador">Troubador</option>
+							<option value="Turtle Bean">Turtle Bean</option>
+							<option value="Vagabond">Vagabond</option>
+							<option value="Vampire">Vampire</option>
+							<option value="Walkie Talkie">Walkie Talkie</option>
+							<option value="Wee Joker">Wee Joker</option>
+							<option value="Wily Joker">Wily Joker</option>
+							<option value="Wrathful Joker">Wrathful Joker</option>
+							<option value="Yorick">Yorick</option>
+							<option value="Zany Joker">Zany Joker</option>
+						</select>
+					</label>
+
+					<button class="j-remove-button --icon" type="button" data-remove-button>
 						<span class="visually-hidden">Remove</span>
 						🗑️
 					</button>
-
-					<button class="j-move-right-button --icon" type="button" data-move-right-button>
-						<span class="visually-hidden">Move reft</span>
-						➡️
-					</button>
 				</div>
-
-				<label class="j-name select-control">
-					<span class="visually-hidden">Joker name</span>
-
-					<select class="j-name-input select" data-j-name>
-						<option value="8 Ball">8 Ball</option>
-						<option value="Abstract Joker">Abstract Joker</option>
-						<option value="Acrobat">Acrobat</option>
-						<option value="Ancient Joker">Ancient Joker</option>
-						<option value="Arrowhead">Arrowhead</option>
-						<option value="Astronomer">Astronomer</option>
-						<option value="Banner">Banner</option>
-						<option value="Baron">Baron</option>
-						<option value="Baseball Card">Baseball Card</option>
-						<option value="Blackboard">Blackboard</option>
-						<option value="Bloodstone">Bloodstone</option>
-						<option value="Blue Joker">Blue Joker</option>
-						<option value="Blueprint">Blueprint</option>
-						<option value="Bootstraps">Bootstraps</option>
-						<option value="Brainstorm">Brainstorm</option>
-						<option value="Bull">Bull</option>
-						<option value="Burglar">Burglar</option>
-						<option value="Burnt Joker">Burnt Joker</option>
-						<option value="Business Card">Business Card</option>
-						<option value="Campfire">Campfire</option>
-						<option value="Canio">Canio</option>
-						<option value="Card Sharp">Card Sharp</option>
-						<option value="Cartomancer">Cartomancer</option>
-						<option value="Castle">Castle</option>
-						<option value="Cavendish">Cavendish</option>
-						<option value="Ceremonial Dagger">Ceremonial Dagger</option>
-						<option value="Certificate">Certificate</option>
-						<option value="Chaos the Clown">Chaos the Clown</option>
-						<option value="Chicot">Chicot</option>
-						<option value="Clever Joker">Clever Joker</option>
-						<option value="Cloud 9">Cloud 9</option>
-						<option value="Constellation">Constellation</option>
-						<option value="Crafty Joker">Crafty Joker</option>
-						<option value="Crazy Joker">Crazy Joker</option>
-						<option value="Credit Card">Credit Card</option>
-						<option value="Delayed Gratification">Delayed Gratification</option>
-						<option value="Devious Joker">Devious Joker</option>
-						<option value="Diet Cola">Diet Cola</option>
-						<option value="DNA">DNA</option>
-						<option value="Driver's license">Driver's license</option>
-						<option value="Droll Joker">Droll Joker</option>
-						<option value="Drunkard">Drunkard</option>
-						<option value="Dusk">Dusk</option>
-						<option value="Egg">Egg</option>
-						<option value="Erosion">Erosion</option>
-						<option value="Even Steven">Even Steven</option>
-						<option value="Faceless Joker">Faceless Joker</option>
-						<option value="Fibonacci">Fibonacci</option>
-						<option value="Flash Card">Flash Card</option>
-						<option value="Flowerpot">Flowerpot</option>
-						<option value="Fortune Teller">Fortune Teller</option>
-						<option value="Four Fingers">Four Fingers</option>
-						<option value="Gift Card">Gift Card</option>
-						<option value="Glass Joker">Glass Joker</option>
-						<option value="Gluttonous Joker">Gluttonous Joker</option>
-						<option value="Golden Joker">Golden Joker</option>
-						<option value="Golden Ticket">Golden Ticket</option>
-						<option value="Greedy Joker">Greedy Joker</option>
-						<option value="Green Joker">Green Joker</option>
-						<option value="Gros Michel">Gros Michel</option>
-						<option value="Hack">Hack</option>
-						<option value="Half Joker">Half Joker</option>
-						<option value="Hallucination">Hallucination</option>
-						<option value="Hanging Chad">Hanging Chad</option>
-						<option value="Hiker">Hiker</option>
-						<option value="Hit the Road">Hit the Road</option>
-						<option value="Hologram">Hologram</option>
-						<option value="Ice Cream">Ice Cream</option>
-						<option value="Invisible Joker">Invisible Joker</option>
-						<option value="Joker Stencil">Joker Stencil</option>
-						<option value="Joker">Joker</option>
-						<option value="Jolly Joker">Jolly Joker</option>
-						<option value="Juggler">Juggler</option>
-						<option value="Loyalty Card">Loyalty Card</option>
-						<option value="Luchador">Luchador</option>
-						<option value="Lucky Cat">Lucky Cat</option>
-						<option value="Lusty Joker">Lusty Joker</option>
-						<option value="Mad Joker">Mad Joker</option>
-						<option value="Madness">Madness</option>
-						<option value="Mail-in Rebate">Mail-in Rebate</option>
-						<option value="Marble Joker">Marble Joker</option>
-						<option value="Matador">Matador</option>
-						<option value="Merry Andy">Merry Andy</option>
-						<option value="Midas Mask">Midas Mask</option>
-						<option value="Mime">Mime</option>
-						<option value="Misprint">Misprint</option>
-						<option value="Mr. Bones">Mr. Bones</option>
-						<option value="Mystic Summit">Mystic Summit</option>
-						<option value="Obelisk">Obelisk</option>
-						<option value="Odd Todd">Odd Todd</option>
-						<option value="Onyx Agate">Onyx Agate</option>
-						<option value="Oops! All 6s">Oops! All 6s</option>
-						<option value="Pareidolia">Pareidolia</option>
-						<option value="Perkeo">Perkeo</option>
-						<option value="Photograph">Photograph</option>
-						<option value="Popcorn">Popcorn</option>
-						<option value="Raised Fist">Raised Fist</option>
-						<option value="Ramen">Ramen</option>
-						<option value="Red Card">Red Card</option>
-						<option value="Reserved Parking">Reserved Parking</option>
-						<option value="Ride the Bus">Ride the Bus</option>
-						<option value="Riff-Raff">Riff-Raff</option>
-						<option value="Rocket">Rocket</option>
-						<option value="Rough Gem">Rough Gem</option>
-						<option value="Runner">Runner</option>
-						<option value="Satellite">Satellite</option>
-						<option value="Scary Face">Scary Face</option>
-						<option value="Scholar">Scholar</option>
-						<option value="Séance">Séance</option>
-						<option value="Seeing Double">Seeing Double</option>
-						<option value="Seltzer">Seltzer</option>
-						<option value="Shoot the Moon">Shoot the Moon</option>
-						<option value="Shortcut">Shortcut</option>
-						<option value="Showman">Showman</option>
-						<option value="Sixth Sense">Sixth Sense</option>
-						<option value="Sly Joker">Sly Joker</option>
-						<option value="Smeared Joker">Smeared Joker</option>
-						<option value="Smiley Face">Smiley Face</option>
-						<option value="Sock and Buskin">Sock and Buskin</option>
-						<option value="Space Joker">Space Joker</option>
-						<option value="Spare Trousers">Spare Trousers</option>
-						<option value="Splash">Splash</option>
-						<option value="Square Joker">Square Joker</option>
-						<option value="Steel Joker">Steel Joker</option>
-						<option value="Stone Joker">Stone Joker</option>
-						<option value="Stuntman">Stuntman</option>
-						<option value="Supernova">Supernova</option>
-						<option value="Superposition">Superposition</option>
-						<option value="Swashbuckler">Swashbuckler</option>
-						<option value="The Duo">The Duo</option>
-						<option value="The Family">The Family</option>
-						<option value="The Idol">The Idol</option>
-						<option value="The Order">The Order</option>
-						<option value="The Tribe">The Tribe</option>
-						<option value="The Trio">The Trio</option>
-						<option value="Throwback">Throwback</option>
-						<option value="To Do List">To Do List</option>
-						<option value="To the Moon">To the Moon</option>
-						<option value="Trading Card">Trading Card</option>
-						<option value="Triboulet">Triboulet</option>
-						<option value="Troubador">Troubador</option>
-						<option value="Turtle Bean">Turtle Bean</option>
-						<option value="Vagabond">Vagabond</option>
-						<option value="Vampire">Vampire</option>
-						<option value="Walkie Talkie">Walkie Talkie</option>
-						<option value="Wee Joker">Wee Joker</option>
-						<option value="Wily Joker">Wily Joker</option>
-						<option value="Wrathful Joker">Wrathful Joker</option>
-						<option value="Yorick">Yorick</option>
-						<option value="Zany Joker">Zany Joker</option>
-					</select>
-				</label>
 
 				<label class="j-edition select-control --flat">
 					<span class="label truncate">Edition</span>
@@ -688,28 +678,18 @@
 	<template id="card">
 		<div class="card playing-card" draggable="true" data-playing-card>
 			<div class="stack">
-				<div class="actions">
-					<button class="c-move-left-button --icon" type="button" data-move-left-button>
-						<span class="visually-hidden">Move left</span>
-						⬅️
-					</button>
+				<div class="input-list --items-centered">
+					<label class="c-is-played checkbox-control">
+						<input class="c-is-played-input checkbox" type="checkbox" value="is-played" checked data-c-is-played>
+
+						<span class="label">Play?</span>
+					</label>
 
 					<button class="c-remove-button --icon push-left" type="button" data-remove-button>
 						<span class="visually-hidden">Remove</span>
 						🗑️
 					</button>
-
-					<button class="c-move-right-button --icon" type="button" data-move-right-button>
-						<span class="visually-hidden">Move reft</span>
-						➡️
-					</button>
 				</div>
-
-				<label class="c-is-played checkbox-control">
-					<input class="c-is-played-input checkbox" type="checkbox" value="is-played" checked data-c-is-played>
-
-					<span class="label">Play?</span>
-				</label>
 
 				<label class="c-is-debuffed checkbox-control">
 					<input class="c-is-debuffed-input checkbox" type="checkbox" value="is-debuffed" data-c-is-debuffed>

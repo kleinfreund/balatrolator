@@ -36,8 +36,8 @@ select {
 	flex-wrap: wrap;
 }
 
-.input-list>* {
-	flex-grow: 1;
+.input-list:where(.--items-centered) {
+	align-items: center;
 }
 
 .select-control:where(.--flat),

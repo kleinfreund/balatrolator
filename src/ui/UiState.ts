@@ -245,12 +245,6 @@ export class UiState {
 		const removeButton = jokerEl.querySelector('[data-remove-button]') as HTMLButtonElement
 		removeButton.addEventListener('click', this.handleRemoveJokerClick)
 
-		const moveLeftButton = jokerEl.querySelector('[data-move-left-button]') as HTMLButtonElement
-		moveLeftButton.addEventListener('click', this.handleMoveJokerLeftClick)
-
-		const moveRightButton = jokerEl.querySelector('[data-move-right-button]') as HTMLButtonElement
-		moveRightButton.addEventListener('click', this.handleMoveJokerRightClick)
-
 		if (joker) {
 			const {
 				name,
@@ -275,8 +269,6 @@ export class UiState {
 		}
 
 		this.jokerContainer.appendChild(template)
-
-		setButtonDisabledStates(this.jokerContainer)
 		this.updateJokerState(jokerEl)
 	}
 
@@ -339,12 +331,6 @@ export class UiState {
 		const removeButton = cardEl.querySelector('[data-remove-button]') as HTMLButtonElement
 		removeButton.addEventListener('click', this.handleRemoveCardClick)
 
-		const moveLeftButton = cardEl.querySelector('[data-move-left-button]') as HTMLButtonElement
-		moveLeftButton.addEventListener('click', this.handleMoveCardLeftClick)
-
-		const moveRightButton = cardEl.querySelector('[data-move-right-button]') as HTMLButtonElement
-		moveRightButton.addEventListener('click', this.handleMoveCardRightClick)
-
 		if (card) {
 			const {
 				rank,
@@ -365,8 +351,6 @@ export class UiState {
 		}
 
 		this.cardContainer.appendChild(template)
-
-		setButtonDisabledStates(this.cardContainer)
 		this.updateCardState(cardEl)
 	}
 
@@ -393,53 +377,11 @@ export class UiState {
 		}
 	}
 
-	handleMoveJokerLeftClick = (event: Event) => {
-		if (event.currentTarget instanceof HTMLElement) {
-			move(this.jokerContainer, event.currentTarget.closest('[data-joker]')!, -1)
-		}
-	}
-
-	handleMoveJokerRightClick = (event: Event) => {
-		if (event.currentTarget instanceof HTMLElement) {
-			move(this.jokerContainer, event.currentTarget.closest('[data-joker]')!, 1)
-		}
-	}
-
 	handleRemoveCardClick = (event: Event) => {
 		if (event.currentTarget instanceof HTMLElement) {
 			event.currentTarget.closest('[data-playing-card]')!.remove()
 		}
 	}
-
-	handleMoveCardLeftClick = (event: Event) => {
-		if (event.currentTarget instanceof HTMLElement) {
-			move(this.cardContainer, event.currentTarget.closest('[data-playing-card]')!, -1)
-		}
-	}
-
-	handleMoveCardRightClick = (event: Event) => {
-		if (event.currentTarget instanceof HTMLElement) {
-			move(this.cardContainer, event.currentTarget.closest('[data-playing-card]')!, 1)
-		}
-	}
-}
-
-function move (container: Element, currentEl: Element, direction: 1 | -1) {
-	const index = Array.from(container.children).findIndex((el) => el === currentEl)
-
-	if (direction === -1 ? index === 0 : index === (container.children.length - 1)) {
-		return
-	}
-
-	const otherEl = container.children[index + direction]!
-
-	if (direction === -1) {
-		otherEl.insertAdjacentElement('beforebegin', currentEl)
-	} else {
-		currentEl.insertAdjacentElement('beforebegin', otherEl)
-	}
-
-	setButtonDisabledStates(container)
 }
 
 function isInteractive (event: Event): boolean {
@@ -460,16 +402,6 @@ function isInteractive (event: Event): boolean {
 	}
 
 	return false
-}
-
-function setButtonDisabledStates (container: Element) {
-	for (const el of container.children) {
-		const moveLeftButton = el.querySelector('[data-move-left-button]') as HTMLButtonElement
-		moveLeftButton.disabled = el === container.children[0]
-
-		const moveRightButton = el.querySelector('[data-move-right-button]') as HTMLButtonElement
-		moveRightButton.disabled = el === container.children[container.children.length - 1]
-	}
 }
 
 function handleDragStart (event: DragEvent) {
