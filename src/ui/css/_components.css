@@ -84,6 +84,10 @@
 	border-color: #ccc;
 }
 
+.playing-card[draggable="true"] {
+	cursor: ew-resize;
+}
+
 .playing-card:where(.--is-played) {
 	margin-bottom: 1.5rem;
 }
@@ -101,7 +105,7 @@
 }
 
 .c-suit-input {
-	width: 6.5rem;
+	width: 6.6rem;
 }
 
 .c-edition-input {
@@ -120,6 +124,10 @@
 
 .joker {
 	border-color: #ccc;
+}
+
+.joker[draggable="true"] {
+	cursor: ew-resize;
 }
 
 .j-edition-input {

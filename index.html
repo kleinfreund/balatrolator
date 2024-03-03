@@ -403,7 +403,7 @@
 							</button>
 						</header>
 
-						<div class="joker-container list" data-j-container></div>
+						<div class="joker-container list" data-j-container data-drop-zone></div>
 					</div>
 				</div>
 
@@ -418,7 +418,7 @@
 							</button>
 						</header>
 
-						<div class="card-container list" data-c-container></div>
+						<div class="card-container list" data-c-container data-drop-zone></div>
 					</div>
 				</div>
 
@@ -433,7 +433,7 @@
 	</main>
 
 	<template id="joker">
-		<div class="card joker" data-joker>
+		<div class="card joker" draggable="true" data-joker>
 			<div class="stack">
 				<div class="actions">
 					<button class="j-move-left-button --icon" type="button" data-move-left-button>
@@ -686,7 +686,7 @@
 	</template>
 
 	<template id="card">
-		<div class="card playing-card" data-playing-card>
+		<div class="card playing-card" draggable="true" data-playing-card>
 			<div class="stack">
 				<div class="actions">
 					<button class="c-move-left-button --icon" type="button" data-move-left-button>

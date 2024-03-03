@@ -5,13 +5,13 @@ import { log } from '#utilities/log.js'
 import { calculateScore } from '#lib/balatro.js'
 
 export class UiState {
-	handsEl: HTMLInputElement
-	discardsEl: HTMLInputElement
-	moneyEl: HTMLInputElement
-	blindNameEl: HTMLSelectElement
-	blindIsActiveEl: HTMLInputElement
-	deckEl: HTMLSelectElement
-	jokerSlotsEl: HTMLInputElement
+	handsInput: HTMLInputElement
+	discardsInput: HTMLInputElement
+	moneyInput: HTMLInputElement
+	blindNameSelect: HTMLSelectElement
+	blindIsActiveCheckbox: HTMLInputElement
+	deckSelect: HTMLSelectElement
+	jokerSlotsInput: HTMLInputElement
 
 	handsContainer: HTMLElement
 
@@ -27,22 +27,26 @@ export class UiState {
 	scoreEl: HTMLElement
 
 	constructor (form: HTMLFormElement) {
-		this.handsEl = form.querySelector('[data-r-hands]') as HTMLInputElement
-		this.discardsEl = form.querySelector('[data-r-discards]') as HTMLInputElement
-		this.moneyEl = form.querySelector('[data-r-money]') as HTMLInputElement
-		this.blindNameEl = form.querySelector('[data-r-blind-name]') as HTMLSelectElement
-		this.blindIsActiveEl = form.querySelector('[data-r-blind-is-active]') as HTMLInputElement
-		this.deckEl = form.querySelector('[data-r-deck]') as HTMLSelectElement
-		this.jokerSlotsEl = form.querySelector('[data-r-joker-slots]') as HTMLInputElement
+		this.handsInput = form.querySelector('[data-r-hands]') as HTMLInputElement
+		this.discardsInput = form.querySelector('[data-r-discards]') as HTMLInputElement
+		this.moneyInput = form.querySelector('[data-r-money]') as HTMLInputElement
+		this.blindNameSelect = form.querySelector('[data-r-blind-name]') as HTMLSelectElement
+		this.blindIsActiveCheckbox = form.querySelector('[data-r-blind-is-active]') as HTMLInputElement
+		this.deckSelect = form.querySelector('[data-r-deck]') as HTMLSelectElement
+		this.jokerSlotsInput = form.querySelector('[data-r-joker-slots]') as HTMLInputElement
 
 		this.handsContainer = form.querySelector('[data-h-container]') as HTMLElement
 
 		this.jokerContainer = form.querySelector('[data-j-container]') as HTMLElement
+		this.jokerContainer.addEventListener('dragenter', handleDragOver)
+		this.jokerContainer.addEventListener('dragover', handleDragOver)
 		this.addJokerButton = form.querySelector('[data-j-add-button]') as HTMLButtonElement
 		this.addJokerButton.addEventListener('click', () => this.addJoker())
 		this.jokerTemplate = document.querySelector('template#joker') as HTMLTemplateElement
 
 		this.cardContainer = form.querySelector('[data-c-container]') as HTMLElement
+		this.cardContainer.addEventListener('dragenter', handleDragOver)
+		this.cardContainer.addEventListener('dragover', handleDragOver)
 		this.addCardButton = form.querySelector('[data-c-add-button]') as HTMLButtonElement
 		this.addCardButton.addEventListener('click', () => this.addCard())
 		this.cardTemplate = document.querySelector('template#card') as HTMLTemplateElement
@@ -76,13 +80,13 @@ export class UiState {
 	 * Inverse operation of `populateUiWithState`
 	 */
 	readStateFromUi (): InitialState {
-		const hands = Number(this.handsEl.value)
-		const discards = Number(this.discardsEl.value)
-		const money = Number(this.moneyEl.value)
-		const blindName = this.blindNameEl.value as BlindName
-		const blindIsActive = this.blindIsActiveEl.checked
-		const deck = this.deckEl.value as DeckName
-		const jokerSlots = Number(this.jokerSlotsEl.value)
+		const hands = Number(this.handsInput.value)
+		const discards = Number(this.discardsInput.value)
+		const money = Number(this.moneyInput.value)
+		const blindName = this.blindNameSelect.value as BlindName
+		const blindIsActive = this.blindIsActiveCheckbox.checked
+		const deck = this.deckSelect.value as DeckName
+		const jokerSlots = Number(this.jokerSlotsInput.value)
 
 		const initialState: Required<InitialState> = {
 			hands,
@@ -177,13 +181,13 @@ export class UiState {
 	 * Populates the UI using an `InitialState` object. Tries to retrieve this object from the URL or local storage.
 	 */
 	populateUiWithState (state: State) {
-		this.handsEl.value = String(state.hands)
-		this.discardsEl.value = String(state.discards)
-		this.moneyEl.value = String(state.money)
-		this.blindNameEl.value = state.blind.name
-		this.blindIsActiveEl.checked = state.blind.isActive
-		this.deckEl.value = state.deck
-		this.jokerSlotsEl.value = String(state.jokerSlots)
+		this.handsInput.value = String(state.hands)
+		this.discardsInput.value = String(state.discards)
+		this.moneyInput.value = String(state.money)
+		this.blindNameSelect.value = state.blind.name
+		this.blindIsActiveCheckbox.checked = state.blind.isActive
+		this.deckSelect.value = state.deck
+		this.jokerSlotsInput.value = String(state.jokerSlots)
 
 		for (const hand of this.handsContainer.children) {
 			const nameEl = hand.querySelector('[data-h-name]') as HTMLElement
@@ -217,23 +221,26 @@ export class UiState {
 		const jokerEl = template.querySelector('[data-joker]') as HTMLElement
 		const index = this.jokerContainer.children.length
 
-		const nameInput = jokerEl.querySelector('.j-name-input') as HTMLInputElement
-		const editionInput = jokerEl.querySelector('.j-edition-input') as HTMLSelectElement
-		const plusChipsInput = jokerEl.querySelector('.j-plus-chips-input') as HTMLInputElement
-		const plusMultiplierInput = jokerEl.querySelector('.j-plus-multiplier-input') as HTMLInputElement
-		const timesMultiplierInput = jokerEl.querySelector('.j-times-multiplier-input') as HTMLInputElement
-		const isActiveInput = jokerEl.querySelector('.j-is-active-input') as HTMLInputElement
-		const rankInput = jokerEl.querySelector('.j-rank-input') as HTMLInputElement
-		const suitInput = jokerEl.querySelector('.j-suit-input') as HTMLInputElement
+		const nameSelect = jokerEl.querySelector('[data-j-name]') as HTMLSelectElement
+		const editionSelect = jokerEl.querySelector('[data-j-edition]') as HTMLSelectElement
+		const plusChipsInput = jokerEl.querySelector('[data-j-plus-chips]') as HTMLInputElement
+		const plusMultiplierInput = jokerEl.querySelector('[data-j-plus-multiplier]') as HTMLInputElement
+		const timesMultiplierInput = jokerEl.querySelector('[data-j-times-multiplier]') as HTMLInputElement
+		const isActiveCheckbox = jokerEl.querySelector('[data-j-is-active]') as HTMLInputElement
+		const rankSelect = jokerEl.querySelector('[data-j-rank]') as HTMLSelectElement
+		const suitSelect = jokerEl.querySelector('[data-j-suit]') as HTMLSelectElement
 
-		nameInput.name = `joker-name-${index}`
-		editionInput.name = `joker-edition-${index}`
+		nameSelect.name = `joker-name-${index}`
+		editionSelect.name = `joker-edition-${index}`
 		plusChipsInput.name = `joker-plusChips-${index}`
 		plusMultiplierInput.name = `joker-plusMultiplier-${index}`
 		timesMultiplierInput.name = `joker-timesMultiplier-${index}`
-		isActiveInput.name = `joker-isActive-${index}`
-		rankInput.name = `joker-rank-${index}`
-		suitInput.name = `joker-suit-${index}`
+		isActiveCheckbox.name = `joker-isActive-${index}`
+		rankSelect.name = `joker-rank-${index}`
+		suitSelect.name = `joker-suit-${index}`
+
+		jokerEl.addEventListener('dragstart', handleDragStart)
+		jokerEl.addEventListener('dragend', handleDragEnd)
 
 		const removeButton = jokerEl.querySelector('[data-remove-button]') as HTMLButtonElement
 		removeButton.addEventListener('click', this.handleRemoveJokerClick)
@@ -257,14 +264,14 @@ export class UiState {
 			} = joker
 			const definition = JOKER_DEFINITIONS[name]
 
-			nameInput.value = name
-			editionInput.value = edition
+			nameSelect.value = name
+			editionSelect.value = edition
 			if (definition.hasPlusChipsInput) plusChipsInput.value = String(plusChips)
 			if (definition.hasPlusMultiplierInput) plusMultiplierInput.value = String(plusMultiplier)
 			if (definition.hasTimesMultiplierInput) timesMultiplierInput.value = String(timesMultiplier)
-			if (definition.hasIsActiveInput) isActiveInput.checked = Boolean(isActive)
-			if (definition.hasRankInput) rankInput.value = String(rank)
-			if (definition.hasSuitInput) suitInput.value = String(suit)
+			if (definition.hasIsActiveInput) isActiveCheckbox.checked = Boolean(isActive)
+			if (definition.hasRankInput) rankSelect.value = String(rank)
+			if (definition.hasSuitInput) suitSelect.value = String(suit)
 		}
 
 		this.jokerContainer.appendChild(template)
@@ -305,18 +312,18 @@ export class UiState {
 		const cardEl = template.querySelector('[data-playing-card]') as HTMLElement
 		const index = this.cardContainer.children.length
 
-		const isPlayedCheckbox = cardEl.querySelector('.c-is-played-input') as HTMLInputElement
-		const isDebuffedCheckbox = cardEl.querySelector('.c-is-debuffed-input') as HTMLInputElement
-		const rankInput = cardEl.querySelector('.c-rank-input') as HTMLInputElement
-		const suitInput = cardEl.querySelector('.c-suit-input') as HTMLInputElement
-		const editionSelect = cardEl.querySelector('.c-edition-input') as HTMLSelectElement
-		const enhancementSelect = cardEl.querySelector('.c-enhancement-input') as HTMLSelectElement
-		const sealSelect = cardEl.querySelector('.c-seal-input') as HTMLSelectElement
+		const isPlayedCheckbox = cardEl.querySelector('[data-c-is-played]') as HTMLInputElement
+		const isDebuffedCheckbox = cardEl.querySelector('[data-c-is-debuffed]') as HTMLInputElement
+		const rankSelect = cardEl.querySelector('[data-c-rank]') as HTMLSelectElement
+		const suitSelect = cardEl.querySelector('[data-c-suit]') as HTMLSelectElement
+		const editionSelect = cardEl.querySelector('[data-c-edition]') as HTMLSelectElement
+		const enhancementSelect = cardEl.querySelector('[data-c-enhancement]') as HTMLSelectElement
+		const sealSelect = cardEl.querySelector('[data-c-seal]') as HTMLSelectElement
 
 		isPlayedCheckbox.name = `card-is-played-${index}`
 		isDebuffedCheckbox.name = `card-is-debuffed-${index}`
-		rankInput.name = `card-rank-${index}`
-		suitInput.name = `card-suit-${index}`
+		rankSelect.name = `card-rank-${index}`
+		suitSelect.name = `card-suit-${index}`
 		editionSelect.name = `card-edition-${index}`
 		enhancementSelect.name = `card-enhancement-${index}`
 		sealSelect.name = `card-seal-${index}`
@@ -326,6 +333,8 @@ export class UiState {
 				isPlayedCheckbox.click()
 			}
 		}, { capture: true })
+		cardEl.addEventListener('dragstart', handleDragStart)
+		cardEl.addEventListener('dragend', handleDragEnd)
 
 		const removeButton = cardEl.querySelector('[data-remove-button]') as HTMLButtonElement
 		removeButton.addEventListener('click', this.handleRemoveCardClick)
@@ -348,8 +357,8 @@ export class UiState {
 
 			isPlayedCheckbox.checked = Boolean(isPlayed)
 			isDebuffedCheckbox.checked = isDebuffed
-			rankInput.value = rank
-			suitInput.value = suit
+			rankSelect.value = rank
+			suitSelect.value = suit
 			editionSelect.value = edition
 			enhancementSelect.value = enhancement
 			sealSelect.value = seal
@@ -374,7 +383,7 @@ export class UiState {
 		;[
 			isPlayedCheckbox.checked ? '--is-played' : null,
 			isDebuffedCheckbox.checked ? '--is-debuffed' : null,
-			this.blindNameEl.value === 'The Pillar' && this.blindIsActiveEl.checked ? '--is-blind-the-pillar' : undefined,
+			this.blindNameSelect.value === 'The Pillar' && this.blindIsActiveCheckbox.checked ? '--is-blind-the-pillar' : undefined,
 		].filter(notNullish).forEach((className) => el.classList.add(className))
 	}
 
@@ -425,9 +434,9 @@ function move (container: Element, currentEl: Element, direction: 1 | -1) {
 	const otherEl = container.children[index + direction]!
 
 	if (direction === -1) {
-		container.insertBefore(currentEl, otherEl)
+		otherEl.insertAdjacentElement('beforebegin', currentEl)
 	} else {
-		container.insertBefore(otherEl, currentEl)
+		currentEl.insertAdjacentElement('beforebegin', otherEl)
 	}
 
 	setButtonDisabledStates(container)
@@ -461,4 +470,75 @@ function setButtonDisabledStates (container: Element) {
 		const moveRightButton = el.querySelector('[data-move-right-button]') as HTMLButtonElement
 		moveRightButton.disabled = el === container.children[container.children.length - 1]
 	}
+}
+
+function handleDragStart (event: DragEvent) {
+	if (event.dataTransfer === null || !(event.target instanceof Element)) {
+		return
+	}
+
+	const container = event.target.closest('[data-drop-zone]')
+	if (container) {
+		const draggedElIndex = Array.from(container.children).findIndex((el) => el === event.target)
+		if (draggedElIndex !== -1) {
+			event.dataTransfer.effectAllowed = 'move'
+			event.dataTransfer.dropEffect = 'move'
+			event.dataTransfer.setData('text/plain', String(draggedElIndex))
+		}
+	}
+}
+
+function handleDragEnd (event: DragEvent) {
+	const data = getDragEventData(event)
+	if (data) {
+		drop(data.container, data.draggedEl, event.clientX)
+	}
+}
+
+function handleDragOver (event: DragEvent) {
+	if (getDragEventData(event)) {
+		event.preventDefault()
+	}
+}
+
+function getDragEventData (event: DragEvent): { container: Element, draggedEl: Element } | null {
+	if (event.dataTransfer === null || !(event.target instanceof Element)) {
+		return null
+	}
+
+	const container = event.target.closest('[data-drop-zone]')
+	if (container) {
+		const draggedElIndex = Number(event.dataTransfer.getData('text/plain'))
+		if (!Number.isNaN(draggedElIndex)) {
+			const draggedEl = container.children[draggedElIndex]
+
+			if (draggedEl) {
+				return { container, draggedEl }
+			}
+		}
+	}
+
+	return null
+}
+
+function drop (container: Element, draggedEl: Element, dragClientX: number) {
+	// Determining the insertion coordinate for the element …
+	const containerRect = container.getBoundingClientRect()
+	// The drop target X coordinate relative to the container.
+	const dropTargetX = dragClientX - containerRect.left
+
+	for (const el of container.children) {
+		const { left, width } = el.getBoundingClientRect()
+		// The element's X coordinate relative to the container.
+		const elStartX = left - containerRect.left
+		// The element's halfway point X coordinate relative the container.
+		const halfwayPointX = elStartX + width / 2
+
+		if (dropTargetX < halfwayPointX) {
+			el.insertAdjacentElement('beforebegin', draggedEl)
+			return
+		}
+	}
+
+	container.insertAdjacentElement('beforeend', draggedEl)
 }
