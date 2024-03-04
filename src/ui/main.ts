@@ -27,5 +27,8 @@ function fetchStateAndPopulateUi () {
 		// Makes sure state is saved in _both_ URL and browser storage.
 		saveState('state', initialState)
 		uiState.updateScore(initialState)
+	} else {
+		const state = getState({})
+		uiState.populateUiWithState(state)
 	}
 }
