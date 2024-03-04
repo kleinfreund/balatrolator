@@ -60,8 +60,6 @@ export class PlayingCard extends DraggableCard {
 				this.isPlayedCheckbox.click()
 			}
 		}, { capture: true })
-		this.addEventListener('dragstart', this.handleDragStart)
-		this.addEventListener('dragend', this.handleDragEnd)
 	}
 
 	get [Symbol.toStringTag] () {

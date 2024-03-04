@@ -1,4 +1,5 @@
 const registeredContainers = new Set<Element>()
+let isDragging = false
 
 export class DraggableCard extends HTMLElement {
 	container: HTMLElement
@@ -18,6 +19,10 @@ export class DraggableCard extends HTMLElement {
 			this.container.addEventListener('dragenter', this.handleDragOver)
 			this.container.addEventListener('dragover', this.handleDragOver)
 		}
+
+		this.addEventListener('dragstart', this.handleDragStart)
+		this.addEventListener('dragend', this.handleDragEnd)
+		this.addEventListener('drop', this.handleDrop)
 	}
 
 	handleDragStart = (event: DragEvent) => {
@@ -25,13 +30,12 @@ export class DraggableCard extends HTMLElement {
 			return
 		}
 
-		if (this.container) {
-			const draggedEl = Array.from(this.container.children).find((el) => el === event.target)
-			if (draggedEl) {
-				event.dataTransfer.effectAllowed = 'move'
-				event.dataTransfer.dropEffect = 'move'
-				event.dataTransfer.setData('text/plain', draggedEl.id)
-			}
+		const draggedEl = Array.from(this.container.children).find((el) => el === event.target)
+		if (draggedEl) {
+			isDragging = true
+			event.dataTransfer.effectAllowed = 'move'
+			event.dataTransfer.dropEffect = 'move'
+			event.dataTransfer.setData('text/plain', draggedEl.id)
 		}
 	}
 
@@ -39,12 +43,19 @@ export class DraggableCard extends HTMLElement {
 		const draggedEl = getDragEventData(event, this.container)
 		if (draggedEl) {
 			drop(this.container, draggedEl, event.clientX)
+			isDragging = false
 		}
 	}
 
 	handleDragOver = (event: DragEvent) => {
 		if (getDragEventData(event, this.container)) {
 			// **Allow** dropping off an element to occur
+			event.preventDefault()
+		}
+	}
+
+	handleDrop = (event: DragEvent) => {
+		if (isDragging) {
 			event.preventDefault()
 		}
 	}

@@ -59,9 +59,6 @@ export class JokerCard extends DraggableCard {
 
 		this.suitSelect = this.fragment.querySelector('[data-j-suit]') as HTMLSelectElement
 		this.suitSelect.name = `joker-suit-${id}`
-
-		this.addEventListener('dragstart', this.handleDragStart)
-		this.addEventListener('dragend', this.handleDragEnd)
 	}
 
 	get [Symbol.toStringTag] () {
