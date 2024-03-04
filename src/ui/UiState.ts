@@ -175,7 +175,7 @@ export class UiState {
 
 	addJoker (joker?: Joker) {
 		this.jokerContainer.insertAdjacentHTML('beforeend', '<joker-card></joker-card>')
-		const jokerEl = this.jokerContainer.children[this.jokerContainer.children.length - 1]
+		const jokerEl = this.jokerContainer.lastElementChild
 		if (joker && jokerEl instanceof JokerCard) {
 			jokerEl.setJoker(joker)
 		}
@@ -183,7 +183,7 @@ export class UiState {
 
 	addCard (card?: Card, isPlayed?: boolean) {
 		this.playingCardContainer.insertAdjacentHTML('beforeend', '<playing-card></playing-card>')
-		const el = this.playingCardContainer.children[this.playingCardContainer.children.length - 1]
+		const el = this.playingCardContainer.lastElementChild
 		if (card && el instanceof PlayingCard) {
 			el.setCard(card, isPlayed)
 		}
@@ -191,7 +191,7 @@ export class UiState {
 
 	addHandLevel (handName: HandName, handLevel: { level: number, plays: number }) {
 		this.handLevelContainer.insertAdjacentHTML('beforeend', '<hand-level></hand-level>')
-		const el = this.handLevelContainer.children[this.handLevelContainer.children.length - 1]
+		const el = this.handLevelContainer.lastElementChild
 		if (el instanceof HandLevel) {
 			el.setHandLevel(handName, handLevel)
 		}

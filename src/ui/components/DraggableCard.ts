@@ -20,30 +20,31 @@ export class DraggableCard extends HTMLElement {
 		}
 	}
 
-	handleDragStart (event: DragEvent) {
+	handleDragStart = (event: DragEvent) => {
 		if (event.dataTransfer === null || !(event.target instanceof Element)) {
 			return
 		}
 
 		if (this.container) {
-			const draggedElIndex = Array.from(this.container.children).findIndex((el) => el === event.target)
-			if (draggedElIndex !== -1) {
+			const draggedEl = Array.from(this.container.children).find((el) => el === event.target)
+			if (draggedEl) {
 				event.dataTransfer.effectAllowed = 'move'
 				event.dataTransfer.dropEffect = 'move'
-				event.dataTransfer.setData('text/plain', String(draggedElIndex))
+				event.dataTransfer.setData('text/plain', draggedEl.id)
 			}
 		}
 	}
 
-	handleDragEnd (event: DragEvent) {
+	handleDragEnd = (event: DragEvent) => {
 		const draggedEl = getDragEventData(event, this.container)
 		if (draggedEl) {
 			drop(this.container, draggedEl, event.clientX)
 		}
 	}
 
-	handleDragOver (event: DragEvent) {
+	handleDragOver = (event: DragEvent) => {
 		if (getDragEventData(event, this.container)) {
+			// **Allow** dropping off an element to occur
 			event.preventDefault()
 		}
 	}
@@ -54,11 +55,12 @@ function getDragEventData (event: DragEvent, container: Element): Element | null
 		return null
 	}
 
-	const draggedElIndex = Number(event.dataTransfer.getData('text/plain'))
-	if (!Number.isNaN(draggedElIndex) && container) {
-		const draggedEl = container.children[draggedElIndex]
+	const draggedElId = event.dataTransfer.getData('text/plain')
+	if (draggedElId && container) {
+		const draggedEl = Array.from(container.children).find((el) => el.id === draggedElId)
 
 		if (draggedEl) {
+			console.log('Allow!')
 			return draggedEl
 		}
 	}
