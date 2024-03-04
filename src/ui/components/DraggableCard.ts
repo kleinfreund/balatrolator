@@ -60,7 +60,6 @@ function getDragEventData (event: DragEvent, container: Element): Element | null
 		const draggedEl = Array.from(container.children).find((el) => el.id === draggedElId)
 
 		if (draggedEl) {
-			console.log('Allow!')
 			return draggedEl
 		}
 	}
