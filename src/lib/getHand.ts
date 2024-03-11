@@ -242,7 +242,7 @@ export function highCard (cards: Card[]): Card[] {
 		}
 	}
 
-	return [highestCard!]
+	return highestCard ? [highestCard] : []
 }
 
 function combineCards (scoringCards: Card[], cardsA: Card[], cardsB: Card[]): Card[] {

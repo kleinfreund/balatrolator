@@ -1,7 +1,8 @@
 import { describe, test, expect } from 'vitest'
 
 import { calculateScore } from './balatro.js'
-import type { Card } from '#lib/types.js'
+import { getState } from '#utilities/getState.js'
+import type { Card, InitialState } from '#lib/types.js'
 import case001 from './test-files/001.js'
 import case002 from './test-files/002.js'
 import case003 from './test-files/003.js'
@@ -33,7 +34,7 @@ type Expected = Omit<ReturnType<typeof calculateScore>, 'scoringCards'> & { scor
 
 export type TestCase = {
 	message: string
-	parameters: Parameters<typeof calculateScore>
+	initialState: InitialState
 	expected: Expected
 }
 
@@ -65,7 +66,7 @@ describe('calculateScore', () => {
 		case024('Pair, inactive Verdant Leaf'),
 		case025('Pair, active Verdant Leaf'),
 		case026('Pair, The Pillar'),
-	])('$message', ({ parameters, expected }) => {
-		expect(calculateScore(...parameters)).toMatchObject(expected)
+	])('$message', ({ initialState, expected }) => {
+		expect(calculateScore(getState(initialState))).toMatchObject(expected)
 	})
 })

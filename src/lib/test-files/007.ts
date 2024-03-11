@@ -3,7 +3,7 @@ import type { TestCase } from '#lib/balatro.test.js'
 export default (message: string): TestCase => {
 	return {
 		message,
-		parameters: [{
+		initialState: {
 			money: 1,
 			playedCards: [
 				{ rank: '6', suit: 'Hearts' },
@@ -19,7 +19,7 @@ export default (message: string): TestCase => {
 				{ name: 'Joker' },
 				{ name: 'Superposition' },
 			],
-		}],
+		},
 		expected: {
 			hand: 'Full House',
 			scoringCards: [

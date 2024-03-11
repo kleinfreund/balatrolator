@@ -13,7 +13,7 @@ describe('formatScore', () => {
 		[29_000_000_000_000, '2.900e13'],
 		[77_000_000_000_000_000, '7.700e16'],
 		[860_000_000_000_000_000_000, '8.600e20'],
-	])('work', (score, formattedScore) => {
+	])('works', (score, formattedScore) => {
 		expect(formatScore(score)).toBe(formattedScore)
 	})
 })

@@ -87,24 +87,16 @@ export interface InitialJoker {
 export interface JokerDefinition {
 	rarity: 'common' | 'uncommon' | 'rare' | 'legendary'
 	probability?: Probability
-
+	effect?: JokerEffect
+	indirectEffect?: JokerIndirectEffect
+	playedCardEffect?: JokerCardEffect
+	heldCardEffect?: JokerCardEffect
 	hasPlusChipsInput?: boolean
 	hasPlusMultiplierInput?: boolean
 	hasTimesMultiplierInput?: boolean
 	hasIsActiveInput?: boolean
 	hasRankInput?: boolean
 	hasSuitInput?: boolean
-
-	effect?: JokerEffect
-
-	/**
-	 * Joker effects triggered during the score calculation of _other_ Jokers
-	 *
-	 * **Example**: Baseball Card does **not** trigger when Baseball Card is scored but when the uncommon jokers it affects are scored.
-	 */
-	indirectEffect?: JokerIndirectEffect
-	playedCardEffect?: JokerCardEffect
-	heldCardEffect?: JokerCardEffect
 }
 
 export interface Joker {
@@ -116,16 +108,14 @@ export interface Joker {
 	rank?: Rank
 	suit?: Suit
 	isActive: boolean
-
-	index: number
-	toString(): string
 	rarity: 'common' | 'uncommon' | 'rare' | 'legendary'
 	probability?: Probability
-
-	effect: JokerEffect
+	effect?: JokerEffect
 	indirectEffect?: JokerIndirectEffect
-	playedCardEffect: JokerCardEffect
-	heldCardEffect: JokerCardEffect
+	playedCardEffect?: JokerCardEffect
+	heldCardEffect?: JokerCardEffect
+	index: number
+	toString: () => string
 }
 
 export type HandLevel = { level: number, plays: number }

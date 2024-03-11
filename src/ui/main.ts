@@ -1,5 +1,5 @@
+import { getState } from '#utilities/getState.js'
 import { fetchState, saveState } from '#utilities/Storage.js'
-import { getState } from '#lib/balatro.js'
 import { UiState } from './UiState.js'
 
 const form = document.querySelector('[data-form]') as HTMLFormElement

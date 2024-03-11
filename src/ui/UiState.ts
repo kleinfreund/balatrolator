@@ -1,6 +1,7 @@
 import { HandLevel } from './components/HandLevel.js'
 import { JokerCard } from './components/JokerCard.js'
 import { PlayingCard } from './components/PlayingCard.js'
+import { getState } from '#utilities/getState.js'
 import { log } from '#utilities/log.js'
 import { calculateScore } from '#lib/balatro.js'
 import type { BlindName, Card, DeckName, HandName, InitialState, Joker, State } from '#lib/types.js'
@@ -64,7 +65,7 @@ export class UiState {
 	}
 
 	updateScore (initialState: InitialState) {
-		const score = calculateScore(initialState)
+		const score = calculateScore(getState(initialState))
 		log(score)
 
 		this.formattedScoreEl.textContent = score.formattedScore

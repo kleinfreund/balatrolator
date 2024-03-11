@@ -1,17 +1,13 @@
-import { RANK_TO_CHIP_MAP, DEFAULT_HAND_SCORE_SETS, PLANET_SCORE_SETS, JOKER_DEFINITIONS, MODIFIER_DEFAULTS, PLAYED_CARD_RETRIGGER_JOKER_NAMES, HELD_CARD_RETRIGGER_JOKER_NAMES } from '#lib/data.js'
-import { getHand } from '#lib/getHand.js'
-import type { Card, HandLevel, HandLevels, HandName, HandScore, InitialCard, InitialHandLevels, InitialJoker, InitialState, Joker, JokerCardEffect, JokerEffect, Modifier, Result, Score, State } from '#lib/types.js'
+import { RANK_TO_CHIP_MAP, MODIFIER_DEFAULTS, PLAYED_CARD_RETRIGGER_JOKER_NAMES, HELD_CARD_RETRIGGER_JOKER_NAMES } from '#lib/data.js'
+import type { Card, Joker, JokerCardEffect, JokerEffect, Modifier, Result, Score, State } from '#lib/types.js'
 import { formatScore } from '#utilities/formatScore.js'
 import { log, logGroup, logGroupEnd } from '#utilities/log.js'
 import { isFaceCard } from '#utilities/isFaceCard.js'
 import { isRank } from '#utilities/isRank.js'
 import { notNullish } from '#utilities/notNullish.js'
 import { resolveJoker } from '#utilities/resolveJokers.js'
-import { isDebuffed } from '#utilities/isDebuffed.js'
 
-export function calculateScore (initialState: InitialState): Result {
-	const state = getState(initialState)
-
+export function calculateScore (state: State): Result {
 	const { chips, multiplier } = getScore(state)
 
 	log('\nReceived:', { chips, multiplier })
@@ -63,7 +59,18 @@ function getScore (state: State): Score {
 		const triggers = getPlayedCardTriggers({ state, card })
 		for (const [index, trigger] of triggers.entries()) {
 			log(`Trigger: ${index + 1} (${trigger})`)
-			scorePlayedCard({ state, score, card })
+
+			if (card.enhancement !== 'stone') {
+				score.chips += RANK_TO_CHIP_MAP[card.rank]
+				log(score, '(+Chips from rank)')
+			}
+
+			scoreModifiers(score, MODIFIER_DEFAULTS.playedEnhancement[card.enhancement])
+			scoreModifiers(score, MODIFIER_DEFAULTS.edition[card.edition])
+
+			for (const joker of state.jokers) {
+				scoreJokerCardEffect(joker.playedCardEffect, { state, score, joker, card })
+			}
 		}
 
 		logGroupEnd(`← ${card}`, score)
@@ -83,7 +90,13 @@ function getScore (state: State): Score {
 		const triggers = getHeldCardTriggers({ state, card })
 		for (const [index, trigger] of triggers.entries()) {
 			log(`Trigger: ${index + 1} (${trigger})`)
-			scoreHeldCard({ state, score, card })
+
+			scoreModifiers(score, MODIFIER_DEFAULTS.heldEnhancement[card.enhancement])
+
+			for (const joker of state.jokers) {
+				scoreJokerCardEffect(joker.heldCardEffect, { state, score, joker, card })
+				log(score, `(${joker})`)
+			}
 		}
 
 		logGroupEnd(`← ${card}`, score)
@@ -93,7 +106,8 @@ function getScore (state: State): Score {
 	log('\n3. Scoring jokers …')
 	for (const joker of state.jokers) {
 		logGroup(`\n→ ${joker}`, score)
-		scoreJoker({ state, score, joker })
+		scoreJokerEffect(joker.effect, { state, score, joker })
+		scoreModifiers(score, MODIFIER_DEFAULTS.edition[joker.edition])
 		logGroupEnd(`← ${joker}`, score)
 	}
 	log('\n3. JOKER SCORE =>', score)
@@ -173,35 +187,6 @@ function getHeldCardTriggers ({ state, card }: { state: State, card: Card }): st
 	return triggers
 }
 
-function scorePlayedCard ({ state, score, card }: { state: State, score: Score, card: Card }) {
-	if (card.enhancement !== 'stone') {
-		score.chips += RANK_TO_CHIP_MAP[card.rank]
-		log(score, '(+Chips from rank)')
-	}
-
-	scoreModifiers(score, MODIFIER_DEFAULTS.playedEnhancement[card.enhancement])
-	scoreModifiers(score, MODIFIER_DEFAULTS.edition[card.edition])
-
-	for (const joker of state.jokers) {
-		joker.playedCardEffect({ state, score, card })
-	}
-}
-
-function scoreHeldCard ({ state, score, card }: { state: State, score: Score, card: Card }) {
-	scoreModifiers(score, MODIFIER_DEFAULTS.heldEnhancement[card.enhancement])
-
-	for (const joker of state.jokers) {
-		joker.heldCardEffect({ state, score, card })
-		log(score, `(${joker})`)
-	}
-}
-
-function scoreJoker ({ state, score, joker }: { state: State, score: Score, joker: Joker }) {
-	joker.effect({ state, score })
-
-	scoreModifiers(score, MODIFIER_DEFAULTS.edition[joker.edition])
-}
-
 function scoreModifiers (score: Score, modifier: Modifier) {
 	const {
 		plusChips,
@@ -228,231 +213,76 @@ function scoreModifiers (score: Score, modifier: Modifier) {
 	}
 }
 
-export function getState (initialState: InitialState): State {
-	const {
-		hands = 0,
-		discards = 0,
-		money = 0,
-		blind: initialBlind,
-		deck = 'Red Deck',
-		handLevels: initialHandLevels = {},
-		jokers: initialJokers = [],
-		jokerSlots = 5,
-		playedCards: initialPlayedCards = [],
-		heldCards: initialHeldCards = [],
-	} = initialState
+function scoreJokerEffect (effect: JokerEffect | undefined, { state, score, joker }: { state: State, score: Score, joker: Joker }) {
+	const triggers = ['Regular']
 
-	const handLevels = getHandLevels(initialHandLevels)
-	const handBaseScores = getHandBaseScores(handLevels)
-	const jokers = getJokers(initialJokers)
-	const jokerSet = new Set(jokers.map(({ name }) => name))
+	// Increase triggers from Blueprint/Brainstorm
+	const targets = state.jokers
+		.filter(({ name }) => ['Blueprint', 'Brainstorm'].includes(name))
+		.map((joker) => resolveJoker(state, joker))
+		.filter(notNullish)
 
-	const blindIsActive = jokerSet.has('Chicot') ? false : (initialBlind?.isActive ?? true)
-	const blind = {
-		name: initialBlind?.name ?? 'Small Blind',
-		isActive: blindIsActive,
+	for (const { name } of targets) {
+		if (name === joker.name) triggers.push(name)
 	}
 
-	const playedCards = getCards(initialPlayedCards).map((card) => ({
-		...card,
-		isDebuffed: card.isDebuffed ? true : isDebuffed(card, blind, jokerSet.has('Pareidolia')),
-	}))
-	const heldCards = getCards(initialHeldCards).map((card) => ({
-		...card,
-		isDebuffed: card.isDebuffed ? true : isDebuffed(card, blind, jokerSet.has('Pareidolia')),
-	}))
+	const jokersWithIndirectEffects = state.jokers.filter((joker) => joker.indirectEffect)
 
-	const hasFourFingers = jokerSet.has('Four Fingers')
-	const hasShortcut = jokerSet.has('Shortcut')
-	const { playedHand, scoringCards: preliminaryScoringCards } = getHand(playedCards, { hasFourFingers, hasShortcut })
-
-	const scoringCards = jokerSet.has('Splash') ? playedCards : preliminaryScoringCards
-
-	return {
-		hands,
-		discards,
-		money,
-		blind,
-		deck,
-		handLevels,
-		handBaseScores,
-		jokers,
-		jokerSet,
-		jokerSlots,
-		playedCards,
-		heldCards,
-		playedHand,
-		scoringCards,
-	}
-}
-
-function getHandLevels (initialHandLevels: InitialHandLevels): HandLevels {
-	const handNames = Object.keys(DEFAULT_HAND_SCORE_SETS) as HandName[]
-	const handLevelEntries = handNames.map<[HandName, HandLevel]>((handName) => [handName, initialHandLevels[handName] ?? { level: 1, plays: 0 }])
-
-	return Object.fromEntries(handLevelEntries) as HandLevels
-}
-
-function getHandBaseScores (handLevels: HandLevels): HandScore {
-	const handLevelEntries = Object.entries(handLevels) as [HandName, HandLevel][]
-	const handBaseScoresEntries = handLevelEntries.map<[HandName, Score]>(([handName, { level }]) => {
-		const defaultScore = DEFAULT_HAND_SCORE_SETS[handName]
-		const levelBasedScore = PLANET_SCORE_SETS[handName]
-
-		// Hand levels start at level 1 which effectively adds the default score sets. It is, however, possible that hand levels are set to 0. Then, the default score set doesn't apply
-		const chips = level === 0 ? 0 : (defaultScore.chips + (level - 1) * levelBasedScore.chips)
-		const multiplier = level === 0 ? 0 : (defaultScore.multiplier + (level - 1) * levelBasedScore.multiplier)
-
-		return [handName, { chips, multiplier }]
-	})
-
-	return Object.fromEntries(handBaseScoresEntries) as HandScore
-}
-
-function getJokers (initialJokers: InitialJoker[]): Joker[] {
-	return initialJokers.map((initialJoker, index) => {
-		const {
-			edition = 'base',
-			plusChips = 0,
-			plusMultiplier = 0,
-			timesMultiplier = 1,
-			isActive = false,
-		} = initialJoker
-
-		const modifiers = [initialJoker.edition].filter((modifier) => modifier !== undefined)
-		const toString = () => `${initialJoker.name}`
-			+ (modifiers.length > 0 ? ` (${modifiers.join(', ')})` : '')
-
-		const definition = JOKER_DEFINITIONS[initialJoker.name]
-
-		const effect = createJokerEffect(definition.effect)
-		const indirectEffect = definition.indirectEffect
-		const playedCardEffect = createPlayedCardEffect(definition.playedCardEffect)
-		const heldCardEffect = createPlayedCardEffect(definition.heldCardEffect)
-
-		const {
-			rarity,
-			probability = { numerator: 1, denominator: 1 },
-		} = definition
-
-		return {
-			...initialJoker,
-			rarity,
-			probability,
-			effect,
-			indirectEffect,
-			playedCardEffect,
-			heldCardEffect,
-			toString,
-			index,
-			edition,
-			plusChips,
-			plusMultiplier,
-			timesMultiplier,
-			isActive,
-		}
-	})
-}
-
-function createJokerEffect (effect?: JokerEffect): JokerEffect {
-	return function (options) {
-		const triggers = ['Regular']
-
-		// Increase triggers from Blueprint/Brainstorm
-		const targets = options.state.jokers
-			.filter(({ name }) => ['Blueprint', 'Brainstorm'].includes(name))
-			.map((joker) => resolveJoker(options.state, joker))
-			.filter(notNullish)
-
-		for (const { name } of targets) {
-			if (name === this.name) triggers.push(name)
+	for (const [index, trigger] of triggers.entries()) {
+		log(`Trigger: ${index + 1} (${trigger})`)
+		if (effect) {
+			effect.call(joker, { state, score })
+			log(score, `(${joker.name})`)
 		}
 
-		const jokersWithIndirectEffects = options.state.jokers.filter((joker) => joker.indirectEffect)
-
-		for (const [index, trigger] of triggers.entries()) {
-			log(`Trigger: ${index + 1} (${trigger})`)
-			if (effect) {
-				effect.call(this, options)
-				log(options.score, `(${this.name})`)
+		for (const target of targets) {
+			if (target.indirectEffect) {
+				target.indirectEffect({ state, score, joker })
+				log(score, trigger)
 			}
+		}
 
-			for (const target of targets) {
-				if (target.indirectEffect) {
-					target.indirectEffect({ ...options, joker: this })
-					log(options.score, trigger)
-				}
-			}
-
-			for (const joker of jokersWithIndirectEffects) {
-				if (joker.indirectEffect) {
-					joker.indirectEffect({ ...options, joker: this })
-					log(options.score, `(${joker.name})`)
-				}
+		for (const jokersWithIndirectEffect of jokersWithIndirectEffects) {
+			if (jokersWithIndirectEffect.indirectEffect) {
+				jokersWithIndirectEffect.indirectEffect({ state, score, joker })
+				log(score, `(${jokersWithIndirectEffect.name})`)
 			}
 		}
 	}
 }
 
-function createPlayedCardEffect (effect?: JokerCardEffect): JokerCardEffect {
-	return function (options) {
-		if (!effect) {
-			return
-		}
-
-		logGroup(`→ ${this}`)
-		const triggers = ['Regular']
-
-		// Increase triggers from Blueprint
-		const blueprintTargets = options.state.jokers
-			.filter(({ name }) => name === 'Blueprint')
-			.map(({ index }) => options.state.jokers[index + 1])
-			.filter(notNullish)
-
-		for (const { name } of blueprintTargets) {
-			if (name === this.name) triggers.push(`Blueprint copying ${this.name}`)
-		}
-
-		// Increase triggers from Brainstorm
-		const brainstormTargets = options.state.jokers
-			.filter(({ name }) => name === 'Brainstorm')
-			.map(() => options.state.jokers[0])
-			.filter(notNullish)
-
-		for (const { name } of brainstormTargets) {
-			if (name === this.name) triggers.push(`Brainstorm copying ${this.name}`)
-		}
-
-		for (let trigger = 0; trigger < triggers.length; trigger++) {
-			log(`Trigger: ${trigger + 1} (${triggers[trigger]})`)
-			effect.call(this, options)
-			log(options.score, `(${this.name})`)
-		}
-		logGroupEnd('←', options.score)
+function scoreJokerCardEffect (effect: JokerCardEffect | undefined, { state, score, joker, card }: { state: State, score: Score, joker: Joker, card: Card }) {
+	if (!effect) {
+		return
 	}
-}
 
-export function getCards (cards: InitialCard[]): Card[] {
-	return cards.map((card, index) => {
-		const {
-			edition = 'base',
-			enhancement = 'none',
-			seal = 'none',
-			isDebuffed = false,
-		} = card
+	logGroup(`→ ${joker}`)
+	const triggers = ['Regular']
 
-		const modifiers = [card.edition, card.enhancement, card.seal].filter((modifier) => modifier !== undefined)
-		const toString = () => `${card.rank} of ${card.suit}`
-			+ (modifiers.length > 0 ? ` (${modifiers.join(', ')})` : '')
+	// Increase triggers from Blueprint
+	const blueprintTargets = state.jokers
+		.filter(({ name }) => name === 'Blueprint')
+		.map(({ index }) => state.jokers[index + 1])
+		.filter(notNullish)
 
-		return {
-			...card,
-			toString,
-			index,
-			edition,
-			enhancement,
-			seal,
-			isDebuffed,
-		}
-	})
+	for (const { name } of blueprintTargets) {
+		if (name === joker.name) triggers.push(`Blueprint copying ${joker.name}`)
+	}
+
+	// Increase triggers from Brainstorm
+	const brainstormTargets = state.jokers
+		.filter(({ name }) => name === 'Brainstorm')
+		.map(() => state.jokers[0])
+		.filter(notNullish)
+
+	for (const { name } of brainstormTargets) {
+		if (name === joker.name) triggers.push(`Brainstorm copying ${joker.name}`)
+	}
+
+	for (let trigger = 0; trigger < triggers.length; trigger++) {
+		log(`Trigger: ${trigger + 1} (${triggers[trigger]})`)
+		effect.call(joker, { state, score, joker, card })
+		log(score, `(${joker.name})`)
+	}
+	logGroupEnd('←', score)
 }
