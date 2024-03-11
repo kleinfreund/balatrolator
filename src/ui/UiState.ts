@@ -25,6 +25,7 @@ export class UiState {
 
 	formattedScoreEl: HTMLElement
 	scoreEl: HTMLElement
+	playedHandEl: HTMLElement
 
 	constructor (form: HTMLFormElement) {
 		this.handsInput = form.querySelector('[data-r-hands]') as HTMLInputElement
@@ -47,6 +48,7 @@ export class UiState {
 
 		this.formattedScoreEl = form.querySelector('[data-formatted-score]') as HTMLElement
 		this.scoreEl = form.querySelector('[data-score]') as HTMLElement
+		this.playedHandEl = form.querySelector('[data-played-hand]') as HTMLElement
 
 		// Quick and dirty way to update the state whenever necessary
 		form.addEventListener('change', () => {
@@ -70,6 +72,7 @@ export class UiState {
 
 		this.formattedScoreEl.textContent = score.formattedScore
 		this.scoreEl.textContent = new Intl.NumberFormat('en').format(score.score)
+		this.playedHandEl.textContent = score.hand
 	}
 
 	/**
