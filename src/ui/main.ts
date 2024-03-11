@@ -20,14 +20,8 @@ function handleSubmit (event: SubmitEvent) {
 }
 
 function fetchStateAndPopulateUi () {
-	const state = fetchState('state')
-	if (state) {
-		uiState.populateUiWithState(state)
-		saveState('state', state)
-		uiState.updateScore(state)
-	} else {
-		const state = getState({})
-		uiState.populateUiWithState(state)
-		// TODO: Should this default state be persisted in the URL and determine a default score?
-	}
+	const state = fetchState('state') ?? getState({})
+	uiState.populateUiWithState(state)
+	saveState('state', state)
+	uiState.updateScore(state)
 }
