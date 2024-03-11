@@ -5,49 +5,55 @@ import {
 	decompressFromUTF16,
 } from 'lz-string'
 
-import type { InitialState } from '#lib/types.js'
+import { deminify, minify } from './minifier.js'
+import type { State } from '#lib/types.js'
 
-type Params<T extends 'getItem' | 'setItem' | 'removeItem'> = Parameters<typeof window.localStorage[T]>
+export function fetchState (key: string): State | null {
+	const minified = QueryParameter.get('state') ?? WebStorage.get(key)
 
-const QUERY_PARAMETER = 'state'
-
-const Storage = {
-	set (...args: Params<'setItem'>) {
-		window.localStorage.setItem(...args)
-	},
-
-	get (...args: Params<'getItem'>) {
-		return window.localStorage.getItem(...args)
-	},
-
-	remove (...args: Params<'removeItem'>) {
-		window.localStorage.removeItem(...args)
-	},
+	return minified ? deminify(minified) : null
 }
 
-export function fetchState (key: string): InitialState | null {
-	const urlParams = new URLSearchParams(window.location.search)
-	const queryParameter = urlParams.get(QUERY_PARAMETER)
+export function saveState (key: string, state: State) {
+	const minified = minify(state)
 
-	let stringified = null
-	if (queryParameter) {
-		stringified = decompressFromEncodedURIComponent(queryParameter)
-	} else {
-		const compressed = Storage.get(key)
-		if (compressed) {
-			stringified = decompressFromUTF16(compressed)
+	WebStorage.set(key, minified)
+	QueryParameter.set('state', minified)
+}
+
+const WebStorage = {
+	get (key: string): string | null {
+		try {
+			const value = window.localStorage.getItem(key)
+
+			return value ? decompressFromUTF16(value) : null
+		} catch (error) {
+			console.error(error)
+			return null
 		}
-	}
+	},
 
-	return stringified ? JSON.parse(stringified) as InitialState : null
+	set (key: string, value: string) {
+		try {
+			window.localStorage.setItem(key, compressToUTF16(value))
+		} catch (error) {
+			console.error(error)
+		}
+	},
 }
 
-export function saveState (key: string, initialState: InitialState) {
-	const stringified = JSON.stringify(initialState)
+const QueryParameter = {
+	get (key: string): string | null {
+		const urlParams = new URLSearchParams(window.location.search)
+		const compressed = urlParams.get(key)
 
-	const urlParams = new URLSearchParams(window.location.search)
-	urlParams.set(QUERY_PARAMETER, compressToEncodedURIComponent(stringified))
-	window.history.pushState({}, '', `?${urlParams.toString()}`)
+		return compressed ? decompressFromEncodedURIComponent(compressed) : null
+	},
 
-	Storage.set(key, compressToUTF16(stringified))
+	set (key: string, value: string) {
+		const urlParams = new URLSearchParams(window.location.search)
+		urlParams.set(key, compressToEncodedURIComponent(value))
+
+		window.history.pushState({}, '', `?${urlParams.toString()}`)
+	},
 }

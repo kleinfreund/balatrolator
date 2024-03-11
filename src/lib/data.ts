@@ -1,8 +1,22 @@
 import { flush, nOfAKind, straight } from '#lib/getHand.js'
-import type { HandName, JokerDefinition, JokerName, ModifierDefaults, Rank, Score, Suit } from '#lib/types.js'
 import { isFaceCard } from '#utilities/isFaceCard.js'
 import { isRank } from '#utilities/isRank.js'
 import { isSuit } from '#utilities/isSuit.js'
+import type { BlindName, DeckName, Edition, Enhancement, HandName, JokerDefinition, JokerEdition, JokerName, ModifierDefaults, Rank, Score, Seal, Suit } from '#lib/types.js'
+
+export const BLINDS: BlindName[] = ['Small Blind', 'Big Blind', 'The Hook', 'The Ox', 'The House', 'The Wall', 'The Wheel', 'The Arm', 'The Club', 'The Fish', 'The Psychic', 'The Goad', 'The Water', 'The Window', 'The Manacle', 'The Eye', 'The Mouth', 'The Plant', 'The Serpent', 'The Pillar', 'The Needle', 'The Head', 'The Tooth', 'The Flint', 'The Mark', 'Amber Acorn', 'Verdant Leaf', 'Violet Vessel', 'Crimson Heart', 'Cerulean Bell']
+
+export const DECKS: DeckName[] = ['Red Deck', 'Blue Deck', 'Yellow Deck', 'Green Deck', 'Black Deck', 'Magic Deck', 'Nebula Deck', 'Ghost Deck', 'Abandoned Deck', 'Checkered Deck', 'Zodiac Deck', 'Painted Deck', 'Anaglyph Deck', 'Plasma Deck', 'Erratic Deck', 'Challenge Deck']
+
+export const HANDS: HandName[] = ['Flush Five', 'Flush House', 'Five of a Kind', 'Straight Flush', 'Four of a Kind', 'Full House', 'Flush', 'Straight', 'Three of a Kind', 'Two Pair', 'Pair', 'High Card']
+
+export const ENHANCEMENTS: Enhancement[] = ['none', 'bonus', 'mult', 'wild', 'glass', 'steel', 'stone', 'gold', 'lucky']
+export const SEALS: Seal[] = ['none', 'gold', 'red', 'blue', 'purple']
+export const EDITIONS: Edition[] = ['base', 'foil', 'holographic', 'polychrome']
+export const JOKER_EDITIONS: JokerEdition[] = ['base', 'foil', 'holographic', 'polychrome', 'negative']
+
+export const RANKS: Rank[] = ['Ace', 'King', 'Queen', 'Jack', '10', '9', '8', '7', '6', '5', '4', '3', '2']
+export const SUITS: Suit[] = ['Clubs', 'Spades', 'Hearts', 'Diamonds']
 
 export const MODIFIER_DEFAULTS: ModifierDefaults = {
 	edition: {
@@ -88,9 +102,6 @@ export const RANK_TO_CHIP_MAP: Record<Rank, number> = {
 	'3': 3,
 	'2': 2,
 }
-
-export const RANKS: Rank[] = Object.keys(RANK_TO_CHIP_MAP) as Rank[]
-export const SUITS: Suit[] = ['Clubs', 'Spades', 'Hearts', 'Diamonds']
 
 export const RANK_TO_INDEX_MAP: Record<Rank, number> = {
 	'King': 13,

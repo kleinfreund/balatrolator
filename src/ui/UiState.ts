@@ -64,8 +64,8 @@ export class UiState {
 		})
 	}
 
-	updateScore (initialState: InitialState) {
-		const score = calculateScore(getState(initialState))
+	updateScore (state: State) {
+		const score = calculateScore(state)
 		log(score)
 
 		this.formattedScoreEl.textContent = score.formattedScore
@@ -73,11 +73,11 @@ export class UiState {
 	}
 
 	/**
-	 * Assembles an `InitialState` object from the various form elements in the UI.
+	 * Assembles a `State` object from the various form elements in the UI.
 	 *
-	 * Inverse operation of `populateUiWithState`
+	 * Inverse operation of `populateUiWithState`.
 	 */
-	readStateFromUi (): InitialState {
+	readStateFromUi (): State {
 		const hands = Number(this.handsInput.value)
 		const discards = Number(this.discardsInput.value)
 		const money = Number(this.moneyInput.value)
@@ -139,11 +139,11 @@ export class UiState {
 			})
 		}
 
-		return initialState
+		return getState(initialState)
 	}
 
 	/**
-	 * Populates the UI using an `InitialState` object. Tries to retrieve this object from the URL or local storage.
+	 * Populates the UI using a `State` object. Tries to retrieve this object from the URL or local storage.
 	 */
 	populateUiWithState (state: State) {
 		this.handsInput.value = String(state.hands)
