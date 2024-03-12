@@ -15,7 +15,50 @@ type TestCase = {
 describe('getHand', () => {
 	test.each<TestCase>([
 		{
-			message: 'Flush five + Smeared Joker',
+			message: 'Five of a Kind + Smeared Joker + Four Fingers = Flush Five',
+			initialCards: [
+				{ rank: '10', suit: 'Spades' },
+				{ rank: '10', suit: 'Hearts' },
+				{ rank: '10', suit: 'Hearts' },
+				{ rank: '10', suit: 'Hearts' },
+				{ rank: '10', suit: 'Diamonds' },
+			],
+			options: {
+				hasSmearedJoker: true,
+				hasFourFingers: true,
+			},
+			expectedPlayedHand: 'Flush Five',
+			expectedScoringCards: [
+				{ rank: '10', suit: 'Spades' },
+				{ rank: '10', suit: 'Hearts' },
+				{ rank: '10', suit: 'Hearts' },
+				{ rank: '10', suit: 'Hearts' },
+				{ rank: '10', suit: 'Diamonds' },
+			],
+		},
+		{
+			message: 'Five of a Kind + Four Fingers = Flush Five',
+			initialCards: [
+				{ rank: '10', suit: 'Hearts' },
+				{ rank: '10', suit: 'Hearts' },
+				{ rank: '10', suit: 'Hearts' },
+				{ rank: '10', suit: 'Hearts' },
+				{ rank: '10', suit: 'Diamonds' },
+			],
+			options: {
+				hasFourFingers: true,
+			},
+			expectedPlayedHand: 'Flush Five',
+			expectedScoringCards: [
+				{ rank: '10', suit: 'Hearts' },
+				{ rank: '10', suit: 'Hearts' },
+				{ rank: '10', suit: 'Hearts' },
+				{ rank: '10', suit: 'Hearts' },
+				{ rank: '10', suit: 'Diamonds' },
+			],
+		},
+		{
+			message: 'Flush Five + Smeared Joker',
 			initialCards: [
 				{ rank: '10', suit: 'Diamonds' },
 				{ rank: '10', suit: 'Hearts' },
@@ -36,7 +79,7 @@ describe('getHand', () => {
 			],
 		},
 		{
-			message: 'Flush five',
+			message: 'Flush Five',
 			initialCards: [
 				{ rank: '10', suit: 'Hearts' },
 				{ rank: '10', suit: 'Hearts' },
