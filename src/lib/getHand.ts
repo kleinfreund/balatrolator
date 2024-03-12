@@ -152,7 +152,15 @@ export function straight (cards: Card[], hasFourFingers: boolean, hasShortcut: b
 	const gap = hasShortcut ? 2 : 1
 	const cardIndexes = cards
 		.filter(({ enhancement }) => enhancement !== 'stone')
-		.map(({ rank }) => RANK_TO_INDEX_MAP[rank])
+		.map(({ rank }) => {
+			if (rank === 'Ace') {
+				// Count an Ace both for its natural rank (i.e. succeeding a “King”) and for its special rank (i.e. preceeding a “2”).
+				return [RANK_TO_INDEX_MAP[rank], 1]
+			}
+
+			return [RANK_TO_INDEX_MAP[rank]]
+		})
+		.flat()
 	cardIndexes.sort((a, b) => a - b)
 
 	const gaps = Array.from({ length: gap }, (_, index) => index + 1)
@@ -162,19 +170,35 @@ export function straight (cards: Card[], hasFourFingers: boolean, hasShortcut: b
 	let isStraight = false
 	for (let i = 1; i < cardIndexes.length; i++) {
 		const cardIndex = cardIndexes[i]!
+		const isWithinGap = gaps.some((gap) => previousCardIndex + gap === cardIndex)
 
-		if (gaps.some((gap) => previousCardIndex + gap === cardIndex)) {
+		if (isWithinGap) {
+			scoringCardIndexes.push(cardIndex)
+
+			if (scoringCardIndexes.length === straightnessThreshold) {
+				// Mark the hand as a straight but continue evaluating to determine _all scoring_ cards, not just the ones needed to form a straight.
+				isStraight = true
+			}
+		} else if (!isStraight) {
+			// If the hand isn't already a straight and the straightness is broken, start over by clearing the preliminary list of scoring card indexes and assuming the next card is the start of a straight.
+			scoringCardIndexes.length = 0
 			scoringCardIndexes.push(cardIndex)
 		}
 
 		previousCardIndex = cardIndex
-
-		if (scoringCardIndexes.length === straightnessThreshold) {
-			isStraight = true
-		}
 	}
 
-	return isStraight ? cards.filter(({ rank }) => scoringCardIndexes.includes(RANK_TO_INDEX_MAP[rank]!)) : []
+	if (!isStraight) {
+		return []
+	}
+
+	return cards.filter(({ rank }) => {
+		if (rank === 'Ace' && scoringCardIndexes.includes(1)) {
+			return true
+		}
+
+		return scoringCardIndexes.includes(RANK_TO_INDEX_MAP[rank]!)
+	})
 }
 
 export function twoPair (cards: Card[]): Card[] {

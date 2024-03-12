@@ -412,6 +412,24 @@ describe('getHand', () => {
 			],
 		},
 		{
+			message: 'High straight',
+			initialCards: [
+				{ rank: 'King', suit: 'Clubs' },
+				{ rank: 'Queen', suit: 'Clubs' },
+				{ rank: 'Ace', suit: 'Hearts' },
+				{ rank: 'Jack', suit: 'Spades' },
+				{ rank: '10', suit: 'Diamonds' },
+			],
+			expectedPlayedHand: 'Straight',
+			expectedScoringCards: [
+				{ rank: 'King', suit: 'Clubs' },
+				{ rank: 'Queen', suit: 'Clubs' },
+				{ rank: 'Ace', suit: 'Hearts' },
+				{ rank: 'Jack', suit: 'Spades' },
+				{ rank: '10', suit: 'Diamonds' },
+			],
+		},
+		{
 			message: 'Low straight',
 			initialCards: [
 				{ rank: '5', suit: 'Clubs' },
@@ -427,6 +445,20 @@ describe('getHand', () => {
 				{ rank: 'Ace', suit: 'Hearts' },
 				{ rank: '2', suit: 'Spades' },
 				{ rank: '3', suit: 'Diamonds' },
+			],
+		},
+		{
+			message: 'Not a low straight',
+			initialCards: [
+				{ rank: 'King', suit: 'Clubs' },
+				{ rank: '4', suit: 'Clubs' },
+				{ rank: 'Ace', suit: 'Hearts' },
+				{ rank: '2', suit: 'Spades' },
+				{ rank: '3', suit: 'Diamonds' },
+			],
+			expectedPlayedHand: 'High Card',
+			expectedScoringCards: [
+				{ rank: 'Ace', suit: 'Hearts' },
 			],
 		},
 		{

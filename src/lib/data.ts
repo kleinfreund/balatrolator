@@ -104,6 +104,7 @@ export const RANK_TO_CHIP_MAP: Record<Rank, number> = {
 }
 
 export const RANK_TO_INDEX_MAP: Record<Rank, number> = {
+	'Ace': 14,
 	'King': 13,
 	'Queen': 12,
 	'Jack': 11,
@@ -116,7 +117,6 @@ export const RANK_TO_INDEX_MAP: Record<Rank, number> = {
 	'4': 4,
 	'3': 3,
 	'2': 2,
-	'Ace': 1,
 }
 
 export const PLAYED_CARD_RETRIGGER_JOKER_NAMES: JokerName[] = [
