@@ -250,8 +250,8 @@ export const JOKER_DEFINITIONS: Record<JokerName, JokerDefinition> = {
 	'Joker Stencil': {
 		rarity: 'uncommon',
 		effect ({ score, state }) {
-			const nonNegativeJokers = state.jokers.filter(({ edition }) => edition !== 'negative')
-			score.multiplier *= (state.jokerSlots - nonNegativeJokers.length)
+			const nonStencilNonNegativeJokers = state.jokers.filter((joker) => joker.name !== 'Joker Stencil' && joker.edition !== 'negative')
+			score.multiplier *= Math.max(1, state.jokerSlots - nonStencilNonNegativeJokers.length)
 		},
 	},
 	'Four Fingers': {
