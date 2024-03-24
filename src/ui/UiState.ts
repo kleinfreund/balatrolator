@@ -67,12 +67,13 @@ export class UiState {
 	}
 
 	updateScore (state: State) {
-		const score = calculateScore(state)
-		log(score)
+		const { hand, scoringCards, scores } = calculateScore(state)
+		log({ hand, scoringCards, scores })
 
+		const score = scores[0]!
 		this.formattedScoreEl.textContent = score.formattedScore
 		this.scoreEl.textContent = new Intl.NumberFormat('en').format(score.score)
-		this.playedHandEl.textContent = score.hand
+		this.playedHandEl.textContent = hand
 	}
 
 	/**

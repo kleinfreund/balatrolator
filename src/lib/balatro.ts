@@ -1,5 +1,5 @@
-import { RANK_TO_CHIP_MAP, PLAYED_CARD_RETRIGGER_JOKER_NAMES, HELD_CARD_RETRIGGER_JOKER_NAMES } from '#lib/data.js'
-import type { Card, Joker, JokerCardEffect, JokerEffect, Result, Score, State } from '#lib/types.js'
+import { RANK_TO_CHIP_MAP, PLAYED_CARD_RETRIGGER_JOKER_NAMES, HELD_CARD_RETRIGGER_JOKER_NAMES, LUCKS } from '#lib/data.js'
+import type { Card, Joker, JokerCardEffect, JokerEffect, Luck, Result, ResultScore, Score, State } from '#lib/types.js'
 import { formatScore } from '#utilities/formatScore.js'
 import { log, logGroup, logGroupEnd } from '#utilities/log.js'
 import { isFaceCard } from '#utilities/isFaceCard.js'
@@ -8,41 +8,49 @@ import { notNullish } from '#utilities/notNullish.js'
 import { resolveJoker } from '#utilities/resolveJokers.js'
 
 export function calculateScore (state: State): Result {
-	const { chips, multiplier } = getScore(state)
+	const scores: ResultScore[] = []
 
-	log('\nReceived:', { chips, multiplier })
-	log('Expected:', { chips: 340, multiplier: 1685e13 })
+	for (const luck of LUCKS) {
+		const { chips, multiplier } = getScore(state, luck)
 
-	let actualScore
-	if (state.deck === 'Plasma Deck') {
-		log('Balanced:', { chips: 2.470e16, multiplier: 2.470e16 })
-		actualScore = Math.pow((chips + multiplier) / 2, 2)
-	} else {
-		actualScore = chips * multiplier
+		log('\nReceived:', { chips, multiplier })
+		log('Expected:', { chips: 340, multiplier: 1685e13 })
+
+		let actualScore
+		if (state.deck === 'Plasma Deck') {
+			log('Balanced:', { chips: 2.470e16, multiplier: 2.470e16 })
+			actualScore = Math.pow((chips + multiplier) / 2, 2)
+		} else {
+			actualScore = chips * multiplier
+		}
+
+		// Balatro seems to round values starting at a certain threshold and it seems to round down. 🤔
+		const score = actualScore > 10000 ? Math.floor(actualScore) : actualScore
+		scores.push({
+			score,
+			formattedScore: formatScore(score),
+			luck,
+		})
 	}
-
-	// Balatro seems to round values starting at a certain threshold and it seems to round down. 🤔
-	const score = actualScore > 10000 ? Math.floor(actualScore) : actualScore
 
 	return {
 		hand: state.playedHand,
 		scoringCards: state.scoringCards,
-		score,
-		formattedScore: formatScore(score),
+		scores,
 	}
 }
 
-function getScore (state: State): Score {
-	const { chips: baseChips, multiplier: baseMultiplier } = state.handBaseScores[state.playedHand]
+function getScore (state: State, luck: Luck): Score {
+	const baseScore = state.handBaseScores[state.playedHand]
 
-	// Step 0. Determine base chips and multiplier.
+	// Determine base chips and multiplier.
 	log('\n0. Determining base score …')
 	// The Flint halves the base chips and multiplier.
-	// The base score seems to be rounded here.
 	const baseFactor = (state.blind.name === 'The Flint' && state.blind.isActive ? 0.5 : 1)
+	// The base score seems to be rounded here.
 	const score: Score = {
-		chips: Math.round(baseChips * baseFactor),
-		multiplier: Math.round(baseMultiplier * baseFactor),
+		chips: Math.round(baseScore.chips * baseFactor),
+		multiplier: Math.round(baseScore.multiplier * baseFactor),
 	}
 	log('\n0. BASE SCORE =>', score)
 
@@ -83,6 +91,12 @@ function getScore (state: State): Score {
 					log(score, '(+Mult from mult enhancement)')
 					break
 				}
+				case 'lucky': {
+					const hasOops = state.jokerSet.has('Oops! All 6s')
+					score.multiplier += luck === 'all' ? 20 : luck === 'none' ? 0 : (hasOops ? 8 : 4)
+					log(score, '(+Mult from lucky enhancement)')
+					break
+				}
 				case 'glass': {
 					score.multiplier *= 2
 					log(score, '(xMult from glass enhancement)')
@@ -111,7 +125,7 @@ function getScore (state: State): Score {
 
 			// 4. Joker effects for played cards
 			for (const joker of state.jokers) {
-				scoreJokerCardEffect(joker.playedCardEffect, { state, score, joker, card })
+				scoreJokerCardEffect(joker.playedCardEffect, { state, score, joker, card, luck })
 			}
 		}
 
@@ -144,7 +158,7 @@ function getScore (state: State): Score {
 
 			// 2. Joker effects for held cards
 			for (const joker of state.jokers) {
-				scoreJokerCardEffect(joker.heldCardEffect, { state, score, joker, card })
+				scoreJokerCardEffect(joker.heldCardEffect, { state, score, joker, card, luck })
 				log(score, `(${joker})`)
 			}
 		}
@@ -177,7 +191,7 @@ function getScore (state: State): Score {
 		}
 
 		// 2. JOKER EFFECTS
-		scoreJokerEffect(joker.effect, { state, score, joker })
+		scoreJokerEffect(joker.effect, { state, score, joker, luck })
 
 		logGroupEnd(`← ${joker}`, score)
 	}
@@ -258,7 +272,7 @@ function getHeldCardTriggers ({ state, card }: { state: State, card: Card }): st
 	return triggers
 }
 
-function scoreJokerEffect (effect: JokerEffect | undefined, { state, score, joker }: { state: State, score: Score, joker: Joker }) {
+function scoreJokerEffect (effect: JokerEffect | undefined, { state, score, joker, luck }: { state: State, score: Score, joker: Joker, luck: Luck }) {
 	const triggers = ['Regular']
 
 	// Increase triggers from Blueprint/Brainstorm
@@ -276,27 +290,27 @@ function scoreJokerEffect (effect: JokerEffect | undefined, { state, score, joke
 	for (const [index, trigger] of triggers.entries()) {
 		log(`Trigger: ${index + 1} (${trigger})`)
 		if (effect) {
-			effect.call(joker, { state, score })
+			effect.call(joker, { state, score, luck })
 			log(score, `(${joker.name})`)
 		}
 
 		for (const target of targets) {
 			if (target.indirectEffect) {
-				target.indirectEffect({ state, score, joker })
+				target.indirectEffect({ state, score, joker, luck })
 				log(score, trigger)
 			}
 		}
 
 		for (const jokersWithIndirectEffect of jokersWithIndirectEffects) {
 			if (jokersWithIndirectEffect.indirectEffect) {
-				jokersWithIndirectEffect.indirectEffect({ state, score, joker })
+				jokersWithIndirectEffect.indirectEffect({ state, score, joker, luck })
 				log(score, `(${jokersWithIndirectEffect.name})`)
 			}
 		}
 	}
 }
 
-function scoreJokerCardEffect (effect: JokerCardEffect | undefined, { state, score, joker, card }: { state: State, score: Score, joker: Joker, card: Card }) {
+function scoreJokerCardEffect (effect: JokerCardEffect | undefined, { state, score, joker, card, luck }: { state: State, score: Score, joker: Joker, card: Card, luck: Luck }) {
 	if (!effect) {
 		return
 	}
@@ -326,7 +340,7 @@ function scoreJokerCardEffect (effect: JokerCardEffect | undefined, { state, sco
 
 	for (let trigger = 0; trigger < triggers.length; trigger++) {
 		log(`Trigger: ${trigger + 1} (${triggers[trigger]})`)
-		effect.call(joker, { state, score, joker, card })
+		effect.call(joker, { state, score, joker, card, luck })
 		log(score, `(${joker.name})`)
 	}
 	logGroupEnd('←', score)

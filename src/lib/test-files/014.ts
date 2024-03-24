@@ -35,8 +35,11 @@ export default (message: string): TestCase => {
 				{ rank: '5', suit: 'Spades', enhancement: 'mult', seal: 'red' },
 				{ rank: '5', suit: 'Spades', enhancement: 'mult', seal: 'red' },
 			],
-			score: 109270,
-			formattedScore: '109,270',
+			scores: [
+				{ score: 109270, formattedScore: '109,270', luck: 'none' },
+				{ score: 109270, formattedScore: '109,270', luck: 'average' },
+				{ score: 109270, formattedScore: '109,270', luck: 'all' },
+			],
 		},
 	}
 }

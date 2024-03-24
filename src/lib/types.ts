@@ -41,6 +41,7 @@ export interface Card extends Required<InitialCard> {
 export interface EffectOptions {
 	state: State
 	score: Score
+	luck: Luck
 }
 
 export interface CardEffectOptions extends EffectOptions {
@@ -73,7 +74,6 @@ export interface InitialJoker {
 
 export interface JokerDefinition {
 	rarity: 'common' | 'uncommon' | 'rare' | 'legendary'
-	probability?: Probability
 	effect?: JokerEffect
 	indirectEffect?: JokerIndirectEffect
 	playedCardEffect?: JokerCardEffect
@@ -96,7 +96,6 @@ export interface Joker {
 	suit?: Suit
 	isActive: boolean
 	rarity: 'common' | 'uncommon' | 'rare' | 'legendary'
-	probability?: Probability
 	effect?: JokerEffect
 	indirectEffect?: JokerIndirectEffect
 	playedCardEffect?: JokerCardEffect
@@ -145,9 +144,16 @@ export interface State {
 	scoringCards: Card[]
 }
 
+export type Luck = 'none' | 'average' | 'all'
+
+export interface ResultScore {
+	score: number
+	formattedScore: string
+	luck: Luck
+}
+
 export interface Result {
 	hand: HandName
 	scoringCards: Card[]
-	score: number
-	formattedScore: string
+	scores: ResultScore[]
 }

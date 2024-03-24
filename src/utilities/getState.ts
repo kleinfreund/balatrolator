@@ -99,7 +99,6 @@ function getJokers (initialJokers: InitialJoker[]): Joker[] {
 
 		const {
 			rarity,
-			probability = { numerator: 1, denominator: 1 },
 			effect,
 			indirectEffect,
 			playedCardEffect,
@@ -118,7 +117,6 @@ function getJokers (initialJokers: InitialJoker[]): Joker[] {
 			suit,
 			isActive,
 			rarity,
-			probability,
 			effect,
 			indirectEffect,
 			playedCardEffect,

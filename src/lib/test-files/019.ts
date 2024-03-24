@@ -24,8 +24,11 @@ export default (message: string): TestCase => {
 				{ rank: '7', suit: 'Spades' },
 				{ rank: '7', suit: 'Hearts', isDebuffed: true },
 			],
-			score: 334,
-			formattedScore: '334',
+			scores: [
+				{ score: 334, formattedScore: '334', luck: 'none' },
+				{ score: 334, formattedScore: '334', luck: 'average' },
+				{ score: 334, formattedScore: '334', luck: 'all' },
+			],
 		},
 	}
 }

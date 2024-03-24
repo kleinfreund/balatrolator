@@ -26,8 +26,11 @@ export default (message: string): TestCase => {
 			scoringCards: [
 				{ rank: 'Queen', suit: 'Diamonds', isDebuffed: true },
 			],
-			score: 16.25,
-			formattedScore: '16',
+			scores: [
+				{ score: 16.25, formattedScore: '16', luck: 'none' },
+				{ score: 16.25, formattedScore: '16', luck: 'average' },
+				{ score: 16.25, formattedScore: '16', luck: 'all' },
+			],
 		},
 	}
 }

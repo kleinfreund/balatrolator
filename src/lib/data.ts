@@ -2,7 +2,7 @@ import { flush, nOfAKind, straight } from '#lib/getHand.js'
 import { isFaceCard } from '#utilities/isFaceCard.js'
 import { isRank } from '#utilities/isRank.js'
 import { isSuit } from '#utilities/isSuit.js'
-import type { BlindName, DeckName, Edition, Enhancement, HandName, JokerDefinition, JokerEdition, JokerName, Rank, Score, Seal, Suit } from '#lib/types.js'
+import type { BlindName, DeckName, Edition, Enhancement, HandName, JokerDefinition, JokerEdition, JokerName, Luck, Rank, Score, Seal, Suit } from '#lib/types.js'
 
 export const BLINDS: BlindName[] = ['Small Blind', 'Big Blind', 'The Hook', 'The Ox', 'The House', 'The Wall', 'The Wheel', 'The Arm', 'The Club', 'The Fish', 'The Psychic', 'The Goad', 'The Water', 'The Window', 'The Manacle', 'The Eye', 'The Mouth', 'The Plant', 'The Serpent', 'The Pillar', 'The Needle', 'The Head', 'The Tooth', 'The Flint', 'The Mark', 'Amber Acorn', 'Verdant Leaf', 'Violet Vessel', 'Crimson Heart', 'Cerulean Bell']
 
@@ -17,6 +17,8 @@ export const JOKER_EDITIONS: JokerEdition[] = ['base', 'foil', 'holographic', 'p
 
 export const RANKS: Rank[] = ['Ace', 'King', 'Queen', 'Jack', '10', '9', '8', '7', '6', '5', '4', '3', '2']
 export const SUITS: Suit[] = ['Clubs', 'Spades', 'Hearts', 'Diamonds']
+
+export const LUCKS: Luck[] = ['none', 'average', 'all']
 
 export const PLANET_SCORE_SETS: Record<HandName, Score> = {
 	'Flush Five': { chips: 40, multiplier: 3 },
@@ -258,8 +260,8 @@ export const JOKER_DEFINITIONS: Record<JokerName, JokerDefinition> = {
 	},
 	'Misprint': {
 		rarity: 'common',
-		effect ({ score }) {
-			score.multiplier += 0
+		effect ({ score, luck }) {
+			score.multiplier += luck === 'all' ? 23 : luck === 'none' ? 0 : 11.5
 		},
 	},
 	'Dusk': {
@@ -711,12 +713,11 @@ export const JOKER_DEFINITIONS: Record<JokerName, JokerDefinition> = {
 	},
 	'Bloodstone': {
 		rarity: 'uncommon',
-		probability: {
-			numerator: 1,
-			denominator: 3,
-		},
-		playedCardEffect ({ score, card }) {
-			score.multiplier *= (isSuit(card, 'Hearts') ? 1 : 1)
+		playedCardEffect ({ score, card, state, luck }) {
+			if (isSuit(card, 'Hearts')) {
+				const hasOops = state.jokerSet.has('Oops! All 6s')
+				score.multiplier *= luck === 'all' ? 2 : luck === 'none' ? 1 : 1 + (hasOops ? 2 : 1)/3
+			}
 		},
 	},
 	'Arrowhead': {

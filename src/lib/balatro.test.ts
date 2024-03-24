@@ -29,13 +29,15 @@ import case023 from './test-files/023.js'
 import case024 from './test-files/024.js'
 import case025 from './test-files/025.js'
 import case026 from './test-files/026.js'
-
-type Expected = Omit<ReturnType<typeof calculateScore>, 'scoringCards'> & { scoringCards: Partial<Card>[] }
+import case027 from './test-files/027.js'
+import case028 from './test-files/028.js'
 
 export type TestCase = {
 	message: string
 	initialState: InitialState
-	expected: Expected
+	expected: Omit<ReturnType<typeof calculateScore>, 'scoringCards'> & {
+		scoringCards: Partial<Card>[]
+	}
 }
 
 describe('calculateScore', () => {
@@ -66,7 +68,13 @@ describe('calculateScore', () => {
 		case024('Pair, inactive Verdant Leaf'),
 		case025('Pair, active Verdant Leaf'),
 		case026('Pair, The Pillar'),
+		case027('Lucky Pair'),
+		case028('Lucky Flush, Bloodstone'),
 	])('$message', ({ initialState, expected }) => {
-		expect(calculateScore(getState(initialState))).toMatchObject(expected)
+		const score = calculateScore(getState(initialState))
+
+		expect(score.hand).toEqual(expected.hand)
+		expect(score.scoringCards).toMatchObject(expected.scoringCards)
+		expect(score.scores).toMatchObject(expected.scores)
 	})
 })

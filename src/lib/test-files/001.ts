@@ -23,8 +23,11 @@ export default (message: string): TestCase => {
 				{ rank: '7', suit: 'Clubs' },
 				{ rank: '7', suit: 'Diamonds' },
 			],
-			score: 108,
-			formattedScore: '108',
+			scores: [
+				{ score: 108, formattedScore: '108', luck: 'none' },
+				{ score: 108, formattedScore: '108', luck: 'average' },
+				{ score: 108, formattedScore: '108', luck: 'all' },
+			],
 		},
 	}
 }
