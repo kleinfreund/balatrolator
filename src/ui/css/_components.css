@@ -35,11 +35,14 @@
 }
 
 .panel {
+	--c-text: var(--c-black);
+	--c-border: var(--c-grey-dark);
+	--c-background-light: var(--c-grey-lighter);
+
 	padding: 0.5rem;
-	border: 2px solid var(--c-panel-border);
+	border: 2px solid var(--c-border);
 	border-radius: 5px;
-	background-color: var(--c-panel-background);
-	box-shadow: 0 0 3px var(--c-panel-box-shadow);
+	background-color: var(--c-background-light);
 }
 
 .panel-header {
@@ -48,19 +51,48 @@
 	gap: 0.5rem;
 }
 
-joker-card,
-playing-card {
-	min-width: 100px;
-	max-width: 200px;
+.card {
+	--c-text: var(--c-white);
+	--c-border: var(--c-blue-dark);
+	--c-background-light: var(--c-blue-light);
+	--c-background-lighter: var(--c-blue-lighter);
+
 	padding: 0.25rem;
-	border: 2px solid transparent;
+	border: 2px solid var(--c-border, transparent);
 	border-radius: 5px;
-	background-color: #fdf7f7;
+	color: var(--c-text);
+	background-color: var(--c-background-light);
 }
 
-.score {
-	font-size: 1.5rem;
-	font-weight: bold;
+.card:not(.increase-specificity) {
+	/* min-width: 100px; */
+	max-width: 180px;
+}
+
+/* ROUND DATA */
+
+.r-hands-input {
+	width: 4rem;
+}
+
+.r-discards-input {
+	width: 4rem;
+}
+
+.r-money-input {
+	width: 4.5rem;
+}
+
+.r-blind-name-input {
+	width: 9.5rem;
+}
+
+.r-deck-input {
+	width: 10rem;
+}
+
+.r-joker-slots-input {
+	width: 4rem;
 }
 
 /* HAND LEVELS */
@@ -82,55 +114,55 @@ hand-level {
 
 /* CARDS */
 
-playing-card {
+.playing-card {
+	--c-text: var(--c-black);
+	--c-border: var(--c-yellow-dark);
+	--c-background-light: var(--c-yellow-light);
+	--c-background-lighter: var(--c-yellow-lighter);
+
 	display: block;
-	border-color: var(--c-card-border);
 }
 
-playing-card[draggable="true"] {
+.playing-card[draggable="true"] {
 	cursor: ew-resize;
 }
 
-playing-card:where(.--is-played) {
+.playing-card:where(.--is-played) {
 	margin-bottom: 1.5rem;
 }
 
-playing-card:not(:where(.--is-played)) {
+.playing-card:not(:where(.--is-played)) {
 	margin-top: 1.5rem;
 }
 
-playing-card:not(.--is-blind-the-pillar) .c-is-debuffed {
+.playing-card:not(.--is-blind-the-pillar) .c-is-debuffed {
 	display: none;
 }
 
-.c-rank-input {
-	width: 5rem;
-}
-
-.c-suit-input {
-	width: 6.6rem;
-}
-
 .c-edition-input {
-	width: 100px;
+	width: 8.5rem;
 }
 
 .c-enhancement-input {
-	width: 65px;
+	width: 5.5rem;
 }
 
 .c-seal-input {
-	width: 65px;
+	width: 5.5rem;
 }
 
 /* JOKERS */
 
-joker-card {
+.joker-card {
+	--c-text: var(--c-white);
+	--c-border: var(--c-red-dark);
+	--c-background-light: var(--c-red-light);
+	--c-background-lighter: var(--c-red-lighter);
+
 	display: block;
-	border-color: var(--c-card-border);
 }
 
-joker-card[draggable="true"] {
+.joker-card[draggable="true"] {
 	cursor: ew-resize;
 }
 
@@ -138,62 +170,69 @@ joker-card[draggable="true"] {
 	width: 100px;
 }
 
-joker-card:not(.--has-plus-chips):not(.--has-plus-multiplier):not(.--has-times-multiplier):not(.--has-is-active):not(.--has-rank):not(.--has-suit) .joker-effects {
+.joker-card:not(.--has-plus-chips):not(.--has-plus-multiplier):not(.--has-times-multiplier):not(.--has-is-active):not(.--has-rank):not(.--has-suit) .joker-effects {
 	display: none;
 }
 
-joker-card:not(.--has-plus-chips) .j-plus-chips {
+.joker-card:not(.--has-plus-chips) .j-plus-chips {
 	display: none;
 }
 
-joker-card:not(.--has-plus-multiplier) .j-plus-multiplier {
+.joker-card:not(.--has-plus-multiplier) .j-plus-multiplier {
 	display: none;
 }
 
-joker-card:not(.--has-times-multiplier) .j-times-multiplier {
+.joker-card:not(.--has-times-multiplier) .j-times-multiplier {
 	display: none;
 }
 
-joker-card:not(.--has-is-active) .j-is-active {
+.joker-card:not(.--has-is-active) .j-is-active {
 	display: none;
 }
 
-joker-card:not(.--has-rank):not(.--has-suit) .j-card {
+.joker-card:not(.--has-rank):not(.--has-suit) .j-card {
 	display: none;
 }
 
-joker-card:not(.--has-rank) .j-rank {
+.joker-card:not(.--has-rank) .j-rank {
 	display: none;
 }
 
-joker-card.--has-rank:not(.--has-suit) .j-card-of,
-joker-card:not(.--has-rank).--has-suit .j-card-of {
+.joker-card.--has-rank:not(.--has-suit) .j-card-of,
+.joker-card:not(.--has-rank).--has-suit .j-card-of {
 	display: none;
 }
 
-joker-card:not(.--has-suit) .j-suit {
+.joker-card:not(.--has-suit) .j-suit {
 	display: none;
 }
 
 .j-plus-chips-input {
-	width: 75px;
+	width: 7rem;
 	text-align: right;
 }
 
 .j-plus-multiplier-input {
-	width: 75px;
+	width: 7rem;
 	text-align: right;
 }
 
 .j-times-multiplier-input {
-	width: 75px;
+	width: 7rem;
 	text-align: right;
 }
 
-.j-rank-input {
-	width: 5rem;
+/* SCORE CARD */
+
+.score-card {
+	--c-text: var(--c-white);
+	--c-border: var(--c-green-dark);
+	--c-background-light: var(--c-green-light);
+	--c-background-lighter: var(--c-green-lighter);
+
+	font-size: 1.2em;
 }
 
-.j-suit-input {
-	width: 6.6rem;
+.score {
+	font-size: 1.5rem;
 }

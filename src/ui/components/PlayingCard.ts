@@ -28,7 +28,7 @@ export class PlayingCard extends DraggableCard {
 		this.fragment = template.content.cloneNode(true) as Element
 		const id = uniqueId()
 		this.id = `playing-card-${id}`
-		this.classList.add('card')
+		this.classList.add('card', 'playing-card')
 		this.draggable = true
 
 		this.removeButton = this.fragment.querySelector('[data-remove-button]') as HTMLButtonElement

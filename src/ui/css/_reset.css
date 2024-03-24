@@ -4,10 +4,6 @@
 	box-sizing: border-box;
 }
 
-body {
-	margin: 0;
-}
-
 body,
 h1,
 h2,
@@ -28,6 +24,7 @@ figure {
 }
 
 details,
+label,
 summary,
 main {
 	display: block;
@@ -36,21 +33,8 @@ main {
 button,
 input,
 select {
-	margin: 0;
-	padding: 0;
-	border: none;
 	font-size: 100%;
 	line-height: inherit;
 	font-family: inherit;
 	font-weight: inherit;
-	color: inherit;
-	background-color: var(--c-input-background);
-}
-
-button {
-	border: none;
-}
-
-button:not(:disabled) {
-	cursor: pointer;
 }

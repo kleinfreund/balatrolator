@@ -1,15 +1,23 @@
 html {
-	--f-family: Lato, Numero, sans-serif;
+	--f-family: 'Fira Mono', 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, Courier, monospace;
 	--f-size: 0.7em;
 	--f-line-height: 1.3;
 
-	--c-text: #000;
-	--c-background: #eed9d9;
-	--c-border-neutral: #e7e5e5;
-	--c-card-border: #ccc;
-	--c-input-background: #fff;
-
-	--c-panel-border: #e8d1d1;
-	--c-panel-background: #fcecec;
-	--c-panel-box-shadow: #e8bdbd;
+	--c-white: #fff;
+	--c-black: #111;
+	--c-grey-light: hsl(249, 10%, 90%);
+	--c-grey-lighter: hsl(249, 10%, 95%);
+	--c-grey-dark: hsl(247 10% 60%);
+	--c-blue-dark: hsl(221 85% 26%);
+	--c-blue-light: hsl(221 85% 50%);
+	--c-blue-lighter: hsl(221 85% 60%);
+	--c-yellow-dark: hsl(45 98% 40%);
+	--c-yellow-light: hsl(45 98% 59%);
+	--c-yellow-lighter: hsl(45 98% 70%);
+	--c-red-dark: hsl(9 94% 33%);
+	--c-red-light: hsl(9 94% 45%);
+	--c-red-lighter: hsl(9 94% 53%);
+	--c-green-dark: hsl(145 94% 15%);
+	--c-green-light: hsl(145 94% 30%);
+	--c-green-lighter: hsl(145 94% 35%);
 }

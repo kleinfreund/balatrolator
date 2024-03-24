@@ -1,4 +1,7 @@
 html {
+	--c-background: var(--c-grey-light);
+	--c-text: var(--c-black);
+
 	font-family: var(--f-family);
 	font-size: var(--f-size);
 	line-height: var(--f-line-height);
@@ -25,4 +28,12 @@ figure:not(:first-child) {
 
 ul {
 	padding-left: 1rem;
+}
+
+a {
+	color: var(--c-blue-light);
+}
+
+a:hover {
+	color: var(--c-blue-dark);
 }

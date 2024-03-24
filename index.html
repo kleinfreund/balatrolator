@@ -24,135 +24,139 @@
 			</div>
 
 			<form class="form" method="POST" enctype="multipart/form-data" data-form>
-				<div class="form__round panel">
-					<h2>Round data</h2>
-
-					<div class="list">
-						<div class="card">
-							<label class="r-hands text-control">
-								<span class="label truncate">Hands</span>
-
-								<input class="r-hands-input text-input" name="hands" type="number" min="0" value="0" data-r-hands>
-
-								<span class="secondary-label">Influences: Acrobat</span>
-							</label>
-						</div>
-
-						<div class="card">
-							<label class="r-discards text-control">
-								<span class="label truncate">Discards</span>
-
-								<input class="r-discards-input text-input" name="discards" type="number" min="0" value="0" data-r-discards>
-
-								<span class="secondary-label">Influences: Banner, Mystic Summit</span>
-							</label>
-						</div>
-
-						<div class="card">
-							<label class="r-money text-control">
-								<span class="label truncate">Money</span>
-
-								<input class="r-money-input text-input" name="money" type="number" value="0" data-r-money>
-
-								<span class="secondary-label">Influences: Bull, Bootstraps</span>
-							</label>
-						</div>
-
-						<div class="card">
-							<div class="stack">
-								<label class="r-blind-name text-control">
-									<span class="label truncate">Blind</span>
-
-									<select class="r-blind-name-input select" data-r-blind-name>
-										<option value="Small Blind" selected>Small Blind</option>
-										<option value="Big Blind">Big Blind</option>
-										<option value="The Hook">The Hook</option>
-										<option value="The Ox">The Ox</option>
-										<option value="The House">The House</option>
-										<option value="The Wall">The Wall</option>
-										<option value="The Wheel">The Wheel</option>
-										<option value="The Arm">The Arm</option>
-										<option value="The Club">The Club</option>
-										<option value="The Fish">The Fish</option>
-										<option value="The Psychic">The Psychic</option>
-										<option value="The Goad">The Goad</option>
-										<option value="The Water">The Water</option>
-										<option value="The Window">The Window</option>
-										<option value="The Manacle">The Manacle</option>
-										<option value="The Eye">The Eye</option>
-										<option value="The Mouth">The Mouth</option>
-										<option value="The Plant">The Plant</option>
-										<option value="The Serpent">The Serpent</option>
-										<option value="The Pillar">The Pillar</option>
-										<option value="The Needle">The Needle</option>
-										<option value="The Head">The Head</option>
-										<option value="The Tooth">The Tooth</option>
-										<option value="The Flint">The Flint</option>
-										<option value="The Mark">The Mark</option>
-										<option value="Amber Acorn">Amber Acorn</option>
-										<option value="Verdant Leaf">Verdant Leaf</option>
-										<option value="Violet Vessel">Violet Vessel</option>
-										<option value="Crimson Heart">Crimson Heart</option>
-										<option value="Cerulean Bell">Cerulean Bell</option>
-									</select>
-
-									<span class="secondary-label">Influences: Debuffed cards, scoring</span>
-								</label>
-
-								<label class="r-blind-is-active checkbox-control">
-									<input class="r-blind-is-active-input checkbox" type="checkbox" value="is-active" checked data-r-blind-is-active>
-
-									<span class="label">Active?</span>
-								</label>
-							</div>
-						</div>
-
-						<div class="card">
-							<label class="r-deck text-control">
-								<span class="label truncate">Deck</span>
-
-								<select class="r-deck-input select" data-r-deck>
-									<option value="Red Deck" selected>Red Deck</option>
-									<option value="Blue Deck">Blue Deck</option>
-									<option value="Yellow Deck">Yellow Deck</option>
-									<option value="Green Deck">Green Deck</option>
-									<option value="Black Deck">Black Deck</option>
-									<option value="Magic Deck">Magic Deck</option>
-									<option value="Nebula Deck">Nebula Deck</option>
-									<option value="Ghost Deck">Ghost Deck</option>
-									<option value="Abandoned Deck">Abandoned Deck</option>
-									<option value="Checkered Deck">Checkered Deck</option>
-									<option value="Zodiac Deck">Zodiac Deck</option>
-									<option value="Painted Deck">Painted Deck</option>
-									<option value="Anaglyph Deck">Anaglyph Deck</option>
-									<option value="Plasma Deck">Plasma Deck</option>
-									<option value="Erratic Deck">Erratic Deck</option>
-									<option value="Challenge Deck">Challenge Deck</option>
-								</select>
-
-								<span class="secondary-label">Influences: Scoring with Plasma Deck</span>
-							</label>
-						</div>
-
-						<div class="card">
-							<label class="r-joker-slots text-control">
-								<span class="label truncate">Joker slots</span>
-
-								<input class="r-joker-slots-input text-input" name="joker-slots" type="number" value="5" data-r-joker-slots>
-
-								<span class="secondary-label">Influences: Joker Stencil</span>
-							</label>
-						</div>
-					</div>
-				</div>
-
 				<div class="form__hands panel">
 					<div class="stack">
 						<header class="panel-header">
 							<h2>Levels</h2>
 						</header>
 
-						<div class="hands-container stack" data-h-container></div>
+						<div class="stack" data-h-container></div>
+					</div>
+				</div>
+
+				<div class="form__round panel">
+					<div class="stack">
+						<header class="panel-header">
+							<h2>Round data</h2>
+						</header>
+
+						<div class="list">
+							<div class="card">
+								<label class="r-hands text-control --flat">
+									<span class="label truncate">Hands</span>
+
+									<input class="r-hands-input text-input" name="hands" type="number" min="0" value="0" data-r-hands>
+
+									<span class="secondary-label">Influences: Acrobat</span>
+								</label>
+							</div>
+
+							<div class="card">
+								<label class="r-discards text-control --flat">
+									<span class="label truncate">Discards</span>
+
+									<input class="r-discards-input text-input" name="discards" type="number" min="0" value="0" data-r-discards>
+
+									<span class="secondary-label">Influences: Banner, Mystic Summit</span>
+								</label>
+							</div>
+
+							<div class="card">
+								<label class="r-money text-control --flat">
+									<span class="label truncate">Money</span>
+
+									<input class="r-money-input text-input" name="money" type="number" value="0" data-r-money>
+
+									<span class="secondary-label">Influences: Bull, Bootstraps</span>
+								</label>
+							</div>
+
+							<div class="card">
+								<div class="stack">
+									<label class="r-blind-name select-control --flat">
+										<span class="label truncate">Blind</span>
+
+										<select class="r-blind-name-input select" data-r-blind-name>
+											<option value="Small Blind" selected>Small Blind</option>
+											<option value="Big Blind">Big Blind</option>
+											<option value="The Hook">The Hook</option>
+											<option value="The Ox">The Ox</option>
+											<option value="The House">The House</option>
+											<option value="The Wall">The Wall</option>
+											<option value="The Wheel">The Wheel</option>
+											<option value="The Arm">The Arm</option>
+											<option value="The Club">The Club</option>
+											<option value="The Fish">The Fish</option>
+											<option value="The Psychic">The Psychic</option>
+											<option value="The Goad">The Goad</option>
+											<option value="The Water">The Water</option>
+											<option value="The Window">The Window</option>
+											<option value="The Manacle">The Manacle</option>
+											<option value="The Eye">The Eye</option>
+											<option value="The Mouth">The Mouth</option>
+											<option value="The Plant">The Plant</option>
+											<option value="The Serpent">The Serpent</option>
+											<option value="The Pillar">The Pillar</option>
+											<option value="The Needle">The Needle</option>
+											<option value="The Head">The Head</option>
+											<option value="The Tooth">The Tooth</option>
+											<option value="The Flint">The Flint</option>
+											<option value="The Mark">The Mark</option>
+											<option value="Amber Acorn">Amber Acorn</option>
+											<option value="Verdant Leaf">Verdant Leaf</option>
+											<option value="Violet Vessel">Violet Vessel</option>
+											<option value="Crimson Heart">Crimson Heart</option>
+											<option value="Cerulean Bell">Cerulean Bell</option>
+										</select>
+
+										<span class="secondary-label">Influences: Debuffed cards, scoring</span>
+									</label>
+
+									<label class="r-blind-is-active checkbox-control">
+										<input class="r-blind-is-active-input checkbox" type="checkbox" value="is-active" checked data-r-blind-is-active>
+
+										<span class="label">Active?</span>
+									</label>
+								</div>
+							</div>
+
+							<div class="card">
+								<label class="r-deck select-control --flat">
+									<span class="label truncate">Deck</span>
+
+									<select class="r-deck-input select" data-r-deck>
+										<option value="Red Deck" selected>Red Deck</option>
+										<option value="Blue Deck">Blue Deck</option>
+										<option value="Yellow Deck">Yellow Deck</option>
+										<option value="Green Deck">Green Deck</option>
+										<option value="Black Deck">Black Deck</option>
+										<option value="Magic Deck">Magic Deck</option>
+										<option value="Nebula Deck">Nebula Deck</option>
+										<option value="Ghost Deck">Ghost Deck</option>
+										<option value="Abandoned Deck">Abandoned Deck</option>
+										<option value="Checkered Deck">Checkered Deck</option>
+										<option value="Zodiac Deck">Zodiac Deck</option>
+										<option value="Painted Deck">Painted Deck</option>
+										<option value="Anaglyph Deck">Anaglyph Deck</option>
+										<option value="Plasma Deck">Plasma Deck</option>
+										<option value="Erratic Deck">Erratic Deck</option>
+										<option value="Challenge Deck">Challenge Deck</option>
+									</select>
+
+									<span class="secondary-label">Influences: Scoring with Plasma Deck</span>
+								</label>
+							</div>
+
+							<div class="card">
+								<label class="r-joker-slots text-control --flat">
+									<span class="label truncate">Joker slots</span>
+
+									<input class="r-joker-slots-input text-input" name="joker-slots" type="number" value="5" data-r-joker-slots>
+
+									<span class="secondary-label">Influences: Joker Stencil</span>
+								</label>
+							</div>
+						</div>
 					</div>
 				</div>
 
@@ -161,13 +165,17 @@
 						<header class="panel-header">
 							<h2>Jokers</h2>
 
-							<button class="add-joker-button --icon" type="button" data-j-add-button>
+							<button class="add-joker-button button --icon" type="button" data-j-add-button>
 								<span class="visually-hidden">Add</span>
-								➕
+
+								<svg class="icon" role="img" viewBox="0 0 24 24" width="16" height="16" xmlns="http://www.w3.org/2000/svg">
+									<title>Plus icon</title>
+									<path d="M11 19V13H5V11H11V5H13V11H19V13H13V19H11Z" fill="currentColor"></path>
+								</svg>
 							</button>
 						</header>
 
-						<div class="joker-container list" data-j-container data-drop-zone></div>
+						<div class="list" data-j-container data-drop-zone></div>
 					</div>
 				</div>
 
@@ -176,22 +184,30 @@
 						<header class="panel-header">
 							<h2>Hand</h2>
 
-							<button class="add-card-button --icon" type="button" data-c-add-button>
+							<button class="add-card-button button --icon" type="button" data-c-add-button>
 								<span class="visually-hidden">Add</span>
-								➕
+
+								<svg class="icon" role="img" viewBox="0 0 24 24" width="16" height="16" xmlns="http://www.w3.org/2000/svg">
+									<title>Plus icon</title>
+									<path d="M11 19V13H5V11H11V5H13V11H19V13H13V19H11Z" fill="currentColor"></path>
+								</svg>
 							</button>
 						</header>
 
-						<div class="card-container list" data-c-container data-drop-zone></div>
+						<div class="list" data-c-container data-drop-zone></div>
 					</div>
 				</div>
 
 				<div class="form__score panel">
-					<button type="submit">Submit</button>
+					<div class="stack">
+						<button class="button" type="submit">Submit</button>
 
-					<p class="score">Score: <code data-formatted-score>—</code></p>
-					<p>Actual: <code data-score>—</code></p>
-					<p>Played hand: <span data-played-hand>—</span></p>
+						<div class="card score-card">
+							<p class="score">Score: <b><code data-formatted-score>—</code></b></p>
+							<p>Exact: <b><span data-score>—</span></b></p>
+							<p>Hand: <b><span data-played-hand>—</span></b></p>
+						</div>
+					</div>
 				</div>
 			</form>
 		</div>
@@ -201,7 +217,7 @@
 		<p><span data-h-name></span></p>
 
 		<div class="stack">
-			<div class="input-list --items-grow">
+			<div class="input-list">
 				<label class="h-level text-control --flat">
 					<span class="label">lvl</span>
 
@@ -219,7 +235,7 @@
 
 	<template id="joker">
 		<div class="stack">
-			<div class="input-list">
+			<div class="action-list">
 				<label class="j-name select-control">
 					<span class="visually-hidden">Joker name</span>
 
@@ -377,9 +393,13 @@
 					</select>
 				</label>
 
-				<button class="j-remove-button --icon" type="button" data-remove-button>
+				<button class="j-remove-button button --icon" type="button" data-remove-button>
 					<span class="visually-hidden">Remove</span>
-					🗑️
+
+					<svg class="icon" role="img" viewBox="0 0 24 24" width="16" height="16" xmlns="http://www.w3.org/2000/svg">
+						<title>Trash bin icon</title>
+						<path d="M7 21C6.45 21 5.97917 20.8042 5.5875 20.4125C5.19583 20.0208 5 19.55 5 19V6H4V4H9V3H15V4H20V6H19V19C19 19.55 18.8042 20.0208 18.4125 20.4125C18.0208 20.8042 17.55 21 17 21H7ZM17 6H7V19H17V6ZM9" fill="currentColor"></path>
+					</svg>
 				</button>
 			</div>
 
@@ -420,7 +440,7 @@
 					<span class="label">Active?</span>
 				</label>
 
-				<div class="input-list --items-grow j-card">
+				<div class="input-list j-card">
 					<label class="j-rank text-control">
 						<span class="visually-hidden">Rank</span>
 
@@ -460,16 +480,20 @@
 
 	<template id="card">
 		<div class="stack">
-			<div class="input-list --items-centered">
+			<div class="action-list">
 				<label class="c-is-played checkbox-control">
 					<input class="c-is-played-input checkbox" type="checkbox" value="is-played" checked data-c-is-played>
 
 					<span class="label">Play?</span>
 				</label>
 
-				<button class="c-remove-button --icon push-left" type="button" data-remove-button>
+				<button class="c-remove-button button --icon push-left" type="button" data-remove-button>
 					<span class="visually-hidden">Remove</span>
-					🗑️
+
+					<svg class="icon" role="img" viewBox="0 0 24 24" width="16" height="16" xmlns="http://www.w3.org/2000/svg">
+						<title>Trash bin icon</title>
+						<path d="M7 21C6.45 21 5.97917 20.8042 5.5875 20.4125C5.19583 20.0208 5 19.55 5 19V6H4V4H9V3H15V4H20V6H19V19C19 19.55 18.8042 20.0208 18.4125 20.4125C18.0208 20.8042 17.55 21 17 21H7ZM17 6H7V19H17V6ZM9" fill="currentColor"></path>
+					</svg>
 				</button>
 			</div>
 
@@ -479,7 +503,7 @@
 				<span class="label">Debuffed?</span>
 			</label>
 
-			<div class="input-list --items-grow">
+			<div class="input-list">
 				<label class="c-rank text-control">
 					<span class="visually-hidden">Rank</span>
 
