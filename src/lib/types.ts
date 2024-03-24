@@ -23,19 +23,6 @@ export interface Score {
 	multiplier: number
 }
 
-export interface ModifierDefaults {
-	edition: Record<JokerEdition, Modifier>
-	playedEnhancement: Record<Enhancement, Modifier>
-	heldEnhancement: Record<Enhancement, Modifier>
-	seal: Record<Seal, Modifier>
-}
-
-export interface Modifier {
-	plusChips?: number
-	plusMultiplier?: number
-	timesMultiplier?: number
-}
-
 export interface InitialCard {
 	rank: Rank
 	suit: Suit

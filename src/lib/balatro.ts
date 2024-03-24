@@ -1,5 +1,5 @@
-import { RANK_TO_CHIP_MAP, MODIFIER_DEFAULTS, PLAYED_CARD_RETRIGGER_JOKER_NAMES, HELD_CARD_RETRIGGER_JOKER_NAMES } from '#lib/data.js'
-import type { Card, Joker, JokerCardEffect, JokerEffect, Modifier, Result, Score, State } from '#lib/types.js'
+import { RANK_TO_CHIP_MAP, PLAYED_CARD_RETRIGGER_JOKER_NAMES, HELD_CARD_RETRIGGER_JOKER_NAMES } from '#lib/data.js'
+import type { Card, Joker, JokerCardEffect, JokerEffect, Result, Score, State } from '#lib/types.js'
 import { formatScore } from '#utilities/formatScore.js'
 import { log, logGroup, logGroupEnd } from '#utilities/log.js'
 import { isFaceCard } from '#utilities/isFaceCard.js'
@@ -60,14 +60,56 @@ function getScore (state: State): Score {
 		for (const [index, trigger] of triggers.entries()) {
 			log(`Trigger: ${index + 1} (${trigger})`)
 
+			// 1. Rank
 			if (card.enhancement !== 'stone') {
 				score.chips += RANK_TO_CHIP_MAP[card.rank]
 				log(score, '(+Chips from rank)')
 			}
 
-			scoreModifiers(score, MODIFIER_DEFAULTS.playedEnhancement[card.enhancement])
-			scoreModifiers(score, MODIFIER_DEFAULTS.edition[card.edition])
+			// 2. Enhancement
+			switch (card.enhancement) {
+				case 'stone': {
+					score.chips += 50
+					log(score, '(+Chips from stone enhancement)')
+					break
+				}
+				case 'bonus': {
+					score.chips += 30
+					log(score, '(+Chips from bonus enhancement)')
+					break
+				}
+				case 'mult': {
+					score.multiplier += 4
+					log(score, '(+Mult from mult enhancement)')
+					break
+				}
+				case 'glass': {
+					score.multiplier *= 2
+					log(score, '(xMult from glass enhancement)')
+					break
+				}
+			}
 
+			// 3. Edition
+			switch (card.edition) {
+				case 'foil': {
+					score.chips += 50
+					log(score, '(+Chips from foil edition)')
+					break
+				}
+				case 'holographic': {
+					score.multiplier += 10
+					log(score, '(+Mult from holographic edition)')
+					break
+				}
+				case 'polychrome': {
+					score.multiplier *= 1.5
+					log(score, '(xMult from polychrome edition)')
+					break
+				}
+			}
+
+			// 4. Joker effects for played cards
 			for (const joker of state.jokers) {
 				scoreJokerCardEffect(joker.playedCardEffect, { state, score, joker, card })
 			}
@@ -91,8 +133,16 @@ function getScore (state: State): Score {
 		for (const [index, trigger] of triggers.entries()) {
 			log(`Trigger: ${index + 1} (${trigger})`)
 
-			scoreModifiers(score, MODIFIER_DEFAULTS.heldEnhancement[card.enhancement])
+			// 1. Enhancement
+			switch (card.enhancement) {
+				case 'steel': {
+					score.multiplier *= 1.5
+					log(score, '(xMult from steel enhancement)')
+					break
+				}
+			}
 
+			// 2. Joker effects for held cards
 			for (const joker of state.jokers) {
 				scoreJokerCardEffect(joker.heldCardEffect, { state, score, joker, card })
 				log(score, `(${joker})`)
@@ -106,8 +156,29 @@ function getScore (state: State): Score {
 	log('\n3. Scoring jokers …')
 	for (const joker of state.jokers) {
 		logGroup(`\n→ ${joker}`, score)
+
+		// 1. EDITION
+		switch (joker.edition) {
+			case 'foil': {
+				score.chips += 50
+				log(score, '(+Chips from foil edition)')
+				break
+			}
+			case 'holographic': {
+				score.multiplier += 10
+				log(score, '(+Mult from holographic edition)')
+				break
+			}
+			case 'polychrome': {
+				score.multiplier *= 1.5
+				log(score, '(xMult from polychrome edition)')
+				break
+			}
+		}
+
+		// 2. JOKER EFFECTS
 		scoreJokerEffect(joker.effect, { state, score, joker })
-		scoreModifiers(score, MODIFIER_DEFAULTS.edition[joker.edition])
+
 		logGroupEnd(`← ${joker}`, score)
 	}
 	log('\n3. JOKER SCORE =>', score)
@@ -185,32 +256,6 @@ function getHeldCardTriggers ({ state, card }: { state: State, card: Card }): st
 	}
 
 	return triggers
-}
-
-function scoreModifiers (score: Score, modifier: Modifier) {
-	const {
-		plusChips,
-		plusMultiplier,
-		timesMultiplier,
-	} = modifier
-
-	// 1. +Chips
-	if (plusChips !== undefined) {
-		score.chips += plusChips
-		log(score, '(+Chips from edition)')
-	}
-
-	// 2. +Mult
-	if (plusMultiplier !== undefined) {
-		score.multiplier += plusMultiplier
-		log(score, '(+Mult from edition)')
-	}
-
-	// 3. xMult
-	if (timesMultiplier !== undefined) {
-		score.multiplier *= timesMultiplier
-		log(score, '(xMult from edition)')
-	}
 }
 
 function scoreJokerEffect (effect: JokerEffect | undefined, { state, score, joker }: { state: State, score: Score, joker: Joker }) {

@@ -2,7 +2,7 @@ import { flush, nOfAKind, straight } from '#lib/getHand.js'
 import { isFaceCard } from '#utilities/isFaceCard.js'
 import { isRank } from '#utilities/isRank.js'
 import { isSuit } from '#utilities/isSuit.js'
-import type { BlindName, DeckName, Edition, Enhancement, HandName, JokerDefinition, JokerEdition, JokerName, ModifierDefaults, Rank, Score, Seal, Suit } from '#lib/types.js'
+import type { BlindName, DeckName, Edition, Enhancement, HandName, JokerDefinition, JokerEdition, JokerName, Rank, Score, Seal, Suit } from '#lib/types.js'
 
 export const BLINDS: BlindName[] = ['Small Blind', 'Big Blind', 'The Hook', 'The Ox', 'The House', 'The Wall', 'The Wheel', 'The Arm', 'The Club', 'The Fish', 'The Psychic', 'The Goad', 'The Water', 'The Window', 'The Manacle', 'The Eye', 'The Mouth', 'The Plant', 'The Serpent', 'The Pillar', 'The Needle', 'The Head', 'The Tooth', 'The Flint', 'The Mark', 'Amber Acorn', 'Verdant Leaf', 'Violet Vessel', 'Crimson Heart', 'Cerulean Bell']
 
@@ -17,45 +17,6 @@ export const JOKER_EDITIONS: JokerEdition[] = ['base', 'foil', 'holographic', 'p
 
 export const RANKS: Rank[] = ['Ace', 'King', 'Queen', 'Jack', '10', '9', '8', '7', '6', '5', '4', '3', '2']
 export const SUITS: Suit[] = ['Clubs', 'Spades', 'Hearts', 'Diamonds']
-
-export const MODIFIER_DEFAULTS: ModifierDefaults = {
-	edition: {
-		base: {},
-		foil: { plusChips: 50 },
-		holographic: { plusMultiplier: 10 },
-		polychrome: { timesMultiplier: 1.5 },
-		negative: {},
-	},
-	playedEnhancement: {
-		none: {},
-		bonus: { plusChips: 30 },
-		mult: { plusMultiplier: 4 },
-		wild: {},
-		glass: { timesMultiplier: 2 },
-		steel: {},
-		stone: { plusChips: 50 },
-		gold: {},
-		lucky: {},
-	},
-	heldEnhancement: {
-		none: {},
-		bonus: {},
-		mult: {},
-		wild: {},
-		glass: {},
-		steel: { timesMultiplier: 1.5 },
-		stone: {},
-		gold: {},
-		lucky: {},
-	},
-	seal: {
-		none: {},
-		gold: {},
-		red: { timesMultiplier: 2 },
-		blue: {},
-		purple: {},
-	},
-}
 
 export const PLANET_SCORE_SETS: Record<HandName, Score> = {
 	'Flush Five': { chips: 40, multiplier: 3 },
