@@ -202,11 +202,9 @@
 					<div class="stack">
 						<button class="button" type="submit">Submit</button>
 
-						<div class="card score-card">
-							<p class="score">Score: <b><code data-formatted-score>—</code></b></p>
-							<p>Exact: <b><span data-score>—</span></b></p>
-							<p>Hand: <b><span data-played-hand>—</span></b></p>
-						</div>
+						<p>Hand: <b data-sc-played-hand>—</b></p>
+
+						<div class="list" data-sc-container></div>
 					</div>
 				</div>
 			</form>
@@ -233,7 +231,7 @@
 		</div>
 	</template>
 
-	<template id="joker">
+	<template id="joker-card">
 		<div class="stack">
 			<div class="action-list">
 				<label class="j-name select-control">
@@ -478,7 +476,7 @@
 		</div>
 	</template>
 
-	<template id="card">
+	<template id="playing-card">
 		<div class="stack">
 			<div class="action-list">
 				<label class="c-is-played checkbox-control">
@@ -576,6 +574,22 @@
 					<option value="purple">Purple</option>
 				</select>
 			</label>
+		</div>
+	</template>
+
+	<template id="score-card">
+		<div class="card score-card">
+			<div class="stack">
+				<div class="score-entry">
+					<b data-sc-formatted-score></b>
+
+					<div class="badge">Luck: <b data-sc-luck></b></div>
+				</div>
+
+				<p class="exact-score">
+					Exact: <b data-sc-score></b>
+				</p>
+			</div>
 		</div>
 	</template>
 

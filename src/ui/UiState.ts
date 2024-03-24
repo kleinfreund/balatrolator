@@ -4,7 +4,7 @@ import { PlayingCard } from './components/PlayingCard.js'
 import { getState } from '#utilities/getState.js'
 import { log } from '#utilities/log.js'
 import { calculateScore } from '#lib/balatro.js'
-import type { BlindName, Card, DeckName, HandName, InitialState, Joker, State } from '#lib/types.js'
+import type { BlindName, Card, DeckName, HandName, InitialState, Joker, State, ResultScore } from '#lib/types.js'
 
 export class UiState {
 	handsInput: HTMLInputElement
@@ -23,8 +23,7 @@ export class UiState {
 	playingCardContainer: HTMLElement
 	addCardButton: HTMLButtonElement
 
-	formattedScoreEl: HTMLElement
-	scoreEl: HTMLElement
+	scoreCardContainer: HTMLElement
 	playedHandEl: HTMLElement
 
 	constructor (form: HTMLFormElement) {
@@ -46,9 +45,8 @@ export class UiState {
 		this.addCardButton = form.querySelector('[data-c-add-button]') as HTMLButtonElement
 		this.addCardButton.addEventListener('click', () => this.addCard())
 
-		this.formattedScoreEl = form.querySelector('[data-formatted-score]') as HTMLElement
-		this.scoreEl = form.querySelector('[data-score]') as HTMLElement
-		this.playedHandEl = form.querySelector('[data-played-hand]') as HTMLElement
+		this.scoreCardContainer = form.querySelector('[data-sc-container]') as HTMLElement
+		this.playedHandEl = form.querySelector('[data-sc-played-hand]') as HTMLElement
 
 		// Quick and dirty way to update the state whenever necessary
 		form.addEventListener('change', () => {
@@ -70,10 +68,31 @@ export class UiState {
 		const { hand, scoringCards, scores } = calculateScore(state)
 		log({ hand, scoringCards, scores })
 
-		const score = scores[0]!
-		this.formattedScoreEl.textContent = score.formattedScore
-		this.scoreEl.textContent = new Intl.NumberFormat('en').format(score.score)
+		const distinctScores = new Map<number, ResultScore>()
+		for (const score of scores) {
+			if (!distinctScores.has(score.score)) {
+				distinctScores.set(score.score, score)
+			}
+		}
+
 		this.playedHandEl.textContent = hand
+
+		this.scoreCardContainer.innerHTML = ''
+		for (const score of distinctScores.values()) {
+			const template = document.querySelector('template#score-card') as HTMLTemplateElement
+			const fragment = template.content.cloneNode(true) as Element
+
+			const luckEl = fragment.querySelector('[data-sc-luck]') as HTMLElement
+			luckEl.textContent = score.luck
+
+			const formattedScoreEl = fragment.querySelector('[data-sc-formatted-score]') as HTMLElement
+			formattedScoreEl.textContent = score.formattedScore
+
+			const scoreEl = fragment.querySelector('[data-sc-score]') as HTMLElement
+			scoreEl.textContent = new Intl.NumberFormat('en').format(score.score)
+
+			this.scoreCardContainer.appendChild(fragment)
+		}
 	}
 
 	/**

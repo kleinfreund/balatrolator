@@ -26,7 +26,7 @@ export class JokerCard extends DraggableCard {
 	constructor () {
 		super()
 
-		const template = document.querySelector('template#joker') as HTMLTemplateElement
+		const template = document.querySelector('template#joker-card') as HTMLTemplateElement
 		this.fragment = template.content.cloneNode(true) as Element
 		const id = uniqueId()
 		this.id = `joker-card-${id}`

@@ -38,6 +38,19 @@
 	flex-wrap: wrap;
 }
 
+.actions:where(.--right) {
+	justify-content: flex-end;
+}
+
+.badge {
+	display: inline-block;
+	padding: 0 0.5rem;
+	color: var(--c-text);
+	background-color: var(--c-background-lighter);
+	border-radius: 3px;
+	font-size: 0.8em;
+}
+
 .push-left {
 	margin-left: auto;
 }

@@ -24,7 +24,7 @@ export class PlayingCard extends DraggableCard {
 	constructor () {
 		super()
 
-		const template = document.querySelector('template#card') as HTMLTemplateElement
+		const template = document.querySelector('template#playing-card') as HTMLTemplateElement
 		this.fragment = template.content.cloneNode(true) as Element
 		const id = uniqueId()
 		this.id = `playing-card-${id}`

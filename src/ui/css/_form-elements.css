@@ -10,7 +10,7 @@
 	gap: 0.25rem;
 }
 
-.action-list>:not(.button.--icon) {
+.action-list>:not(.button.--icon):not(.push-left) {
 	flex: 1;
 }
 
