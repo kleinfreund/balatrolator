@@ -352,10 +352,6 @@ export const JOKER_DEFINITIONS: Record<JokerName, JokerDefinition> = {
 	},
 	'Gros Michel': {
 		rarity: 'common',
-		probability: {
-			numerator: 1,
-			denominator: 4,
-		},
 		effect ({ score }) {
 			score.multiplier += 15
 		},
@@ -382,10 +378,6 @@ export const JOKER_DEFINITIONS: Record<JokerName, JokerDefinition> = {
 	},
 	'Business Card': {
 		rarity: 'common',
-		probability: {
-			numerator: 1,
-			denominator: 2,
-		},
 	},
 	'Supernova': {
 		rarity: 'common',
@@ -404,10 +396,7 @@ export const JOKER_DEFINITIONS: Record<JokerName, JokerDefinition> = {
 	},
 	'Space Joker': {
 		rarity: 'uncommon',
-		probability: {
-			numerator: 1,
-			denominator: 4,
-		},
+		// Note: I don't apply Space Joker automatically. Instead, users should increase the level of the played hand in the UI.
 	},
 	'Egg': {
 		rarity: 'common',
@@ -484,10 +473,6 @@ export const JOKER_DEFINITIONS: Record<JokerName, JokerDefinition> = {
 	},
 	'Cavendish': {
 		rarity: 'common',
-		probability: {
-			numerator: 1,
-			denominator: 1000,
-		},
 		effect ({ score }) {
 			score.multiplier *= 3
 		},
@@ -594,10 +579,6 @@ export const JOKER_DEFINITIONS: Record<JokerName, JokerDefinition> = {
 	},
 	'Reserved Parking': {
 		rarity: 'uncommon',
-		probability: {
-			numerator: 1,
-			denominator: 2,
-		},
 	},
 	'Mail-in Rebate': {
 		rarity: 'common',
@@ -607,10 +588,6 @@ export const JOKER_DEFINITIONS: Record<JokerName, JokerDefinition> = {
 	},
 	'Hallucination': {
 		rarity: 'common',
-		probability: {
-			numerator: 1,
-			denominator: 2,
-		},
 	},
 	'Fortune Teller': {
 		rarity: 'common',
