@@ -715,8 +715,18 @@ export const JOKER_DEFINITIONS: Record<JokerName, JokerDefinition> = {
 		rarity: 'uncommon',
 		playedCardEffect ({ score, card, state, luck }) {
 			if (isSuit(card, 'Hearts')) {
-				const hasOops = state.jokerSet.has('Oops! All 6s')
-				score.multiplier *= luck === 'all' ? 2 : luck === 'none' ? 1 : 1 + (hasOops ? 2 : 1)/3
+				const denominator = 3
+				const oopses = state.jokers.filter(({ name }) => name === 'Oops! All 6s')
+				const minimumNumerator = Math.max(1, Math.min(oopses.length + 1, denominator))
+
+				let numerator = minimumNumerator
+				if (luck === 'all') {
+					numerator = denominator
+				} else if (luck === 'none' && minimumNumerator < denominator) {
+					numerator = 0
+				}
+
+				score.multiplier *= 1 + numerator/denominator
 			}
 		},
 	},

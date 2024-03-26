@@ -92,8 +92,18 @@ function getScore (state: State, luck: Luck): Score {
 					break
 				}
 				case 'lucky': {
-					const hasOops = state.jokerSet.has('Oops! All 6s')
-					score.multiplier += luck === 'all' ? 20 : luck === 'none' ? 0 : (hasOops ? 8 : 4)
+					const denominator = 5
+					const oopses = state.jokers.filter(({ name }) => name === 'Oops! All 6s')
+					const minimumNumerator = Math.max(0, Math.min(oopses.length + 1, denominator))
+
+					let numerator = minimumNumerator
+					if (luck === 'all') {
+						numerator = denominator
+					} else if (luck === 'none' && minimumNumerator < denominator) {
+						numerator = 0
+					}
+
+					score.multiplier += 20 * numerator/denominator
 					log(score, '(+Mult from lucky enhancement)')
 					break
 				}
