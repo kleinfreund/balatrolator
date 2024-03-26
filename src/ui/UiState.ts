@@ -4,7 +4,8 @@ import { PlayingCard } from './components/PlayingCard.js'
 import { getState } from '#utilities/getState.js'
 import { log } from '#utilities/log.js'
 import { calculateScore } from '#lib/balatro.js'
-import type { BlindName, Card, DeckName, HandName, InitialState, Joker, State, ResultScore } from '#lib/types.js'
+import type { BlindName, Card, DeckName, HandName, InitialState, Joker, State, ResultScore, PlanetName } from '#lib/types.js'
+import { PLANET_TO_HAND_MAP } from '../lib/data.js'
 
 export class UiState {
 	handsInput: HTMLInputElement
@@ -13,6 +14,7 @@ export class UiState {
 	blindNameSelect: HTMLSelectElement
 	blindIsActiveCheckbox: HTMLInputElement
 	deckSelect: HTMLSelectElement
+	observatorySelect: HTMLSelectElement
 	jokerSlotsInput: HTMLInputElement
 
 	handLevelContainer: HTMLElement
@@ -33,6 +35,7 @@ export class UiState {
 		this.blindNameSelect = form.querySelector('[data-r-blind-name]') as HTMLSelectElement
 		this.blindIsActiveCheckbox = form.querySelector('[data-r-blind-is-active]') as HTMLInputElement
 		this.deckSelect = form.querySelector('[data-r-deck]') as HTMLSelectElement
+		this.observatorySelect = form.querySelector('[data-r-observatory]') as HTMLSelectElement
 		this.jokerSlotsInput = form.querySelector('[data-r-joker-slots]') as HTMLInputElement
 
 		this.handLevelContainer = form.querySelector('[data-h-container]') as HTMLElement
@@ -118,11 +121,17 @@ export class UiState {
 				isActive: blindIsActive,
 			},
 			deck,
+			observatoryHands: [],
 			handLevels: {},
 			jokers: [],
 			jokerSlots,
 			playedCards: [],
 			heldCards: [],
+		}
+
+		for (const optionEl of this.observatorySelect.selectedOptions) {
+			const planet = optionEl.value as PlanetName
+			initialState.observatoryHands.push(PLANET_TO_HAND_MAP[planet])
 		}
 
 		for (const handLevel of this.handLevelContainer.children) {
@@ -176,6 +185,12 @@ export class UiState {
 		this.blindIsActiveCheckbox.checked = state.blind.isActive
 		this.deckSelect.value = state.deck
 		this.jokerSlotsInput.value = String(state.jokerSlots)
+
+		for (const optionEl of this.observatorySelect.options) {
+			if (state.observatoryHands.includes(PLANET_TO_HAND_MAP[optionEl.value as PlanetName])) {
+				optionEl.selected = true
+			}
+		}
 
 		this.handLevelContainer.innerHTML = ''
 		for (const [handName, handLevel] of Object.entries(state.handLevels)) {

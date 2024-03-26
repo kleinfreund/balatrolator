@@ -2,13 +2,15 @@ import { flush, nOfAKind, straight } from '#lib/getHand.js'
 import { isFaceCard } from '#utilities/isFaceCard.js'
 import { isRank } from '#utilities/isRank.js'
 import { isSuit } from '#utilities/isSuit.js'
-import type { BlindName, DeckName, Edition, Enhancement, HandName, JokerDefinition, JokerEdition, JokerName, Luck, Rank, Score, Seal, Suit } from '#lib/types.js'
+import type { BlindName, DeckName, Edition, Enhancement, HandName, JokerDefinition, JokerEdition, JokerName, Luck, PlanetName, Rank, Score, Seal, Suit } from '#lib/types.js'
 
 export const BLINDS: BlindName[] = ['Small Blind', 'Big Blind', 'The Hook', 'The Ox', 'The House', 'The Wall', 'The Wheel', 'The Arm', 'The Club', 'The Fish', 'The Psychic', 'The Goad', 'The Water', 'The Window', 'The Manacle', 'The Eye', 'The Mouth', 'The Plant', 'The Serpent', 'The Pillar', 'The Needle', 'The Head', 'The Tooth', 'The Flint', 'The Mark', 'Amber Acorn', 'Verdant Leaf', 'Violet Vessel', 'Crimson Heart', 'Cerulean Bell']
 
 export const DECKS: DeckName[] = ['Red Deck', 'Blue Deck', 'Yellow Deck', 'Green Deck', 'Black Deck', 'Magic Deck', 'Nebula Deck', 'Ghost Deck', 'Abandoned Deck', 'Checkered Deck', 'Zodiac Deck', 'Painted Deck', 'Anaglyph Deck', 'Plasma Deck', 'Erratic Deck', 'Challenge Deck']
 
 export const HANDS: HandName[] = ['Flush Five', 'Flush House', 'Five of a Kind', 'Straight Flush', 'Four of a Kind', 'Full House', 'Flush', 'Straight', 'Three of a Kind', 'Two Pair', 'Pair', 'High Card']
+
+export const PLANETS: PlanetName[] = ['Eris', 'Ceres', 'Planet X', 'Neptune', 'Mars', 'Earth', 'Flush', 'Saturn', 'Venus', 'Uranus', 'Mercury', 'Pluto']
 
 export const ENHANCEMENTS: Enhancement[] = ['none', 'bonus', 'mult', 'wild', 'glass', 'steel', 'stone', 'gold', 'lucky']
 export const SEALS: Seal[] = ['none', 'gold', 'red', 'blue', 'purple']
@@ -20,24 +22,39 @@ export const SUITS: Suit[] = ['Clubs', 'Spades', 'Hearts', 'Diamonds']
 
 export const LUCKS: Luck[] = ['none', 'average', 'all']
 
+export const PLANET_TO_HAND_MAP: Record<PlanetName, HandName> = {
+	'Eris': 'Flush Five',
+	'Ceres': 'Flush House',
+	'Planet X': 'Five of a Kind',
+	'Neptune': 'Straight Flush',
+	'Mars': 'Four of a Kind',
+	'Earth': 'Full House',
+	'Flush': 'Flush',
+	'Saturn': 'Straight',
+	'Venus': 'Three of a Kind',
+	'Uranus': 'Two Pair',
+	'Mercury': 'Pair',
+	'Pluto': 'High Card',
+}
+
 export const PLANET_SCORE_SETS: Record<HandName, Score> = {
-	'Flush Five': { chips: 40, multiplier: 3 }, // Eris
-	'Flush House': { chips: 40, multiplier: 3 }, // Ceres
-	'Five of a Kind': { chips: 35, multiplier: 3 }, // Planet X
-	'Straight Flush': { chips: 40, multiplier: 3 }, // Neptune
-	'Four of a Kind': { chips: 30, multiplier: 3 }, // Mars
-	'Full House': { chips: 25, multiplier: 2 }, // Earth
-	'Flush': { chips: 15, multiplier: 2 }, // Flush
-	'Straight': { chips: 30, multiplier: 2 }, // Saturn
-	'Three of a Kind': { chips: 20, multiplier: 2 }, // Venus
-	'Two Pair': { chips: 20, multiplier: 1 }, // Uranus
-	'Pair': { chips: 15, multiplier: 1 }, // Mercury
-	'High Card': { chips: 10, multiplier: 1 }, // Pluto
+	'Flush Five': { chips: 40, multiplier: 3 },
+	'Flush House': { chips: 40, multiplier: 3 },
+	'Five of a Kind': { chips: 35, multiplier: 3 },
+	'Straight Flush': { chips: 40, multiplier: 3 },
+	'Four of a Kind': { chips: 30, multiplier: 3 },
+	'Full House': { chips: 25, multiplier: 2 },
+	'Flush': { chips: 15, multiplier: 2 },
+	'Straight': { chips: 30, multiplier: 2 },
+	'Three of a Kind': { chips: 20, multiplier: 2 },
+	'Two Pair': { chips: 20, multiplier: 1 },
+	'Pair': { chips: 15, multiplier: 1 },
+	'High Card': { chips: 10, multiplier: 1 },
 }
 
 export const DEFAULT_HAND_SCORE_SETS: Record<HandName, Score> = {
 	'Flush Five': { chips: 160, multiplier: 16 },
-	'Flush House': { chips: 140, multiplier: 14 }, // TODO: Verify values
+	'Flush House': { chips: 140, multiplier: 14 },
 	'Five of a Kind': { chips: 120, multiplier: 12 },
 	'Straight Flush': { chips: 100, multiplier: 8 },
 	'Four of a Kind': { chips: 60, multiplier: 7 },
