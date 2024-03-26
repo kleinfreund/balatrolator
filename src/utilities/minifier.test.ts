@@ -8,7 +8,7 @@ describe('minifier', () => {
 	test.each<[InitialState, string, InitialState]>([
 		[
 			{},
-			'||||1||5|,;,;,;,;,;,;,;,;,;,;,;,|||',
+			'||||1||5||,;,;,;,;,;,;,;,;,;,;,;,|||',
 			{
 				hands: 0,
 				discards: 0,
@@ -57,7 +57,7 @@ describe('minifier', () => {
 				playedCards: [],
 				heldCards: [],
 			},
-			'1|2|3|1||13|5|,;,;,;,;,;,;,;,;,;,;4,4;5,5|||',
+			'1|2|3|1||13|5||,;,;,;,;,;,;,;,;,;,;4,4;5,5|||',
 			{
 				hands: 1,
 				discards: 2,
@@ -67,6 +67,57 @@ describe('minifier', () => {
 					isActive: false,
 				},
 				deck: 'Plasma Deck',
+				jokerSlots: 5,
+				handLevels: {
+					'Flush Five': { level: 1, plays: 0 },
+					'Flush House': { level: 1, plays: 0 },
+					'Five of a Kind': { level: 1, plays: 0 },
+					'Straight Flush': { level: 1, plays: 0 },
+					'Four of a Kind': { level: 1, plays: 0 },
+					'Full House': { level: 1, plays: 0 },
+					'Flush': { level: 1, plays: 0 },
+					'Straight': { level: 1, plays: 0 },
+					'Three of a Kind': { level: 1, plays: 0 },
+					'Two Pair': { level: 1, plays: 0 },
+					'Pair': { level: 4, plays: 4 },
+					'High Card': { level: 5, plays: 5 },
+				},
+				jokers: [],
+				playedCards: [],
+				heldCards: [],
+			},
+		],
+		[
+			{
+				hands: 1,
+				discards: 2,
+				money: 3,
+				blind: {
+					name: 'Big Blind',
+					isActive: false,
+				},
+				deck: 'Plasma Deck',
+				observatoryHands: ['Pair', 'Flush', 'Flush Five'],
+				jokerSlots: 5,
+				handLevels: {
+					'Pair': { level: 4, plays: 4 },
+					'High Card': { level: 5, plays: 5 },
+				},
+				jokers: [],
+				playedCards: [],
+				heldCards: [],
+			},
+			'1|2|3|1||13|5|10;6;0|,;,;,;,;,;,;,;,;,;,;4,4;5,5|||',
+			{
+				hands: 1,
+				discards: 2,
+				money: 3,
+				blind: {
+					name: 'Big Blind',
+					isActive: false,
+				},
+				deck: 'Plasma Deck',
+				observatoryHands: ['Pair', 'Flush', 'Flush Five'],
 				jokerSlots: 5,
 				handLevels: {
 					'Flush Five': { level: 1, plays: 0 },
@@ -116,7 +167,7 @@ describe('minifier', () => {
 				playedCards: [],
 				heldCards: [],
 			},
-			'1|2|3|1||13|5|,;,1;,2;9,3;8,4;7,5;6,6;5,7;4,8;3,9;2,;,|||',
+			'1|2|3|1||13|5||,;,1;,2;9,3;8,4;7,5;6,6;5,7;4,8;3,9;2,;,|||',
 			{
 				hands: 1,
 				discards: 2,
@@ -189,7 +240,7 @@ describe('minifier', () => {
 					{ rank: 'King', suit: 'Diamonds', enhancement: 'gold' },
 				],
 			},
-			'1|2|3|1||13|5|,;,1;,2;9,3;8,4;7,5;6,6;5,7;4,8;3,9;2,;,|18,3,,,,,,;102,,81,,,,,;122,,,,,,,;91,,,,,,,;71,,,,,,,|1,3,,7,,;1,3,,7,,;2,3,,7,,;2,3,,4,,;2,3,,4,2,|1,3,,7,,',
+			'1|2|3|1||13|5||,;,1;,2;9,3;8,4;7,5;6,6;5,7;4,8;3,9;2,;,|18,3,,,,,,;102,,81,,,,,;122,,,,,,,;91,,,,,,,;71,,,,,,,|1,3,,7,,;1,3,,7,,;2,3,,7,,;2,3,,4,,;2,3,,4,2,|1,3,,7,,',
 			{
 				hands: 1,
 				discards: 2,

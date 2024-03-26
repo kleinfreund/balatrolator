@@ -21,18 +21,18 @@ export const SUITS: Suit[] = ['Clubs', 'Spades', 'Hearts', 'Diamonds']
 export const LUCKS: Luck[] = ['none', 'average', 'all']
 
 export const PLANET_SCORE_SETS: Record<HandName, Score> = {
-	'Flush Five': { chips: 40, multiplier: 3 },
-	'Flush House': { chips: 40, multiplier: 3 },
-	'Five of a Kind': { chips: 35, multiplier: 3 },
-	'Straight Flush': { chips: 40, multiplier: 3 },
-	'Four of a Kind': { chips: 30, multiplier: 3 },
-	'Full House': { chips: 25, multiplier: 2 },
-	'Flush': { chips: 15, multiplier: 2 },
-	'Straight': { chips: 30, multiplier: 2 },
-	'Three of a Kind': { chips: 20, multiplier: 2 },
-	'Two Pair': { chips: 20, multiplier: 1 },
-	'Pair': { chips: 15, multiplier: 1 },
-	'High Card': { chips: 10, multiplier: 1 },
+	'Flush Five': { chips: 40, multiplier: 3 }, // Eris
+	'Flush House': { chips: 40, multiplier: 3 }, // Ceres
+	'Five of a Kind': { chips: 35, multiplier: 3 }, // Planet X
+	'Straight Flush': { chips: 40, multiplier: 3 }, // Neptune
+	'Four of a Kind': { chips: 30, multiplier: 3 }, // Mars
+	'Full House': { chips: 25, multiplier: 2 }, // Earth
+	'Flush': { chips: 15, multiplier: 2 }, // Flush
+	'Straight': { chips: 30, multiplier: 2 }, // Saturn
+	'Three of a Kind': { chips: 20, multiplier: 2 }, // Venus
+	'Two Pair': { chips: 20, multiplier: 1 }, // Uranus
+	'Pair': { chips: 15, multiplier: 1 }, // Mercury
+	'High Card': { chips: 10, multiplier: 1 }, // Pluto
 }
 
 export const DEFAULT_HAND_SCORE_SETS: Record<HandName, Score> = {

@@ -12,7 +12,7 @@ describe('Storage', () => {
 	test.each<[InitialState, string]>([
 		[
 			{},
-			'D44RhBWYBoG56IcpqGiA',
+			'D44RhBWEBoG56IcpqGiA',
 		],
 		[
 			{
@@ -45,7 +45,7 @@ describe('Storage', () => {
 					},
 				},
 			},
-			'D4iM3YFYNAaA3I5TUvU6AGOu+NACZD88EiA2UnAZkQoE58iA6QqM0Gk0g0JvFBYdcwWnhIJxcACxxJ0uQrh1Z8xIvViVuHlJ1wOy1UY0H1QA',
+			'D4iM3YFY1AaA3I5TUvU6AGOu+NACZD88EiA2UnAZkQoE58iA6QqM0Gk0g0JvFBYdcwWnhIJxcACxxJ0uQrh1Z8xIvViVuHlJ1wOy1UY0H1QA',
 		],
 	])('works', (initialState, expectedString) => {
 		const paramSetSpy = vi.spyOn(URLSearchParams.prototype, 'set').mockImplementation(() => {})

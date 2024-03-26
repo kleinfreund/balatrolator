@@ -121,6 +121,7 @@ export type InitialState = {
 	blind?: Partial<Blind>
 	deck?: DeckName
 	handLevels?: InitialHandLevels
+	observatoryHands?: HandName[]
 	jokers?: InitialJoker[]
 	jokerSlots?: number
 	playedCards?: InitialCard[]
@@ -135,6 +136,7 @@ export interface State {
 	deck: DeckName
 	handLevels: HandLevels
 	handBaseScores: HandScore
+	observatoryHands: HandName[]
 	jokers: Joker[]
 	jokerSet: Set<JokerName>
 	jokerSlots: number

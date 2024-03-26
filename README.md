@@ -8,7 +8,7 @@
 > Please, [report any bugs you encounter](https://github.com/kleinfreund/balatrolator/issues/new/choose).
 
 > [!TIP]
-> [Example score](https://balatrolator.com/?state=D4iM3YFYNAaA3I5TUvU6AGOu44MVACZi98KcESA2cwgZkRoE5ySA6YqSohsvISqhQbPFA49CwHE1xkEs3ABY4CpXFXq4crYg16ZO%2BbkXG4PbXMv7zauEA) showcasing a hand played by [haelian](https://twitch.tv/haelian) on 2024-02-26 18:13 (UTC).
+> [Example score](https://balatrolator.com/?state=D4iM3YFY1AaA3I5TUvU6AGOu+NACZD88EiA2UnAZkQoE58iA6QqM0Gk0g0JvFBYdcwWnhIJxcACxxJ0uQrh1Z8xIvViVuHlJ1wOy1UY0H1QA) showcasing a hand played by [haelian](https://twitch.tv/haelian) on 2024-02-26 18:13 (UTC).
 
 ## Contributing
 

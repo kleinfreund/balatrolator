@@ -1,6 +1,6 @@
 import { BLINDS, DECKS, EDITIONS, ENHANCEMENTS, HANDS, JOKER_DEFINITIONS, JOKER_EDITIONS, JOKER_NAMES, RANKS, SEALS, SUITS } from '#lib/data.js'
 import { getState } from '#utilities/getState.js'
-import type { Card, Edition, Enhancement, HandLevel, InitialCard, InitialJoker, Joker, JokerName, Rank, Seal, State, Suit } from '#lib/types.js'
+import type { Card, Edition, Enhancement, HandLevel, HandName, InitialCard, InitialJoker, Joker, JokerName, Rank, Seal, State, Suit } from '#lib/types.js'
 
 /*
 I'm sorry for the code in this file; it's an abomination. Its job is compressing a `State` object into a minimal (as in size) string for the use of persisting it in the browser's URL or client-side storage (e.g. local storage). This is not context-unaware plain text compression as provided by libraries like lz-string but context-aware data compression “hand-crafted” for this application.
@@ -13,6 +13,7 @@ const MINIFIED_DEFAULT_VALUE = ''
 
 const BLIND_INDEXES = invertMap(BLINDS)
 const DECK_INDEXES = invertMap(DECKS)
+const HAND_INDEXES = invertMap(HANDS)
 const EDITION_INDEXES = invertMap(EDITIONS)
 const ENHANCEMENT_INDEXES = invertMap(ENHANCEMENTS)
 const JOKER_EDITION_INDEXES = invertMap(JOKER_EDITIONS)
@@ -35,6 +36,7 @@ export function minify (state: State): string {
 		money,
 		blind,
 		deck,
+		observatoryHands,
 		jokerSlots,
 		handLevels,
 		jokers,
@@ -42,6 +44,7 @@ export function minify (state: State): string {
 		heldCards,
 	} = state
 
+	const observatoryHandCodes = observatoryHands.map((hand) => toObservatoryHandCode(hand))
 	const handLevelCodes = Object.values(handLevels).map((handLevel) => toHandLevelCode(handLevel))
 	const jokerCodes = jokers.map((joker) => toJokerCode(joker))
 	const playedCardCodes = playedCards.map((playedCard) => toCardCode(playedCard))
@@ -55,6 +58,7 @@ export function minify (state: State): string {
 		blind.isActive ? '1' : MINIFIED_DEFAULT_VALUE,
 		deck !== 'Red Deck' ? DECK_INDEXES[deck] : MINIFIED_DEFAULT_VALUE,
 		jokerSlots !== 0 ? jokerSlots : MINIFIED_DEFAULT_VALUE,
+		observatoryHandCodes.join(';'),
 		handLevelCodes.join(';'),
 		jokerCodes.join(';'),
 		playedCardCodes.join(';'),
@@ -74,12 +78,15 @@ export function deminify (str: string): State {
 		blindIsActive,
 		deckIndex,
 		jokerSlots,
+		observatoryHandCodes,
 		handLevelCodes,
 		jokerCodes,
 		playedCardCodes,
 		heldCardCodes,
 	] = str.split('|')
 
+	const observatoryHands = !observatoryHandCodes ? [] : observatoryHandCodes.split(';')
+		.map((code) => fromObservatoryHandCode(code))
 	const handLevels = Object.fromEntries(!handLevelCodes ? [] : handLevelCodes.split(';')
 		.map((code) => fromHandLevelCode(code))
 		.map((handLevel, index) => [HANDS[index], handLevel]))
@@ -99,12 +106,21 @@ export function deminify (str: string): State {
 			isActive: blindIsActive === '1',
 		},
 		deck: DECKS[Number(deckIndex || '0')],
+		observatoryHands,
 		jokerSlots: jokerSlots !== MINIFIED_DEFAULT_VALUE ? Number(jokerSlots) : 0,
 		handLevels,
 		jokers,
 		playedCards,
 		heldCards,
 	})
+}
+
+function toObservatoryHandCode (hand: HandName): string {
+	return String(HAND_INDEXES[hand])
+}
+
+function fromObservatoryHandCode (code: string): HandName {
+	return HANDS[Number(code || '0')] as HandName
 }
 
 function toHandLevelCode ({ level, plays }: HandLevel): string {
