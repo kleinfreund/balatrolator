@@ -65,6 +65,10 @@ export class JokerCard extends DraggableCard {
 		return this.tagName
 	}
 
+	get #definition () {
+		return JOKER_DEFINITIONS[this.jokerName]
+	}
+
 	get jokerName () {
 		return this.nameSelect.value as JokerName
 	}
@@ -86,11 +90,11 @@ export class JokerCard extends DraggableCard {
 	}
 
 	get rank () {
-		return this.rankSelect.value as Rank
+		return this.#definition.hasRankInput ? this.rankSelect.value as Rank : undefined
 	}
 
 	get suit () {
-		return this.suitSelect.value as Suit
+		return this.#definition.hasSuitInput ? this.suitSelect.value as Suit : undefined
 	}
 
 	get isActive () {
@@ -125,24 +129,20 @@ export class JokerCard extends DraggableCard {
 			rank,
 			suit,
 		} = joker
-		const definition = JOKER_DEFINITIONS[name]
 
 		this.nameSelect.value = name
 		this.editionSelect.value = edition
-		if (definition.hasPlusChipsInput) this.plusChipsInput.value = String(plusChips)
-		if (definition.hasPlusMultiplierInput) this.plusMultiplierInput.value = String(plusMultiplier)
-		if (definition.hasTimesMultiplierInput) this.timesMultiplierInput.value = String(timesMultiplier)
-		if (definition.hasIsActiveInput) this.isActiveCheckbox.checked = Boolean(isActive)
-		if (definition.hasRankInput && rank) this.rankSelect.value = String(rank)
-		if (definition.hasSuitInput && suit) this.suitSelect.value = String(suit)
+		if (this.#definition.hasPlusChipsInput) this.plusChipsInput.value = String(plusChips)
+		if (this.#definition.hasPlusMultiplierInput) this.plusMultiplierInput.value = String(plusMultiplier)
+		if (this.#definition.hasTimesMultiplierInput) this.timesMultiplierInput.value = String(timesMultiplier)
+		if (this.#definition.hasIsActiveInput) this.isActiveCheckbox.checked = Boolean(isActive)
+		if (this.#definition.hasRankInput && rank) this.rankSelect.value = String(rank)
+		if (this.#definition.hasSuitInput && suit) this.suitSelect.value = String(suit)
 
 		this.updateState()
 	}
 
 	updateState () {
-		const jokerName = this.nameSelect.value as JokerName
-		const definition = JOKER_DEFINITIONS[jokerName]
-
 		this.classList.remove(
 			'--has-plus-chips',
 			'--has-plus-multiplier',
@@ -153,12 +153,12 @@ export class JokerCard extends DraggableCard {
 		)
 
 		;[
-			definition.hasPlusChipsInput ? '--has-plus-chips' : null,
-			definition.hasPlusMultiplierInput ? '--has-plus-multiplier': null,
-			definition.hasTimesMultiplierInput ? '--has-times-multiplier': null,
-			definition.hasIsActiveInput ? '--has-is-active': null,
-			definition.hasRankInput ? '--has-rank': null,
-			definition.hasSuitInput ? '--has-suit': null,
+			this.#definition.hasPlusChipsInput ? '--has-plus-chips' : null,
+			this.#definition.hasPlusMultiplierInput ? '--has-plus-multiplier': null,
+			this.#definition.hasTimesMultiplierInput ? '--has-times-multiplier': null,
+			this.#definition.hasIsActiveInput ? '--has-is-active': null,
+			this.#definition.hasRankInput ? '--has-rank': null,
+			this.#definition.hasSuitInput ? '--has-suit': null,
 		].filter(notNullish).forEach((className) => this.classList.add(className))
 	}
 }

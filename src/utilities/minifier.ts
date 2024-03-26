@@ -154,9 +154,9 @@ function fromJokerCode (code: string): InitialJoker {
 	const [
 		nameIndex,
 		editionIndex,
-		plusChips = '0',
-		plusMultiplier = '0',
-		timesMultiplier = '1',
+		plusChips,
+		plusMultiplier,
+		timesMultiplier,
 		rankIndex,
 		suitIndex,
 		isActive,
@@ -165,11 +165,11 @@ function fromJokerCode (code: string): InitialJoker {
 	return {
 		name: JOKER_NAMES[Number(nameIndex || '0')] as JokerName,
 		edition: JOKER_EDITIONS[Number(editionIndex || '0')] as Edition,
-		plusChips: Number(plusChips),
-		plusMultiplier: Number(plusMultiplier),
-		timesMultiplier: Number(timesMultiplier),
-		rank: RANKS[Number(rankIndex || '0')] as Rank,
-		suit: SUITS[Number(suitIndex || '0')] as Suit,
+		plusChips: Number(plusChips || '0'),
+		plusMultiplier: Number(plusMultiplier || '0'),
+		timesMultiplier: Number(timesMultiplier || '1'),
+		rank: rankIndex !== '' ? RANKS[Number(rankIndex)] as Rank : undefined,
+		suit: suitIndex !== '' ? SUITS[Number(suitIndex)] as Suit : undefined,
 		isActive: isActive === '1',
 	}
 }
