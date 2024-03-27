@@ -1,3 +1,4 @@
+import { balanceMultWithLuck } from '#utilities/balanceMultWithLuck.js'
 import { flush, nOfAKind, straight } from '#lib/getHand.js'
 import { isFaceCard } from '#utilities/isFaceCard.js'
 import { isRank } from '#utilities/isRank.js'
@@ -733,17 +734,10 @@ export const JOKER_DEFINITIONS: Record<JokerName, JokerDefinition> = {
 		playedCardEffect ({ score, card, state, luck }) {
 			if (isSuit(card, 'Hearts')) {
 				const denominator = 3
+				const xMult = 2
 				const oopses = state.jokers.filter(({ name }) => name === 'Oops! All 6s')
-				const minimumNumerator = Math.max(1, Math.min(oopses.length + 1, denominator))
 
-				let numerator = minimumNumerator
-				if (luck === 'all') {
-					numerator = denominator
-				} else if (luck === 'none' && minimumNumerator < denominator) {
-					numerator = 0
-				}
-
-				score.multiplier *= 1 + numerator/denominator
+				score.multiplier *= balanceMultWithLuck(xMult, oopses.length, denominator, luck, 'times')
 			}
 		},
 	},

@@ -1,11 +1,12 @@
 import { RANK_TO_CHIP_MAP, PLAYED_CARD_RETRIGGER_JOKER_NAMES, HELD_CARD_RETRIGGER_JOKER_NAMES, LUCKS } from '#lib/data.js'
-import type { Card, Joker, JokerCardEffect, JokerEffect, Luck, Result, ResultScore, Score, State } from '#lib/types.js'
+import { balanceMultWithLuck } from '#utilities/balanceMultWithLuck.js'
 import { formatScore } from '#utilities/formatScore.js'
 import { log, logGroup, logGroupEnd } from '#utilities/log.js'
 import { isFaceCard } from '#utilities/isFaceCard.js'
 import { isRank } from '#utilities/isRank.js'
 import { notNullish } from '#utilities/notNullish.js'
 import { resolveJoker } from '#utilities/resolveJokers.js'
+import type { Card, Joker, JokerCardEffect, JokerEffect, Luck, Result, ResultScore, Score, State } from '#lib/types.js'
 
 export function calculateScore (state: State): Result {
 	const scores: ResultScore[] = []
@@ -93,17 +94,10 @@ function getScore (state: State, luck: Luck): Score {
 				}
 				case 'lucky': {
 					const denominator = 5
+					const plusMult = 20
 					const oopses = state.jokers.filter(({ name }) => name === 'Oops! All 6s')
-					const minimumNumerator = Math.max(0, Math.min(oopses.length + 1, denominator))
 
-					let numerator = minimumNumerator
-					if (luck === 'all') {
-						numerator = denominator
-					} else if (luck === 'none' && minimumNumerator < denominator) {
-						numerator = 0
-					}
-
-					score.multiplier += 20 * numerator/denominator
+					score.multiplier += balanceMultWithLuck(plusMult, oopses.length, denominator, luck, 'plus')
 					log(score, '(+Mult from lucky enhancement)')
 					break
 				}
