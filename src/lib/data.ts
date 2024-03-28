@@ -3,7 +3,7 @@ import { flush, nOfAKind, straight } from '#lib/getHand.js'
 import { isFaceCard } from '#utilities/isFaceCard.js'
 import { isRank } from '#utilities/isRank.js'
 import { isSuit } from '#utilities/isSuit.js'
-import type { BlindName, DeckName, Edition, Enhancement, HandName, JokerDefinition, JokerEdition, JokerName, Luck, PlanetName, Rank, Score, Seal, Suit } from '#lib/types.js'
+import type { BlindName, Card, DeckName, Edition, Enhancement, HandName, JokerDefinition, JokerEdition, JokerName, Luck, PlanetName, Rank, Score, Seal, Suit } from '#lib/types.js'
 
 export const BLINDS: BlindName[] = ['Small Blind', 'Big Blind', 'The Hook', 'The Ox', 'The House', 'The Wall', 'The Wheel', 'The Arm', 'The Club', 'The Fish', 'The Psychic', 'The Goad', 'The Water', 'The Window', 'The Manacle', 'The Eye', 'The Mouth', 'The Plant', 'The Serpent', 'The Pillar', 'The Needle', 'The Head', 'The Tooth', 'The Flint', 'The Mark', 'Amber Acorn', 'Verdant Leaf', 'Violet Vessel', 'Crimson Heart', 'Cerulean Bell']
 
@@ -766,9 +766,24 @@ export const JOKER_DEFINITIONS: Record<JokerName, JokerDefinition> = {
 	'Flower Pot': {
 		rarity: 'uncommon',
 		effect ({ score, state }) {
-			const hasAllSuits = (['Spades', 'Hearts', 'Clubs', 'Diamonds'] as const).every((suit) => {
-				return state.scoringCards.some((card) => isSuit(card, suit))
-			})
+			let hasAllSuits = false
+			const suits = ['Spades', 'Hearts', 'Clubs', 'Diamonds'] as Suit[]
+			const cards = new Set<Card>()
+			for (const suit of suits) {
+				for (const card of state.scoringCards) {
+					if (cards.has(card)) {
+						continue
+					}
+
+					if (isSuit(card, suit)) {
+						cards.add(card)
+
+						if (cards.size === 4) {
+							hasAllSuits = true
+						}
+					}
+				}
+			}
 
 			score.multiplier *= (hasAllSuits ? 3 : 1)
 		},
