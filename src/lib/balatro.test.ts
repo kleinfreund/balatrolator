@@ -33,6 +33,7 @@ import case027 from './test-files/027.js'
 import case028 from './test-files/028.js'
 import case029 from './test-files/029.js'
 import case030 from './test-files/030.js'
+import case031 from './test-files/031.js'
 
 export type TestCase = {
 	message: string
@@ -74,6 +75,7 @@ describe('calculateScore', () => {
 		case028('Lucky Flush, Bloodstone'),
 		case029('Lucky Flush, Bloodstone, 4x Oops! All 6s'),
 		case030('Pair, Sly Joker, Observatory'),
+		case031('One wild + Flowerpot'),
 	])('$message', ({ initialState, expected }) => {
 		const score = calculateScore(getState(initialState))
 
