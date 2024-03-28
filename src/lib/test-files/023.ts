@@ -13,7 +13,7 @@ export default (message: string): TestCase => {
 				{ rank: '2', suit: 'Spades' },
 			],
 			jokers: [
-				{ name: 'Flowerpot' },
+				{ name: 'Flower Pot' },
 			],
 		},
 		expected: {

@@ -763,7 +763,7 @@ export const JOKER_DEFINITIONS: Record<JokerName, JokerDefinition> = {
 	'Showman': {
 		rarity: 'uncommon',
 	},
-	'Flowerpot': {
+	'Flower Pot': {
 		rarity: 'uncommon',
 		effect ({ score, state }) {
 			const hasAllSuits = (['Spades', 'Hearts', 'Clubs', 'Diamonds'] as const).every((suit) => {

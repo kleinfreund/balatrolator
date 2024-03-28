@@ -66,8 +66,8 @@ describe('calculateScore', () => {
 		case019('Pair, 2x Blueprint, Sly Joker'),
 		case020('Pair, 2x Blueprint, Sly Joker, Brainstorm'),
 		case021('Four of a Kind'),
-		case022('Four of a Kind, Flowerpot'),
-		case023('Four of a Kind, Flowerpot, Wild card'),
+		case022('Four of a Kind, Flower Pot'),
+		case023('Four of a Kind, Flower Pot, Wild card'),
 		case024('Pair, inactive Verdant Leaf'),
 		case025('Pair, active Verdant Leaf'),
 		case026('Pair, The Pillar'),
@@ -75,7 +75,7 @@ describe('calculateScore', () => {
 		case028('Lucky Flush, Bloodstone'),
 		case029('Lucky Flush, Bloodstone, 4x Oops! All 6s'),
 		case030('Pair, Sly Joker, Observatory'),
-		case031('One wild + Flowerpot'),
+		case031('One wild + Flower Pot'),
 	])('$message', ({ initialState, expected }) => {
 		const score = calculateScore(getState(initialState))
 
