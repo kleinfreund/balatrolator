@@ -213,7 +213,7 @@ function getScore (state: State, luck: Luck): Score {
 function getPlayedCardTriggers ({ state, card }: { state: State, card: Card }): string[] {
 	const triggers = ['Regular']
 	const retriggerJokerNames = state.jokers
-		.map((joker) => resolveJoker(state, joker))
+		.map((joker) => resolveJoker(state.jokers, joker))
 		.filter(notNullish)
 		.map(({ name }) => name)
 		.filter((name) => PLAYED_CARD_RETRIGGER_JOKER_NAMES.includes(name))
@@ -253,7 +253,7 @@ function getPlayedCardTriggers ({ state, card }: { state: State, card: Card }): 
 function getHeldCardTriggers ({ state, card }: { state: State, card: Card }): string[] {
 	const triggers = ['Regular']
 	const retriggerJokerNames = state.jokers
-		.map((joker) => resolveJoker(state, joker))
+		.map((joker) => resolveJoker(state.jokers, joker))
 		.filter(notNullish)
 		.map(({ name }) => name)
 		.filter((name) => HELD_CARD_RETRIGGER_JOKER_NAMES.includes(name))
@@ -288,7 +288,7 @@ function scoreJokerEffect (effect: JokerEffect | undefined, { state, score, joke
 	// Increase triggers from Blueprint/Brainstorm
 	const targets = state.jokers
 		.filter(({ name }) => ['Blueprint', 'Brainstorm'].includes(name))
-		.map((joker) => resolveJoker(state, joker))
+		.map((joker) => resolveJoker(state.jokers, joker))
 		.filter(notNullish)
 
 	for (const { name } of targets) {
