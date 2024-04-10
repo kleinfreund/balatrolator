@@ -15,7 +15,7 @@ export function calculateScore (state: State): Result {
 		const { chips, multiplier } = getScore(state, luck)
 
 		log('\nReceived:', { chips, multiplier })
-		log('Expected:', { chips: 340, multiplier: 1685e13 })
+		log('Expected:', { chips: 3680, multiplier: 1234e46 })
 
 		let actualScore
 		if (state.deck === 'Plasma Deck') {
@@ -234,6 +234,7 @@ function getPlayedCardTriggers ({ state, card }: { state: State, card: Card }): 
 				break
 			}
 			case 'Hanging Chad': {
+				// TODO: I think this needs to check for the first _scoring_ card.
 				if (card.index === 0) {
 					triggers.push(name)
 					triggers.push(name)

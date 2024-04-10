@@ -35,6 +35,8 @@ import case029 from './test-files/029.js'
 import case030 from './test-files/030.js'
 import case031 from './test-files/031.js'
 import case032 from './test-files/032.js'
+import case033 from './test-files/033.js'
+import case034 from './test-files/034.js'
 
 export type TestCase = {
 	message: string
@@ -78,6 +80,8 @@ describe('calculateScore', () => {
 		case030('Pair, Sly Joker, Observatory'),
 		case031('One wild + Flower Pot'),
 		case032('Four wild + Flower Pot'),
+		case033('Run from 2024-04-10 16:52 UTC'),
+		case034('Run from 2024-04-09 19:20 UTC'),
 	])('$message', ({ initialState, expected }) => {
 		const score = calculateScore(getState(initialState))
 
