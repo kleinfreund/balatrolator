@@ -212,11 +212,16 @@ function getScore (state: State, luck: Luck): Score {
 
 function getPlayedCardTriggers ({ state, card }: { state: State, card: Card }): string[] {
 	const triggers = ['Regular']
+
+	if (card.seal === 'red') {
+		triggers.push('Red Seal')
+	}
+
 	const retriggerJokerNames = state.jokers
 		.map((joker) => resolveJoker(state.jokers, joker))
 		.filter(notNullish)
+		.filter(({ name }) => PLAYED_CARD_RETRIGGER_JOKER_NAMES.includes(name))
 		.map(({ name }) => name)
-		.filter((name) => PLAYED_CARD_RETRIGGER_JOKER_NAMES.includes(name))
 
 	for (const name of retriggerJokerNames) {
 		switch (name) {
@@ -246,20 +251,21 @@ function getPlayedCardTriggers ({ state, card }: { state: State, card: Card }): 
 		}
 	}
 
-	if (card.seal === 'red') {
-		triggers.push('Red Seal')
-	}
-
 	return triggers
 }
 
 function getHeldCardTriggers ({ state, card }: { state: State, card: Card }): string[] {
 	const triggers = ['Regular']
+
+	if (card.seal === 'red') {
+		triggers.push('Red Seal')
+	}
+
 	const retriggerJokerNames = state.jokers
 		.map((joker) => resolveJoker(state.jokers, joker))
 		.filter(notNullish)
+		.filter(({ name }) => HELD_CARD_RETRIGGER_JOKER_NAMES.includes(name))
 		.map(({ name }) => name)
-		.filter((name) => HELD_CARD_RETRIGGER_JOKER_NAMES.includes(name))
 
 	for (const name of retriggerJokerNames) {
 		switch (name) {
@@ -276,10 +282,6 @@ function getHeldCardTriggers ({ state, card }: { state: State, card: Card }): st
 				break
 			}
 		}
-	}
-
-	if (card.seal === 'red') {
-		triggers.push('Red Seal')
 	}
 
 	return triggers
