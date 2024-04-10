@@ -334,8 +334,8 @@ function scoreJokerCardEffect (effect: JokerCardEffect | undefined, { state, sco
 		.map(({ index }) => state.jokers[index + 1])
 		.filter(notNullish)
 
-	for (const { name } of blueprintTargets) {
-		if (name === joker.name) triggers.push(`Blueprint copying ${joker.name}`)
+	for (const { index } of blueprintTargets) {
+		if (index === joker.index) triggers.push(`Blueprint copying ${joker.name}`)
 	}
 
 	// Increase triggers from Brainstorm
@@ -344,8 +344,8 @@ function scoreJokerCardEffect (effect: JokerCardEffect | undefined, { state, sco
 		.map(() => state.jokers[0])
 		.filter(notNullish)
 
-	for (const { name } of brainstormTargets) {
-		if (name === joker.name) triggers.push(`Brainstorm copying ${joker.name}`)
+	for (const { index } of brainstormTargets) {
+		if (index === joker.index) triggers.push(`Brainstorm copying ${joker.name}`)
 	}
 
 	for (let trigger = 0; trigger < triggers.length; trigger++) {
