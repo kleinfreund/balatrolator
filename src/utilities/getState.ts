@@ -40,7 +40,8 @@ export function getState (initialState: InitialState): State {
 
 	const hasFourFingers = jokerSet.has('Four Fingers')
 	const hasShortcut = jokerSet.has('Shortcut')
-	const { playedHand, scoringCards: preliminaryScoringCards } = getHand(playedCards, { hasFourFingers, hasShortcut })
+	const hasSmearedJoker = jokerSet.has('Smeared Joker')
+	const { playedHand, scoringCards: preliminaryScoringCards } = getHand(playedCards, { hasFourFingers, hasShortcut, hasSmearedJoker })
 
 	const scoringCards = jokerSet.has('Splash') ? playedCards : preliminaryScoringCards
 
