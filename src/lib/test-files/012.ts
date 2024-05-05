@@ -30,9 +30,9 @@ export default (message: string): TestCase => {
 				{ rank: '5', suit: 'Spades', seal: 'red' },
 			],
 			scores: [
-				{ score: 13300, formattedScore: '13,300', luck: 'none' },
-				{ score: 13300, formattedScore: '13,300', luck: 'average' },
-				{ score: 13300, formattedScore: '13,300', luck: 'all' },
+				{ score: 13510, formattedScore: '13,510', luck: 'none' },
+				{ score: 13510, formattedScore: '13,510', luck: 'average' },
+				{ score: 13510, formattedScore: '13,510', luck: 'all' },
 			],
 		},
 	}

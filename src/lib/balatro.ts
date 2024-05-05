@@ -229,7 +229,10 @@ function getPlayedCardTriggers ({ state, card }: { state: State, card: Card }): 
 				break
 			}
 			case 'Hanging Chad': {
-				if (card.index === 0) triggers.push(name)
+				if (card.index === 0) {
+					triggers.push(name)
+					triggers.push(name)
+				}
 				break
 			}
 			case 'Seltzer': {
