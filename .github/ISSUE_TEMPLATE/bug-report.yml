@@ -1,6 +1,5 @@
----
 name: Bug report
-about: Something isn’t working as expected
+description: Something isn’t working as expected
 labels: ['bug']
 body:
   - type: textarea
@@ -39,4 +38,3 @@ body:
       placeholder: http://balatrolator.com/?state=D4iM3YFY1AaA3I5TUvU6AGOu+NACZD88EiA2UnAZkQoE58iA6QqM0Gk0g0JvFBYdcwWnhIJxcACxxJ0uQrh1Z8xIvViVuHlJ1wOy1UY0H1QA
     validations:
       required: false
----

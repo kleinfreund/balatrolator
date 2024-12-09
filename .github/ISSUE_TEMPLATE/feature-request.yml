@@ -1,0 +1,18 @@
+name: Feature request
+description: Something is missing
+labels: ['feature']
+body:
+  - type: textarea
+    id: description
+    attributes:
+      label: Description
+      description: Describe the feature.
+    validations:
+      required: true
+  - type: textarea
+    id: motivation
+    attributes:
+      label: Motivation
+      description: Describe why you think this should be added to Balatrolator.
+    validations:
+      required: true
