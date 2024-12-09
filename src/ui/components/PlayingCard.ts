@@ -134,7 +134,7 @@ export class PlayingCard extends DraggableCard {
 		this.classList.remove(
 			'--is-played',
 			'--is-debuffed',
-			'--is-blind-the-pillar'
+			'--is-blind-the-pillar',
 		)
 
 		// This is shitty. Make it better. I shouldn't be querying unrelated DOM elements here.

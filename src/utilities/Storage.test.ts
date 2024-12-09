@@ -48,6 +48,7 @@ describe('Storage', () => {
 			'D4iM3YFY1AaA3I5TUvU6AGOu+NACZD88EiA2UnAZkQoE58iA6QqM0Gk0g0JvFBYdcwWnhIJxcACxxJ0uQrh1Z8xIvViVuHlJ1wOy1UY0H1QA',
 		],
 	])('works', (initialState, expectedString) => {
+		// eslint-disable-next-line @typescript-eslint/no-empty-function
 		const paramSetSpy = vi.spyOn(URLSearchParams.prototype, 'set').mockImplementation(() => {})
 		saveState('state', getState(initialState))
 		expect(paramSetSpy).toHaveBeenCalledWith('state', expectedString)
