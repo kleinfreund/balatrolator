@@ -11,7 +11,7 @@ export const DECKS: DeckName[] = ['Red Deck', 'Blue Deck', 'Yellow Deck', 'Green
 
 export const HANDS: HandName[] = ['Flush Five', 'Flush House', 'Five of a Kind', 'Straight Flush', 'Four of a Kind', 'Full House', 'Flush', 'Straight', 'Three of a Kind', 'Two Pair', 'Pair', 'High Card']
 
-export const PLANETS: PlanetName[] = ['Eris', 'Ceres', 'Planet X', 'Neptune', 'Mars', 'Earth', 'Flush', 'Saturn', 'Venus', 'Uranus', 'Mercury', 'Pluto']
+export const PLANETS: PlanetName[] = ['Eris', 'Ceres', 'Planet X', 'Neptune', 'Mars', 'Earth', 'Jupiter', 'Saturn', 'Venus', 'Uranus', 'Mercury', 'Pluto']
 
 export const ENHANCEMENTS: Enhancement[] = ['none', 'bonus', 'mult', 'wild', 'glass', 'steel', 'stone', 'gold', 'lucky']
 export const SEALS: Seal[] = ['none', 'gold', 'red', 'blue', 'purple']
@@ -30,7 +30,7 @@ export const PLANET_TO_HAND_MAP: Record<PlanetName, HandName> = {
 	'Neptune': 'Straight Flush',
 	'Mars': 'Four of a Kind',
 	'Earth': 'Full House',
-	'Flush': 'Flush',
+	'Jupiter': 'Flush',
 	'Saturn': 'Straight',
 	'Venus': 'Three of a Kind',
 	'Uranus': 'Two Pair',
