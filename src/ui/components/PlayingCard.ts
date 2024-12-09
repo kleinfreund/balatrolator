@@ -128,8 +128,6 @@ export class PlayingCard extends DraggableCard {
 		this.editionSelect.value = edition
 		this.enhancementSelect.value = enhancement
 		this.sealSelect.value = seal
-
-		this.updateState()
 	}
 
 	updateState () {

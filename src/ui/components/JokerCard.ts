@@ -138,8 +138,6 @@ export class JokerCard extends DraggableCard {
 		if (this.#definition.hasIsActiveInput) this.isActiveCheckbox.checked = Boolean(isActive)
 		if (this.#definition.hasRankInput && rank) this.rankSelect.value = String(rank)
 		if (this.#definition.hasSuitInput && suit) this.suitSelect.value = String(suit)
-
-		this.updateState()
 	}
 
 	updateState () {

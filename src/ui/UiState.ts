@@ -215,16 +215,24 @@ export class UiState {
 	addJoker (joker?: Joker) {
 		this.jokerContainer.insertAdjacentHTML('beforeend', '<joker-card></joker-card>')
 		const jokerEl = this.jokerContainer.lastElementChild
-		if (joker && jokerEl instanceof JokerCard) {
-			jokerEl.setJoker(joker)
+		if (jokerEl instanceof JokerCard) {
+			if (joker) {
+				jokerEl.setJoker(joker)
+			}
+
+			jokerEl.updateState()
 		}
 	}
 
 	addCard (card?: Card, isPlayed?: boolean) {
 		this.playingCardContainer.insertAdjacentHTML('beforeend', '<playing-card></playing-card>')
 		const el = this.playingCardContainer.lastElementChild
-		if (card && el instanceof PlayingCard) {
-			el.setCard(card, isPlayed)
+		if (el instanceof PlayingCard) {
+			if (card) {
+				el.setCard(card, isPlayed)
+			}
+
+			el.updateState()
 		}
 	}
 
