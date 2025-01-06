@@ -232,6 +232,64 @@
 		</div>
 	</main>
 
+	<dialog id="j-duplicate-modal" class="panel" popover>
+		<div class="stack">
+			<header>
+				<div class="action-list">
+					<h2>Duplicate joker?</h2>
+
+					<button class="button --icon push-left" type="button" data-modal-close-button>
+						<span class="visually-hidden">Close</span>
+
+						<svg class="icon" role="img" viewBox="0 0 24 24" width="16" height="16" xmlns="http://www.w3.org/2000/svg">
+							<title>Close icon</title>
+							<path d="M6.4 19L5 17.6L10.6 12L5 6.4L6.4 5L12 10.6L17.6 5L19 6.4L13.4 12L19 17.6L17.6 19L12 13.4L6.4 19Z" fill="currentColor"></path>
+						</svg>
+					</button>
+				</div>
+			</header>
+
+			<label class="text-control">
+				<span class="label truncate">Number of copies</span>
+
+				<input class="text-input" type="number" value="1" min="1">
+			</label>
+
+			<p>The new cards will be added to the right of the one you're duplicating.</p>
+
+			<button class="button" type="button" data-j-duplicate-button>Ok</button>
+		</div>
+	</dialog>
+
+	<dialog id="c-duplicate-modal" class="panel" popover>
+		<div class="stack">
+			<header>
+				<div class="action-list">
+					<h2>Duplicate card?</h2>
+
+					<button class="button --icon push-left" type="button" data-modal-close-button>
+						<span class="visually-hidden">Close</span>
+
+						<svg class="icon" role="img" viewBox="0 0 24 24" width="16" height="16" xmlns="http://www.w3.org/2000/svg">
+							<title>Close icon</title>
+							<path d="M6.4 19L5 17.6L10.6 12L5 6.4L6.4 5L12 10.6L17.6 5L19 6.4L13.4 12L19 17.6L17.6 19L12 13.4L6.4 19Z" fill="currentColor"></path>
+						</svg>
+					</button>
+				</div>
+			</header>
+
+			<label class="text-control">
+				<span class="label truncate">Number of copies</span>
+
+				<input class="text-input" type="number" value="1" min="1">
+			</label>
+
+			<p>The new cards will be added to the right of the one you're duplicating.</p>
+
+			<button class="button" type="button" data-c-duplicate-button>Ok</button>
+		</div>
+	</dialog>
+
 	<template id="hand-level">
 		<p><span data-h-name></span></p>
 
@@ -412,6 +470,15 @@
 					</select>
 				</label>
 
+				<button class="j-duplicate-button button --icon" type="button" popovertarget="j-duplicate-modal">
+					<span class="visually-hidden">Duplicate joker</span>
+
+					<svg class="icon" role="img" viewBox="0 0 24 24" width="16" height="16" xmlns="http://www.w3.org/2000/svg">
+						<title>Duplicate icon</title>
+						<path d="M5 22C4.45 22 3.97917 21.8042 3.5875 21.4125C3.19583 21.0208 3 20.55 3 20V6H5V20H16V22H5ZM9 18C8.45 18 7.97917 17.8042 7.5875 17.4125C7.19583 17.0208 7 16.55 7 16V4C7 3.45 7.19583 2.97917 7.5875 2.5875C7.97917 2.19583 8.45 2 9 2H18C18.55 2 19.0208 2.19583 19.4125 2.5875C19.8042 2.97917 20 3.45 20 4V16C20 16.55 19.8042 17.0208 19.4125 17.4125C19.0208 17.8042 18.55 18 18 18H9ZM9 16H18V4H9V16Z" fill="currentColor"></path>
+					</svg>
+				</button>
+
 				<button class="j-remove-button button --icon" type="button" data-remove-button>
 					<span class="visually-hidden">Remove</span>
 
@@ -505,6 +572,15 @@
 
 					<span class="label">Play?</span>
 				</label>
+
+				<button class="c-duplicate-button button --icon push-left" type="button" popovertarget="c-duplicate-modal">
+					<span class="visually-hidden">Duplicate card</span>
+
+					<svg class="icon" role="img" viewBox="0 0 24 24" width="16" height="16" xmlns="http://www.w3.org/2000/svg">
+						<title>Duplicate icon</title>
+						<path d="M5 22C4.45 22 3.97917 21.8042 3.5875 21.4125C3.19583 21.0208 3 20.55 3 20V6H5V20H16V22H5ZM9 18C8.45 18 7.97917 17.8042 7.5875 17.4125C7.19583 17.0208 7 16.55 7 16V4C7 3.45 7.19583 2.97917 7.5875 2.5875C7.97917 2.19583 8.45 2 9 2H18C18.55 2 19.0208 2.19583 19.4125 2.5875C19.8042 2.97917 20 3.45 20 4V16C20 16.55 19.8042 17.0208 19.4125 17.4125C19.0208 17.8042 18.55 18 18 18H9ZM9 16H18V4H9V16Z" fill="currentColor"></path>
+					</svg>
+				</button>
 
 				<button class="c-remove-button button --icon push-left" type="button" data-remove-button>
 					<span class="visually-hidden">Remove</span>

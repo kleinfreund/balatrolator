@@ -37,3 +37,11 @@ a {
 a:hover {
 	color: var(--c-blue-dark);
 }
+
+dialog {
+	padding: 1rem;
+}
+
+dialog::backdrop {
+	background-color: hsl(0 0% 0% / 0.25);
+}

@@ -2,10 +2,20 @@ const registeredContainers = new Set<Element>()
 let isDragging = false
 
 export class DraggableCard extends HTMLElement {
-	container: HTMLElement
+	container: HTMLElement | undefined
 
 	constructor () {
 		super()
+
+		this.addEventListener('dragstart', this.handleDragStart)
+		this.addEventListener('dragend', this.handleDragEnd)
+		this.addEventListener('drop', this.handleDrop)
+	}
+
+	connectedCallback () {
+		if (!this.isConnected) {
+			return
+		}
 
 		const container = this.closest('[data-drop-zone]')
 		if (!container) {
@@ -19,14 +29,17 @@ export class DraggableCard extends HTMLElement {
 			this.container.addEventListener('dragenter', this.handleDragOver)
 			this.container.addEventListener('dragover', this.handleDragOver)
 		}
+	}
 
-		this.addEventListener('dragstart', this.handleDragStart)
-		this.addEventListener('dragend', this.handleDragEnd)
-		this.addEventListener('drop', this.handleDrop)
+	disconnectedCallback () {
+		if (this.container) {
+			registeredContainers.delete(this.container)
+		}
+		this.container = undefined
 	}
 
 	handleDragStart = (event: DragEvent) => {
-		if (event.dataTransfer === null || !(event.target instanceof Element)) {
+		if (event.dataTransfer === null || !(event.target instanceof Element) || !this.container) {
 			return
 		}
 
@@ -40,6 +53,10 @@ export class DraggableCard extends HTMLElement {
 	}
 
 	handleDragEnd = (event: DragEvent) => {
+		if (!this.container) {
+			return
+		}
+
 		const draggedEl = getDragEventData(event, this.container)
 		if (draggedEl) {
 			drop(this.container, draggedEl, event.clientX)
@@ -48,6 +65,10 @@ export class DraggableCard extends HTMLElement {
 	}
 
 	handleDragOver = (event: DragEvent) => {
+		if (!this.container) {
+			return
+		}
+
 		if (getDragEventData(event, this.container)) {
 			// **Allow** dropping off an element to occur
 			event.preventDefault()

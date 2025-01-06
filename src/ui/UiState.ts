@@ -21,9 +21,11 @@ export class UiState {
 
 	jokerContainer: HTMLElement
 	addJokerButton: HTMLButtonElement
+	duplicateJokerButton: HTMLButtonElement
 
 	playingCardContainer: HTMLElement
 	addCardButton: HTMLButtonElement
+	duplicateCardButton: HTMLButtonElement
 
 	scoreCardContainer: HTMLElement
 	playedHandEl: HTMLElement
@@ -43,13 +45,28 @@ export class UiState {
 		this.jokerContainer = form.querySelector('[data-j-container]') as HTMLElement
 		this.addJokerButton = form.querySelector('[data-j-add-button]') as HTMLButtonElement
 		this.addJokerButton.addEventListener('click', () => this.addJoker())
+		this.duplicateJokerButton = document.querySelector('[data-j-duplicate-button]') as HTMLButtonElement
+		this.duplicateJokerButton.addEventListener('click', this.duplicate)
 
 		this.playingCardContainer = form.querySelector('[data-c-container]') as HTMLElement
 		this.addCardButton = form.querySelector('[data-c-add-button]') as HTMLButtonElement
 		this.addCardButton.addEventListener('click', () => this.addCard())
+		this.duplicateCardButton = document.querySelector('[data-c-duplicate-button]') as HTMLButtonElement
+		this.duplicateCardButton.addEventListener('click', this.duplicate)
 
 		this.scoreCardContainer = form.querySelector('[data-sc-container]') as HTMLElement
 		this.playedHandEl = form.querySelector('[data-sc-played-hand]') as HTMLElement
+
+		for (const dialog of document.querySelectorAll('dialog')) {
+			for (const button of dialog.querySelectorAll('button[data-modal-close-button]')) {
+				if (button instanceof HTMLButtonElement) {
+					button.addEventListener('click', () => {
+						dialog.removeAttribute('data-duplicate-target-id')
+						dialog.close()
+					})
+				}
+			}
+		}
 
 		// Quick and dirty way to update the state whenever necessary
 		form.addEventListener('change', () => {
@@ -234,6 +251,25 @@ export class UiState {
 
 			el.updateState()
 		}
+	}
+
+	duplicate (event: Event) {
+		const button = event.currentTarget as HTMLButtonElement
+		const dialog = button.closest('dialog')!
+		const id = dialog.getAttribute('data-duplicate-target-id') ?? ''
+		const card = document.getElementById(id)
+
+		if (card instanceof JokerCard || card instanceof PlayingCard) {
+			const input = dialog.querySelector('input')!
+			let numberOfCopies = Number(input.value)
+			while (numberOfCopies--) {
+				const copy = card.clone()
+				card.insertAdjacentElement('afterend', copy)
+				copy.updateState()
+			}
+		}
+
+		dialog.close()
 	}
 
 	addHandLevel (handName: HandName, handLevel: { level: number, plays: number }) {

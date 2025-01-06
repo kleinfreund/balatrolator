@@ -11,8 +11,10 @@ export class JokerCard extends DraggableCard {
 		}
 	}
 
+	#joker: Joker | undefined
 	hasRendered = false
 	fragment: Element
+	showDuplicateModalButton: HTMLButtonElement
 	removeButton: HTMLButtonElement
 	nameSelect: HTMLSelectElement
 	editionSelect: HTMLSelectElement
@@ -35,6 +37,9 @@ export class JokerCard extends DraggableCard {
 
 		this.removeButton = this.fragment.querySelector('[data-remove-button]') as HTMLButtonElement
 		this.removeButton.addEventListener('click', () => this.remove())
+
+		this.showDuplicateModalButton = this.fragment.querySelector('[popovertarget="j-duplicate-modal"]') as HTMLButtonElement
+		this.showDuplicateModalButton.addEventListener('click', this.showDuplicateModal)
 
 		this.nameSelect = this.fragment.querySelector('[data-j-name]') as HTMLSelectElement
 		this.nameSelect.name = `joker-name-${id}`
@@ -119,6 +124,8 @@ export class JokerCard extends DraggableCard {
 	}
 
 	setJoker (joker: Joker) {
+		this.#joker = joker
+
 		const {
 			name,
 			edition,
@@ -158,5 +165,34 @@ export class JokerCard extends DraggableCard {
 			this.#definition.hasRankInput ? '--has-rank': null,
 			this.#definition.hasSuitInput ? '--has-suit': null,
 		].filter(notNullish).forEach((className) => this.classList.add(className))
+	}
+
+	showDuplicateModal = (event: Event) => {
+		const button = event.currentTarget as HTMLButtonElement
+		const dialog = document.querySelector(`dialog[id="${button.getAttribute('popovertarget')}"]`)
+		if (dialog instanceof HTMLDialogElement) {
+			dialog.setAttribute('data-duplicate-target-id', this.id)
+			dialog.showModal()
+		}
+	}
+
+	clone () {
+		if (this.#joker === undefined) {
+			throw new Error(`<${this.tagName.toLowerCase()} id="${this.id}">: is missing internal data!`)
+		}
+
+		const clone = this.cloneNode(true) as JokerCard
+		clone.setJoker(this.#joker)
+
+		clone.nameSelect.value = this.nameSelect.value
+		clone.editionSelect.value = this.editionSelect.value
+		clone.plusChipsInput.value = this.plusChipsInput.value
+		clone.plusMultiplierInput.value = this.plusMultiplierInput.value
+		clone.timesMultiplierInput.value = this.timesMultiplierInput.value
+		clone.isActiveCheckbox.checked = this.isActiveCheckbox.checked
+		clone.rankSelect.value = this.rankSelect.value
+		clone.suitSelect.value = this.suitSelect.value
+
+		return clone
 	}
 }

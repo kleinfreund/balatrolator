@@ -10,8 +10,10 @@ export class PlayingCard extends DraggableCard {
 		}
 	}
 
+	#card: Card | undefined
 	hasRendered = false
 	fragment: Element
+	showDuplicateModalButton: HTMLButtonElement
 	removeButton: HTMLButtonElement
 	isPlayedCheckbox: HTMLInputElement
 	isDebuffedCheckbox: HTMLInputElement
@@ -33,6 +35,9 @@ export class PlayingCard extends DraggableCard {
 
 		this.removeButton = this.fragment.querySelector('[data-remove-button]') as HTMLButtonElement
 		this.removeButton.addEventListener('click', () => this.remove())
+
+		this.showDuplicateModalButton = this.fragment.querySelector('[popovertarget="c-duplicate-modal"]') as HTMLButtonElement
+		this.showDuplicateModalButton.addEventListener('click', this.showDuplicateModal)
 
 		this.isPlayedCheckbox = this.fragment.querySelector('[data-c-is-played]') as HTMLInputElement
 		this.isPlayedCheckbox.name = `card-is-played-${id}`
@@ -112,6 +117,8 @@ export class PlayingCard extends DraggableCard {
 	}
 
 	setCard (card: Card, isPlayed?: boolean) {
+		this.#card = card
+
 		const {
 			rank,
 			suit,
@@ -146,6 +153,34 @@ export class PlayingCard extends DraggableCard {
 			this.isDebuffedCheckbox.checked ? '--is-debuffed' : null,
 			blindNameSelect.value === 'The Pillar' && blindIsActiveCheckbox.checked ? '--is-blind-the-pillar' : undefined,
 		].filter(notNullish).forEach((className) => this.classList.add(className))
+	}
+
+	showDuplicateModal = (event: Event) => {
+		const button = event.currentTarget as HTMLButtonElement
+		const dialog = document.querySelector(`dialog[id="${button.getAttribute('popovertarget')}"]`)
+		if (dialog instanceof HTMLDialogElement) {
+			dialog.setAttribute('data-duplicate-target-id', this.id)
+			dialog.showModal()
+		}
+	}
+
+	clone () {
+		if (this.#card === undefined) {
+			throw new Error(`<${this.tagName.toLowerCase()} id="${this.id}">: is missing internal data!`)
+		}
+
+		const clone = this.cloneNode(true) as PlayingCard
+		clone.setCard(this.#card)
+
+		clone.isPlayedCheckbox.checked = this.isPlayedCheckbox.checked
+		clone.isDebuffedCheckbox.checked = this.isDebuffedCheckbox.checked
+		clone.rankSelect.value = this.rankSelect.value
+		clone.suitSelect.value = this.suitSelect.value
+		clone.editionSelect.value = this.editionSelect.value
+		clone.enhancementSelect.value = this.enhancementSelect.value
+		clone.sealSelect.value = this.sealSelect.value
+
+		return clone
 	}
 }
 
