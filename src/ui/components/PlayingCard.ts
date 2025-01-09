@@ -100,6 +100,8 @@ export class PlayingCard extends DraggableCard {
 	}
 
 	connectedCallback () {
+		super.connectedCallback()
+
 		if (!this.isConnected) {
 			return
 		}
