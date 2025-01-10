@@ -16,12 +16,12 @@ export class HandLevel extends HTMLElement {
 	constructor () {
 		super()
 
-		const template = document.querySelector('template#hand-level') as HTMLTemplateElement
+		const template = document.querySelector<HTMLTemplateElement>('template#hand-level')!
 		this.fragment = template.content.cloneNode(true) as Element
 
-		this.nameEl = this.fragment.querySelector('[data-h-name]') as HTMLElement
-		this.levelInput = this.fragment.querySelector('[data-h-level]') as HTMLInputElement
-		this.playsInput = this.fragment.querySelector('[data-h-plays]') as HTMLInputElement
+		this.nameEl = this.fragment.querySelector<HTMLElement>('[data-h-name]')!
+		this.levelInput = this.fragment.querySelector<HTMLInputElement>('[data-h-level]')!
+		this.playsInput = this.fragment.querySelector<HTMLInputElement>('[data-h-plays]')!
 	}
 
 	get [Symbol.toStringTag] () {

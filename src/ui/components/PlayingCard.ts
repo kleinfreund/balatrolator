@@ -26,38 +26,38 @@ export class PlayingCard extends DraggableCard {
 	constructor () {
 		super()
 
-		const template = document.querySelector('template#playing-card') as HTMLTemplateElement
+		const template = document.querySelector<HTMLTemplateElement>('template#playing-card')!
 		this.fragment = template.content.cloneNode(true) as Element
 		const id = uniqueId()
 		this.id = `playing-card-${id}`
 		this.classList.add('card', 'playing-card')
 		this.draggable = true
 
-		this.removeButton = this.fragment.querySelector('[data-remove-button]') as HTMLButtonElement
+		this.removeButton = this.fragment.querySelector<HTMLButtonElement>('[data-remove-button]')!
 		this.removeButton.addEventListener('click', () => this.remove())
 
-		this.showDuplicateModalButton = this.fragment.querySelector('[popovertarget="c-duplicate-modal"]') as HTMLButtonElement
+		this.showDuplicateModalButton = this.fragment.querySelector<HTMLButtonElement>('[popovertarget="c-duplicate-modal"]')!
 		this.showDuplicateModalButton.addEventListener('click', this.showDuplicateModal)
 
-		this.isPlayedCheckbox = this.fragment.querySelector('[data-c-is-played]') as HTMLInputElement
+		this.isPlayedCheckbox = this.fragment.querySelector<HTMLInputElement>('[data-c-is-played]')!
 		this.isPlayedCheckbox.name = `card-is-played-${id}`
 
-		this.isDebuffedCheckbox = this.fragment.querySelector('[data-c-is-debuffed]') as HTMLInputElement
+		this.isDebuffedCheckbox = this.fragment.querySelector<HTMLInputElement>('[data-c-is-debuffed]')!
 		this.isDebuffedCheckbox.name = `card-is-debuffed-${id}`
 
-		this.rankSelect = this.fragment.querySelector('[data-c-rank]') as HTMLSelectElement
+		this.rankSelect = this.fragment.querySelector<HTMLSelectElement>('[data-c-rank]')!
 		this.rankSelect.name = `card-rank-${id}`
 
-		this.suitSelect = this.fragment.querySelector('[data-c-suit]') as HTMLSelectElement
+		this.suitSelect = this.fragment.querySelector<HTMLSelectElement>('[data-c-suit]')!
 		this.suitSelect.name = `card-suit-${id}`
 
-		this.editionSelect = this.fragment.querySelector('[data-c-edition]') as HTMLSelectElement
+		this.editionSelect = this.fragment.querySelector<HTMLSelectElement>('[data-c-edition]')!
 		this.editionSelect.name = `card-edition-${id}`
 
-		this.enhancementSelect = this.fragment.querySelector('[data-c-enhancement]') as HTMLSelectElement
+		this.enhancementSelect = this.fragment.querySelector<HTMLSelectElement>('[data-c-enhancement]')!
 		this.enhancementSelect.name = `card-enhancement-${id}`
 
-		this.sealSelect = this.fragment.querySelector('[data-c-seal]') as HTMLSelectElement
+		this.sealSelect = this.fragment.querySelector<HTMLSelectElement>('[data-c-seal]')!
 		this.sealSelect.name = `card-seal-${id}`
 
 		this.addEventListener('click', (event) => {

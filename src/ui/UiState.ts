@@ -31,31 +31,31 @@ export class UiState {
 	playedHandEl: HTMLElement
 
 	constructor (form: HTMLFormElement) {
-		this.handsInput = form.querySelector('[data-r-hands]') as HTMLInputElement
-		this.discardsInput = form.querySelector('[data-r-discards]') as HTMLInputElement
-		this.moneyInput = form.querySelector('[data-r-money]') as HTMLInputElement
-		this.blindNameSelect = form.querySelector('[data-r-blind-name]') as HTMLSelectElement
-		this.blindIsActiveCheckbox = form.querySelector('[data-r-blind-is-active]') as HTMLInputElement
-		this.deckSelect = form.querySelector('[data-r-deck]') as HTMLSelectElement
-		this.observatorySelect = form.querySelector('[data-r-observatory]') as HTMLSelectElement
-		this.jokerSlotsInput = form.querySelector('[data-r-joker-slots]') as HTMLInputElement
+		this.handsInput = form.querySelector<HTMLInputElement>('[data-r-hands]')!
+		this.discardsInput = form.querySelector<HTMLInputElement>('[data-r-discards]')!
+		this.moneyInput = form.querySelector<HTMLInputElement>('[data-r-money]')!
+		this.blindNameSelect = form.querySelector<HTMLSelectElement>('[data-r-blind-name]')!
+		this.blindIsActiveCheckbox = form.querySelector<HTMLInputElement>('[data-r-blind-is-active]')!
+		this.deckSelect = form.querySelector<HTMLSelectElement>('[data-r-deck]')!
+		this.observatorySelect = form.querySelector<HTMLSelectElement>('[data-r-observatory]')!
+		this.jokerSlotsInput = form.querySelector<HTMLInputElement>('[data-r-joker-slots]')!
 
-		this.handLevelContainer = form.querySelector('[data-h-container]') as HTMLElement
+		this.handLevelContainer = form.querySelector<HTMLElement>('[data-h-container]')!
 
-		this.jokerContainer = form.querySelector('[data-j-container]') as HTMLElement
-		this.addJokerButton = form.querySelector('[data-j-add-button]') as HTMLButtonElement
+		this.jokerContainer = form.querySelector<HTMLElement>('[data-j-container]')!
+		this.addJokerButton = form.querySelector<HTMLButtonElement>('[data-j-add-button]')!
 		this.addJokerButton.addEventListener('click', () => this.addJoker())
-		this.duplicateJokerButton = document.querySelector('[data-j-duplicate-button]') as HTMLButtonElement
+		this.duplicateJokerButton = document.querySelector<HTMLButtonElement>('[data-j-duplicate-button]')!
 		this.duplicateJokerButton.addEventListener('click', this.duplicate)
 
-		this.playingCardContainer = form.querySelector('[data-c-container]') as HTMLElement
-		this.addCardButton = form.querySelector('[data-c-add-button]') as HTMLButtonElement
+		this.playingCardContainer = form.querySelector<HTMLElement>('[data-c-container]')!
+		this.addCardButton = form.querySelector<HTMLButtonElement>('[data-c-add-button]')!
 		this.addCardButton.addEventListener('click', () => this.addCard())
-		this.duplicateCardButton = document.querySelector('[data-c-duplicate-button]') as HTMLButtonElement
+		this.duplicateCardButton = document.querySelector<HTMLButtonElement>('[data-c-duplicate-button]')!
 		this.duplicateCardButton.addEventListener('click', this.duplicate)
 
-		this.scoreCardContainer = form.querySelector('[data-sc-container]') as HTMLElement
-		this.playedHandEl = form.querySelector('[data-sc-played-hand]') as HTMLElement
+		this.scoreCardContainer = form.querySelector<HTMLElement>('[data-sc-container]')!
+		this.playedHandEl = form.querySelector<HTMLElement>('[data-sc-played-hand]')!
 
 		for (const dialog of document.querySelectorAll('dialog')) {
 			for (const button of dialog.querySelectorAll('button[data-modal-close-button]')) {

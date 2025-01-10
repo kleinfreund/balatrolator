@@ -2,7 +2,7 @@ import { getState } from '#utilities/getState.js'
 import { fetchState, saveState } from '#utilities/Storage.js'
 import { UiState } from './UiState.js'
 
-const form = document.querySelector('[data-form]') as HTMLFormElement
+const form = document.querySelector<HTMLFormElement>('[data-form]')!
 const uiState = new UiState(form)
 
 form.addEventListener('submit', handleSubmit)

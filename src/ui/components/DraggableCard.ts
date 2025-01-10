@@ -17,11 +17,11 @@ export class DraggableCard extends HTMLElement {
 			return
 		}
 
-		const container = this.closest('[data-drop-zone]')
+		const container = this.closest<HTMLElement>('[data-drop-zone]')
 		if (!container) {
 			throw new Error(`${this.tagName} is a DraggableCard but is not an descendant of an element with the “data-drop-zone” attribute.`)
 		}
-		this.container = container as HTMLElement
+		this.container = container
 
 		if (!registeredContainers.has(this.container)) {
 			registeredContainers.add(this.container)
