@@ -8,20 +8,7 @@ import {
 import { deminify, minify } from './minifier.js'
 import type { State } from '#lib/types.js'
 
-export function fetchState (key: string): State | null {
-	const minified = QueryParameter.get('state') ?? WebStorage.get(key)
-
-	return minified ? deminify(minified) : null
-}
-
-export function saveState (key: string, state: State) {
-	const minified = minify(state)
-
-	WebStorage.set(key, minified)
-	QueryParameter.set('state', minified)
-}
-
-const WebStorage = {
+export const WebStorage = {
 	get (key: string): string | null {
 		try {
 			const value = window.localStorage.getItem(key)
@@ -40,20 +27,29 @@ const WebStorage = {
 			console.error(error)
 		}
 	},
+
+	remove (key: string) {
+		try {
+			window.localStorage.removeItem(key)
+		} catch (error) {
+			console.error(error)
+		}
+	},
 }
 
-const QueryParameter = {
-	get (key: string): string | null {
-		const urlParams = new URLSearchParams(window.location.search)
-		const compressed = urlParams.get(key)
+export function readStateFromUrl (): State | null {
+	const urlParams = new URLSearchParams(window.location.search)
+	const compressed = urlParams.get('state')
+	const minified = compressed ? decompressFromEncodedURIComponent(compressed) : null
 
-		return compressed ? decompressFromEncodedURIComponent(compressed) : null
-	},
+	return minified ? deminify(minified) : null
+}
 
-	set (key: string, value: string) {
-		const urlParams = new URLSearchParams(window.location.search)
-		urlParams.set(key, compressToEncodedURIComponent(value))
+export function saveStateToUrl (state: State) {
+	const urlParams = new URLSearchParams(window.location.search)
+	const minified = minify(state)
+	const compressed = compressToEncodedURIComponent(minified)
+	urlParams.set('state', compressed)
 
-		window.history.pushState({}, '', `?${urlParams.toString()}`)
-	},
+	window.history.pushState({}, '', `?${urlParams.toString()}`)
 }

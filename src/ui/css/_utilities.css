@@ -27,7 +27,7 @@
 	flex-wrap: wrap;
 }
 
-.list>* {
+.list>*:not(.button) {
 	flex: 1;
 }
 

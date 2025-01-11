@@ -2,7 +2,7 @@ import { describe, test, expect, vi } from 'vitest'
 
 import type { InitialState } from '#lib/types.js'
 import { getState } from './getState.js'
-import { fetchState, saveState } from './Storage.js'
+import { readStateFromUrl, saveStateToUrl } from './Storage.js'
 
 /*
 This test deliberately doesn't mock lz-string so that changes to application logic that breaks the share URLs will be break this test.
@@ -50,11 +50,11 @@ describe('Storage', () => {
 	])('works', (initialState, expectedString) => {
 		// eslint-disable-next-line @typescript-eslint/no-empty-function
 		const paramSetSpy = vi.spyOn(URLSearchParams.prototype, 'set').mockImplementation(() => {})
-		saveState('state', getState(initialState))
+		saveStateToUrl(getState(initialState))
 		expect(paramSetSpy).toHaveBeenCalledWith('state', expectedString)
 
 		vi.spyOn(URLSearchParams.prototype, 'get').mockImplementation(() => expectedString)
-		const state = fetchState('state')
+		const state = readStateFromUrl()
 		expect(state).toMatchObject(initialState)
 	})
 })

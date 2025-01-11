@@ -5,7 +5,28 @@ import { getState } from '#utilities/getState.js'
 import { log } from '#utilities/log.js'
 import { calculateScore } from '#lib/balatro.js'
 import type { BlindName, Card, DeckName, HandName, InitialState, Joker, State, ResultScore, PlanetName } from '#lib/types.js'
-import { PLANET_TO_HAND_MAP } from '../lib/data.js'
+import { PLANET_TO_HAND_MAP } from '#/lib/data.js'
+import { deminify, minify } from '#/utilities/minifier.js'
+import { saveStateToUrl, WebStorage } from '#/utilities/Storage.js'
+
+interface Save {
+	name: string
+	time: number
+	state: State
+	autoSave?: boolean
+}
+
+type StoredSave = Omit<Save, 'state'> & { state: string }
+
+const dateTimeFormat = new Intl.DateTimeFormat(document.documentElement.lang, {
+	year: 'numeric',
+	month: 'short',
+	day: 'numeric',
+	hour: 'numeric',
+	hour12: false,
+	minute: 'numeric',
+	second: 'numeric',
+})
 
 export class UiState {
 	handsInput: HTMLInputElement
@@ -29,6 +50,11 @@ export class UiState {
 
 	scoreCardContainer: HTMLElement
 	playedHandEl: HTMLElement
+
+	#saves: Save[] = []
+	savesContainer: HTMLElement
+	saveRowTemplate: HTMLTemplateElement
+	saveForm: HTMLFormElement
 
 	constructor (form: HTMLFormElement) {
 		this.handsInput = form.querySelector<HTMLInputElement>('[data-r-hands]')!
@@ -57,6 +83,17 @@ export class UiState {
 		this.scoreCardContainer = form.querySelector<HTMLElement>('[data-sc-container]')!
 		this.playedHandEl = form.querySelector<HTMLElement>('[data-sc-played-hand]')!
 
+		this.savesContainer = document.querySelector<HTMLElement>('[data-s-saves]')!
+		this.saveRowTemplate = document.querySelector<HTMLTemplateElement>('template#save-row')!
+		this.saveForm = document.querySelector<HTMLFormElement>('[data-s-form]')!
+		this.saveForm.addEventListener('submit', (event) => this.#handleSaveSubmit(event))
+		this.#populateSavesUiFromStorage()
+
+		// Calling the save store method here for users that weren't migrated to the new saved hands system, yet. It'll store the new saves format.
+		this.#storeSaves()
+		// Clean up legacy save storage.
+		WebStorage.remove('state')
+
 		for (const dialog of document.querySelectorAll('dialog')) {
 			for (const button of dialog.querySelectorAll('button[data-modal-close-button]')) {
 				if (button instanceof HTMLButtonElement) {
@@ -84,6 +121,145 @@ export class UiState {
 		})
 	}
 
+	/**
+	 * Read saved hands from web storage and populate them in the UI.
+	 */
+	#populateSavesUiFromStorage () {
+		let minifiedSaves: StoredSave[] = []
+
+		// Migrate legacy save storage to new saved hands system.
+		const minifiedLegacyState = WebStorage.get('state')
+		if (minifiedLegacyState) {
+			minifiedSaves = [{
+				name: 'Current hand',
+				time: Date.now(),
+				state: minifiedLegacyState,
+				autoSave: true,
+			}]
+		} else {
+			minifiedSaves = JSON.parse(WebStorage.get('saves') ?? '[]')
+		}
+
+		const saves: Save[] = minifiedSaves.map((save) => ({
+			...save,
+			state: deminify(save.state),
+		}))
+		saves.sort((saveA, saveB) => saveB.time - saveA.time)
+
+		this.#saves = saves
+
+		this.savesContainer.innerHTML = ''
+		for (const save of saves) {
+			const fragment = this.saveRowTemplate.content.cloneNode(true) as Element
+
+			const nameCell = fragment.querySelector<HTMLTableCellElement>('[data-s-name]')!
+			nameCell.innerHTML = `<b>${save.name}</b>${save.autoSave ? ' <i>(autosave)</>' : ''}`
+
+			const timeCell = fragment.querySelector<HTMLTableCellElement>('[data-s-time]')!
+			timeCell.innerText = dateTimeFormat.format(new Date(save.time))
+
+			const loadButton = fragment.querySelector<HTMLButtonElement>('[data-s-load-button]')!
+			loadButton.setAttribute('data-save-name', save.name)
+			loadButton.addEventListener('click', (event) => this.#loadSave(event))
+
+			const deleteButton = fragment.querySelector<HTMLButtonElement>('[data-s-delete-button]')!
+			deleteButton.setAttribute('data-save-name', save.name)
+			deleteButton.addEventListener('click', (event) => this.#deleteSave(event))
+
+			this.savesContainer.appendChild(fragment)
+		}
+	}
+
+	#loadSave (event: Event) {
+		const button = event.currentTarget as HTMLButtonElement
+		const name = button.getAttribute('data-save-name')!
+		const save = this.#saves.find((save) => save.name === name)!
+
+		this.populateUiWithState(save.state)
+		this.applyState(save.state)
+	}
+
+	#handleSaveSubmit (event: SubmitEvent) {
+		event.preventDefault()
+
+		const state = this.readStateFromUi()
+		const form = event.currentTarget as HTMLFormElement
+		const formData = new FormData(form)
+		const name = formData.get('name') as string ?? `Save ${this.#saves.length - 1}`
+
+		this.#save(state, name)
+	}
+
+	/**
+	 * Save the current state under a name.
+	 */
+	#save (state: State, name: string) {
+		const existingSaveIndex = this.#saves.findIndex((save) => save.name === name)
+		const index = existingSaveIndex === -1 ? this.#saves.length : existingSaveIndex
+		const existingSave = this.#saves[index]
+		this.#saves[index] = {
+			name,
+			time: Date.now(),
+			state,
+			autoSave: existingSave?.autoSave ?? false,
+		}
+
+		this.#storeSaves()
+	}
+
+	/**
+	 * Save the current state as a special auto save overwriting the previous auto save.
+	 */
+	#autoSave (state: State) {
+		const autoSaveIndex = this.#saves.findIndex((save) => save.autoSave)
+		const index = autoSaveIndex === -1 ? this.#saves.length : autoSaveIndex
+		const autoSave = this.#saves[index]
+		this.#saves[index] = {
+			name: autoSave?.name ?? 'Current hand',
+			time: Date.now(),
+			state,
+			autoSave: true,
+		}
+
+		this.#storeSaves()
+	}
+
+	/**
+	 * Delete a save.
+	 */
+	#deleteSave (event: Event) {
+		const button = event.currentTarget as HTMLButtonElement
+		const name = button.getAttribute('data-save-name')!
+		const index = this.#saves.findIndex((save) => save.name === name)
+		this.#saves.splice(index, 1)
+
+		this.#storeSaves()
+	}
+
+	/**
+	 * Stores all saves in web storage and populates saves UI.
+	 */
+	#storeSaves () {
+		this.#saves.sort((saveA, saveB) => saveB.time - saveA.time)
+		const storedSaves: StoredSave[] = this.#saves.map((save) => ({
+			...save,
+			state: minify(save.state),
+		}))
+
+		WebStorage.set('saves', JSON.stringify(storedSaves))
+		this.#populateSavesUiFromStorage()
+	}
+
+	getCurrentStoredState () {
+		return this.#saves.find((save) => save.autoSave)?.state ?? null
+	}
+
+	applyState (state: State) {
+		this.updateScore(state)
+		saveStateToUrl(state)
+		this.#autoSave(state)
+	}
+
 	updateScore (state: State) {
 		const { hand, scoringCards, scores } = calculateScore(state)
 		log({ hand, scoringCards, scores })
@@ -99,16 +275,16 @@ export class UiState {
 
 		this.scoreCardContainer.innerHTML = ''
 		for (const score of distinctScores.values()) {
-			const template = document.querySelector('template#score-card') as HTMLTemplateElement
+			const template = document.querySelector<HTMLTemplateElement>('template#score-card')!
 			const fragment = template.content.cloneNode(true) as Element
 
-			const luckEl = fragment.querySelector('[data-sc-luck]') as HTMLElement
+			const luckEl = fragment.querySelector<HTMLElement>('[data-sc-luck]')!
 			luckEl.textContent = score.luck
 
-			const formattedScoreEl = fragment.querySelector('[data-sc-formatted-score]') as HTMLElement
+			const formattedScoreEl = fragment.querySelector<HTMLElement>('[data-sc-formatted-score]')!
 			formattedScoreEl.textContent = score.formattedScore
 
-			const scoreEl = fragment.querySelector('[data-sc-score]') as HTMLElement
+			const scoreEl = fragment.querySelector<HTMLElement>('[data-sc-score]')!
 			scoreEl.textContent = new Intl.NumberFormat('en').format(score.score)
 
 			this.scoreCardContainer.appendChild(fragment)
@@ -195,6 +371,8 @@ export class UiState {
 	 * Populates the UI using a `State` object. Tries to retrieve this object from the URL or local storage.
 	 */
 	populateUiWithState (state: State) {
+
+
 		this.handsInput.value = String(state.hands)
 		this.discardsInput.value = String(state.discards)
 		this.moneyInput.value = String(state.money)

@@ -45,3 +45,21 @@ dialog {
 dialog::backdrop {
 	background-color: hsl(0 0% 0% / 0.25);
 }
+
+table {
+	border-collapse: collapse;
+	width: 100%;
+}
+
+th {
+	text-align: left;
+}
+
+th,
+td {
+	padding: 0.25rem 1rem;
+}
+
+tbody tr {
+	border-top: 2px solid var(--c-border);
+}

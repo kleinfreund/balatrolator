@@ -243,3 +243,25 @@ hand-level {
 	font-size: 0.9rem;
 	word-break: break-all;
 }
+
+.table-wrapper {
+	min-inline-size: 48rem;
+	max-height: 15rem;
+	overflow-y: auto
+}
+
+.actions-cell {
+	width: 10rem;
+	text-align: right;
+}
+
+.s-save-container {
+	display: flex;
+	align-items: stretch;
+	flex-wrap: wrap;
+	gap: 0.5rem;
+}
+
+.s-save-name-input {
+	width: 15rem;
+}

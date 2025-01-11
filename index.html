@@ -13,14 +13,64 @@
 <body>
 	<main class="main-content">
 		<div class="stack">
-			<h1>Balatrolator 🃏🧮</h1>
+			<div class="list">
+				<div class="panel">
+					<header class="panel-header">
+						<h1>Balatrolator 🃏🧮</h1>
+					</header>
 
-			<div class="panel">
-				<p>Balatrolator is a score calculator for <a href="https://www.playbalatro.com/">Balatro</a>. Go, buy the game!</p>
+					<p>Balatrolator is a score calculator for <a href="https://www.playbalatro.com/">Balatro</a>. Go, buy the game!</p>
 
-				<p>Please, <a href="https://github.com/kleinfreund/balatrolator/issues/new/choose">report any bugs you encounter</a>. Want to <a href="https://github.com/kleinfreund/balatrolator">contribute</a>?</p>
+					<p>Please, <a href="https://github.com/kleinfreund/balatrolator/issues/new/choose">report any bugs you encounter</a>. Want to <a href="https://github.com/kleinfreund/balatrolator">contribute</a>?</p>
 
-				<p>Made with love by <a href="https://kleinfreund.de">kleinfreund</a>. ❤️</p>
+					<p>Made with love by <a href="https://kleinfreund.de">kleinfreund</a>. ❤️</p>
+				</div>
+
+				<div class="panel">
+					<div class="stack">
+						<header class="panel-header">
+							<h2>Saves</h2>
+						</header>
+
+						<p>The current hand is auto-saved whenever you press “Calculate”.</p>
+
+						<div class="table-wrapper">
+							<table>
+								<thead>
+									<tr>
+										<th>Name</th>
+										<th>Time</th>
+										<th>Actions</th>
+									</tr>
+								</thead>
+
+								<tbody data-s-saves></tbody>
+							</table>
+						</div>
+
+						<form data-s-form>
+							<div class="s-save-container">
+								<label class="s-save-name text-control --flat">
+									<span class="label truncate">Save name</span>
+
+									<input class="s-save-name-input text-input" name="name" type="text" required placeholder="Hand 1" data-s-name-input>
+								</label>
+
+								<button class="s-save-button button" type="submit" data-s-save-button>
+									<svg class="icon" role="img" viewBox="0 0 256 256" width="16" height="16" xmlns="http://www.w3.org/2000/svg">
+										<title>Floppy disk icon</title>
+										<rect width="256" height="256" fill="none" />
+										<path d="M216,83.31V208a8,8,0,0,1-8,8H48a8,8,0,0,1-8-8V48a8,8,0,0,1,8-8H172.69a8,8,0,0,1,5.65,2.34l35.32,35.32A8,8,0,0,1,216,83.31Z" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="16" />
+										<path d="M80,216V152a8,8,0,0,1,8-8h80a8,8,0,0,1,8,8v64" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="16" />
+										<line x1="152" y1="72" x2="96" y2="72" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="16" />
+									</svg>
+
+									<span>Save</span>
+								</button>
+							</div>
+						</form>
+					</div>
+				</div>
 			</div>
 
 			<form class="form" method="POST" enctype="multipart/form-data" data-form>
@@ -225,11 +275,17 @@
 
 				<div class="form__score panel">
 					<div class="stack">
-						<button class="button" type="submit">Submit</button>
+						<header class="panel-header">
+							<h2>Score</h2>
+						</header>
 
-						<p>Hand: <b data-sc-played-hand>—</b></p>
+						<div class="stack">
+							<button class="button" type="submit">Calculate</button>
 
-						<div class="list" data-sc-container></div>
+							<p>Hand: <b data-sc-played-hand>—</b></p>
+
+							<div class="list" data-sc-container></div>
+						</div>
 					</div>
 				</div>
 			</form>
@@ -297,6 +353,32 @@
 			<button class="button" type="button" data-c-duplicate-button>Ok</button>
 		</div>
 	</dialog>
+
+	<template id="save-row">
+		<tr>
+			<td class="name-cell" data-s-name></td>
+			<td class="time-cell" data-s-time></td>
+			<td class="actions-cell">
+				<div class="action-list">
+					<button class="button" type="button" data-s-load-button>Load</button>
+
+					<button class="s-delete-button button --icon" type="button" data-s-delete-button>
+						<span class="visually-hidden">Delete save</span>
+
+						<svg class="icon" role="img" viewBox="0 0 256 256" width="16" height="16" xmlns="http://www.w3.org/2000/svg">
+							<title>Trash icon</title>
+							<rect width="256" height="256" fill="none" />
+							<line x1="216" y1="56" x2="40" y2="56" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="16" />
+							<line x1="104" y1="104" x2="104" y2="168" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="16" />
+							<line x1="152" y1="104" x2="152" y2="168" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="16" />
+							<path d="M200,56V208a8,8,0,0,1-8,8H64a8,8,0,0,1-8-8V56" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="16" />
+							<path d="M168,56V40a16,16,0,0,0-16-16H104A16,16,0,0,0,88,40V56" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="16" />
+						</svg>
+					</button>
+				</div>
+			</td>
+		</tr>
+	</template>
 
 	<template id="hand-level">
 		<p><span data-h-name></span></p>

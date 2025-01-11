@@ -28,41 +28,41 @@ export class JokerCard extends DraggableCard {
 	constructor () {
 		super()
 
-		const template = document.querySelector('template#joker-card') as HTMLTemplateElement
+		const template = document.querySelector<HTMLTemplateElement>('template#joker-card')!
 		this.fragment = template.content.cloneNode(true) as Element
 		const id = uniqueId()
 		this.id = `joker-card-${id}`
 		this.classList.add('card', 'joker-card')
 		this.draggable = true
 
-		this.removeButton = this.fragment.querySelector('[data-remove-button]') as HTMLButtonElement
+		this.removeButton = this.fragment.querySelector<HTMLButtonElement>('[data-remove-button]')!
 		this.removeButton.addEventListener('click', () => this.remove())
 
-		this.showDuplicateModalButton = this.fragment.querySelector('[popovertarget="j-duplicate-modal"]') as HTMLButtonElement
+		this.showDuplicateModalButton = this.fragment.querySelector<HTMLButtonElement>('[popovertarget="j-duplicate-modal"]')!
 		this.showDuplicateModalButton.addEventListener('click', this.showDuplicateModal)
 
-		this.nameSelect = this.fragment.querySelector('[data-j-name]') as HTMLSelectElement
+		this.nameSelect = this.fragment.querySelector<HTMLSelectElement>('[data-j-name]')!
 		this.nameSelect.name = `joker-name-${id}`
 
-		this.editionSelect = this.fragment.querySelector('[data-j-edition]') as HTMLSelectElement
+		this.editionSelect = this.fragment.querySelector<HTMLSelectElement>('[data-j-edition]')!
 		this.editionSelect.name = `joker-edition-${id}`
 
-		this.plusChipsInput = this.fragment.querySelector('[data-j-plus-chips]') as HTMLInputElement
+		this.plusChipsInput = this.fragment.querySelector<HTMLInputElement>('[data-j-plus-chips]')!
 		this.plusChipsInput.name = `joker-plusChips-${id}`
 
-		this.plusMultiplierInput = this.fragment.querySelector('[data-j-plus-multiplier]') as HTMLInputElement
+		this.plusMultiplierInput = this.fragment.querySelector<HTMLInputElement>('[data-j-plus-multiplier]')!
 		this.plusMultiplierInput.name = `joker-plusMultiplier-${id}`
 
-		this.timesMultiplierInput = this.fragment.querySelector('[data-j-times-multiplier]') as HTMLInputElement
+		this.timesMultiplierInput = this.fragment.querySelector<HTMLInputElement>('[data-j-times-multiplier]')!
 		this.timesMultiplierInput.name = `joker-timesMultiplier-${id}`
 
-		this.isActiveCheckbox = this.fragment.querySelector('[data-j-is-active]') as HTMLInputElement
+		this.isActiveCheckbox = this.fragment.querySelector<HTMLInputElement>('[data-j-is-active]')!
 		this.isActiveCheckbox.name = `joker-isActive-${id}`
 
-		this.rankSelect = this.fragment.querySelector('[data-j-rank]') as HTMLSelectElement
+		this.rankSelect = this.fragment.querySelector<HTMLSelectElement>('[data-j-rank]')!
 		this.rankSelect.name = `joker-rank-${id}`
 
-		this.suitSelect = this.fragment.querySelector('[data-j-suit]') as HTMLSelectElement
+		this.suitSelect = this.fragment.querySelector<HTMLSelectElement>('[data-j-suit]')!
 		this.suitSelect.name = `joker-suit-${id}`
 	}
 
