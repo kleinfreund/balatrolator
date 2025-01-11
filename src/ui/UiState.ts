@@ -6,17 +6,8 @@ import { log } from '#utilities/log.js'
 import { calculateScore } from '#lib/balatro.js'
 import type { BlindName, Card, DeckName, HandName, InitialState, Joker, State, ResultScore, PlanetName } from '#lib/types.js'
 import { PLANET_TO_HAND_MAP } from '#/lib/data.js'
-import { deminify, minify } from '#/utilities/minifier.js'
 import { saveStateToUrl, WebStorage } from '#/utilities/Storage.js'
-
-interface Save {
-	name: string
-	time: number
-	state: State
-	autoSave?: boolean
-}
-
-type StoredSave = Omit<Save, 'state'> & { state: string }
+import { SaveManager } from './SaveManager.js'
 
 const dateTimeFormat = new Intl.DateTimeFormat(document.documentElement.lang, {
 	year: 'numeric',
@@ -29,6 +20,8 @@ const dateTimeFormat = new Intl.DateTimeFormat(document.documentElement.lang, {
 })
 
 export class UiState {
+	#saveManager = new SaveManager()
+
 	handsInput: HTMLInputElement
 	discardsInput: HTMLInputElement
 	moneyInput: HTMLInputElement
@@ -51,7 +44,6 @@ export class UiState {
 	scoreCardContainer: HTMLElement
 	playedHandEl: HTMLElement
 
-	#saves: Save[] = []
 	savesContainer: HTMLElement
 	saveRowTemplate: HTMLTemplateElement
 	saveForm: HTMLFormElement
@@ -125,31 +117,10 @@ export class UiState {
 	 * Read saved hands from web storage and populate them in the UI.
 	 */
 	#populateSavesUiFromStorage () {
-		let minifiedSaves: StoredSave[] = []
-
-		// Migrate legacy save storage to new saved hands system.
-		const minifiedLegacyState = WebStorage.get('state')
-		if (minifiedLegacyState) {
-			minifiedSaves = [{
-				name: 'Current hand',
-				time: Date.now(),
-				state: minifiedLegacyState,
-				autoSave: true,
-			}]
-		} else {
-			minifiedSaves = JSON.parse(WebStorage.get('saves') ?? '[]')
-		}
-
-		const saves: Save[] = minifiedSaves.map((save) => ({
-			...save,
-			state: deminify(save.state),
-		}))
-		saves.sort((saveA, saveB) => saveB.time - saveA.time)
-
-		this.#saves = saves
+		this.#saveManager.retrieveStoredSaves()
 
 		this.savesContainer.innerHTML = ''
-		for (const save of saves) {
+		for (const save of this.#saveManager.saves) {
 			const fragment = this.saveRowTemplate.content.cloneNode(true) as Element
 
 			const nameCell = fragment.querySelector<HTMLTableCellElement>('[data-s-name]')!
@@ -173,10 +144,10 @@ export class UiState {
 	#loadSave (event: Event) {
 		const button = event.currentTarget as HTMLButtonElement
 		const name = button.getAttribute('data-save-name')!
-		const save = this.#saves.find((save) => save.name === name)!
 
-		this.populateUiWithState(save.state)
-		this.applyState(save.state)
+		const { state } = this.#saveManager.getSave(name)!
+		this.populateUiWithState(state)
+		this.applyState(state)
 	}
 
 	#handleSaveSubmit (event: SubmitEvent) {
@@ -185,25 +156,9 @@ export class UiState {
 		const state = this.readStateFromUi()
 		const form = event.currentTarget as HTMLFormElement
 		const formData = new FormData(form)
-		const name = formData.get('name') as string ?? `Save ${this.#saves.length - 1}`
+		const name = formData.get('name') as Exclude<FormDataEntryValue, File> | null ?? `Save ${this.#saveManager.saves.length - 1}`
 
-		this.#save(state, name)
-	}
-
-	/**
-	 * Save the current state under a name.
-	 */
-	#save (state: State, name: string) {
-		const existingSaveIndex = this.#saves.findIndex((save) => save.name === name)
-		const index = existingSaveIndex === -1 ? this.#saves.length : existingSaveIndex
-		const existingSave = this.#saves[index]
-		this.#saves[index] = {
-			name,
-			time: Date.now(),
-			state,
-			autoSave: existingSave?.autoSave ?? false,
-		}
-
+		this.#saveManager.save(name, state)
 		this.#storeSaves()
 	}
 
@@ -211,16 +166,7 @@ export class UiState {
 	 * Save the current state as a special auto save overwriting the previous auto save.
 	 */
 	#autoSave (state: State) {
-		const autoSaveIndex = this.#saves.findIndex((save) => save.autoSave)
-		const index = autoSaveIndex === -1 ? this.#saves.length : autoSaveIndex
-		const autoSave = this.#saves[index]
-		this.#saves[index] = {
-			name: autoSave?.name ?? 'Current hand',
-			time: Date.now(),
-			state,
-			autoSave: true,
-		}
-
+		this.#saveManager.autoSave(state)
 		this.#storeSaves()
 	}
 
@@ -230,9 +176,7 @@ export class UiState {
 	#deleteSave (event: Event) {
 		const button = event.currentTarget as HTMLButtonElement
 		const name = button.getAttribute('data-save-name')!
-		const index = this.#saves.findIndex((save) => save.name === name)
-		this.#saves.splice(index, 1)
-
+		this.#saveManager.deleteSave(name)
 		this.#storeSaves()
 	}
 
@@ -240,18 +184,12 @@ export class UiState {
 	 * Stores all saves in web storage and populates saves UI.
 	 */
 	#storeSaves () {
-		this.#saves.sort((saveA, saveB) => saveB.time - saveA.time)
-		const storedSaves: StoredSave[] = this.#saves.map((save) => ({
-			...save,
-			state: minify(save.state),
-		}))
-
-		WebStorage.set('saves', JSON.stringify(storedSaves))
+		this.#saveManager.storeSaves()
 		this.#populateSavesUiFromStorage()
 	}
 
-	getCurrentStoredState () {
-		return this.#saves.find((save) => save.autoSave)?.state ?? null
+	getAutoSaveState () {
+		return this.#saveManager.getAutoSave()?.state ?? null
 	}
 
 	applyState (state: State) {

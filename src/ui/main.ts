@@ -20,7 +20,7 @@ function handleSubmit (event: SubmitEvent) {
 
 function fetchStateAndPopulateUi () {
 	// Read the state from the URL first, then read it from web storage, and finally, fall back to the default/initial state.
-	const state = readStateFromUrl() ?? uiState.getCurrentStoredState() ?? getState({})
+	const state = readStateFromUrl() ?? uiState.getAutoSaveState() ?? getState({})
 	uiState.populateUiWithState(state)
 	uiState.applyState(state)
 }
