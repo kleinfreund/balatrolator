@@ -22,6 +22,8 @@ const dateTimeFormat = new Intl.DateTimeFormat(document.documentElement.lang, {
 export class UiState {
 	#saveManager = new SaveManager()
 
+	#form: HTMLFormElement
+
 	handsInput: HTMLInputElement
 	discardsInput: HTMLInputElement
 	moneyInput: HTMLInputElement
@@ -48,7 +50,11 @@ export class UiState {
 	saveRowTemplate: HTMLTemplateElement
 	saveForm: HTMLFormElement
 
-	constructor (form: HTMLFormElement) {
+	constructor () {
+		const form = document.querySelector<HTMLFormElement>('[data-form]')!
+		this.#form = form
+		form.addEventListener('submit', (event) => this.#handleSubmit(event))
+
 		this.handsInput = form.querySelector<HTMLInputElement>('[data-r-hands]')!
 		this.discardsInput = form.querySelector<HTMLInputElement>('[data-r-discards]')!
 		this.moneyInput = form.querySelector<HTMLInputElement>('[data-r-money]')!
@@ -62,15 +68,15 @@ export class UiState {
 
 		this.jokerContainer = form.querySelector<HTMLElement>('[data-j-container]')!
 		this.addJokerButton = form.querySelector<HTMLButtonElement>('[data-j-add-button]')!
-		this.addJokerButton.addEventListener('click', () => this.addJoker())
+		this.addJokerButton.addEventListener('click', () => this.#addJoker())
 		this.duplicateJokerButton = document.querySelector<HTMLButtonElement>('[data-j-duplicate-button]')!
-		this.duplicateJokerButton.addEventListener('click', this.duplicate)
+		this.duplicateJokerButton.addEventListener('click', (event) => this.#duplicate(event))
 
 		this.playingCardContainer = form.querySelector<HTMLElement>('[data-c-container]')!
 		this.addCardButton = form.querySelector<HTMLButtonElement>('[data-c-add-button]')!
-		this.addCardButton.addEventListener('click', () => this.addCard())
+		this.addCardButton.addEventListener('click', () => this.#addCard())
 		this.duplicateCardButton = document.querySelector<HTMLButtonElement>('[data-c-duplicate-button]')!
-		this.duplicateCardButton.addEventListener('click', this.duplicate)
+		this.duplicateCardButton.addEventListener('click', (event) => this.#duplicate(event))
 
 		this.scoreCardContainer = form.querySelector<HTMLElement>('[data-sc-container]')!
 		this.playedHandEl = form.querySelector<HTMLElement>('[data-sc-played-hand]')!
@@ -98,19 +104,28 @@ export class UiState {
 		}
 
 		// Quick and dirty way to update the state whenever necessary
-		form.addEventListener('change', () => {
-			for (const el of this.playingCardContainer.children) {
-				if (el instanceof PlayingCard) {
-					el.updateState()
-				}
-			}
+		form.addEventListener('change', () => this.calculate())
+	}
 
-			for (const el of this.jokerContainer.children) {
-				if (el instanceof JokerCard) {
-					el.updateState()
-				}
+	#handleSubmit (event: SubmitEvent) {
+		event.preventDefault()
+		const state = this.#readStateFromUi()
+		this.#applyState(state)
+	}
+
+	calculate () {
+		this.#form.requestSubmit()
+		for (const el of this.playingCardContainer.children) {
+			if (el instanceof PlayingCard) {
+				el.updateState()
 			}
-		})
+		}
+
+		for (const el of this.jokerContainer.children) {
+			if (el instanceof JokerCard) {
+				el.updateState()
+			}
+		}
 	}
 
 	/**
@@ -147,13 +162,12 @@ export class UiState {
 
 		const { state } = this.#saveManager.getSave(name)!
 		this.populateUiWithState(state)
-		this.applyState(state)
 	}
 
 	#handleSaveSubmit (event: SubmitEvent) {
 		event.preventDefault()
 
-		const state = this.readStateFromUi()
+		const state = this.#readStateFromUi()
 		const form = event.currentTarget as HTMLFormElement
 		const formData = new FormData(form)
 		const name = formData.get('name') as Exclude<FormDataEntryValue, File> | null ?? `Save ${this.#saveManager.saves.length - 1}`
@@ -192,7 +206,7 @@ export class UiState {
 		return this.#saveManager.getAutoSave()?.state ?? null
 	}
 
-	applyState (state: State) {
+	#applyState (state: State) {
 		this.updateScore(state)
 		saveStateToUrl(state)
 		this.#autoSave(state)
@@ -234,7 +248,7 @@ export class UiState {
 	 *
 	 * Inverse operation of `populateUiWithState`.
 	 */
-	readStateFromUi (): State {
+	#readStateFromUi (): State {
 		const hands = Number(this.handsInput.value)
 		const discards = Number(this.discardsInput.value)
 		const money = Number(this.moneyInput.value)
@@ -309,8 +323,6 @@ export class UiState {
 	 * Populates the UI using a `State` object. Tries to retrieve this object from the URL or local storage.
 	 */
 	populateUiWithState (state: State) {
-
-
 		this.handsInput.value = String(state.hands)
 		this.discardsInput.value = String(state.discards)
 		this.moneyInput.value = String(state.money)
@@ -327,25 +339,27 @@ export class UiState {
 
 		this.handLevelContainer.innerHTML = ''
 		for (const [handName, handLevel] of Object.entries(state.handLevels)) {
-			this.addHandLevel(handName as HandName, handLevel)
+			this.#addHandLevel(handName as HandName, handLevel)
 		}
 
 		this.jokerContainer.innerHTML = ''
 		for (const joker of state.jokers) {
-			this.addJoker(joker)
+			this.#addJoker(joker)
 		}
 
 		this.playingCardContainer.innerHTML = ''
 		for (const card of state.playedCards) {
-			this.addCard(card, true)
+			this.#addCard(card, true)
 		}
 
 		for (const card of state.heldCards) {
-			this.addCard(card, false)
+			this.#addCard(card, false)
 		}
+
+		this.#applyState(state)
 	}
 
-	addJoker (joker?: Joker) {
+	#addJoker (joker?: Joker) {
 		this.jokerContainer.insertAdjacentHTML('beforeend', '<joker-card></joker-card>')
 		const jokerEl = this.jokerContainer.lastElementChild
 		if (jokerEl instanceof JokerCard) {
@@ -357,7 +371,7 @@ export class UiState {
 		}
 	}
 
-	addCard (card?: Card, isPlayed?: boolean) {
+	#addCard (card?: Card, isPlayed?: boolean) {
 		this.playingCardContainer.insertAdjacentHTML('beforeend', '<playing-card></playing-card>')
 		const el = this.playingCardContainer.lastElementChild
 		if (el instanceof PlayingCard) {
@@ -369,7 +383,7 @@ export class UiState {
 		}
 	}
 
-	duplicate (event: Event) {
+	#duplicate (event: Event) {
 		const button = event.currentTarget as HTMLButtonElement
 		const dialog = button.closest('dialog')!
 		const id = dialog.getAttribute('data-duplicate-target-id') ?? ''
@@ -386,9 +400,10 @@ export class UiState {
 		}
 
 		dialog.close()
+		this.calculate()
 	}
 
-	addHandLevel (handName: HandName, handLevel: { level: number, plays: number }) {
+	#addHandLevel (handName: HandName, handLevel: { level: number, plays: number }) {
 		this.handLevelContainer.insertAdjacentHTML('beforeend', '<hand-level></hand-level>')
 		const el = this.handLevelContainer.lastElementChild
 		if (el instanceof HandLevel) {
