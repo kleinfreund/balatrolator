@@ -152,6 +152,10 @@ export class UiState {
 			deleteButton.setAttribute('data-save-name', save.name)
 			deleteButton.addEventListener('click', (event) => this.#deleteSave(event))
 
+			const exportButton = fragment.querySelector<HTMLButtonElement>('[data-s-export-button]')!
+			exportButton.setAttribute('data-save-name', save.name)
+			exportButton.addEventListener('click', (event) => this.#exportSave(event))
+
 			this.savesContainer.appendChild(fragment)
 		}
 	}
@@ -192,6 +196,20 @@ export class UiState {
 		const name = button.getAttribute('data-save-name')!
 		this.#saveManager.deleteSave(name)
 		this.#storeSaves()
+	}
+
+	#exportSave (event: Event) {
+		const button = event.currentTarget as HTMLButtonElement
+		const name = button.getAttribute('data-save-name')!
+		const save = this.#saveManager.getSave(name)!
+
+		const link = document.createElement('a')
+		link.download = `${save.name}.json`
+		const blob = new Blob([JSON.stringify(save.state)], { type: 'application/json' })
+		link.href = window.URL.createObjectURL(blob)
+
+		link.click()
+		link.remove()
 	}
 
 	/**

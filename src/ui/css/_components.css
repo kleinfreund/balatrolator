@@ -256,7 +256,7 @@ hand-level {
 }
 
 .s-save-container {
-	display: flex;
+	display: inline flex;
 	align-items: stretch;
 	flex-wrap: wrap;
 	gap: 0.5rem;
