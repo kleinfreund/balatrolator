@@ -255,7 +255,8 @@ hand-level {
 	text-align: right;
 }
 
-.s-save-container {
+.s-save-container,
+.s-import-container {
 	display: inline flex;
 	align-items: stretch;
 	flex-wrap: wrap;

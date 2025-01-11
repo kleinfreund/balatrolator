@@ -49,6 +49,7 @@ export class UiState {
 	savesContainer: HTMLElement
 	saveRowTemplate: HTMLTemplateElement
 	saveForm: HTMLFormElement
+	importForm: HTMLFormElement
 
 	constructor () {
 		const form = document.querySelector<HTMLFormElement>('[data-form]')!
@@ -85,6 +86,8 @@ export class UiState {
 		this.saveRowTemplate = document.querySelector<HTMLTemplateElement>('template#save-row')!
 		this.saveForm = document.querySelector<HTMLFormElement>('[data-s-form]')!
 		this.saveForm.addEventListener('submit', (event) => this.#handleSaveSubmit(event))
+		this.importForm = document.querySelector<HTMLFormElement>('[data-s-import-form]')!
+		this.importForm.addEventListener('submit', (event) => this.#handleImportSubmit(event))
 		this.#populateSavesUiFromStorage()
 
 		// Calling the save store method here for users that weren't migrated to the new saved hands system, yet. It'll store the new saves format.
@@ -222,6 +225,24 @@ export class UiState {
 
 	getAutoSaveState () {
 		return this.#saveManager.getAutoSave()?.state ?? null
+	}
+
+	#handleImportSubmit (event: SubmitEvent) {
+		event.preventDefault()
+
+		const form = event.currentTarget as HTMLFormElement
+		const formData = new FormData(form)
+		const file = formData.get('import') as File
+		const fileReader = new FileReader()
+		fileReader.addEventListener('load', () => {
+			if (typeof fileReader.result === 'string') {
+				const name = file.name.replace('.json', '')
+				const state = JSON.parse(fileReader.result) as State
+				this.#saveManager.save(name, state)
+				this.#storeSaves()
+			}
+		})
+		fileReader.readAsText(file)
 	}
 
 	#applyState (state: State) {

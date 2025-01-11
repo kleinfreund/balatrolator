@@ -29,7 +29,8 @@
 
 /* BUTTON */
 
-.button {
+.button,
+::file-selector-button {
 	height: 24px;
 	margin: 0;
 	padding: 0 1rem;
@@ -42,7 +43,8 @@
 	background-color: var(--c-background-lighter, var(--c-background));
 }
 
-.button:hover {
+.button:hover,
+::file-selector-button:hover {
 	background-color: var(--c-background-light, var(--c-background));
 }
 
@@ -52,8 +54,13 @@
 	justify-content: center;
 }
 
-.button:not(:disabled) {
+.button:not(:disabled),
+::file-selector-button:not(:disabled) {
 	cursor: pointer;
+}
+
+::file-selector-button {
+	margin-inline-end: 0.5rem;
 }
 
 /* TEXT CONTROL */
