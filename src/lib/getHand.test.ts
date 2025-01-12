@@ -4,7 +4,7 @@ import { getCards } from '#utilities/getState.js'
 import { GetHandOptions, getHand } from './getHand.js'
 import type { HandName, InitialCard } from '#lib/types.js'
 
-type TestCase = {
+interface TestCase {
 	message: string
 	initialCards: InitialCard[]
 	options?: GetHandOptions

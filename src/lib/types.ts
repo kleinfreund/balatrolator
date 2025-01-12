@@ -106,7 +106,7 @@ export interface Joker {
 	toString: () => string
 }
 
-export type HandLevel = { level: number, plays: number }
+export interface HandLevel { level: number, plays: number }
 export type InitialHandLevels = Partial<HandLevels>
 export type HandLevels = Record<HandName, HandLevel>
 export type HandScore = Record<HandName, Score>
@@ -116,7 +116,7 @@ export interface Blind {
 	active: boolean
 }
 
-export type InitialState = {
+export interface InitialState {
 	hands?: number
 	discards?: number
 	money?: number

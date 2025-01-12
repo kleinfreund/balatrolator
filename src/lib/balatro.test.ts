@@ -38,7 +38,7 @@ import case032 from './test-files/032.js'
 import case033 from './test-files/033.js'
 import case034 from './test-files/034.js'
 
-export type TestCase = {
+export interface TestCase {
 	message: string
 	initialState: InitialState
 	expected: Omit<ReturnType<typeof calculateScore>, 'scoringCards'> & {

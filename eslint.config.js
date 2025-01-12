@@ -25,8 +25,6 @@ export default tseslint.config(
 			'@typescript-eslint/class-literal-property-style': 'off',
 			// Don't care.
 			'@typescript-eslint/no-non-null-assertion': 'off',
-			// Intereferes with assigning Color* object types to `Record<string, unknown>`.
-			'@typescript-eslint/consistent-type-definitions': 'off',
 
 			'@stylistic/comma-dangle': ['error', 'always-multiline'],
 			'@stylistic/indent': ['error', 'tab'],
