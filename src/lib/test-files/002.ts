@@ -4,11 +4,11 @@ export default (message: string): TestCase => {
 	return {
 		message,
 		initialState: {
-			playedCards: [
-				{ rank: 'Ace', suit: 'Clubs' },
-				{ rank: 'Ace', suit: 'Diamonds' },
-				{ rank: '4', suit: 'Spades' },
-				{ rank: '4', suit: 'Hearts', edition: 'holographic' },
+			cards: [
+				{ played: true, rank: 'Ace', suit: 'Clubs' },
+				{ played: true, rank: 'Ace', suit: 'Diamonds' },
+				{ played: true, rank: '4', suit: 'Spades' },
+				{ played: true, rank: '4', suit: 'Hearts', edition: 'holographic' },
 			],
 		},
 		expected: {

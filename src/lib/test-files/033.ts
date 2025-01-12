@@ -4,12 +4,12 @@ export default (message: string): TestCase => {
 	return {
 		message,
 		initialState: {
-			playedCards: [
-				{ rank: 'Jack', suit: 'Hearts', edition: 'holographic', enhancement: 'lucky', seal: 'red' },
-				{ rank: 'Jack', suit: 'Hearts', edition: 'holographic', enhancement: 'lucky', seal: 'red' },
-				{ rank: 'Jack', suit: 'Hearts', edition: 'holographic', enhancement: 'lucky', seal: 'red' },
-				{ rank: 'Jack', suit: 'Hearts', edition: 'holographic', enhancement: 'lucky', seal: 'red' },
-				{ rank: 'Jack', suit: 'Hearts', edition: 'holographic', enhancement: 'lucky', seal: 'red' },
+			cards: [
+				{ played: true, rank: 'Jack', suit: 'Hearts', edition: 'holographic', enhancement: 'lucky', seal: 'red' },
+				{ played: true, rank: 'Jack', suit: 'Hearts', edition: 'holographic', enhancement: 'lucky', seal: 'red' },
+				{ played: true, rank: 'Jack', suit: 'Hearts', edition: 'holographic', enhancement: 'lucky', seal: 'red' },
+				{ played: true, rank: 'Jack', suit: 'Hearts', edition: 'holographic', enhancement: 'lucky', seal: 'red' },
+				{ played: true, rank: 'Jack', suit: 'Hearts', edition: 'holographic', enhancement: 'lucky', seal: 'red' },
 			],
 			jokers: [
 				{ name: 'Sock and Buskin' },

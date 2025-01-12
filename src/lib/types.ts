@@ -31,13 +31,13 @@ export interface InitialCard {
 	edition?: Edition
 	seal?: Seal
 	enhancement?: Enhancement
-	isDebuffed?: boolean
+	debuffed?: boolean
+	played?: boolean
 }
 
 export interface Card extends Required<InitialCard> {
 	toString(): string
 	index: number
-	isDebuffed: boolean
 }
 
 export interface EffectOptions {
@@ -71,7 +71,7 @@ export interface InitialJoker {
 	timesMultiplier?: number
 	rank?: Rank
 	suit?: Suit
-	isActive?: boolean
+	active?: boolean
 }
 
 export interface JokerDefinition {
@@ -96,7 +96,7 @@ export interface Joker {
 	timesMultiplier: number
 	rank?: Rank
 	suit?: Suit
-	isActive: boolean
+	active: boolean
 	rarity: 'common' | 'uncommon' | 'rare' | 'legendary'
 	effect?: JokerEffect
 	indirectEffect?: JokerIndirectEffect
@@ -113,7 +113,7 @@ export type HandScore = Record<HandName, Score>
 
 export interface Blind {
 	name: BlindName
-	isActive: boolean
+	active: boolean
 }
 
 export type InitialState = {
@@ -126,8 +126,7 @@ export type InitialState = {
 	observatoryHands?: HandName[]
 	jokers?: InitialJoker[]
 	jokerSlots?: number
-	playedCards?: InitialCard[]
-	heldCards?: InitialCard[]
+	cards?: InitialCard[]
 }
 
 export interface State {
@@ -142,8 +141,7 @@ export interface State {
 	jokers: Joker[]
 	jokerSet: Set<JokerName>
 	jokerSlots: number
-	playedCards: Card[]
-	heldCards: Card[]
+	cards: Card[]
 	playedHand: HandName
 	scoringCards: Card[]
 }

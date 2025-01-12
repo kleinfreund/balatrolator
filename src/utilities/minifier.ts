@@ -40,29 +40,26 @@ export function minify (state: State): string {
 		jokerSlots,
 		handLevels,
 		jokers,
-		playedCards,
-		heldCards,
+		cards,
 	} = state
 
 	const observatoryHandCodes = observatoryHands.map((hand) => toObservatoryHandCode(hand))
 	const handLevelCodes = Object.values(handLevels).map((handLevel) => toHandLevelCode(handLevel))
 	const jokerCodes = jokers.map((joker) => toJokerCode(joker))
-	const playedCardCodes = playedCards.map((playedCard) => toCardCode(playedCard))
-	const heldCardCodes = heldCards.map((heldCard) => toCardCode(heldCard))
+	const cardCodes = cards.map((card) => toCardCode(card))
 
 	return [
 		hands !== 0 ? hands : MINIFIED_DEFAULT_VALUE,
 		discards !== 0 ? discards : MINIFIED_DEFAULT_VALUE,
 		money !== 0 ? money : MINIFIED_DEFAULT_VALUE,
 		blind.name !== 'Small Blind' ? BLIND_INDEXES[blind.name] : MINIFIED_DEFAULT_VALUE,
-		blind.isActive ? '1' : MINIFIED_DEFAULT_VALUE,
+		blind.active ? '1' : MINIFIED_DEFAULT_VALUE,
 		deck !== 'Red Deck' ? DECK_INDEXES[deck] : MINIFIED_DEFAULT_VALUE,
 		jokerSlots !== 0 ? jokerSlots : MINIFIED_DEFAULT_VALUE,
 		observatoryHandCodes.join(';'),
 		handLevelCodes.join(';'),
 		jokerCodes.join(';'),
-		playedCardCodes.join(';'),
-		heldCardCodes.join(';'),
+		cardCodes.join(';'),
 	].join('|')
 }
 
@@ -81,8 +78,7 @@ export function deminify (str: string): State {
 		observatoryHandCodes,
 		handLevelCodes,
 		jokerCodes,
-		playedCardCodes,
-		heldCardCodes,
+		cardCodes,
 	] = str.split('|')
 
 	const observatoryHands = !observatoryHandCodes ? [] : observatoryHandCodes.split(';')
@@ -92,9 +88,7 @@ export function deminify (str: string): State {
 		.map((handLevel, index) => [HANDS[index], handLevel]))
 	const jokers = !jokerCodes ? [] : jokerCodes.split(';')
 		.map((code) => fromJokerCode(code))
-	const playedCards = !playedCardCodes ? [] : playedCardCodes.split(';')
-		.map((code) => fromCardCode(code))
-	const heldCards = !heldCardCodes ? [] : heldCardCodes.split(';')
+	const cards = !cardCodes ? [] : cardCodes.split(';')
 		.map((code) => fromCardCode(code))
 
 	return getState({
@@ -103,15 +97,14 @@ export function deminify (str: string): State {
 		money: money !== MINIFIED_DEFAULT_VALUE ? Number(money) : 0,
 		blind: {
 			name: BLINDS[Number(blindNameIndex || '0')],
-			isActive: blindIsActive === '1',
+			active: blindIsActive === '1',
 		},
 		deck: DECKS[Number(deckIndex || '0')],
 		observatoryHands,
 		jokerSlots: jokerSlots !== MINIFIED_DEFAULT_VALUE ? Number(jokerSlots) : 0,
 		handLevels,
 		jokers,
-		playedCards,
-		heldCards,
+		cards,
 	})
 }
 
@@ -151,7 +144,7 @@ function toJokerCode (joker: Joker): string {
 		timesMultiplier,
 		rank,
 		suit,
-		isActive,
+		active,
 	} = joker
 
 	return [
@@ -162,7 +155,7 @@ function toJokerCode (joker: Joker): string {
 		timesMultiplier !== 1 ? timesMultiplier : MINIFIED_DEFAULT_VALUE,
 		rank ? RANK_INDEXES[rank] : MINIFIED_DEFAULT_VALUE,
 		suit ? SUIT_INDEXES[suit] : MINIFIED_DEFAULT_VALUE,
-		isActive ? 1 : MINIFIED_DEFAULT_VALUE,
+		active ? 1 : MINIFIED_DEFAULT_VALUE,
 	].join(',')
 }
 
@@ -175,7 +168,7 @@ function fromJokerCode (code: string): InitialJoker {
 		timesMultiplier,
 		rankIndex,
 		suitIndex,
-		isActive,
+		active,
 	] = code.split(',')
 
 	return {
@@ -186,7 +179,7 @@ function fromJokerCode (code: string): InitialJoker {
 		timesMultiplier: Number(timesMultiplier || '1'),
 		rank: rankIndex !== '' ? RANKS[Number(rankIndex)] as Rank : undefined,
 		suit: suitIndex !== '' ? SUITS[Number(suitIndex)] as Suit : undefined,
-		isActive: isActive === '1',
+		active: active === '1',
 	}
 }
 
@@ -197,7 +190,8 @@ function toCardCode (card: Card): string {
 		edition,
 		enhancement,
 		seal,
-		isDebuffed,
+		debuffed,
+		played,
 	} = card
 
 	return [
@@ -206,7 +200,8 @@ function toCardCode (card: Card): string {
 		edition !== 'base' ? EDITION_INDEXES[edition] : MINIFIED_DEFAULT_VALUE,
 		enhancement !== 'none' ? ENHANCEMENT_INDEXES[enhancement] : MINIFIED_DEFAULT_VALUE,
 		seal !== 'none' ? SEAL_INDEXES[seal] : MINIFIED_DEFAULT_VALUE,
-		isDebuffed ? 1 : MINIFIED_DEFAULT_VALUE,
+		debuffed ? 1 : MINIFIED_DEFAULT_VALUE,
+		played ? 1 : MINIFIED_DEFAULT_VALUE,
 	].join(',')
 }
 
@@ -217,7 +212,8 @@ function fromCardCode (code: string): InitialCard {
 		editionIndex,
 		enhancementIndex,
 		sealIndex,
-		isDebuffed,
+		debuffed,
+		played,
 	] = code.split(',')
 
 	return {
@@ -226,6 +222,7 @@ function fromCardCode (code: string): InitialCard {
 		edition: EDITIONS[Number(editionIndex || '0')] as Edition,
 		enhancement: ENHANCEMENTS[Number(enhancementIndex || '0')] as Enhancement,
 		seal: SEALS[Number(sealIndex || '0')] as Seal,
-		isDebuffed: isDebuffed === '1',
+		debuffed: debuffed === '1',
+		played: played === '1',
 	}
 }

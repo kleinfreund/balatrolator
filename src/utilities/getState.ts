@@ -14,8 +14,7 @@ export function getState (initialState: InitialState): State {
 		handLevels: initialHandLevels = {},
 		jokers: initialJokers = [],
 		jokerSlots = 5,
-		playedCards: initialPlayedCards = [],
-		heldCards: initialHeldCards = [],
+		cards: initialCards = [],
 	} = initialState
 
 	const handLevels = getHandLevels(initialHandLevels)
@@ -23,24 +22,21 @@ export function getState (initialState: InitialState): State {
 	const jokers = getJokers(initialJokers)
 	const jokerSet = new Set(jokers.map(({ name }) => name))
 
-	const blindIsActive = jokerSet.has('Chicot') ? false : (initialBlind?.isActive ?? true)
+	const blindIsActive = jokerSet.has('Chicot') ? false : (initialBlind?.active ?? true)
 	const blind = {
 		name: initialBlind?.name ?? 'Small Blind',
-		isActive: blindIsActive,
+		active: blindIsActive,
 	}
 
-	const playedCards = getCards(initialPlayedCards).map((card) => ({
+	const cards = getCards(initialCards).map((card) => ({
 		...card,
-		isDebuffed: card.isDebuffed ? true : isDebuffed(card, blind, jokerSet.has('Pareidolia')),
-	}))
-	const heldCards = getCards(initialHeldCards).map((card) => ({
-		...card,
-		isDebuffed: card.isDebuffed ? true : isDebuffed(card, blind, jokerSet.has('Pareidolia')),
+		debuffed: card.debuffed ? true : isDebuffed(card, blind, jokerSet.has('Pareidolia')),
 	}))
 
 	const hasFourFingers = jokerSet.has('Four Fingers')
 	const hasShortcut = jokerSet.has('Shortcut')
 	const hasSmearedJoker = jokerSet.has('Smeared Joker')
+	const playedCards = cards.filter((card) => card.played)
 	const { playedHand, scoringCards: preliminaryScoringCards } = getHand(playedCards, { hasFourFingers, hasShortcut, hasSmearedJoker })
 
 	const scoringCards = jokerSet.has('Splash') ? playedCards : preliminaryScoringCards
@@ -57,8 +53,7 @@ export function getState (initialState: InitialState): State {
 		jokers,
 		jokerSet,
 		jokerSlots,
-		playedCards,
-		heldCards,
+		cards,
 		playedHand,
 		scoringCards,
 	}
@@ -97,7 +92,7 @@ function getJokers (initialJokers: InitialJoker[]): Joker[] {
 			timesMultiplier = 1,
 			rank,
 			suit,
-			isActive = false,
+			active = false,
 		} = initialJoker
 
 		const {
@@ -118,7 +113,7 @@ function getJokers (initialJokers: InitialJoker[]): Joker[] {
 			timesMultiplier,
 			rank,
 			suit,
-			isActive,
+			active,
 			rarity,
 			effect,
 			indirectEffect,
@@ -138,7 +133,8 @@ export function getCards (cards: InitialCard[]): Card[] {
 			edition = 'base',
 			enhancement = 'none',
 			seal = 'none',
-			isDebuffed = false,
+			debuffed = false,
+			played = false,
 		} = card
 
 		const modifiers = [edition, enhancement, seal].filter((modifier) => modifier !== undefined)
@@ -150,7 +146,8 @@ export function getCards (cards: InitialCard[]): Card[] {
 			edition,
 			enhancement,
 			seal,
-			isDebuffed,
+			debuffed,
+			played,
 			index,
 			toString,
 		}

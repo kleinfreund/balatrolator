@@ -15,8 +15,8 @@ export class PlayingCard extends DraggableCard {
 	fragment: Element
 	showDuplicateModalButton: HTMLButtonElement
 	removeButton: HTMLButtonElement
-	isPlayedCheckbox: HTMLInputElement
-	isDebuffedCheckbox: HTMLInputElement
+	playedCheckbox: HTMLInputElement
+	debuffedCheckbox: HTMLInputElement
 	rankSelect: HTMLSelectElement
 	suitSelect: HTMLSelectElement
 	editionSelect: HTMLSelectElement
@@ -39,11 +39,11 @@ export class PlayingCard extends DraggableCard {
 		this.showDuplicateModalButton = this.fragment.querySelector<HTMLButtonElement>('[popovertarget="c-duplicate-modal"]')!
 		this.showDuplicateModalButton.addEventListener('click', this.showDuplicateModal)
 
-		this.isPlayedCheckbox = this.fragment.querySelector<HTMLInputElement>('[data-c-is-played]')!
-		this.isPlayedCheckbox.name = `card-is-played-${id}`
+		this.playedCheckbox = this.fragment.querySelector<HTMLInputElement>('[data-c-is-played]')!
+		this.playedCheckbox.name = `card-is-played-${id}`
 
-		this.isDebuffedCheckbox = this.fragment.querySelector<HTMLInputElement>('[data-c-is-debuffed]')!
-		this.isDebuffedCheckbox.name = `card-is-debuffed-${id}`
+		this.debuffedCheckbox = this.fragment.querySelector<HTMLInputElement>('[data-c-is-debuffed]')!
+		this.debuffedCheckbox.name = `card-is-debuffed-${id}`
 
 		this.rankSelect = this.fragment.querySelector<HTMLSelectElement>('[data-c-rank]')!
 		this.rankSelect.name = `card-rank-${id}`
@@ -62,7 +62,7 @@ export class PlayingCard extends DraggableCard {
 
 		this.addEventListener('click', (event) => {
 			if (event.currentTarget && !isInteractive(event)) {
-				this.isPlayedCheckbox.click()
+				this.playedCheckbox.click()
 			}
 		}, { capture: true })
 	}
@@ -91,12 +91,12 @@ export class PlayingCard extends DraggableCard {
 		return this.sealSelect.value as Seal
 	}
 
-	get isPlayed () {
-		return this.isPlayedCheckbox.checked
+	get played () {
+		return this.playedCheckbox.checked
 	}
 
-	get isDebuffed () {
-		return this.isDebuffedCheckbox.checked
+	get debuffed () {
+		return this.debuffedCheckbox.checked
 	}
 
 	connectedCallback () {
@@ -118,7 +118,7 @@ export class PlayingCard extends DraggableCard {
 		this.hasRendered = true
 	}
 
-	setCard (card: Card, isPlayed?: boolean) {
+	setCard (card: Card) {
 		this.#card = card
 
 		const {
@@ -127,11 +127,12 @@ export class PlayingCard extends DraggableCard {
 			edition,
 			enhancement,
 			seal,
-			isDebuffed,
+			debuffed,
+			played,
 		} = card
 
-		this.isPlayedCheckbox.checked = Boolean(isPlayed)
-		this.isDebuffedCheckbox.checked = isDebuffed
+		this.playedCheckbox.checked = Boolean(played)
+		this.debuffedCheckbox.checked = debuffed
 		this.rankSelect.value = rank
 		this.suitSelect.value = suit
 		this.editionSelect.value = edition
@@ -151,8 +152,8 @@ export class PlayingCard extends DraggableCard {
 		const blindIsActiveCheckbox = this.ownerDocument.querySelector('[data-r-blind-is-active]') as HTMLInputElement
 
 		;[
-			this.isPlayedCheckbox.checked ? '--is-played' : null,
-			this.isDebuffedCheckbox.checked ? '--is-debuffed' : null,
+			this.playedCheckbox.checked ? '--is-played' : null,
+			this.debuffedCheckbox.checked ? '--is-debuffed' : null,
 			blindNameSelect.value === 'The Pillar' && blindIsActiveCheckbox.checked ? '--is-blind-the-pillar' : undefined,
 		].filter(notNullish).forEach((className) => this.classList.add(className))
 	}
@@ -174,8 +175,8 @@ export class PlayingCard extends DraggableCard {
 		const clone = this.cloneNode(true) as PlayingCard
 		clone.setCard(this.#card)
 
-		clone.isPlayedCheckbox.checked = this.isPlayedCheckbox.checked
-		clone.isDebuffedCheckbox.checked = this.isDebuffedCheckbox.checked
+		clone.playedCheckbox.checked = this.playedCheckbox.checked
+		clone.debuffedCheckbox.checked = this.debuffedCheckbox.checked
 		clone.rankSelect.value = this.rankSelect.value
 		clone.suitSelect.value = this.suitSelect.value
 		clone.editionSelect.value = this.editionSelect.value

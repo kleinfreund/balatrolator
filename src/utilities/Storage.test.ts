@@ -12,19 +12,17 @@ describe('Storage', () => {
 	test.each<[InitialState, string]>([
 		[
 			{},
-			'D44RhBWEBoG56IcpqGiA',
+			'D44RhBWEBoG56IcpqEiA',
 		],
 		[
 			{
 				blind: { name: 'Big Blind' },
-				playedCards: [
-					{ rank: 'Ace', suit: 'Diamonds', seal: 'red' },
-					{ rank: 'Ace', suit: 'Diamonds', enhancement: 'glass', seal: 'red' },
-					{ rank: 'Ace', suit: 'Diamonds', enhancement: 'glass', seal: 'red' },
-					{ rank: 'Ace', suit: 'Diamonds', enhancement: 'glass', seal: 'red' },
-					{ rank: 'Ace', suit: 'Diamonds', enhancement: 'glass', seal: 'red' },
-				],
-				heldCards: [
+				cards: [
+					{ played: true, rank: 'Ace', suit: 'Diamonds', seal: 'red' },
+					{ played: true, rank: 'Ace', suit: 'Diamonds', enhancement: 'glass', seal: 'red' },
+					{ played: true, rank: 'Ace', suit: 'Diamonds', enhancement: 'glass', seal: 'red' },
+					{ played: true, rank: 'Ace', suit: 'Diamonds', enhancement: 'glass', seal: 'red' },
+					{ played: true, rank: 'Ace', suit: 'Diamonds', enhancement: 'glass', seal: 'red' },
 					{ rank: 'Ace', suit: 'Diamonds', enhancement: 'mult' },
 					{ rank: 'Ace', suit: 'Diamonds', enhancement: 'steel', seal: 'red' },
 					{ rank: 'Ace', suit: 'Diamonds', enhancement: 'steel', seal: 'red' },
@@ -45,7 +43,7 @@ describe('Storage', () => {
 					},
 				},
 			},
-			'D4iM3YFY1AaA3I5TUvU6AGOu+NACZD88EiA2UnAZkQoE58iA6QqM0Gk0g0JvFBYdcwWnhIJxcACxxJ0uQrh1Z8xIvViVuHlJ1wOy1UY0H1QA',
+			'D4iM3YFY1AaA3I5TUvU6AGOu+NACZD88EiA2UnAZkQoE58iA6QqM0Gk0g0JvFBYdcwWnh6gE4uABY4k6XDpyFuKTPmLNauBuW4eiGRx5KVp3OYm4gA',
 		],
 	])('works', (initialState, expectedString) => {
 		// eslint-disable-next-line @typescript-eslint/no-empty-function

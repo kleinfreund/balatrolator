@@ -5,14 +5,12 @@ export default (message: string): TestCase => {
 		message,
 		initialState: {
 			blind: { name: 'Big Blind' },
-			playedCards: [
-				{ rank: 'Ace', suit: 'Diamonds', seal: 'red' },
-				{ rank: 'Ace', suit: 'Diamonds', enhancement: 'glass', seal: 'red' },
-				{ rank: 'Ace', suit: 'Diamonds', enhancement: 'glass', seal: 'red' },
-				{ rank: 'Ace', suit: 'Diamonds', enhancement: 'glass', seal: 'red' },
-				{ rank: 'Ace', suit: 'Diamonds', enhancement: 'glass', seal: 'red' },
-			],
-			heldCards: [
+			cards: [
+				{ played: true, rank: 'Ace', suit: 'Diamonds', seal: 'red' },
+				{ played: true, rank: 'Ace', suit: 'Diamonds', enhancement: 'glass', seal: 'red' },
+				{ played: true, rank: 'Ace', suit: 'Diamonds', enhancement: 'glass', seal: 'red' },
+				{ played: true, rank: 'Ace', suit: 'Diamonds', enhancement: 'glass', seal: 'red' },
+				{ played: true, rank: 'Ace', suit: 'Diamonds', enhancement: 'glass', seal: 'red' },
 				{ rank: 'Ace', suit: 'Diamonds', enhancement: 'mult' },
 				{ rank: 'Ace', suit: 'Diamonds', enhancement: 'steel', seal: 'red' },
 				{ rank: 'Ace', suit: 'Diamonds', enhancement: 'steel', seal: 'red' },

@@ -3,7 +3,7 @@ import { isFaceCard } from './isFaceCard.js'
 import { isSuit } from './isSuit.js'
 
 export function isDebuffed (card: Card, blind: Blind, hasPareidolia: boolean) {
-	if (blind.isActive) {
+	if (blind.active) {
 		if (
 			(blind.name === 'Verdant Leaf') ||
 			(blind.name === 'The Club' && isSuit(card, 'Clubs')) ||

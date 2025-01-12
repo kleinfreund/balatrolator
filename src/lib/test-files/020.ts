@@ -5,12 +5,12 @@ export default (message: string): TestCase => {
 		message,
 		initialState: {
 			blind: { name: 'The Head' },
-			playedCards: [
-				{ rank: '8', suit: 'Spades' },
-				{ rank: '7', suit: 'Spades' },
-				{ rank: '7', suit: 'Hearts' },
-				{ rank: '5', suit: 'Spades' },
-				{ rank: '2', suit: 'Spades' },
+			cards: [
+				{ played: true, rank: '8', suit: 'Spades' },
+				{ played: true, rank: '7', suit: 'Spades' },
+				{ played: true, rank: '7', suit: 'Hearts' },
+				{ played: true, rank: '5', suit: 'Spades' },
+				{ played: true, rank: '2', suit: 'Spades' },
 			],
 			jokers: [
 				{ name: 'Blueprint' },
@@ -23,7 +23,7 @@ export default (message: string): TestCase => {
 			hand: 'Pair',
 			scoringCards: [
 				{ rank: '7', suit: 'Spades' },
-				{ rank: '7', suit: 'Hearts', isDebuffed: true },
+				{ rank: '7', suit: 'Hearts', debuffed: true },
 			],
 			scores: [
 				{ score: 434, formattedScore: '434', luck: 'none' },

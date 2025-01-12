@@ -4,10 +4,8 @@ export default (message: string): TestCase => {
 	return {
 		message,
 		initialState: {
-			playedCards: [
-				{ rank: '7', suit: 'Hearts', enhancement: 'bonus' },
-			],
-			heldCards: [
+			cards: [
+				{ played: true, rank: '7', suit: 'Hearts', enhancement: 'bonus' },
 				{ rank: '3', suit: 'Spades', enhancement: 'steel' },
 			],
 			jokers: [

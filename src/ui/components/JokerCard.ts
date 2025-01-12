@@ -21,7 +21,7 @@ export class JokerCard extends DraggableCard {
 	plusChipsInput: HTMLInputElement
 	plusMultiplierInput: HTMLInputElement
 	timesMultiplierInput: HTMLInputElement
-	isActiveCheckbox: HTMLInputElement
+	activeCheckbox: HTMLInputElement
 	rankSelect: HTMLSelectElement
 	suitSelect: HTMLSelectElement
 
@@ -56,8 +56,8 @@ export class JokerCard extends DraggableCard {
 		this.timesMultiplierInput = this.fragment.querySelector<HTMLInputElement>('[data-j-times-multiplier]')!
 		this.timesMultiplierInput.name = `joker-timesMultiplier-${id}`
 
-		this.isActiveCheckbox = this.fragment.querySelector<HTMLInputElement>('[data-j-is-active]')!
-		this.isActiveCheckbox.name = `joker-isActive-${id}`
+		this.activeCheckbox = this.fragment.querySelector<HTMLInputElement>('[data-j-is-active]')!
+		this.activeCheckbox.name = `joker-active-${id}`
 
 		this.rankSelect = this.fragment.querySelector<HTMLSelectElement>('[data-j-rank]')!
 		this.rankSelect.name = `joker-rank-${id}`
@@ -102,8 +102,8 @@ export class JokerCard extends DraggableCard {
 		return this.#definition.hasSuitInput ? this.suitSelect.value as Suit : undefined
 	}
 
-	get isActive () {
-		return this.isActiveCheckbox.checked
+	get active () {
+		return this.activeCheckbox.checked
 	}
 
 	connectedCallback () {
@@ -134,7 +134,7 @@ export class JokerCard extends DraggableCard {
 			plusChips,
 			plusMultiplier,
 			timesMultiplier,
-			isActive,
+			active,
 			rank,
 			suit,
 		} = joker
@@ -144,7 +144,7 @@ export class JokerCard extends DraggableCard {
 		if (this.#definition.hasPlusChipsInput) this.plusChipsInput.value = String(plusChips)
 		if (this.#definition.hasPlusMultiplierInput) this.plusMultiplierInput.value = String(plusMultiplier)
 		if (this.#definition.hasTimesMultiplierInput) this.timesMultiplierInput.value = String(timesMultiplier)
-		if (this.#definition.hasIsActiveInput) this.isActiveCheckbox.checked = Boolean(isActive)
+		if (this.#definition.hasIsActiveInput) this.activeCheckbox.checked = Boolean(active)
 		if (this.#definition.hasRankInput && rank) this.rankSelect.value = String(rank)
 		if (this.#definition.hasSuitInput && suit) this.suitSelect.value = String(suit)
 	}
@@ -191,7 +191,7 @@ export class JokerCard extends DraggableCard {
 		clone.plusChipsInput.value = this.plusChipsInput.value
 		clone.plusMultiplierInput.value = this.plusMultiplierInput.value
 		clone.timesMultiplierInput.value = this.timesMultiplierInput.value
-		clone.isActiveCheckbox.checked = this.isActiveCheckbox.checked
+		clone.activeCheckbox.checked = this.activeCheckbox.checked
 		clone.rankSelect.value = this.rankSelect.value
 		clone.suitSelect.value = this.suitSelect.value
 

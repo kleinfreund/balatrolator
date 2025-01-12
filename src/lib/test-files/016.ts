@@ -5,14 +5,12 @@ export default (message: string): TestCase => {
 		message,
 		initialState: {
 			blind: { name: 'The Flint' },
-			playedCards: [
-				{ rank: 'King', suit: 'Diamonds', enhancement: 'gold' },
-				{ rank: 'King', suit: 'Diamonds', enhancement: 'gold' },
-				{ rank: 'Queen', suit: 'Diamonds', enhancement: 'gold' },
-				{ rank: 'Queen', suit: 'Diamonds', enhancement: 'glass' },
-				{ rank: 'Queen', suit: 'Diamonds', enhancement: 'glass', seal: 'red' },
-			],
-			heldCards: [
+			cards: [
+				{ played: true, rank: 'King', suit: 'Diamonds', enhancement: 'gold' },
+				{ played: true, rank: 'King', suit: 'Diamonds', enhancement: 'gold' },
+				{ played: true, rank: 'Queen', suit: 'Diamonds', enhancement: 'gold' },
+				{ played: true, rank: 'Queen', suit: 'Diamonds', enhancement: 'glass' },
+				{ played: true, rank: 'Queen', suit: 'Diamonds', enhancement: 'glass', seal: 'red' },
 				{ rank: 'King', suit: 'Diamonds', enhancement: 'gold' },
 			],
 			jokers: [

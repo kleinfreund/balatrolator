@@ -307,15 +307,14 @@ export class UiState {
 			money,
 			blind: {
 				name: blindName,
-				isActive: blindIsActive,
+				active: blindIsActive,
 			},
 			deck,
 			observatoryHands,
 			handLevels: {},
 			jokers: [],
 			jokerSlots,
-			playedCards: [],
-			heldCards: [],
+			cards: [],
 		}
 
 		for (const handLevel of this.#handLevelContainer.children) {
@@ -338,20 +337,21 @@ export class UiState {
 				timesMultiplier: jokerCard.timesMultiplier,
 				rank: jokerCard.rank,
 				suit: jokerCard.suit,
-				isActive: jokerCard.isActive,
+				active: jokerCard.active,
 			})
 		}
 
 		for (const cardEl of this.#playingCardContainer.children) {
 			if (!(cardEl instanceof PlayingCard)) continue
 
-			initialState[cardEl.isPlayed ? 'playedCards' : 'heldCards'].push({
+			initialState.cards.push({
 				rank: cardEl.rank,
 				suit: cardEl.suit,
 				edition: cardEl.edition,
 				enhancement: cardEl.enhancement,
 				seal: cardEl.seal,
-				isDebuffed: cardEl.isDebuffed,
+				debuffed: cardEl.debuffed,
+				played: cardEl.played,
 			})
 		}
 
@@ -366,7 +366,7 @@ export class UiState {
 		this.#discardsInput.value = String(state.discards)
 		this.#moneyInput.value = String(state.money)
 		this.#blindNameSelect.value = state.blind.name
-		this.#blindIsActiveCheckbox.checked = state.blind.isActive
+		this.#blindIsActiveCheckbox.checked = state.blind.active
 		this.#deckSelect.value = state.deck
 		this.#jokerSlotsInput.value = String(state.jokerSlots)
 
@@ -387,12 +387,8 @@ export class UiState {
 		}
 
 		this.#playingCardContainer.innerHTML = ''
-		for (const card of state.playedCards) {
-			this.#addCard(card, true)
-		}
-
-		for (const card of state.heldCards) {
-			this.#addCard(card, false)
+		for (const card of state.cards) {
+			this.#addCard(card)
 		}
 
 		this.#applyState(state)
@@ -410,12 +406,12 @@ export class UiState {
 		}
 	}
 
-	#addCard (card?: Card, isPlayed?: boolean) {
+	#addCard (card?: Card) {
 		this.#playingCardContainer.insertAdjacentHTML('beforeend', '<playing-card></playing-card>')
 		const el = this.#playingCardContainer.lastElementChild
 		if (el instanceof PlayingCard) {
 			if (card) {
-				el.setCard(card, isPlayed)
+				el.setCard(card)
 			}
 
 			el.updateState()

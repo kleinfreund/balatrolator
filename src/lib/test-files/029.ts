@@ -5,12 +5,12 @@ export default (message: string): TestCase => {
 		message,
 		initialState: {
 			hands: 1,
-			playedCards: [
-				{ rank: 'King', suit: 'Hearts', enhancement: 'lucky' },
-				{ rank: 'King', suit: 'Hearts', enhancement: 'lucky' },
-				{ rank: 'Jack', suit: 'Hearts', enhancement: 'lucky' },
-				{ rank: 'Ace', suit: 'Hearts', enhancement: 'lucky' },
-				{ rank: '6', suit: 'Hearts', enhancement: 'lucky' },
+			cards: [
+				{ played: true, rank: 'King', suit: 'Hearts', enhancement: 'lucky' },
+				{ played: true, rank: 'King', suit: 'Hearts', enhancement: 'lucky' },
+				{ played: true, rank: 'Jack', suit: 'Hearts', enhancement: 'lucky' },
+				{ played: true, rank: 'Ace', suit: 'Hearts', enhancement: 'lucky' },
+				{ played: true, rank: '6', suit: 'Hearts', enhancement: 'lucky' },
 			],
 			jokers: [
 				{ name: 'Sock and Buskin' },

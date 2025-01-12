@@ -147,21 +147,21 @@ export const JOKER_DEFINITIONS: Record<JokerName, JokerDefinition> = {
 	'Jolly Joker': {
 		rarity: 'common',
 		effect ({ score, state }) {
-			const cards = nOfAKind(state.playedCards, 2)
+			const cards = nOfAKind(state.cards.filter(({ played }) => played), 2)
 			score.multiplier += (cards.length > 0 ? 8 : 0)
 		},
 	},
 	'Zany Joker': {
 		rarity: 'common',
 		effect ({ score, state }) {
-			const cards = nOfAKind(state.playedCards, 3)
+			const cards = nOfAKind(state.cards.filter(({ played }) => played), 3)
 			score.multiplier += (cards.length > 0 ? 8 : 0)
 		},
 	},
 	'Mad Joker': {
 		rarity: 'common',
 		effect ({ score, state }) {
-			const cards = twoPair(state.playedCards)
+			const cards = twoPair(state.cards.filter(({ played }) => played))
 			score.multiplier += (cards.length > 0 ? 8 : 0)
 		},
 	},
@@ -170,7 +170,7 @@ export const JOKER_DEFINITIONS: Record<JokerName, JokerDefinition> = {
 		effect ({ score, state }) {
 			const hasFourFingers = state.jokerSet.has('Four Fingers')
 			const hasShortcut = state.jokerSet.has('Shortcut')
-			const cards = straight(state.playedCards, hasFourFingers, hasShortcut)
+			const cards = straight(state.cards.filter(({ played }) => played), hasFourFingers, hasShortcut)
 			score.multiplier += (cards.length > 0 ? 12 : 0)
 		},
 	},
@@ -179,28 +179,28 @@ export const JOKER_DEFINITIONS: Record<JokerName, JokerDefinition> = {
 		effect ({ score, state }) {
 			const hasFourFingers = state.jokerSet.has('Four Fingers')
 			const hasSmearedJoker = state.jokerSet.has('Smeared Joker')
-			const cards = flush(state.playedCards, hasFourFingers, hasSmearedJoker)
+			const cards = flush(state.cards.filter(({ played }) => played), hasFourFingers, hasSmearedJoker)
 			score.multiplier += (cards.length > 0 ? 10 : 0)
 		},
 	},
 	'Sly Joker': {
 		rarity: 'common',
 		effect ({ score, state }) {
-			const cards = nOfAKind(state.playedCards, 2)
+			const cards = nOfAKind(state.cards.filter(({ played }) => played), 2)
 			score.chips += (cards.length > 0 ? 50 : 0)
 		},
 	},
 	'Wily Joker': {
 		rarity: 'common',
 		effect ({ score, state }) {
-			const cards = nOfAKind(state.playedCards, 3)
+			const cards = nOfAKind(state.cards.filter(({ played }) => played), 3)
 			score.chips += (cards.length > 0 ? 100 : 0)
 		},
 	},
 	'Clever Joker': {
 		rarity: 'common',
 		effect ({ score, state }) {
-			const cards = twoPair(state.playedCards)
+			const cards = twoPair(state.cards.filter(({ played }) => played))
 			score.chips += (cards.length > 0 ? 150 : 0)
 		},
 	},
@@ -209,7 +209,7 @@ export const JOKER_DEFINITIONS: Record<JokerName, JokerDefinition> = {
 		effect ({ score, state }) {
 			const hasFourFingers = state.jokerSet.has('Four Fingers')
 			const hasShortcut = state.jokerSet.has('Shortcut')
-			const cards = straight(state.playedCards, hasFourFingers, hasShortcut)
+			const cards = straight(state.cards.filter(({ played }) => played), hasFourFingers, hasShortcut)
 			score.chips += (cards.length > 0 ? 100 : 0)
 		},
 	},
@@ -218,14 +218,14 @@ export const JOKER_DEFINITIONS: Record<JokerName, JokerDefinition> = {
 		effect ({ score, state }) {
 			const hasFourFingers = state.jokerSet.has('Four Fingers')
 			const hasSmearedJoker = state.jokerSet.has('Smeared Joker')
-			const cards = flush(state.playedCards, hasFourFingers, hasSmearedJoker)
+			const cards = flush(state.cards.filter(({ played }) => played), hasFourFingers, hasSmearedJoker)
 			score.chips += (cards.length > 0 ? 80 : 0)
 		},
 	},
 	'Half Joker': {
 		rarity: 'common',
 		effect ({ score, state }) {
-			score.multiplier += (state.playedCards.length <= 3 ? 20 : 0)
+			score.multiplier += (state.cards.filter(({ played }) => played).length <= 3 ? 20 : 0)
 		},
 	},
 	'Joker Stencil': {
@@ -270,7 +270,7 @@ export const JOKER_DEFINITIONS: Record<JokerName, JokerDefinition> = {
 		rarity: 'uncommon',
 		hasIsActiveInput: true,
 		effect ({ score }) {
-			score.multiplier *= (this.isActive ? 4 : 0)
+			score.multiplier *= (this.active ? 4 : 0)
 		},
 	},
 	'8 Ball': {
@@ -288,7 +288,9 @@ export const JOKER_DEFINITIONS: Record<JokerName, JokerDefinition> = {
 	'Raised Fist': {
 		rarity: 'common',
 		effect ({ score, state }) {
-			const ranks = state.heldCards.map(({ rank }) => RANK_TO_CHIP_MAP[rank])
+			const ranks = state.cards
+				.filter(({ played }) => !played)
+				.map(({ rank }) => RANK_TO_CHIP_MAP[rank])
 			ranks.sort((a, b) => a - b)
 			const lowestCardRank = ranks[0]
 			score.multiplier += (lowestCardRank ? (2 * lowestCardRank) : 0)
@@ -388,7 +390,9 @@ export const JOKER_DEFINITIONS: Record<JokerName, JokerDefinition> = {
 	'Blackboard': {
 		rarity: 'uncommon',
 		effect ({ score, state }) {
-			const allHandCardsAreSpadesOrClubs = state.heldCards.every((card) => isSuit(card, ['Spades', 'Clubs']))
+			const allHandCardsAreSpadesOrClubs = state.cards
+				.filter(({ played }) => !played)
+				.every((card) => isSuit(card, ['Spades', 'Clubs']))
 			score.multiplier *= (allHandCardsAreSpadesOrClubs ? 3 : 1)
 		},
 	},
@@ -462,7 +466,7 @@ export const JOKER_DEFINITIONS: Record<JokerName, JokerDefinition> = {
 		rarity: 'uncommon',
 		hasIsActiveInput: true,
 		effect ({ score }) {
-			score.multiplier *= (this.isActive ? 3 : 1)
+			score.multiplier *= (this.active ? 3 : 1)
 		},
 	},
 	'Red Card': {
@@ -540,7 +544,7 @@ export const JOKER_DEFINITIONS: Record<JokerName, JokerDefinition> = {
 	'Photograph': {
 		rarity: 'common',
 		playedCardEffect ({ score, state, card }) {
-			const firstPlayedFaceCard = state.playedCards.find((playedCard) => ['King', 'Queen', 'Jack'].includes(playedCard.rank))
+			const firstPlayedFaceCard = state.cards.filter(({ played }) => played).find((playedCard) => ['King', 'Queen', 'Jack'].includes(playedCard.rank))
 			const isFirstPlayedFaceCard = card.index === firstPlayedFaceCard?.index
 			score.multiplier *= (isFirstPlayedFaceCard ? 2 : 1)
 		},
@@ -776,7 +780,7 @@ export const JOKER_DEFINITIONS: Record<JokerName, JokerDefinition> = {
 					}
 
 					// Only check base suit when card is debuffed
-					if (card.isDebuffed ? card.suit === suit : isSuit(card, suit)) {
+					if (card.debuffed ? card.suit === suit : isSuit(card, suit)) {
 						cards.add(card)
 
 						if (cards.size === 4) {
@@ -835,21 +839,21 @@ export const JOKER_DEFINITIONS: Record<JokerName, JokerDefinition> = {
 	'The Duo': {
 		rarity: 'rare',
 		effect ({ score, state }) {
-			const cards = nOfAKind(state.playedCards, 2)
+			const cards = nOfAKind(state.cards.filter(({ played }) => played), 2)
 			score.multiplier *= (cards.length > 0 ? 2 : 1)
 		},
 	},
 	'The Trio': {
 		rarity: 'rare',
 		effect ({ score, state }) {
-			const cards = nOfAKind(state.playedCards, 3)
+			const cards = nOfAKind(state.cards.filter(({ played }) => played), 3)
 			score.multiplier *= (cards.length > 0 ? 3 : 1)
 		},
 	},
 	'The Family': {
 		rarity: 'rare',
 		effect ({ score, state }) {
-			const cards = nOfAKind(state.playedCards, 4)
+			const cards = nOfAKind(state.cards.filter(({ played }) => played), 4)
 			score.multiplier *= (cards.length > 0 ? 4 : 1)
 		},
 	},
@@ -858,7 +862,7 @@ export const JOKER_DEFINITIONS: Record<JokerName, JokerDefinition> = {
 		effect ({ score, state }) {
 			const hasFourFingers = state.jokerSet.has('Four Fingers')
 			const hasShortcut = state.jokerSet.has('Shortcut')
-			const cards = straight(state.playedCards, hasFourFingers, hasShortcut)
+			const cards = straight(state.cards.filter(({ played }) => played), hasFourFingers, hasShortcut)
 			score.multiplier *= (cards.length > 0 ? 3 : 1)
 		},
 	},
@@ -867,7 +871,7 @@ export const JOKER_DEFINITIONS: Record<JokerName, JokerDefinition> = {
 		effect ({ score, state }) {
 			const hasFourFingers = state.jokerSet.has('Four Fingers')
 			const hasSmearedJoker = state.jokerSet.has('Smeared Joker')
-			const cards = flush(state.playedCards, hasFourFingers, hasSmearedJoker)
+			const cards = flush(state.cards.filter(({ played }) => played), hasFourFingers, hasSmearedJoker)
 			score.multiplier *= (cards.length > 0 ? 2 : 1)
 		},
 	},
@@ -896,7 +900,7 @@ export const JOKER_DEFINITIONS: Record<JokerName, JokerDefinition> = {
 		rarity: 'rare',
 		hasIsActiveInput: true,
 		effect ({ score }) {
-			score.multiplier *= (this.isActive ? 3 : 1)
+			score.multiplier *= (this.active ? 3 : 1)
 		},
 	},
 	'Cartomancer': {

@@ -47,7 +47,7 @@ function getScore (state: State, luck: Luck): Score {
 	// Determine base chips and multiplier.
 	log('\n0. Determining base score …')
 	// The Flint halves the base chips and multiplier.
-	const baseFactor = (state.blind.name === 'The Flint' && state.blind.isActive ? 0.5 : 1)
+	const baseFactor = (state.blind.name === 'The Flint' && state.blind.active ? 0.5 : 1)
 	// The base score seems to be rounded here.
 	const score: Score = {
 		chips: Math.round(baseScore.chips * baseFactor),
@@ -60,7 +60,7 @@ function getScore (state: State, luck: Luck): Score {
 		logGroup(`\n→ ${card}`, score)
 
 		// Debuffed cards don't participate in scoring at all.
-		if (card.isDebuffed) {
+		if (card.debuffed) {
 			logGroupEnd('!!! Debuffed !!!')
 			continue
 		}
@@ -138,11 +138,11 @@ function getScore (state: State, luck: Luck): Score {
 	log('\n1. PLAYED CARD SCORE =>', score)
 
 	log('\n2. Scoring held cards …')
-	for (const card of state.heldCards) {
+	for (const card of state.cards.filter(({ played }) => !played)) {
 		logGroup(`\n→ ${card}`, score)
 
 		// Debuffed cards don't participate in scoring at all.
-		if (card.isDebuffed) {
+		if (card.debuffed) {
 			logGroupEnd('!!! Debuffed !!!')
 			continue
 		}

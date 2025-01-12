@@ -35,6 +35,6 @@ body:
     attributes:
       label: Balatrolator URL
       description: If applicable, provide the share URL to your played hand
-      placeholder: https://balatrolator.com/?state=D4iM3YFY1AaA3I5TUvU6AGOu+NACZD88EiA2UnAZkQoE58iA6QqM0Gk0g0JvFBYdcwWnhIJxcACxxJ0uQrh1Z8xIvViVuHlJ1wOy1UY0H1QA
+      placeholder: https://balatrolator.com/?state=D4iM3YFY1AaA3I5TUvU6AGOu+NACZD88EiA2UnAZkQoE58iA6QqM0Gk0g0JvFBYdcwWnh6gE4uABY4k6XDpyFuKTPmLNauBuW4eiGRx5KVp3OYm4gA
     validations:
       required: false

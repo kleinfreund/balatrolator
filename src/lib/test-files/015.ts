@@ -4,14 +4,12 @@ export default (message: string): TestCase => {
 	return {
 		message,
 		initialState: {
-			playedCards: [
-				{ rank: 'Queen', suit: 'Diamonds', enhancement: 'gold' },
-				{ rank: 'Queen', suit: 'Diamonds', enhancement: 'gold' },
-				{ rank: 'Queen', suit: 'Diamonds', enhancement: 'gold' },
-				{ rank: 'Queen', suit: 'Diamonds' },
-				{ rank: 'Queen', suit: 'Diamonds', enhancement: 'glass' },
-			],
-			heldCards: [
+			cards: [
+				{ played: true, rank: 'Queen', suit: 'Diamonds', enhancement: 'gold' },
+				{ played: true, rank: 'Queen', suit: 'Diamonds', enhancement: 'gold' },
+				{ played: true, rank: 'Queen', suit: 'Diamonds', enhancement: 'gold' },
+				{ played: true, rank: 'Queen', suit: 'Diamonds' },
+				{ played: true, rank: 'Queen', suit: 'Diamonds', enhancement: 'glass' },
 				{ rank: 'King', suit: 'Hearts', enhancement: 'gold' },
 				{ rank: 'King', suit: 'Diamonds', enhancement: 'gold' },
 			],

@@ -4,14 +4,13 @@ export default (message: string): TestCase => {
 	return {
 		message,
 		initialState: {
-			playedCards: [
-				{ rank: '5', suit: 'Spades', enhancement: 'mult' },
-				{ rank: '5', suit: 'Spades', enhancement: 'mult' },
-				{ rank: '5', suit: 'Spades', enhancement: 'mult' },
-				{ rank: '5', suit: 'Spades', enhancement: 'mult', seal: 'red' },
-				{ rank: '5', suit: 'Spades', enhancement: 'mult', seal: 'red' },
+			cards: [
+				{ played: true, rank: '5', suit: 'Spades', enhancement: 'mult' },
+				{ played: true, rank: '5', suit: 'Spades', enhancement: 'mult' },
+				{ played: true, rank: '5', suit: 'Spades', enhancement: 'mult' },
+				{ played: true, rank: '5', suit: 'Spades', enhancement: 'mult', seal: 'red' },
+				{ played: true, rank: '5', suit: 'Spades', enhancement: 'mult', seal: 'red' },
 			],
-			heldCards: [],
 			jokers: [
 				{ name: 'Sixth Sense' },
 				{ name: 'Smiley Face' },
