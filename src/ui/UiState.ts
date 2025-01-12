@@ -30,7 +30,7 @@ export class UiState {
 	blindNameSelect: HTMLSelectElement
 	blindIsActiveCheckbox: HTMLInputElement
 	deckSelect: HTMLSelectElement
-	observatorySelect: HTMLSelectElement
+	observatoryCheckboxes: NodeListOf<HTMLInputElement>
 	jokerSlotsInput: HTMLInputElement
 
 	handLevelContainer: HTMLElement
@@ -62,7 +62,7 @@ export class UiState {
 		this.blindNameSelect = form.querySelector<HTMLSelectElement>('[data-r-blind-name]')!
 		this.blindIsActiveCheckbox = form.querySelector<HTMLInputElement>('[data-r-blind-is-active]')!
 		this.deckSelect = form.querySelector<HTMLSelectElement>('[data-r-deck]')!
-		this.observatorySelect = form.querySelector<HTMLSelectElement>('[data-r-observatory]')!
+		this.observatoryCheckboxes = form.querySelectorAll<HTMLInputElement>('[data-r-observatory-checkbox]')
 		this.jokerSlotsInput = form.querySelector<HTMLInputElement>('[data-r-joker-slots]')!
 
 		this.handLevelContainer = form.querySelector<HTMLElement>('[data-h-container]')!
@@ -313,9 +313,11 @@ export class UiState {
 			heldCards: [],
 		}
 
-		for (const optionEl of this.observatorySelect.selectedOptions) {
-			const planet = optionEl.value as PlanetName
-			initialState.observatoryHands.push(PLANET_TO_HAND_MAP[planet])
+		for (const checkbox of this.observatoryCheckboxes) {
+			if (checkbox.checked) {
+				const planet = checkbox.value as PlanetName
+				initialState.observatoryHands.push(PLANET_TO_HAND_MAP[planet])
+			}
 		}
 
 		for (const handLevel of this.handLevelContainer.children) {
@@ -370,9 +372,9 @@ export class UiState {
 		this.deckSelect.value = state.deck
 		this.jokerSlotsInput.value = String(state.jokerSlots)
 
-		for (const optionEl of this.observatorySelect.options) {
-			if (state.observatoryHands.includes(PLANET_TO_HAND_MAP[optionEl.value as PlanetName])) {
-				optionEl.selected = true
+		for (const checkbox of this.observatoryCheckboxes) {
+			if (state.observatoryHands.includes(PLANET_TO_HAND_MAP[checkbox.value as PlanetName])) {
+				checkbox.checked = true
 			}
 		}
 

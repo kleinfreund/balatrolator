@@ -272,3 +272,7 @@ hand-level {
 .s-save-name-input {
 	width: 15rem;
 }
+
+.r-observatory-checkbox-list {
+	columns: 2;
+}

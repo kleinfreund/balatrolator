@@ -135,25 +135,6 @@
 	flex-grow: 1;
 }
 
-/* MULTISELECT CONTROL */
-
-.multiselect-control>.label,
-.multiselect-control>.secondary-label {
-	display: block;
-}
-
-.multiselect {
-	display: block;
-	width: 100%;
-	max-width: 100%;
-	margin: 0;
-	padding: 0 0.25rem;
-	border: 2px solid var(--c-border);
-	border-radius: 3px;
-	color: var(--c-text);
-	background-color: var(--c-background-lighter, var(--c-background));
-}
-
 /* CHECKBOX */
 
 .checkbox-control {
