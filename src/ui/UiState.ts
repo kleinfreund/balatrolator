@@ -24,70 +24,70 @@ export class UiState {
 
 	#form: HTMLFormElement
 
-	handsInput: HTMLInputElement
-	discardsInput: HTMLInputElement
-	moneyInput: HTMLInputElement
-	blindNameSelect: HTMLSelectElement
-	blindIsActiveCheckbox: HTMLInputElement
-	deckSelect: HTMLSelectElement
-	observatoryCheckboxes: NodeListOf<HTMLInputElement>
-	jokerSlotsInput: HTMLInputElement
+	#handsInput: HTMLInputElement
+	#discardsInput: HTMLInputElement
+	#moneyInput: HTMLInputElement
+	#blindNameSelect: HTMLSelectElement
+	#blindIsActiveCheckbox: HTMLInputElement
+	#deckSelect: HTMLSelectElement
+	#observatoryCheckboxes: NodeListOf<HTMLInputElement>
+	#jokerSlotsInput: HTMLInputElement
 
-	handLevelContainer: HTMLElement
+	#handLevelContainer: HTMLElement
 
-	jokerContainer: HTMLElement
-	addJokerButton: HTMLButtonElement
-	duplicateJokerButton: HTMLButtonElement
+	#jokerContainer: HTMLElement
+	#addJokerButton: HTMLButtonElement
+	#duplicateJokerButton: HTMLButtonElement
 
-	playingCardContainer: HTMLElement
-	addCardButton: HTMLButtonElement
-	duplicateCardButton: HTMLButtonElement
+	#playingCardContainer: HTMLElement
+	#addCardButton: HTMLButtonElement
+	#duplicateCardButton: HTMLButtonElement
 
-	scoreCardContainer: HTMLElement
-	playedHandEl: HTMLElement
+	#scoreCardContainer: HTMLElement
+	#playedHandEl: HTMLElement
 
-	savesContainer: HTMLElement
-	saveRowTemplate: HTMLTemplateElement
-	saveForm: HTMLFormElement
-	importForm: HTMLFormElement
+	#savesContainer: HTMLElement
+	#saveRowTemplate: HTMLTemplateElement
+	#saveForm: HTMLFormElement
+	#importForm: HTMLFormElement
 
 	constructor () {
 		const form = document.querySelector<HTMLFormElement>('[data-form]')!
 		this.#form = form
 		form.addEventListener('submit', (event) => this.#handleSubmit(event))
 
-		this.handsInput = form.querySelector<HTMLInputElement>('[data-r-hands]')!
-		this.discardsInput = form.querySelector<HTMLInputElement>('[data-r-discards]')!
-		this.moneyInput = form.querySelector<HTMLInputElement>('[data-r-money]')!
-		this.blindNameSelect = form.querySelector<HTMLSelectElement>('[data-r-blind-name]')!
-		this.blindIsActiveCheckbox = form.querySelector<HTMLInputElement>('[data-r-blind-is-active]')!
-		this.deckSelect = form.querySelector<HTMLSelectElement>('[data-r-deck]')!
-		this.observatoryCheckboxes = form.querySelectorAll<HTMLInputElement>('[data-r-observatory-checkbox]')
-		this.jokerSlotsInput = form.querySelector<HTMLInputElement>('[data-r-joker-slots]')!
+		this.#handsInput = form.querySelector<HTMLInputElement>('[data-r-hands]')!
+		this.#discardsInput = form.querySelector<HTMLInputElement>('[data-r-discards]')!
+		this.#moneyInput = form.querySelector<HTMLInputElement>('[data-r-money]')!
+		this.#blindNameSelect = form.querySelector<HTMLSelectElement>('[data-r-blind-name]')!
+		this.#blindIsActiveCheckbox = form.querySelector<HTMLInputElement>('[data-r-blind-is-active]')!
+		this.#deckSelect = form.querySelector<HTMLSelectElement>('[data-r-deck]')!
+		this.#observatoryCheckboxes = form.querySelectorAll<HTMLInputElement>('[data-r-observatory-checkbox]')
+		this.#jokerSlotsInput = form.querySelector<HTMLInputElement>('[data-r-joker-slots]')!
 
-		this.handLevelContainer = form.querySelector<HTMLElement>('[data-h-container]')!
+		this.#handLevelContainer = form.querySelector<HTMLElement>('[data-h-container]')!
 
-		this.jokerContainer = form.querySelector<HTMLElement>('[data-j-container]')!
-		this.addJokerButton = form.querySelector<HTMLButtonElement>('[data-j-add-button]')!
-		this.addJokerButton.addEventListener('click', () => this.#addJoker())
-		this.duplicateJokerButton = document.querySelector<HTMLButtonElement>('[data-j-duplicate-button]')!
-		this.duplicateJokerButton.addEventListener('click', (event) => this.#duplicate(event))
+		this.#jokerContainer = form.querySelector<HTMLElement>('[data-j-container]')!
+		this.#addJokerButton = form.querySelector<HTMLButtonElement>('[data-j-add-button]')!
+		this.#addJokerButton.addEventListener('click', () => this.#addJoker())
+		this.#duplicateJokerButton = document.querySelector<HTMLButtonElement>('[data-j-duplicate-button]')!
+		this.#duplicateJokerButton.addEventListener('click', (event) => this.#duplicate(event))
 
-		this.playingCardContainer = form.querySelector<HTMLElement>('[data-c-container]')!
-		this.addCardButton = form.querySelector<HTMLButtonElement>('[data-c-add-button]')!
-		this.addCardButton.addEventListener('click', () => this.#addCard())
-		this.duplicateCardButton = document.querySelector<HTMLButtonElement>('[data-c-duplicate-button]')!
-		this.duplicateCardButton.addEventListener('click', (event) => this.#duplicate(event))
+		this.#playingCardContainer = form.querySelector<HTMLElement>('[data-c-container]')!
+		this.#addCardButton = form.querySelector<HTMLButtonElement>('[data-c-add-button]')!
+		this.#addCardButton.addEventListener('click', () => this.#addCard())
+		this.#duplicateCardButton = document.querySelector<HTMLButtonElement>('[data-c-duplicate-button]')!
+		this.#duplicateCardButton.addEventListener('click', (event) => this.#duplicate(event))
 
-		this.scoreCardContainer = form.querySelector<HTMLElement>('[data-sc-container]')!
-		this.playedHandEl = form.querySelector<HTMLElement>('[data-sc-played-hand]')!
+		this.#scoreCardContainer = form.querySelector<HTMLElement>('[data-sc-container]')!
+		this.#playedHandEl = form.querySelector<HTMLElement>('[data-sc-played-hand]')!
 
-		this.savesContainer = document.querySelector<HTMLElement>('[data-s-saves]')!
-		this.saveRowTemplate = document.querySelector<HTMLTemplateElement>('template#save-row')!
-		this.saveForm = document.querySelector<HTMLFormElement>('[data-s-form]')!
-		this.saveForm.addEventListener('submit', (event) => this.#handleSaveSubmit(event))
-		this.importForm = document.querySelector<HTMLFormElement>('[data-s-import-form]')!
-		this.importForm.addEventListener('submit', (event) => this.#handleImportSubmit(event))
+		this.#savesContainer = document.querySelector<HTMLElement>('[data-s-saves]')!
+		this.#saveRowTemplate = document.querySelector<HTMLTemplateElement>('template#save-row')!
+		this.#saveForm = document.querySelector<HTMLFormElement>('[data-s-form]')!
+		this.#saveForm.addEventListener('submit', (event) => this.#handleSaveSubmit(event))
+		this.#importForm = document.querySelector<HTMLFormElement>('[data-s-import-form]')!
+		this.#importForm.addEventListener('submit', (event) => this.#handleImportSubmit(event))
 		this.#populateSavesUiFromStorage()
 
 		// Calling the save store method here for users that weren't migrated to the new saved hands system, yet. It'll store the new saves format.
@@ -107,7 +107,7 @@ export class UiState {
 		}
 
 		// Quick and dirty way to update the state whenever necessary
-		form.addEventListener('change', () => this.calculate())
+		form.addEventListener('change', () => this.#calculate())
 	}
 
 	#handleSubmit (event: SubmitEvent) {
@@ -116,15 +116,15 @@ export class UiState {
 		this.#applyState(state)
 	}
 
-	calculate () {
+	#calculate () {
 		this.#form.requestSubmit()
-		for (const el of this.playingCardContainer.children) {
+		for (const el of this.#playingCardContainer.children) {
 			if (el instanceof PlayingCard) {
 				el.updateState()
 			}
 		}
 
-		for (const el of this.jokerContainer.children) {
+		for (const el of this.#jokerContainer.children) {
 			if (el instanceof JokerCard) {
 				el.updateState()
 			}
@@ -137,9 +137,9 @@ export class UiState {
 	#populateSavesUiFromStorage () {
 		this.#saveManager.retrieveStoredSaves()
 
-		this.savesContainer.innerHTML = ''
+		this.#savesContainer.innerHTML = ''
 		for (const save of this.#saveManager.saves) {
-			const fragment = this.saveRowTemplate.content.cloneNode(true) as Element
+			const fragment = this.#saveRowTemplate.content.cloneNode(true) as Element
 
 			const nameCell = fragment.querySelector<HTMLTableCellElement>('[data-s-name]')!
 			nameCell.innerHTML = `<b>${save.name}</b>${save.autoSave ? ' <i>(autosave)</>' : ''}`
@@ -159,7 +159,7 @@ export class UiState {
 			exportButton.setAttribute('data-save-name', save.name)
 			exportButton.addEventListener('click', (event) => this.#exportSave(event))
 
-			this.savesContainer.appendChild(fragment)
+			this.#savesContainer.appendChild(fragment)
 		}
 	}
 
@@ -246,12 +246,12 @@ export class UiState {
 	}
 
 	#applyState (state: State) {
-		this.updateScore(state)
+		this.#updateScore(state)
 		saveStateToUrl(state)
 		this.#autoSave(state)
 	}
 
-	updateScore (state: State) {
+	#updateScore (state: State) {
 		const { hand, scoringCards, scores } = calculateScore(state)
 		log({ hand, scoringCards, scores })
 
@@ -262,9 +262,9 @@ export class UiState {
 			}
 		}
 
-		this.playedHandEl.textContent = hand
+		this.#playedHandEl.textContent = hand
 
-		this.scoreCardContainer.innerHTML = ''
+		this.#scoreCardContainer.innerHTML = ''
 		for (const score of distinctScores.values()) {
 			const template = document.querySelector<HTMLTemplateElement>('template#score-card')!
 			const fragment = template.content.cloneNode(true) as Element
@@ -278,7 +278,7 @@ export class UiState {
 			const scoreEl = fragment.querySelector<HTMLElement>('[data-sc-score]')!
 			scoreEl.textContent = new Intl.NumberFormat('en').format(score.score)
 
-			this.scoreCardContainer.appendChild(fragment)
+			this.#scoreCardContainer.appendChild(fragment)
 		}
 	}
 
@@ -288,13 +288,18 @@ export class UiState {
 	 * Inverse operation of `populateUiWithState`.
 	 */
 	#readStateFromUi (): State {
-		const hands = Number(this.handsInput.value)
-		const discards = Number(this.discardsInput.value)
-		const money = Number(this.moneyInput.value)
-		const blindName = this.blindNameSelect.value as BlindName
-		const blindIsActive = this.blindIsActiveCheckbox.checked
-		const deck = this.deckSelect.value as DeckName
-		const jokerSlots = Number(this.jokerSlotsInput.value)
+		const formData = new FormData(this.#form)
+
+		const hands = Number(formData.get('hands'))
+		const discards = Number(formData.get('discards'))
+		const money = Number(formData.get('money'))
+		const blindName = formData.get('blindName') as BlindName
+		const blindIsActive = formData.get('blindIsActive') === 'is-active'
+		const deck = formData.get('deck') as DeckName
+		const jokerSlots = Number(formData.get('jokerSlots'))
+		const observatoryHands: Required<InitialState>['observatoryHands'] = formData
+			.getAll('observatory')
+			.map((planet) => PLANET_TO_HAND_MAP[planet as PlanetName])
 
 		const initialState: Required<InitialState> = {
 			hands,
@@ -305,7 +310,7 @@ export class UiState {
 				isActive: blindIsActive,
 			},
 			deck,
-			observatoryHands: [],
+			observatoryHands,
 			handLevels: {},
 			jokers: [],
 			jokerSlots,
@@ -313,14 +318,7 @@ export class UiState {
 			heldCards: [],
 		}
 
-		for (const checkbox of this.observatoryCheckboxes) {
-			if (checkbox.checked) {
-				const planet = checkbox.value as PlanetName
-				initialState.observatoryHands.push(PLANET_TO_HAND_MAP[planet])
-			}
-		}
-
-		for (const handLevel of this.handLevelContainer.children) {
+		for (const handLevel of this.#handLevelContainer.children) {
 			if (!(handLevel instanceof HandLevel)) continue
 
 			initialState.handLevels[handLevel.handName] = {
@@ -329,7 +327,7 @@ export class UiState {
 			}
 		}
 
-		for (const jokerCard of this.jokerContainer.children) {
+		for (const jokerCard of this.#jokerContainer.children) {
 			if (!(jokerCard instanceof JokerCard)) continue
 
 			initialState.jokers.push({
@@ -344,7 +342,7 @@ export class UiState {
 			})
 		}
 
-		for (const cardEl of this.playingCardContainer.children) {
+		for (const cardEl of this.#playingCardContainer.children) {
 			if (!(cardEl instanceof PlayingCard)) continue
 
 			initialState[cardEl.isPlayed ? 'playedCards' : 'heldCards'].push({
@@ -364,31 +362,31 @@ export class UiState {
 	 * Populates the UI using a `State` object. Tries to retrieve this object from the URL or local storage.
 	 */
 	populateUiWithState (state: State) {
-		this.handsInput.value = String(state.hands)
-		this.discardsInput.value = String(state.discards)
-		this.moneyInput.value = String(state.money)
-		this.blindNameSelect.value = state.blind.name
-		this.blindIsActiveCheckbox.checked = state.blind.isActive
-		this.deckSelect.value = state.deck
-		this.jokerSlotsInput.value = String(state.jokerSlots)
+		this.#handsInput.value = String(state.hands)
+		this.#discardsInput.value = String(state.discards)
+		this.#moneyInput.value = String(state.money)
+		this.#blindNameSelect.value = state.blind.name
+		this.#blindIsActiveCheckbox.checked = state.blind.isActive
+		this.#deckSelect.value = state.deck
+		this.#jokerSlotsInput.value = String(state.jokerSlots)
 
-		for (const checkbox of this.observatoryCheckboxes) {
+		for (const checkbox of this.#observatoryCheckboxes) {
 			if (state.observatoryHands.includes(PLANET_TO_HAND_MAP[checkbox.value as PlanetName])) {
 				checkbox.checked = true
 			}
 		}
 
-		this.handLevelContainer.innerHTML = ''
+		this.#handLevelContainer.innerHTML = ''
 		for (const [handName, handLevel] of Object.entries(state.handLevels)) {
 			this.#addHandLevel(handName as HandName, handLevel)
 		}
 
-		this.jokerContainer.innerHTML = ''
+		this.#jokerContainer.innerHTML = ''
 		for (const joker of state.jokers) {
 			this.#addJoker(joker)
 		}
 
-		this.playingCardContainer.innerHTML = ''
+		this.#playingCardContainer.innerHTML = ''
 		for (const card of state.playedCards) {
 			this.#addCard(card, true)
 		}
@@ -401,8 +399,8 @@ export class UiState {
 	}
 
 	#addJoker (joker?: Joker) {
-		this.jokerContainer.insertAdjacentHTML('beforeend', '<joker-card></joker-card>')
-		const jokerEl = this.jokerContainer.lastElementChild
+		this.#jokerContainer.insertAdjacentHTML('beforeend', '<joker-card></joker-card>')
+		const jokerEl = this.#jokerContainer.lastElementChild
 		if (jokerEl instanceof JokerCard) {
 			if (joker) {
 				jokerEl.setJoker(joker)
@@ -413,8 +411,8 @@ export class UiState {
 	}
 
 	#addCard (card?: Card, isPlayed?: boolean) {
-		this.playingCardContainer.insertAdjacentHTML('beforeend', '<playing-card></playing-card>')
-		const el = this.playingCardContainer.lastElementChild
+		this.#playingCardContainer.insertAdjacentHTML('beforeend', '<playing-card></playing-card>')
+		const el = this.#playingCardContainer.lastElementChild
 		if (el instanceof PlayingCard) {
 			if (card) {
 				el.setCard(card, isPlayed)
@@ -441,12 +439,12 @@ export class UiState {
 		}
 
 		dialog.close()
-		this.calculate()
+		this.#calculate()
 	}
 
 	#addHandLevel (handName: HandName, handLevel: { level: number, plays: number }) {
-		this.handLevelContainer.insertAdjacentHTML('beforeend', '<hand-level></hand-level>')
-		const el = this.handLevelContainer.lastElementChild
+		this.#handLevelContainer.insertAdjacentHTML('beforeend', '<hand-level></hand-level>')
+		const el = this.#handLevelContainer.lastElementChild
 		if (el instanceof HandLevel) {
 			el.setHandLevel(handName, handLevel)
 		}

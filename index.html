@@ -92,7 +92,7 @@
 				</div>
 			</div>
 
-			<form class="form" method="POST" enctype="multipart/form-data" data-form>
+			<form class="form" data-form>
 				<div class="form__hands panel">
 					<div class="stack">
 						<header class="panel-header">
@@ -145,7 +145,7 @@
 									<label class="r-blind-name select-control --flat">
 										<span class="label truncate">Blind</span>
 
-										<select class="r-blind-name-input select" data-r-blind-name>
+										<select class="r-blind-name-input select" name="blindName" data-r-blind-name>
 											<option value="Small Blind" selected>Small Blind</option>
 											<option value="Big Blind">Big Blind</option>
 											<option value="The Hook">The Hook</option>
@@ -182,7 +182,7 @@
 									</label>
 
 									<label class="r-blind-is-active checkbox-control">
-										<input class="r-blind-is-active-input checkbox" type="checkbox" value="is-active" checked data-r-blind-is-active>
+										<input class="r-blind-is-active-input checkbox" name="blindIsActive" type="checkbox" value="true" checked data-r-blind-is-active>
 
 										<span class="label">Active?</span>
 									</label>
@@ -193,7 +193,7 @@
 								<label class="r-deck select-control --flat">
 									<span class="label truncate">Deck</span>
 
-									<select class="r-deck-input select" data-r-deck>
+									<select class="r-deck-input select" name="deck" data-r-deck>
 										<option value="Red Deck" selected>Red Deck</option>
 										<option value="Blue Deck">Blue Deck</option>
 										<option value="Yellow Deck">Yellow Deck</option>
@@ -220,7 +220,7 @@
 								<label class="r-joker-slots text-control --flat">
 									<span class="label truncate">Joker slots</span>
 
-									<input class="r-joker-slots-input text-input" name="joker-slots" type="number" value="5" data-r-joker-slots>
+									<input class="r-joker-slots-input text-input" type="number" name="jokerSlots" value="5" data-r-joker-slots>
 
 									<span class="secondary-label">Influences: Joker Stencil</span>
 								</label>
@@ -231,51 +231,51 @@
 
 								<div class="r-observatory-checkbox-list">
 									<label class="checkbox-control --flat">
-										<input class="checkbox-input" type="checkbox" value="Pluto" data-r-observatory-checkbox>
+										<input class="checkbox-input" name="observatory" type="checkbox" value="Pluto" data-r-observatory-checkbox>
 										<span class="label truncate">Pluto</span>
 									</label>
 									<label class="checkbox-control --flat">
-										<input class="checkbox-input" type="checkbox" value="Mercury" data-r-observatory-checkbox>
+										<input class="checkbox-input" name="observatory" type="checkbox" value="Mercury" data-r-observatory-checkbox>
 										<span class="label truncate">Mercury</span>
 									</label>
 									<label class="checkbox-control --flat">
-										<input class="checkbox-input" type="checkbox" value="Uranus" data-r-observatory-checkbox>
+										<input class="checkbox-input" name="observatory" type="checkbox" value="Uranus" data-r-observatory-checkbox>
 										<span class="label truncate">Uranus</span>
 									</label>
 									<label class="checkbox-control --flat">
-										<input class="checkbox-input" type="checkbox" value="Venus" data-r-observatory-checkbox>
+										<input class="checkbox-input" name="observatory" type="checkbox" value="Venus" data-r-observatory-checkbox>
 										<span class="label truncate">Venus</span>
 									</label>
 									<label class="checkbox-control --flat">
-										<input class="checkbox-input" type="checkbox" value="Saturn" data-r-observatory-checkbox>
+										<input class="checkbox-input" name="observatory" type="checkbox" value="Saturn" data-r-observatory-checkbox>
 										<span class="label truncate">Saturn</span>
 									</label>
 									<label class="checkbox-control --flat">
-										<input class="checkbox-input" type="checkbox" value="Jupiter" data-r-observatory-checkbox>
+										<input class="checkbox-input" name="observatory" type="checkbox" value="Jupiter" data-r-observatory-checkbox>
 										<span class="label truncate">Jupiter</span>
 									</label>
 									<label class="checkbox-control --flat">
-										<input class="checkbox-input" type="checkbox" value="Earth" data-r-observatory-checkbox>
+										<input class="checkbox-input" name="observatory" type="checkbox" value="Earth" data-r-observatory-checkbox>
 										<span class="label truncate">Earth</span>
 									</label>
 									<label class="checkbox-control --flat">
-										<input class="checkbox-input" type="checkbox" value="Mars" data-r-observatory-checkbox>
+										<input class="checkbox-input" name="observatory" type="checkbox" value="Mars" data-r-observatory-checkbox>
 										<span class="label truncate">Mars</span>
 									</label>
 									<label class="checkbox-control --flat">
-										<input class="checkbox-input" type="checkbox" value="Neptune" data-r-observatory-checkbox>
+										<input class="checkbox-input" name="observatory" type="checkbox" value="Neptune" data-r-observatory-checkbox>
 										<span class="label truncate">Neptune</span>
 									</label>
 									<label class="checkbox-control --flat">
-										<input class="checkbox-input" type="checkbox" value="Planet X" data-r-observatory-checkbox>
+										<input class="checkbox-input" name="observatory" type="checkbox" value="Planet X" data-r-observatory-checkbox>
 										<span class="label truncate">Planet X</span>
 									</label>
 									<label class="checkbox-control --flat">
-										<input class="checkbox-input" type="checkbox" value="Ceres" data-r-observatory-checkbox>
+										<input class="checkbox-input" name="observatory" type="checkbox" value="Ceres" data-r-observatory-checkbox>
 										<span class="label truncate">Ceres</span>
 									</label>
 									<label class="checkbox-control --flat">
-										<input class="checkbox-input" type="checkbox" value="Eris" data-r-observatory-checkbox>
+										<input class="checkbox-input" name="observatory" type="checkbox" value="Eris" data-r-observatory-checkbox>
 										<span class="label truncate">Eris</span>
 									</label>
 								</div>
