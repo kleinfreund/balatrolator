@@ -1,19 +1,10 @@
-import {
-	compressToEncodedURIComponent,
-	compressToUTF16,
-	decompressFromEncodedURIComponent,
-	decompressFromUTF16,
-} from 'lz-string'
-
 import { deminify, minify } from './minifier.js'
 import type { State } from '#lib/types.js'
 
 export const WebStorage = {
 	get (key: string): string | null {
 		try {
-			const value = window.localStorage.getItem(key)
-
-			return value ? decompressFromUTF16(value) : null
+			return window.localStorage.getItem(key)
 		} catch (error) {
 			console.error(error)
 			return null
@@ -22,7 +13,7 @@ export const WebStorage = {
 
 	set (key: string, value: string) {
 		try {
-			window.localStorage.setItem(key, compressToUTF16(value))
+			window.localStorage.setItem(key, value)
 		} catch (error) {
 			console.error(error)
 		}
@@ -39,8 +30,7 @@ export const WebStorage = {
 
 export function readStateFromUrl (): State | null {
 	const urlParams = new URLSearchParams(window.location.search)
-	const compressed = urlParams.get('state')
-	const minified = compressed ? decompressFromEncodedURIComponent(compressed) : null
+	const minified = urlParams.get('state')
 
 	return minified ? deminify(minified) : null
 }
@@ -48,8 +38,7 @@ export function readStateFromUrl (): State | null {
 export function saveStateToUrl (state: State) {
 	const urlParams = new URLSearchParams(window.location.search)
 	const minified = minify(state)
-	const compressed = compressToEncodedURIComponent(minified)
-	urlParams.set('state', compressed)
+	urlParams.set('state', minified)
 
 	window.history.pushState({}, '', `?${urlParams.toString()}`)
 }

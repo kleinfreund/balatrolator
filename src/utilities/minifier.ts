@@ -3,13 +3,22 @@ import { getState } from '#utilities/getState.js'
 import type { Card, Edition, Enhancement, HandLevel, HandName, InitialCard, InitialJoker, Joker, JokerName, Rank, Seal, State, Suit } from '#lib/types.js'
 
 /*
-I'm sorry for the code in this file; it's an abomination. Its job is compressing a `State` object into a minimal (as in size) string for the use of persisting it in the browser's URL or client-side storage (e.g. local storage). This is not context-unaware plain text compression as provided by libraries like lz-string but context-aware data compression “hand-crafted” for this application.
+I'm sorry for the code in this file; it's an abomination. Its job is compressing a `State` object into a minimal (as in size) string for the use of persisting it in the browser's URL or client-side storage (e.g. local storage). This is a context-aware form of data compression “hand-crafted” for this application.
 */
 
 /**
  * Used in place of a default value in the minified output to save on overall string length (e.g. instead of storing “0”, we store the empty string).
  */
 const MINIFIED_DEFAULT_VALUE = ''
+
+/**
+ * Separator glyphs to be used in minified strings. Chosen to not be automatically encodeURIComponent-ed when entering them in a URL so the URL stays smaller and somewhat readable.
+ */
+const SEPARATOR = {
+	first: '|',
+	second: '_',
+	third: '*',
+}
 
 const BLIND_INDEXES = invertMap(BLINDS)
 const DECK_INDEXES = invertMap(DECKS)
@@ -56,56 +65,62 @@ export function minify (state: State): string {
 		blind.active ? '1' : MINIFIED_DEFAULT_VALUE,
 		deck !== 'Red Deck' ? DECK_INDEXES[deck] : MINIFIED_DEFAULT_VALUE,
 		jokerSlots !== 0 ? jokerSlots : MINIFIED_DEFAULT_VALUE,
-		observatoryHandCodes.join(';'),
-		handLevelCodes.join(';'),
-		jokerCodes.join(';'),
-		cardCodes.join(';'),
-	].join('|')
+		observatoryHandCodes.join(SEPARATOR.second),
+		handLevelCodes.join(SEPARATOR.second),
+		jokerCodes.join(SEPARATOR.second),
+		cardCodes.join(SEPARATOR.second),
+	].join(SEPARATOR.first)
 }
 
 /**
  * Inverse of `minify`.
  */
 export function deminify (str: string): State {
-	const [
-		hands,
-		discards,
-		money,
-		blindNameIndex,
-		blindIsActive,
-		deckIndex,
-		jokerSlots,
-		observatoryHandCodes,
-		handLevelCodes,
-		jokerCodes,
-		cardCodes,
-	] = str.split('|')
+	try {
+		const [
+			hands,
+			discards,
+			money,
+			blindNameIndex,
+			blindIsActive,
+			deckIndex,
+			jokerSlots,
+			observatoryHandCodes,
+			handLevelCodes,
+			jokerCodes,
+			cardCodes,
+		] = str.split(SEPARATOR.first)
 
-	const observatoryHands = !observatoryHandCodes ? [] : observatoryHandCodes.split(';')
-		.map((code) => fromObservatoryHandCode(code))
-	const handLevels = Object.fromEntries(!handLevelCodes ? [] : handLevelCodes.split(';')
-		.map((code) => fromHandLevelCode(code))
-		.map((handLevel, index) => [HANDS[index], handLevel]))
-	const jokers = !jokerCodes ? [] : jokerCodes.split(';')
-		.map((code) => fromJokerCode(code))
-	const cards = !cardCodes ? [] : cardCodes.split(';')
-		.map((code) => fromCardCode(code))
+		const observatoryHands = !observatoryHandCodes ? [] : observatoryHandCodes.split(SEPARATOR.second)
+			.map((code) => fromObservatoryHandCode(code))
+		const handLevels = Object.fromEntries(!handLevelCodes ? [] : handLevelCodes.split(SEPARATOR.second)
+			.map((code) => fromHandLevelCode(code))
+			.map((handLevel, index) => [HANDS[index], handLevel]))
+		const jokers = !jokerCodes ? [] : jokerCodes.split(SEPARATOR.second)
+			.map((code) => fromJokerCode(code))
+		const cards = !cardCodes ? [] : cardCodes.split(SEPARATOR.second)
+			.map((code) => fromCardCode(code))
 
-	return getState({
-		hands: hands !== MINIFIED_DEFAULT_VALUE ? Number(hands) : 0,
-		discards: discards !== MINIFIED_DEFAULT_VALUE ? Number(discards) : 0,
-		money: money !== MINIFIED_DEFAULT_VALUE ? Number(money) : 0,
-		blind: {
-			name: BLINDS[Number(blindNameIndex || '0')],
-			active: blindIsActive === '1',
-		},
-		deck: DECKS[Number(deckIndex || '0')],
-		observatoryHands,
-		jokerSlots: jokerSlots !== MINIFIED_DEFAULT_VALUE ? Number(jokerSlots) : 0,
-		handLevels,
-		jokers,
-		cards,
-	})
+		return getState({
+			hands: hands !== MINIFIED_DEFAULT_VALUE ? Number(hands) : 0,
+			discards: discards !== MINIFIED_DEFAULT_VALUE ? Number(discards) : 0,
+			money: money !== MINIFIED_DEFAULT_VALUE ? Number(money) : 0,
+			blind: {
+				name: BLINDS[Number(blindNameIndex || '0')],
+				active: blindIsActive === '1',
+			},
+			deck: DECKS[Number(deckIndex || '0')],
+			observatoryHands,
+			jokerSlots: jokerSlots !== MINIFIED_DEFAULT_VALUE ? Number(jokerSlots) : 0,
+			handLevels,
+			jokers,
+			cards,
+		})
+	} catch (error) {
+		console.error('Failed to parse state. Using default state instead.')
+		console.error(error)
+		return getState({})
+	}
 }
 
 function toObservatoryHandCode (hand: HandName): string {
@@ -120,14 +135,14 @@ function toHandLevelCode ({ level, plays }: HandLevel): string {
 	return [
 		level !== 1 ? level : MINIFIED_DEFAULT_VALUE,
 		plays !== 0 ? plays : MINIFIED_DEFAULT_VALUE,
-	].join(',')
+	].join(SEPARATOR.third)
 }
 
 function fromHandLevelCode (code: string): HandLevel {
 	const [
 		level,
 		plays,
-	] = code.split(',')
+	] = code.split(SEPARATOR.third)
 
 	return {
 		level: level !== MINIFIED_DEFAULT_VALUE ? Number(level) : 1,
@@ -156,7 +171,7 @@ function toJokerCode (joker: Joker): string {
 		rank ? RANK_INDEXES[rank] : MINIFIED_DEFAULT_VALUE,
 		suit ? SUIT_INDEXES[suit] : MINIFIED_DEFAULT_VALUE,
 		active ? 1 : MINIFIED_DEFAULT_VALUE,
-	].join(',')
+	].join(SEPARATOR.third)
 }
 
 function fromJokerCode (code: string): InitialJoker {
@@ -169,7 +184,7 @@ function fromJokerCode (code: string): InitialJoker {
 		rankIndex,
 		suitIndex,
 		active,
-	] = code.split(',')
+	] = code.split(SEPARATOR.third)
 
 	return {
 		name: JOKER_NAMES[Number(nameIndex || '0')] as JokerName,
@@ -202,7 +217,7 @@ function toCardCode (card: Card): string {
 		seal !== 'none' ? SEAL_INDEXES[seal] : MINIFIED_DEFAULT_VALUE,
 		debuffed ? 1 : MINIFIED_DEFAULT_VALUE,
 		played ? 1 : MINIFIED_DEFAULT_VALUE,
-	].join(',')
+	].join(SEPARATOR.third)
 }
 
 function fromCardCode (code: string): InitialCard {
@@ -214,7 +229,7 @@ function fromCardCode (code: string): InitialCard {
 		sealIndex,
 		debuffed,
 		played,
-	] = code.split(',')
+	] = code.split(SEPARATOR.third)
 
 	return {
 		rank: RANKS[Number(rankIndex || '0')] as Rank,

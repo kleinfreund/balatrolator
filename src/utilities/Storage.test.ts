@@ -4,15 +4,11 @@ import type { InitialState } from '#lib/types.js'
 import { getState } from './getState.js'
 import { readStateFromUrl, saveStateToUrl } from './Storage.js'
 
-/*
-This test deliberately doesn't mock lz-string so that changes to application logic that breaks the share URLs will be break this test.
-*/
-
 describe('Storage', () => {
 	test.each<[InitialState, string]>([
 		[
 			{},
-			'D44RhBWEBoG56IcpqEiA',
+			'||||1||5||*_*_*_*_*_*_*_*_*_*_*_*||',
 		],
 		[
 			{
@@ -43,7 +39,7 @@ describe('Storage', () => {
 					},
 				},
 			},
-			'D4iM3YFY1AaA3I5TUvU6AGOu+NACZD88EiA2UnAZkQoE58iA6QqM0Gk0g0JvFBYdcwWnh6gE4uABY4k6XDpyFuKTPmLNauBuW4eiGRx5KVp3OYm4gA',
+			'|||1|1||5||11*_*_*_*_*_*_*_*_*_*_*_*|50*******_122*******_126*****0*3*_69****12.25***_132*******_119****5.5***|0*3***2**1_0*3**4*2**1_0*3**4*2**1_0*3**4*2**1_0*3**4*2**1_0*3**2***_0*3**5*2**_0*3**5*2**_0*3***2**',
 		],
 	])('works', (initialState, expectedString) => {
 		// eslint-disable-next-line @typescript-eslint/no-empty-function
