@@ -21,9 +21,7 @@ export default tseslint.config(
 			'@stylistic': stylistic,
 		},
 		rules: {
-			// Interferes with `get [Symbol.toStringTag]`.
-			'@typescript-eslint/class-literal-property-style': 'off',
-			// Don't care.
+			// When working with the DOM, non-null assertions are really useful and I want to use them.
 			'@typescript-eslint/no-non-null-assertion': 'off',
 
 			'@stylistic/comma-dangle': ['error', 'always-multiline'],
@@ -31,12 +29,6 @@ export default tseslint.config(
 			'@stylistic/semi': ['error', 'never'],
 			'@stylistic/space-before-function-paren': ['error', 'always'],
 			'@stylistic/quotes': ['error', 'single'],
-		},
-	},
-	{
-		files: ['**/*.test.{js,ts}'],
-		rules: {
-			'@typescript-eslint/ban-ts-comment': 'off',
 		},
 	},
 )
