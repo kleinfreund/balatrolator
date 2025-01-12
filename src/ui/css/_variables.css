@@ -5,8 +5,8 @@ html {
 
 	--c-white: #fff;
 	--c-black: #111;
-	--c-grey-light: hsl(249, 10%, 90%);
-	--c-grey-lighter: hsl(249, 10%, 95%);
+	--c-grey-light: hsl(249 10% 90%);
+	--c-grey-lighter: hsl(249 10% 95%);
 	--c-grey-dark: hsl(247 10% 60%);
 	--c-blue-dark: hsl(221 85% 26%);
 	--c-blue-light: hsl(221 85% 50%);
