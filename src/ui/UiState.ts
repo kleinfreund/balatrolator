@@ -6,7 +6,7 @@ import { log } from '#utilities/log.js'
 import { calculateScore } from '#lib/balatro.js'
 import type { BlindName, Card, DeckName, HandName, InitialState, Joker, State, ResultScore, PlanetName } from '#lib/types.js'
 import { PLANET_TO_HAND_MAP } from '#/lib/data.js'
-import { saveStateToUrl, WebStorage } from '#/utilities/Storage.js'
+import { readStateFromUrl, saveStateToUrl } from '#/utilities/Storage.js'
 import { SaveManager } from './SaveManager.js'
 
 const dateTimeFormat = new Intl.DateTimeFormat(document.documentElement.lang, {
@@ -105,6 +105,12 @@ export class UiState {
 		form.addEventListener('change', () => this.#calculate())
 	}
 
+	init () {
+		// Read the state from the URL first, then read it from web storage, and finally, fall back to the default/initial state.
+		const state = readStateFromUrl() ?? this.#getAutoSaveState() ?? getState({})
+		this.#populateUiWithState(state)
+	}
+
 	#handleSubmit (event: SubmitEvent) {
 		event.preventDefault()
 		const state = this.#readStateFromUi()
@@ -163,7 +169,7 @@ export class UiState {
 		const name = button.getAttribute('data-save-name')!
 
 		const { state } = this.#saveManager.getSave(name)!
-		this.populateUiWithState(state)
+		this.#populateUiWithState(state)
 	}
 
 	#handleSaveSubmit (event: SubmitEvent) {
@@ -218,7 +224,7 @@ export class UiState {
 		this.#populateSavesUiFromStorage()
 	}
 
-	getAutoSaveState () {
+	#getAutoSaveState () {
 		return this.#saveManager.getAutoSave()?.state ?? null
 	}
 
@@ -356,7 +362,7 @@ export class UiState {
 	/**
 	 * Populates the UI using a `State` object. Tries to retrieve this object from the URL or local storage.
 	 */
-	populateUiWithState (state: State) {
+	#populateUiWithState (state: State) {
 		this.#handsInput.value = String(state.hands)
 		this.#discardsInput.value = String(state.discards)
 		this.#moneyInput.value = String(state.money)
