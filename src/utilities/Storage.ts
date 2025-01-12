@@ -6,7 +6,7 @@ export const WebStorage = {
 		try {
 			return window.localStorage.getItem(key)
 		} catch (error) {
-			console.error(error)
+			console.error(`Failed to read “${key}” from storage.`, error)
 			return null
 		}
 	},
@@ -15,7 +15,7 @@ export const WebStorage = {
 		try {
 			window.localStorage.setItem(key, value)
 		} catch (error) {
-			console.error(error)
+			console.error(`Failed to store “${key}”.`, error)
 		}
 	},
 
@@ -23,7 +23,7 @@ export const WebStorage = {
 		try {
 			window.localStorage.removeItem(key)
 		} catch (error) {
-			console.error(error)
+			console.error(`Failed to remove “${key}” from storage.`, error)
 		}
 	},
 }

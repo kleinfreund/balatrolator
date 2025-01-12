@@ -117,8 +117,7 @@ export function deminify (str: string): State {
 			cards,
 		})
 	} catch (error) {
-		console.error('Failed to parse state. Using default state instead.')
-		console.error(error)
+		console.error('Failed to parse state. Using default state instead.', error)
 		return getState({})
 	}
 }

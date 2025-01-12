@@ -74,7 +74,14 @@ export class SaveManager {
 	 * Retrieve saves out of web storage.
 	 */
 	retrieveStoredSaves () {
-		const minifiedSaves = JSON.parse(WebStorage.get('saves') ?? '[]') as StoredSave[]
+		let minifiedSaves = [] as StoredSave[]
+		try {
+			minifiedSaves = JSON.parse(WebStorage.get('saves') ?? '[]') as StoredSave[]
+		} catch (error) {
+			// A JSON SyntaxError can occur here for old save data that was compressed and which is no longer being decompressed.
+			console.error('Failed to parse saves.', error)
+		}
+
 		const saves: Save[] = minifiedSaves.map((save) => ({
 			...save,
 			state: deminify(save.state),
