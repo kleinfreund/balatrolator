@@ -74,21 +74,7 @@ export class SaveManager {
 	 * Retrieve saves out of web storage.
 	 */
 	retrieveStoredSaves () {
-		let minifiedSaves: StoredSave[] = []
-
-		// Migrate legacy save storage to new saved hands system.
-		const minifiedLegacyState = WebStorage.get('state')
-		if (minifiedLegacyState) {
-			minifiedSaves = [{
-				name: AUTO_SAVE_NAME,
-				time: Date.now(),
-				state: minifiedLegacyState,
-				autoSave: true,
-			}]
-		} else {
-			minifiedSaves = JSON.parse(WebStorage.get('saves') ?? '[]')
-		}
-
+		const minifiedSaves = JSON.parse(WebStorage.get('saves') ?? '[]') as StoredSave[]
 		const saves: Save[] = minifiedSaves.map((save) => ({
 			...save,
 			state: deminify(save.state),

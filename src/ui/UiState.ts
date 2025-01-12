@@ -90,11 +90,6 @@ export class UiState {
 		this.#importForm.addEventListener('submit', (event) => this.#handleImportSubmit(event))
 		this.#populateSavesUiFromStorage()
 
-		// Calling the save store method here for users that weren't migrated to the new saved hands system, yet. It'll store the new saves format.
-		this.#storeSaves()
-		// Clean up legacy save storage.
-		WebStorage.remove('state')
-
 		for (const dialog of document.querySelectorAll('dialog')) {
 			for (const button of dialog.querySelectorAll('button[data-modal-close-button]')) {
 				if (button instanceof HTMLButtonElement) {
