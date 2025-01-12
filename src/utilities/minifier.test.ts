@@ -8,7 +8,7 @@ describe('minifier', () => {
 	test.each<[InitialState, string, InitialState]>([
 		[
 			{},
-			'||||1||5||*_*_*_*_*_*_*_*_*_*_*_*||',
+			'||||1||5|___________|*_*_*_*_*_*_*_*_*_*_*_*||',
 			{
 				hands: 0,
 				discards: 0,
@@ -55,7 +55,7 @@ describe('minifier', () => {
 				jokers: [],
 				cards: [],
 			},
-			'1|2|3|1||13|5||*_*_*_*_*_*_*_*_*_*_4*4_5*5||',
+			'1|2|3|1||13|5|___________|*_*_*_*_*_*_*_*_*_*_4*4_5*5||',
 			{
 				hands: 1,
 				discards: 2,
@@ -94,7 +94,11 @@ describe('minifier', () => {
 					active: false,
 				},
 				deck: 'Plasma Deck',
-				observatoryHands: ['Pair', 'Flush', 'Flush Five'],
+				observatory: {
+					'Pair': 1,
+					'Flush': 1,
+					'Flush Five': 1,
+				},
 				jokerSlots: 5,
 				handLevels: {
 					'Pair': { level: 4, plays: 4 },
@@ -103,7 +107,7 @@ describe('minifier', () => {
 				jokers: [],
 				cards: [],
 			},
-			'1|2|3|1||13|5|10_6_0|*_*_*_*_*_*_*_*_*_*_4*4_5*5||',
+			'1|2|3|1||13|5|1______1____1_|*_*_*_*_*_*_*_*_*_*_4*4_5*5||',
 			{
 				hands: 1,
 				discards: 2,
@@ -113,7 +117,11 @@ describe('minifier', () => {
 					active: false,
 				},
 				deck: 'Plasma Deck',
-				observatoryHands: ['Pair', 'Flush', 'Flush Five'],
+				observatory: {
+					'Pair': 1,
+					'Flush': 1,
+					'Flush Five': 1,
+				},
 				jokerSlots: 5,
 				handLevels: {
 					'Flush Five': { level: 1, plays: 0 },
@@ -161,7 +169,7 @@ describe('minifier', () => {
 				jokers: [],
 				cards: [],
 			},
-			'1|2|3|1||13|5||*_*1_*2_9*3_8*4_7*5_6*6_5*7_4*8_3*9_2*_*||',
+			'1|2|3|1||13|5|___________|*_*1_*2_9*3_8*4_7*5_6*6_5*7_4*8_3*9_2*_*||',
 			{
 				hands: 1,
 				discards: 2,
@@ -231,7 +239,7 @@ describe('minifier', () => {
 					{ rank: 'King', suit: 'Diamonds', enhancement: 'gold' },
 				],
 			},
-			'1|2|3|1||13|5||*_*1_*2_9*3_8*4_7*5_6*6_5*7_4*8_3*9_2*_*|18*3******_102**81*****_122*******_91*******_71*******|1*3**7***1_1*3**7***1_2*3**7***1_2*3**4***1_2*3**4*2**1_1*3**7***',
+			'1|2|3|1||13|5|___________|*_*1_*2_9*3_8*4_7*5_6*6_5*7_4*8_3*9_2*_*|18*3******_102**81*****_122*******_91*******_71*******|1*3**7***1_1*3**7***1_2*3**7***1_2*3**4***1_2*3**4*2**1_1*3**7***',
 			{
 				hands: 1,
 				discards: 2,

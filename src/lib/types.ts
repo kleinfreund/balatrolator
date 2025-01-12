@@ -4,8 +4,6 @@ export type DeckName = 'Red Deck' | 'Blue Deck' | 'Yellow Deck' | 'Green Deck' |
 
 export type HandName = 'Flush Five' | 'Flush House' | 'Five of a Kind' | 'Straight Flush' | 'Four of a Kind' | 'Full House' | 'Flush' | 'Straight' | 'Three of a Kind' | 'Two Pair' | 'Pair' | 'High Card'
 
-export type PlanetName = 'Pluto' | 'Mercury' | 'Uranus' | 'Venus' | 'Saturn' | 'Jupiter' | 'Earth' | 'Mars' | 'Neptune' | 'Planet X' | 'Ceres' | 'Eris'
-
 export type JokerName = 'Joker' | 'Greedy Joker' | 'Lusty Joker' | 'Wrathful Joker' | 'Gluttonous Joker' | 'Jolly Joker' | 'Zany Joker' | 'Mad Joker' | 'Crazy Joker' | 'Droll Joker' | 'Sly Joker' | 'Wily Joker' | 'Clever Joker' | 'Devious Joker' | 'Crafty Joker' | 'Half Joker' | 'Joker Stencil' | 'Four Fingers' | 'Mime' | 'Credit Card' | 'Ceremonial Dagger' | 'Banner' | 'Mystic Summit' | 'Marble Joker' | 'Loyalty Card' | '8 Ball' | 'Misprint' | 'Dusk' | 'Raised Fist' | 'Chaos the Clown' | 'Fibonacci' | 'Steel Joker' | 'Scary Face' | 'Abstract Joker' | 'Delayed Gratification' | 'Hack' | 'Pareidolia' | 'Gros Michel' | 'Even Steven' | 'Odd Todd' | 'Scholar' | 'Business Card' | 'Supernova' | 'Ride the Bus' | 'Space Joker' | 'Egg' | 'Burglar' | 'Blackboard' | 'Runner' | 'Ice Cream' | 'DNA' | 'Splash' | 'Blue Joker' | 'Sixth Sense' | 'Constellation' | 'Hiker' | 'Faceless Joker' | 'Green Joker' | 'Superposition' | 'To Do List' | 'Cavendish' | 'Card Sharp' | 'Red Card' | 'Madness' | 'Square Joker' | 'Séance' | 'Riff-Raff' | 'Vampire' | 'Shortcut' | 'Hologram' | 'Vagabond' | 'Baron' | 'Cloud 9' | 'Rocket' | 'Obelisk' | 'Midas Mask' | 'Luchador' | 'Photograph' | 'Gift Card' | 'Turtle Bean' | 'Erosion' | 'Reserved Parking' | 'Mail-in Rebate' | 'To the Moon' | 'Hallucination' | 'Fortune Teller' | 'Juggler' | 'Drunkard' | 'Stone Joker' | 'Golden Joker' | 'Lucky Cat' | 'Baseball Card' | 'Bull' | 'Diet Cola' | 'Trading Card' | 'Flash Card' | 'Popcorn' | 'Spare Trousers' | 'Ancient Joker' | 'Ramen' | 'Walkie Talkie' | 'Seltzer' | 'Castle' | 'Smiley Face' | 'Campfire' | 'Golden Ticket' | 'Mr. Bones' | 'Acrobat' | 'Sock and Buskin' | 'Swashbuckler' | 'Troubador' | 'Certificate' | 'Smeared Joker' | 'Throwback' | 'Hanging Chad' | 'Rough Gem' | 'Bloodstone' | 'Arrowhead' | 'Onyx Agate' | 'Glass Joker' | 'Showman' | 'Flower Pot' | 'Blueprint' | 'Wee Joker' | 'Merry Andy' | 'Oops! All 6s' | 'The Idol' | 'Seeing Double' | 'Matador' | 'Hit the Road' | 'The Duo' | 'The Trio' | 'The Family' | 'The Order' | 'The Tribe' | 'Stuntman' | 'Invisible Joker' | 'Brainstorm' | 'Satellite' | 'Shoot the Moon' | 'Driver\'s license' | 'Cartomancer' | 'Astronomer' | 'Burnt Joker' | 'Bootstraps' | 'Canio' | 'Triboulet' | 'Yorick' | 'Chicot' | 'Perkeo'
 
 export type Rank = 'Ace' | 'King' | 'Queen' | 'Jack' | '10' | '9' | '8' | '7' | '6' | '5' | '4' | '3' | '2'
@@ -107,6 +105,8 @@ export interface Joker {
 }
 
 export interface HandLevel { level: number, plays: number }
+export type InitialObservatory = Partial<Observatory>
+export type Observatory = Record<HandName, number>
 export type InitialHandLevels = Partial<HandLevels>
 export type HandLevels = Record<HandName, HandLevel>
 export type HandScore = Record<HandName, Score>
@@ -123,7 +123,7 @@ export interface InitialState {
 	blind?: Partial<Blind>
 	deck?: DeckName
 	handLevels?: InitialHandLevels
-	observatoryHands?: HandName[]
+	observatory?: InitialObservatory
 	jokers?: InitialJoker[]
 	jokerSlots?: number
 	cards?: InitialCard[]
@@ -137,7 +137,7 @@ export interface State {
 	deck: DeckName
 	handLevels: HandLevels
 	handBaseScores: HandScore
-	observatoryHands: HandName[]
+	observatory: Observatory
 	jokers: Joker[]
 	jokerSet: Set<JokerName>
 	jokerSlots: number

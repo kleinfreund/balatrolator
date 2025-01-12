@@ -1,7 +1,7 @@
-import { DEFAULT_HAND_SCORE_SETS, PLANET_SCORE_SETS, JOKER_DEFINITIONS } from '#lib/data.js'
+import { DEFAULT_HAND_SCORE_SETS, PLANET_SCORE_SETS, JOKER_DEFINITIONS, HANDS } from '#lib/data.js'
 import { getHand } from '#lib/getHand.js'
 import { isDebuffed } from '#utilities/isDebuffed.js'
-import type { Card, HandLevel, HandLevels, HandName, HandScore, InitialCard, InitialHandLevels, InitialJoker, InitialState, Joker, Score, State } from '#lib/types.js'
+import type { Card, HandLevel, HandLevels, HandName, HandScore, InitialCard, InitialHandLevels, InitialJoker, InitialObservatory, InitialState, Joker, Observatory, Score, State } from '#lib/types.js'
 
 export function getState (initialState: InitialState): State {
 	const {
@@ -10,13 +10,14 @@ export function getState (initialState: InitialState): State {
 		money = 0,
 		blind: initialBlind,
 		deck = 'Red Deck',
-		observatoryHands = [],
+		observatory: initialObservatory = {},
 		handLevels: initialHandLevels = {},
 		jokers: initialJokers = [],
 		jokerSlots = 5,
 		cards: initialCards = [],
 	} = initialState
 
+	const observatory = getObservatory(initialObservatory)
 	const handLevels = getHandLevels(initialHandLevels)
 	const handBaseScores = getHandBaseScores(handLevels)
 	const jokers = getJokers(initialJokers)
@@ -47,7 +48,7 @@ export function getState (initialState: InitialState): State {
 		money,
 		blind,
 		deck,
-		observatoryHands,
+		observatory,
 		handLevels,
 		handBaseScores,
 		jokers,
@@ -57,6 +58,13 @@ export function getState (initialState: InitialState): State {
 		playedHand,
 		scoringCards,
 	}
+}
+
+function getObservatory (initialObservatory: InitialObservatory): Observatory {
+	const observatoryEntries = HANDS.map((handName) => [handName, initialObservatory[handName] ?? 0])
+
+	return Object.fromEntries(observatoryEntries) as Observatory
+
 }
 
 function getHandLevels (initialHandLevels: InitialHandLevels): HandLevels {

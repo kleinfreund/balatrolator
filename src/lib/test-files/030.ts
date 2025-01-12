@@ -5,7 +5,9 @@ export default (message: string): TestCase => {
 		message,
 		initialState: {
 			blind: { name: 'The Head' },
-			observatoryHands: ['Pair'],
+			observatory: {
+				Pair: 1,
+			},
 			cards: [
 				{ played: true, rank: '8', suit: 'Spades' },
 				{ played: true, rank: '7', suit: 'Spades' },

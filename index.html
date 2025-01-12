@@ -55,7 +55,7 @@
 
 						<form data-s-form>
 							<div class="s-save-container">
-								<label class="s-save-name text-control --flat">
+								<label class="s-save-name text-control --flat --grow">
 									<span class="label truncate">Save name</span>
 
 									<input class="s-save-name-input text-input" name="name" type="text" required placeholder="Hand 1" data-s-name-input>
@@ -73,7 +73,7 @@
 
 						<form data-s-import-form>
 							<div class="s-import-container">
-								<label class="s-import text-control --flat">
+								<label class="s-import text-control --flat --grow">
 									<span class="label truncate">Import save</span>
 
 									<input class="s-import-input file-input" name="import" type="file" accept=".json,application/json" required data-s-import-input>
@@ -111,7 +111,7 @@
 
 						<div class="list">
 							<div class="card">
-								<label class="r-hands text-control --flat">
+								<label class="r-hands text-control --flat --grow">
 									<span class="label truncate">Hands</span>
 
 									<input class="r-hands-input text-input" name="hands" type="number" min="0" value="0" data-r-hands>
@@ -121,7 +121,7 @@
 							</div>
 
 							<div class="card">
-								<label class="r-discards text-control --flat">
+								<label class="r-discards text-control --flat --grow">
 									<span class="label truncate">Discards</span>
 
 									<input class="r-discards-input text-input" name="discards" type="number" min="0" value="0" data-r-discards>
@@ -131,7 +131,7 @@
 							</div>
 
 							<div class="card">
-								<label class="r-money text-control --flat">
+								<label class="r-money text-control --flat --grow">
 									<span class="label truncate">Money</span>
 
 									<input class="r-money-input text-input" name="money" type="number" value="0" data-r-money>
@@ -142,7 +142,7 @@
 
 							<div class="card">
 								<div class="stack">
-									<label class="r-blind-name select-control --flat">
+									<label class="r-blind-name select-control --flat --grow">
 										<span class="label truncate">Blind</span>
 
 										<select class="r-blind-name-input select" name="blindName" data-r-blind-name>
@@ -190,7 +190,7 @@
 							</div>
 
 							<div class="card">
-								<label class="r-deck select-control --flat">
+								<label class="r-deck select-control --flat --grow">
 									<span class="label truncate">Deck</span>
 
 									<select class="r-deck-input select" name="deck" data-r-deck>
@@ -217,7 +217,7 @@
 							</div>
 
 							<div class="card">
-								<label class="r-joker-slots text-control --flat">
+								<label class="r-joker-slots text-control --flat --grow">
 									<span class="label truncate">Joker slots</span>
 
 									<input class="r-joker-slots-input text-input" type="number" name="jokerSlots" value="5" data-r-joker-slots>
@@ -226,58 +226,60 @@
 								</label>
 							</div>
 
-							<div class="card">
-								<span class="label truncate">Observatory</span>
+							<div class="card observatory-card">
+								<div class="stack">
+									<span class="label truncate">Observatory</span>
 
-								<div class="r-observatory-checkbox-list">
-									<label class="checkbox-control --flat">
-										<input class="checkbox-input" name="observatory" type="checkbox" value="Pluto" data-r-observatory-checkbox>
-										<span class="label truncate">Pluto</span>
-									</label>
-									<label class="checkbox-control --flat">
-										<input class="checkbox-input" name="observatory" type="checkbox" value="Mercury" data-r-observatory-checkbox>
-										<span class="label truncate">Mercury</span>
-									</label>
-									<label class="checkbox-control --flat">
-										<input class="checkbox-input" name="observatory" type="checkbox" value="Uranus" data-r-observatory-checkbox>
-										<span class="label truncate">Uranus</span>
-									</label>
-									<label class="checkbox-control --flat">
-										<input class="checkbox-input" name="observatory" type="checkbox" value="Venus" data-r-observatory-checkbox>
-										<span class="label truncate">Venus</span>
-									</label>
-									<label class="checkbox-control --flat">
-										<input class="checkbox-input" name="observatory" type="checkbox" value="Saturn" data-r-observatory-checkbox>
-										<span class="label truncate">Saturn</span>
-									</label>
-									<label class="checkbox-control --flat">
-										<input class="checkbox-input" name="observatory" type="checkbox" value="Jupiter" data-r-observatory-checkbox>
-										<span class="label truncate">Jupiter</span>
-									</label>
-									<label class="checkbox-control --flat">
-										<input class="checkbox-input" name="observatory" type="checkbox" value="Earth" data-r-observatory-checkbox>
-										<span class="label truncate">Earth</span>
-									</label>
-									<label class="checkbox-control --flat">
-										<input class="checkbox-input" name="observatory" type="checkbox" value="Mars" data-r-observatory-checkbox>
-										<span class="label truncate">Mars</span>
-									</label>
-									<label class="checkbox-control --flat">
-										<input class="checkbox-input" name="observatory" type="checkbox" value="Neptune" data-r-observatory-checkbox>
-										<span class="label truncate">Neptune</span>
-									</label>
-									<label class="checkbox-control --flat">
-										<input class="checkbox-input" name="observatory" type="checkbox" value="Planet X" data-r-observatory-checkbox>
-										<span class="label truncate">Planet X</span>
-									</label>
-									<label class="checkbox-control --flat">
-										<input class="checkbox-input" name="observatory" type="checkbox" value="Ceres" data-r-observatory-checkbox>
-										<span class="label truncate">Ceres</span>
-									</label>
-									<label class="checkbox-control --flat">
-										<input class="checkbox-input" name="observatory" type="checkbox" value="Eris" data-r-observatory-checkbox>
-										<span class="label truncate">Eris</span>
-									</label>
+									<div class="r-observatory-input-list stack">
+										<label class="text-control --flat">
+											<span class="label truncate">Pluto</span>
+											<input class="r-observatory-input text-input" type="number" min="0" value="0" data-r-observatory-hand="High Card">
+										</label>
+										<label class="text-control --flat">
+											<span class="label truncate">Mercury</span>
+											<input class="r-observatory-input text-input" type="number" min="0" value="0" data-r-observatory-hand="Pair">
+										</label>
+										<label class="text-control --flat">
+											<span class="label truncate">Uranus</span>
+											<input class="r-observatory-input text-input" type="number" min="0" value="0" data-r-observatory-hand="Two Pair">
+										</label>
+										<label class="text-control --flat">
+											<span class="label truncate">Venus</span>
+											<input class="r-observatory-input text-input" type="number" min="0" value="0" data-r-observatory-hand="Three of a Kind">
+										</label>
+										<label class="text-control --flat">
+											<span class="label truncate">Saturn</span>
+											<input class="r-observatory-input text-input" type="number" min="0" value="0" data-r-observatory-hand="Straight">
+										</label>
+										<label class="text-control --flat">
+											<span class="label truncate">Jupiter</span>
+											<input class="r-observatory-input text-input" type="number" min="0" value="0" data-r-observatory-hand="Flush">
+										</label>
+										<label class="text-control --flat">
+											<span class="label truncate">Earth</span>
+											<input class="r-observatory-input text-input" type="number" min="0" value="0" data-r-observatory-hand="Full House">
+										</label>
+										<label class="text-control --flat">
+											<span class="label truncate">Mars</span>
+											<input class="r-observatory-input text-input" type="number" min="0" value="0" data-r-observatory-hand="Four of a Kind">
+										</label>
+										<label class="text-control --flat">
+											<span class="label truncate">Neptune</span>
+											<input class="r-observatory-input text-input" type="number" min="0" value="0" data-r-observatory-hand="Straight Flush">
+										</label>
+										<label class="text-control --flat">
+											<span class="label truncate">Planet X</span>
+											<input class="r-observatory-input text-input" type="number" min="0" value="0" data-r-observatory-hand="Five of a Kind">
+										</label>
+										<label class="text-control --flat">
+											<span class="label truncate">Ceres</span>
+											<input class="r-observatory-input text-input" type="number" min="0" value="0" data-r-observatory-hand="Flush House">
+										</label>
+										<label class="text-control --flat">
+											<span class="label truncate">Eris</span>
+											<input class="r-observatory-input text-input" type="number" min="0" value="0" data-r-observatory-hand="Flush Five">
+										</label>
+									</div>
 								</div>
 							</div>
 						</div>
@@ -426,13 +428,13 @@
 
 		<div class="stack">
 			<div class="input-list">
-				<label class="h-level text-control --flat">
+				<label class="h-level text-control --flat --grow">
 					<span class="label">lvl</span>
 
 					<input class="h-level-input text-input" type="number" value="1" min="1" data-h-level>
 				</label>
 
-				<label class="h-plays text-control --flat">
+				<label class="h-plays text-control --flat --grow">
 					<span class="label">#<span class="visually-hidden">Plays</span></span>
 
 					<input class="h-plays-input text-input" type="number" value="0" min="0" data-h-plays>
@@ -619,7 +621,7 @@
 				</button>
 			</div>
 
-			<label class="j-edition select-control --flat">
+			<label class="j-edition select-control --flat --grow">
 				<span class="label truncate">Edition</span>
 
 				<select class="j-edition-input select" data-j-edition>
@@ -632,19 +634,19 @@
 			</label>
 
 			<div class="joker-effects stack">
-				<label class="j-plus-chips text-control --flat">
+				<label class="j-plus-chips text-control --flat --grow">
 					<span class="label truncate">+Chips</span>
 
 					<input class="j-plus-chips-input text-input" type="number" value="0" min="0" data-j-plus-chips>
 				</label>
 
-				<label class="j-plus-multiplier text-control --flat">
+				<label class="j-plus-multiplier text-control --flat --grow">
 					<span class="label truncate">+Mult</span>
 
 					<input class="j-plus-multiplier-input text-input" type="number" value="0" min="0" data-j-plus-multiplier>
 				</label>
 
-				<label class="j-times-multiplier text-control --flat">
+				<label class="j-times-multiplier text-control --flat --grow">
 					<span class="label truncate">xMult</span>
 
 					<input class="j-times-multiplier-input text-input" type="number" value="1" min="1" step="0.05" data-j-times-multiplier>
@@ -761,7 +763,7 @@
 				</label>
 			</div>
 
-			<label class="c-edition select-control --flat">
+			<label class="c-edition select-control --flat --grow">
 				<span class="label truncate">Edition</span>
 
 				<select class="c-edition-input select" data-c-edition>
@@ -772,7 +774,7 @@
 				</select>
 			</label>
 
-			<label class="c-enhancement select-control --flat">
+			<label class="c-enhancement select-control --flat --grow">
 				<span class="label truncate">Enhancement</span>
 
 				<select class="c-enhancement-input select" data-c-enhancement>
@@ -788,7 +790,7 @@
 				</select>
 			</label>
 
-			<label class="c-seal select-control --flat">
+			<label class="c-seal select-control --flat --grow">
 				<span class="label truncate">Seal</span>
 
 				<select class="c-seal-input select" data-c-seal>

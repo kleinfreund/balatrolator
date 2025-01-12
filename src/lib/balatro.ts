@@ -202,8 +202,9 @@ function getScore (state: State, luck: Luck): Score {
 	log('\n3. JOKER SCORE =>', score)
 
 	log('\n4. Scoring Observatory …')
-	if (state.observatoryHands.some((hand) => hand === state.playedHand)) {
-		score.multiplier *= 1.5
+	const planetCount = state.observatory[state.playedHand] ?? 0
+	if (planetCount > 0) {
+		score.multiplier *= planetCount * 1.5
 	}
 	log('\n4. OBSERVATORY SCORE =>', score)
 

@@ -4,8 +4,7 @@ import { PlayingCard } from './components/PlayingCard.js'
 import { getState } from '#utilities/getState.js'
 import { log } from '#utilities/log.js'
 import { calculateScore } from '#lib/balatro.js'
-import type { BlindName, Card, DeckName, HandName, InitialState, Joker, State, ResultScore, PlanetName } from '#lib/types.js'
-import { PLANET_TO_HAND_MAP } from '#/lib/data.js'
+import type { BlindName, Card, DeckName, HandName, InitialState, Joker, State, ResultScore } from '#lib/types.js'
 import { readStateFromUrl, saveStateToUrl } from '#/utilities/Storage.js'
 import { SaveManager } from './SaveManager.js'
 
@@ -30,7 +29,7 @@ export class UiState {
 	#blindNameSelect: HTMLSelectElement
 	#blindIsActiveCheckbox: HTMLInputElement
 	#deckSelect: HTMLSelectElement
-	#observatoryCheckboxes: NodeListOf<HTMLInputElement>
+	#observatoryInputs: NodeListOf<HTMLInputElement>
 	#jokerSlotsInput: HTMLInputElement
 
 	#handLevelContainer: HTMLElement
@@ -62,7 +61,7 @@ export class UiState {
 		this.#blindNameSelect = form.querySelector<HTMLSelectElement>('[data-r-blind-name]')!
 		this.#blindIsActiveCheckbox = form.querySelector<HTMLInputElement>('[data-r-blind-is-active]')!
 		this.#deckSelect = form.querySelector<HTMLSelectElement>('[data-r-deck]')!
-		this.#observatoryCheckboxes = form.querySelectorAll<HTMLInputElement>('[data-r-observatory-checkbox]')
+		this.#observatoryInputs = form.querySelectorAll<HTMLInputElement>('[data-r-observatory-hand]')
 		this.#jokerSlotsInput = form.querySelector<HTMLInputElement>('[data-r-joker-slots]')!
 
 		this.#handLevelContainer = form.querySelector<HTMLElement>('[data-h-container]')!
@@ -298,9 +297,6 @@ export class UiState {
 		const blindIsActive = formData.get('blindIsActive') === 'is-active'
 		const deck = formData.get('deck') as DeckName
 		const jokerSlots = Number(formData.get('jokerSlots'))
-		const observatoryHands: Required<InitialState>['observatoryHands'] = formData
-			.getAll('observatory')
-			.map((planet) => PLANET_TO_HAND_MAP[planet as PlanetName])
 
 		const initialState: Required<InitialState> = {
 			hands,
@@ -311,11 +307,16 @@ export class UiState {
 				active: blindIsActive,
 			},
 			deck,
-			observatoryHands,
+			observatory: {},
 			handLevels: {},
 			jokers: [],
 			jokerSlots,
 			cards: [],
+		}
+
+		for (const observatoryInput of this.#observatoryInputs) {
+			const handName = observatoryInput.getAttribute('data-r-observatory-hand') as HandName
+			initialState.observatory[handName] = Number(observatoryInput.value)
 		}
 
 		for (const handLevel of this.#handLevelContainer.children) {
@@ -371,10 +372,9 @@ export class UiState {
 		this.#deckSelect.value = state.deck
 		this.#jokerSlotsInput.value = String(state.jokerSlots)
 
-		for (const checkbox of this.#observatoryCheckboxes) {
-			if (state.observatoryHands.includes(PLANET_TO_HAND_MAP[checkbox.value as PlanetName])) {
-				checkbox.checked = true
-			}
+		for (const observatoryInput of this.#observatoryInputs) {
+			const handName = observatoryInput.getAttribute('data-r-observatory-hand') as HandName
+			observatoryInput.value = String(state.observatory[handName] ?? 0)
 		}
 
 		this.#handLevelContainer.innerHTML = ''

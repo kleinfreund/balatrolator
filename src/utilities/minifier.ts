@@ -1,6 +1,6 @@
 import { BLINDS, DECKS, EDITIONS, ENHANCEMENTS, HANDS, JOKER_DEFINITIONS, JOKER_EDITIONS, JOKER_NAMES, RANKS, SEALS, SUITS } from '#lib/data.js'
 import { getState } from '#utilities/getState.js'
-import type { Card, Edition, Enhancement, HandLevel, HandName, InitialCard, InitialJoker, Joker, JokerName, Rank, Seal, State, Suit } from '#lib/types.js'
+import type { Card, Edition, Enhancement, HandLevel, InitialCard, InitialJoker, Joker, JokerName, Rank, Seal, State, Suit } from '#lib/types.js'
 
 /*
 I'm sorry for the code in this file; it's an abomination. Its job is compressing a `State` object into a minimal (as in size) string for the use of persisting it in the browser's URL or client-side storage (e.g. local storage). This is a context-aware form of data compression “hand-crafted” for this application.
@@ -22,7 +22,6 @@ const SEPARATOR = {
 
 const BLIND_INDEXES = invertMap(BLINDS)
 const DECK_INDEXES = invertMap(DECKS)
-const HAND_INDEXES = invertMap(HANDS)
 const EDITION_INDEXES = invertMap(EDITIONS)
 const ENHANCEMENT_INDEXES = invertMap(ENHANCEMENTS)
 const JOKER_EDITION_INDEXES = invertMap(JOKER_EDITIONS)
@@ -45,14 +44,14 @@ export function minify (state: State): string {
 		money,
 		blind,
 		deck,
-		observatoryHands,
+		observatory,
 		jokerSlots,
 		handLevels,
 		jokers,
 		cards,
 	} = state
 
-	const observatoryHandCodes = observatoryHands.map((hand) => toObservatoryHandCode(hand))
+	const observatoryCodes = Object.values(observatory).map((planetCount) => toObservatoryCode(planetCount))
 	const handLevelCodes = Object.values(handLevels).map((handLevel) => toHandLevelCode(handLevel))
 	const jokerCodes = jokers.map((joker) => toJokerCode(joker))
 	const cardCodes = cards.map((card) => toCardCode(card))
@@ -65,7 +64,7 @@ export function minify (state: State): string {
 		blind.active ? '1' : MINIFIED_DEFAULT_VALUE,
 		deck !== 'Red Deck' ? DECK_INDEXES[deck] : MINIFIED_DEFAULT_VALUE,
 		jokerSlots !== 0 ? jokerSlots : MINIFIED_DEFAULT_VALUE,
-		observatoryHandCodes.join(SEPARATOR.second),
+		observatoryCodes.join(SEPARATOR.second),
 		handLevelCodes.join(SEPARATOR.second),
 		jokerCodes.join(SEPARATOR.second),
 		cardCodes.join(SEPARATOR.second),
@@ -85,14 +84,15 @@ export function deminify (str: string): State {
 			blindIsActive,
 			deckIndex,
 			jokerSlots,
-			observatoryHandCodes,
+			observatoryCodes,
 			handLevelCodes,
 			jokerCodes,
 			cardCodes,
 		] = str.split(SEPARATOR.first)
 
-		const observatoryHands = !observatoryHandCodes ? [] : observatoryHandCodes.split(SEPARATOR.second)
-			.map((code) => fromObservatoryHandCode(code))
+		const observatory = Object.fromEntries(!observatoryCodes ? [] : observatoryCodes.split(SEPARATOR.second)
+			.map((code) => fromObservatoryCode(code))
+			.map((planetCount, index) => [HANDS[index], planetCount]))
 		const handLevels = Object.fromEntries(!handLevelCodes ? [] : handLevelCodes.split(SEPARATOR.second)
 			.map((code) => fromHandLevelCode(code))
 			.map((handLevel, index) => [HANDS[index], handLevel]))
@@ -110,7 +110,7 @@ export function deminify (str: string): State {
 				active: blindIsActive === '1',
 			},
 			deck: DECKS[Number(deckIndex || '0')],
-			observatoryHands,
+			observatory,
 			jokerSlots: jokerSlots !== MINIFIED_DEFAULT_VALUE ? Number(jokerSlots) : 0,
 			handLevels,
 			jokers,
@@ -122,12 +122,12 @@ export function deminify (str: string): State {
 	}
 }
 
-function toObservatoryHandCode (hand: HandName): string {
-	return String(HAND_INDEXES[hand])
+function toObservatoryCode (planetCount: number): string {
+	return String(planetCount !== 0 ? planetCount : MINIFIED_DEFAULT_VALUE)
 }
 
-function fromObservatoryHandCode (code: string): HandName {
-	return HANDS[Number(code || '0')] as HandName
+function fromObservatoryCode (code: string): number {
+	return code !== MINIFIED_DEFAULT_VALUE ? Number(code) : 0
 }
 
 function toHandLevelCode ({ level, plays }: HandLevel): string {
