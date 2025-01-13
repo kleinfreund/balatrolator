@@ -348,8 +348,6 @@ export const JOKER_DEFINITIONS: Record<JokerName, JokerDefinition> = {
 	'Supernova': {
 		rarity: 'common',
 		effect ({ score, state }) {
-			// TODO: Remove the following by instead incrementing `plays` after determining the played hand.
-			// Note: This is counting one extra play because the Joker takes *the current played hand* into account for the calculation.
 			score.multiplier += state.handLevels[state.playedHand].plays + 1
 		},
 	},
