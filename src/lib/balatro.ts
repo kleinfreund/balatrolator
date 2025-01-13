@@ -56,7 +56,7 @@ function getScore (state: State, luck: Luck): Score {
 	log('\n0. BASE SCORE =>', score)
 
 	log('\n1. Scoring played cards …')
-	for (const card of state.scoringCards) {
+	for (const [index, card] of state.scoringCards.entries()) {
 		logGroup(`\n→ ${card}`, score)
 
 		// Debuffed cards don't participate in scoring at all.
@@ -65,7 +65,7 @@ function getScore (state: State, luck: Luck): Score {
 			continue
 		}
 
-		const triggers = getPlayedCardTriggers({ state, card })
+		const triggers = getPlayedCardTriggers({ state, card, index })
 		for (const [index, trigger] of triggers.entries()) {
 			log(`Trigger: ${index + 1} (${trigger})`)
 
@@ -211,7 +211,7 @@ function getScore (state: State, luck: Luck): Score {
 	return score
 }
 
-function getPlayedCardTriggers ({ state, card }: { state: State, card: Card }): string[] {
+function getPlayedCardTriggers ({ state, card, index }: { state: State, card: Card, index: number }): string[] {
 	const triggers = ['Regular']
 
 	if (card.seal === 'red') {
@@ -235,10 +235,8 @@ function getPlayedCardTriggers ({ state, card }: { state: State, card: Card }): 
 				break
 			}
 			case 'Hanging Chad': {
-				// TODO: I think this needs to check for the first _scoring_ card.
-				if (card.index === 0) {
-					triggers.push(name)
-					triggers.push(name)
+				if (index === 0) {
+					triggers.push(name, name)
 				}
 				break
 			}

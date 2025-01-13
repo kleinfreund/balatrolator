@@ -5,6 +5,8 @@ export default (message: string): TestCase => {
 		message,
 		initialState: {
 			cards: [
+				// Putting a non-played card first as a regression test for an issue where Hanging Chad didn't always apply correctly to the first _scoring_ card.
+				{ rank: '2', suit: 'Diamonds' },
 				{ played: true, rank: 'King', suit: 'Hearts', edition: 'polychrome', enhancement: 'glass', seal: 'red' },
 				{ played: true, rank: 'King', suit: 'Hearts', edition: 'polychrome', enhancement: 'glass', seal: 'red' },
 				{ played: true, rank: 'King', suit: 'Hearts', edition: 'polychrome', enhancement: 'glass', seal: 'red' },
