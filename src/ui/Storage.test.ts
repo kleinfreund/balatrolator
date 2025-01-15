@@ -1,7 +1,7 @@
 import { describe, test, expect, vi } from 'vitest'
 
 import type { InitialState } from '#lib/types.js'
-import { getState } from './getState.js'
+import { getState } from '#lib/getState.js'
 import { readStateFromUrl, saveStateToUrl } from './Storage.js'
 
 describe('Storage', () => {

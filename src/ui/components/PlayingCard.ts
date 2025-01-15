@@ -1,5 +1,5 @@
 import { DraggableCard } from './DraggableCard.js'
-import { uniqueId } from '#utilities/uniqueId.js'
+import { uniqueId } from '#ui/uniqueId.js'
 import { notNullish } from '#utilities/notNullish.js'
 import type { Card, Edition, Enhancement, Rank, Seal, Suit } from '#lib/types.js'
 

@@ -1,5 +1,5 @@
-import { RANK_TO_CHIP_MAP, RANK_TO_INDEX_MAP } from '#lib/data.js'
-import type { Card, HandName, Rank, Suit } from '#lib/types.js'
+import { RANK_TO_CHIP_MAP, RANK_TO_INDEX_MAP } from './data.js'
+import type { Card, HandName, Rank, Suit } from './types.js'
 
 export interface GetHandOptions {
 	hasFourFingers?: boolean

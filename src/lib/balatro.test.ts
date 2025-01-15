@@ -1,8 +1,8 @@
 import { describe, test, expect } from 'vitest'
 
 import { calculateScore } from './balatro.js'
-import { getState } from '#utilities/getState.js'
-import type { Card, InitialState } from '#lib/types.js'
+import { getState } from './getState.js'
+import type { Card, InitialState } from './types.js'
 
 export interface TestCase {
 	message: string

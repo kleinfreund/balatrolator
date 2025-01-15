@@ -1,6 +1,6 @@
-import { State } from '#/lib/types.js'
-import { deminify, minify } from '#/utilities/minifier.js'
-import { WebStorage } from '#/utilities/Storage.js'
+import { State } from '#lib/types.js'
+import { deminify, minify } from './minifier.js'
+import { WebStorage } from './Storage.js'
 
 interface Save {
 	name: string

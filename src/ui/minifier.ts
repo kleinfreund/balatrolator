@@ -1,5 +1,5 @@
 import { BLINDS, DECKS, EDITIONS, ENHANCEMENTS, HANDS, JOKER_DEFINITIONS, JOKER_EDITIONS, JOKER_NAMES, RANKS, SEALS, SUITS } from '#lib/data.js'
-import { getState } from '#utilities/getState.js'
+import { getState } from '#lib/getState.js'
 import type { Card, Edition, Enhancement, HandLevel, InitialCard, InitialJoker, Joker, JokerName, Rank, Seal, State, Suit } from '#lib/types.js'
 
 /*

@@ -1,11 +1,11 @@
-import { RANK_TO_CHIP_MAP, PLAYED_CARD_RETRIGGER_JOKER_NAMES, HELD_CARD_RETRIGGER_JOKER_NAMES, LUCKS } from '#lib/data.js'
-import { balanceMultWithLuck } from '#utilities/balanceMultWithLuck.js'
-import { formatScore } from '#utilities/formatScore.js'
+import { RANK_TO_CHIP_MAP, PLAYED_CARD_RETRIGGER_JOKER_NAMES, HELD_CARD_RETRIGGER_JOKER_NAMES, LUCKS } from './data.js'
+import { balanceMultWithLuck } from './balanceMultWithLuck.js'
+import { formatScore } from './formatScore.js'
 import { log, logGroup, logGroupEnd } from '#utilities/log.js'
-import { isFaceCard, isRank } from '#utilities/card-utilities.js'
+import { isFaceCard, isRank } from './cards.js'
 import { notNullish } from '#utilities/notNullish.js'
-import { resolveJoker } from '#utilities/resolveJokers.js'
-import type { Card, Joker, JokerCardEffect, JokerEffect, Luck, Result, ResultScore, Score, State } from '#lib/types.js'
+import { resolveJoker } from './resolveJokers.js'
+import type { Card, Joker, JokerCardEffect, JokerEffect, Luck, Result, ResultScore, Score, State } from './types.js'
 
 export function calculateScore (state: State): Result {
 	const scores: ResultScore[] = []

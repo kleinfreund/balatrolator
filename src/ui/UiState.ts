@@ -1,11 +1,11 @@
 import { HandLevel } from './components/HandLevel.js'
 import { JokerCard } from './components/JokerCard.js'
 import { PlayingCard } from './components/PlayingCard.js'
-import { getState } from '#utilities/getState.js'
+import { getState } from '#lib/getState.js'
 import { log } from '#utilities/log.js'
 import { calculateScore } from '#lib/balatro.js'
 import type { BlindName, Card, DeckName, HandName, InitialState, Joker, State, ResultScore } from '#lib/types.js'
-import { readStateFromUrl, saveStateToUrl } from '#/utilities/Storage.js'
+import { readStateFromUrl, saveStateToUrl } from './Storage.js'
 import { SaveManager } from './SaveManager.js'
 
 const dateTimeFormat = new Intl.DateTimeFormat(document.documentElement.lang, {
