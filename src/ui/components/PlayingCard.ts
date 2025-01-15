@@ -1,6 +1,6 @@
-import { DraggableCard } from './DraggableCard.js'
 import { uniqueId } from '#ui/uniqueId.js'
 import { notNullish } from '#utilities/notNullish.js'
+import { DraggableCard } from './DraggableCard.js'
 import type { Card, Edition, Enhancement, Rank, Seal, Suit } from '#lib/types.js'
 
 export class PlayingCard extends DraggableCard {

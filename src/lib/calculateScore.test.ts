@@ -1,6 +1,6 @@
 import { describe, test, expect } from 'vitest'
 
-import { calculateScore } from './balatro.js'
+import { calculateScore } from './calculateScore.js'
 import { getState } from './getState.js'
 import type { Card, InitialState } from './types.js'
 

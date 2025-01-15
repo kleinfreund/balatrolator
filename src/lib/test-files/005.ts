@@ -1,4 +1,4 @@
-import type { TestCase } from '#lib/balatro.test.js'
+import type { TestCase } from '#lib/calculateScore.test.js'
 
 export default (message: string): TestCase => {
 	return {

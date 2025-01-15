@@ -1,9 +1,9 @@
+import { log, logGroup, logGroupEnd } from '#utilities/log.js'
+import { notNullish } from '#utilities/notNullish.js'
 import { RANK_TO_CHIP_MAP, PLAYED_CARD_RETRIGGER_JOKER_NAMES, HELD_CARD_RETRIGGER_JOKER_NAMES, LUCKS } from './data.js'
 import { balanceMultWithLuck } from './balanceMultWithLuck.js'
 import { formatScore } from './formatScore.js'
-import { log, logGroup, logGroupEnd } from '#utilities/log.js'
 import { isFaceCard, isRank } from './cards.js'
-import { notNullish } from '#utilities/notNullish.js'
 import { resolveJoker } from './resolveJokers.js'
 import type { Card, Joker, JokerCardEffect, JokerEffect, Luck, Result, ResultScore, Score, State } from './types.js'
 
