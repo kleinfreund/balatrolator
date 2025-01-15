@@ -6,5 +6,4 @@
 	},
 }
 
-/* eslint-env node */
 export default config
