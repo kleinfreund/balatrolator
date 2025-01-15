@@ -3,40 +3,6 @@ import { describe, test, expect } from 'vitest'
 import { calculateScore } from './balatro.js'
 import { getState } from '#utilities/getState.js'
 import type { Card, InitialState } from '#lib/types.js'
-import case001 from './test-files/001.js'
-import case002 from './test-files/002.js'
-import case003 from './test-files/003.js'
-import case004 from './test-files/004.js'
-import case005 from './test-files/005.js'
-import case006 from './test-files/006.js'
-import case007 from './test-files/007.js'
-import case008 from './test-files/008.js'
-import case009 from './test-files/009.js'
-import case010 from './test-files/010.js'
-import case011 from './test-files/011.js'
-import case012 from './test-files/012.js'
-import case013 from './test-files/013.js'
-import case014 from './test-files/014.js'
-import case015 from './test-files/015.js'
-import case016 from './test-files/016.js'
-import case017 from './test-files/017.js'
-import case018 from './test-files/018.js'
-import case019 from './test-files/019.js'
-import case020 from './test-files/020.js'
-import case021 from './test-files/021.js'
-import case022 from './test-files/022.js'
-import case023 from './test-files/023.js'
-import case024 from './test-files/024.js'
-import case025 from './test-files/025.js'
-import case026 from './test-files/026.js'
-import case027 from './test-files/027.js'
-import case028 from './test-files/028.js'
-import case029 from './test-files/029.js'
-import case030 from './test-files/030.js'
-import case031 from './test-files/031.js'
-import case032 from './test-files/032.js'
-import case033 from './test-files/033.js'
-import case034 from './test-files/034.js'
 
 export interface TestCase {
 	message: string
@@ -46,42 +12,42 @@ export interface TestCase {
 	}
 }
 
-describe('calculateScore', () => {
+describe('calculateScore', async () => {
 	test.each<TestCase>([
-		case001('Two pair'),
-		case002('Two pair, enhancements'),
-		case003('Bonus High Card, Held steel, Supernova'),
-		case004('Flush, Held steel, Supernova'),
-		case005('Debuffed High Card, 2x held steel'),
-		case006('Pair, Sly Joker'),
-		case007('Full House, Sly Joker, Even Steven, Bootstraps, Joker, Superposition'),
-		case008('Straight, Sly Joker, Even Steven, Bootstraps, Joker, Crazy Joker'),
-		case009('Flush, glass, steel'),
-		case010('Two pair, stone'),
-		case011('Five of a Kind 1'),
-		case012('Five of a Kind 2'),
-		case013('Five of a Kind 3'),
-		case014('Flush Five 1'),
-		case015('Flush Five 2'),
-		case016('Flush Five 3'),
-		case017('Flush Five (played by haelian on 2024-02-26 18:13 UTC)'),
-		case018('Pair, 1x Blueprint, Sly Joker'),
-		case019('Pair, 2x Blueprint, Sly Joker'),
-		case020('Pair, 2x Blueprint, Sly Joker, Brainstorm'),
-		case021('Four of a Kind'),
-		case022('Four of a Kind, Flower Pot'),
-		case023('Four of a Kind, Flower Pot, Wild card'),
-		case024('Pair, inactive Verdant Leaf'),
-		case025('Pair, active Verdant Leaf'),
-		case026('Pair, The Pillar'),
-		case027('Lucky Pair'),
-		case028('Lucky Flush, Bloodstone'),
-		case029('Lucky Flush, Bloodstone, 4x Oops! All 6s'),
-		case030('Pair, Sly Joker, Observatory'),
-		case031('One wild + Flower Pot'),
-		case032('Four wild + Flower Pot'),
-		case033('Run from 2024-04-10 16:52 UTC'),
-		case034('Run from 2024-04-09 19:20 UTC'),
+		(await import('./test-files/001.js')).default('Two pair'),
+		(await import('./test-files/002.js')).default('Two pair, enhancements'),
+		(await import('./test-files/003.js')).default('Bonus High Card, Held steel, Supernova'),
+		(await import('./test-files/004.js')).default('Flush, Held steel, Supernova'),
+		(await import('./test-files/005.js')).default('Debuffed High Card, 2x held steel'),
+		(await import('./test-files/006.js')).default('Pair, Sly Joker'),
+		(await import('./test-files/007.js')).default('Full House, Sly Joker, Even Steven, Bootstraps, Joker, Superposition'),
+		(await import('./test-files/008.js')).default('Straight, Sly Joker, Even Steven, Bootstraps, Joker, Crazy Joker'),
+		(await import('./test-files/009.js')).default('Flush, glass, steel'),
+		(await import('./test-files/010.js')).default('Two pair, stone'),
+		(await import('./test-files/011.js')).default('Five of a Kind 1'),
+		(await import('./test-files/012.js')).default('Five of a Kind 2'),
+		(await import('./test-files/013.js')).default('Five of a Kind 3'),
+		(await import('./test-files/014.js')).default('Flush Five 1'),
+		(await import('./test-files/015.js')).default('Flush Five 2'),
+		(await import('./test-files/016.js')).default('Flush Five 3'),
+		(await import('./test-files/017.js')).default('Flush Five (played by haelian on 2024-02-26 18:13 UTC)'),
+		(await import('./test-files/018.js')).default('Pair, 1x Blueprint, Sly Joker'),
+		(await import('./test-files/019.js')).default('Pair, 2x Blueprint, Sly Joker'),
+		(await import('./test-files/020.js')).default('Pair, 2x Blueprint, Sly Joker, Brainstorm'),
+		(await import('./test-files/021.js')).default('Four of a Kind'),
+		(await import('./test-files/022.js')).default('Four of a Kind, Flower Pot'),
+		(await import('./test-files/023.js')).default('Four of a Kind, Flower Pot, Wild card'),
+		(await import('./test-files/024.js')).default('Pair, inactive Verdant Leaf'),
+		(await import('./test-files/025.js')).default('Pair, active Verdant Leaf'),
+		(await import('./test-files/026.js')).default('Pair, The Pillar'),
+		(await import('./test-files/027.js')).default('Lucky Pair'),
+		(await import('./test-files/028.js')).default('Lucky Flush, Bloodstone'),
+		(await import('./test-files/029.js')).default('Lucky Flush, Bloodstone, 4x Oops! All 6s'),
+		(await import('./test-files/030.js')).default('Pair, Sly Joker, Observatory'),
+		(await import('./test-files/031.js')).default('One wild + Flower Pot'),
+		(await import('./test-files/032.js')).default('Four wild + Flower Pot'),
+		(await import('./test-files/033.js')).default('Run from 2024-04-10 16:52 UTC'),
+		(await import('./test-files/034.js')).default('Run from 2024-04-09 19:20 UTC'),
 	])('$message', ({ initialState, expected }) => {
 		const score = calculateScore(getState(initialState))
 
