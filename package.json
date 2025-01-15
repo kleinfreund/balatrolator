@@ -10,11 +10,16 @@
 	"homepage": "https://balatrolator.com",
 	"repository": {
 		"type": "git",
-		"url": "https://github.com/kleinfreund/balatrolator.git"
+		"url": "git+https://github.com/kleinfreund/balatrolator.git"
 	},
 	"bugs": {
 		"url": "https://github.com/kleinfreund/balatrolator/issues"
 	},
+	"keywords": [
+		"Balatro",
+		"score",
+		"calculator"
+	],
 	"type": "module",
 	"imports": {
 		"#*": "./src/*"
