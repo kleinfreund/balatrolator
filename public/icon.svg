@@ -1,13 +1,13 @@
 <svg viewBox="0 0 256 256" width="16" height="16" xmlns="http://www.w3.org/2000/svg">
 	<rect width="256" height="256" fill="#111"></rect>
-	<line x1="40" y1="72" x2="104" y2="72" stroke="hsl(45 98% 59%)" stroke-linecap="round" stroke-linejoin="round" stroke-width="16"/>
+	<line x1="40" y1="72" x2="104" y2="72" stroke="hsl(45, 98%, 59%)" stroke-linecap="round" stroke-linejoin="round" stroke-width="16"/>
 
-	<line x1="160" y1="48" x2="208" y2="96" stroke="hsl(9 94% 53%)" stroke-linecap="round" stroke-linejoin="round" stroke-width="16"/>
-	<line x1="208" y1="48" x2="160" y2="96" stroke="hsl(9 94% 53%)" stroke-linecap="round" stroke-linejoin="round" stroke-width="16"/>
+	<line x1="160" y1="48" x2="208" y2="96" stroke="hsl(9, 94%, 53%)" stroke-linecap="round" stroke-linejoin="round" stroke-width="16"/>
+	<line x1="208" y1="48" x2="160" y2="96" stroke="hsl(9, 94%, 53%)" stroke-linecap="round" stroke-linejoin="round" stroke-width="16"/>
 
-	<line x1="72" y1="152" x2="72" y2="216" stroke="hsl(221 85% 70%)" stroke-linecap="round" stroke-linejoin="round" stroke-width="16"/>
-	<line x1="40" y1="184" x2="104" y2="184" stroke="hsl(221 85% 70%)" stroke-linecap="round" stroke-linejoin="round" stroke-width="16"/>
+	<line x1="72" y1="152" x2="72" y2="216" stroke="hsl(221, 85%, 70%)" stroke-linecap="round" stroke-linejoin="round" stroke-width="16"/>
+	<line x1="40" y1="184" x2="104" y2="184" stroke="hsl(221, 85%, 70%)" stroke-linecap="round" stroke-linejoin="round" stroke-width="16"/>
 
-	<line x1="152" y1="168" x2="216" y2="168" stroke="hsl(145 94% 35%)" stroke-linecap="round" stroke-linejoin="round" stroke-width="16"/>
-	<line x1="152" y1="200" x2="216" y2="200" stroke="hsl(145 94% 35%)" stroke-linecap="round" stroke-linejoin="round" stroke-width="16"/>
+	<line x1="152" y1="168" x2="216" y2="168" stroke="hsl(145, 94%, 35%)" stroke-linecap="round" stroke-linejoin="round" stroke-width="16"/>
+	<line x1="152" y1="200" x2="216" y2="200" stroke="hsl(145, 94%, 35%)" stroke-linecap="round" stroke-linejoin="round" stroke-width="16"/>
 </svg>
