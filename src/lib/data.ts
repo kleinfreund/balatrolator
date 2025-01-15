@@ -1,8 +1,6 @@
 import { balanceMultWithLuck } from '#utilities/balanceMultWithLuck.js'
 import { flush, nOfAKind, straight, twoPair } from '#lib/getHand.js'
-import { isFaceCard } from '#utilities/isFaceCard.js'
-import { isRank } from '#utilities/isRank.js'
-import { isSuit } from '#utilities/isSuit.js'
+import { isFaceCard, isRank, isSuit } from '#utilities/card-utilities.js'
 import type { BlindName, Card, DeckName, Edition, Enhancement, HandName, JokerDefinition, JokerEdition, JokerName, Luck, Rank, Score, Seal, Suit } from '#lib/types.js'
 
 export const BLINDS: BlindName[] = ['Small Blind', 'Big Blind', 'The Hook', 'The Ox', 'The House', 'The Wall', 'The Wheel', 'The Arm', 'The Club', 'The Fish', 'The Psychic', 'The Goad', 'The Water', 'The Window', 'The Manacle', 'The Eye', 'The Mouth', 'The Plant', 'The Serpent', 'The Pillar', 'The Needle', 'The Head', 'The Tooth', 'The Flint', 'The Mark', 'Amber Acorn', 'Verdant Leaf', 'Violet Vessel', 'Crimson Heart', 'Cerulean Bell']
