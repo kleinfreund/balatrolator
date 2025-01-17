@@ -110,7 +110,7 @@ function getJokers (initialJokers: InitialJoker[]): Joker[] {
 			playedCardEffect,
 			heldCardEffect,
 		} = JOKER_DEFINITIONS[name]
-		const modifiers = [edition].filter((modifier) => modifier !== undefined)
+		const modifiers = [edition !== 'base' ? edition : undefined].filter((modifier) => modifier !== undefined)
 		const toString = () => `${name}` + (modifiers.length > 0 ? ` (${modifiers.join(', ')})` : '')
 
 		return {
@@ -145,7 +145,11 @@ export function getCards (cards: InitialCard[]): Card[] {
 			played = false,
 		} = card
 
-		const modifiers = [edition, enhancement, seal].filter((modifier) => modifier !== undefined)
+		const modifiers = [
+			edition !== 'base' ? edition : undefined,
+			enhancement !== 'none' ? enhancement : undefined,
+			seal !== 'none' ? seal : undefined,
+		].filter((modifier) => modifier !== undefined)
 		const toString = () => `${rank} of ${suit}` + (modifiers.length > 0 ? ` (${modifiers.join(', ')})` : '')
 
 		return {

@@ -23,9 +23,14 @@ export interface BaseScore {
 	multiplier: number
 }
 
-export interface Score {
-	chips: ['+', number][]
-	multiplier: ['+' | '*', number][]
+export interface ScoreValue {
+	chips?: ['+' | '*', number]
+	multiplier?: ['+' | '*', number]
+	phase: 'base' | 'played-cards' | 'held-cards' | 'jokers' | 'consumables' | 'balancing'
+	card?: Card
+	joker?: Joker
+	type?: 'rank' | 'enhancement' | 'edition'
+	trigger?: string
 }
 
 export interface InitialCard {
@@ -45,8 +50,9 @@ export interface Card extends Required<InitialCard> {
 
 export interface EffectOptions {
 	state: State
-	score: Score
+	score: ScoreValue[]
 	luck: Luck
+	trigger: string
 }
 
 export interface CardEffectOptions extends EffectOptions {

@@ -1,26 +1,24 @@
-import { log, logGroup, logGroupEnd } from '#utilities/log.js'
+import { log } from '#utilities/log.js'
 import { notNullish } from '#utilities/notNullish.js'
 import { RANK_TO_CHIP_MAP, PLAYED_CARD_RETRIGGER_JOKER_NAMES, HELD_CARD_RETRIGGER_JOKER_NAMES, LUCKS } from './data.js'
 import { balanceMultWithLuck } from './balanceMultWithLuck.js'
 import { formatScore } from './formatScore.js'
 import { isFaceCard, isRank } from './cards.js'
 import { resolveJoker } from './resolveJokers.js'
-import type { Card, Joker, JokerCardEffect, JokerEffect, Luck, Result, ResultScore, Score, State } from './types.js'
 import { doBigMath } from './doBigMath.js'
+import type { Card, Joker, JokerCardEffect, JokerEffect, Luck, Result, ResultScore, ScoreValue, State } from './types.js'
 
 export function calculateScore (state: State): Result {
-	const scores: ResultScore[] = []
-
-	for (const luck of LUCKS) {
+	const scores = LUCKS.map<ResultScore>((luck) => {
 		const initialScore = getScore(state, luck)
 		const score = doBigMath(initialScore, state.deck)
 
-		scores.push({
+		return {
 			score,
 			formattedScore: formatScore(score),
 			luck,
-		})
-	}
+		}
+	})
 
 	return {
 		hand: state.playedHand,
@@ -29,69 +27,97 @@ export function calculateScore (state: State): Result {
 	}
 }
 
-function getScore (state: State, luck: Luck): Score {
+function getScore (state: State, luck: Luck): ScoreValue[] {
 	const baseScore = state.handBaseScores[state.playedHand]
 
 	// Determine base chips and multiplier.
-	log('\n0. Determining base score …')
 	// The Flint halves the base chips and multiplier.
 	const baseFactor = (state.blind.name === 'The Flint' && state.blind.active ? 0.5 : 1)
 	// The base score seems to be rounded here.
-	const score: Score = {
-		chips: [['+', Math.round(baseScore.chips * baseFactor)]],
-		multiplier: [['+', Math.round(baseScore.multiplier * baseFactor)]],
-	}
-	log('\n0. BASE SCORE =>', score)
+	const score = createScoreProxy<ScoreValue[]>([])
+	score.push({
+		chips: ['+', Math.round(baseScore.chips * baseFactor)],
+		phase: 'base',
+	})
+	score.push({
+		multiplier: ['+', Math.round(baseScore.multiplier * baseFactor)],
+		phase: 'base',
+	})
 
-	log('\n1. Scoring played cards …')
 	for (const [index, card] of state.scoringCards.entries()) {
-		logGroup(`\n→ ${card}`, score)
 
 		// Debuffed cards don't participate in scoring at all.
 		if (card.debuffed) {
-			logGroupEnd('!!! Debuffed !!!')
 			continue
 		}
 
-		const triggers = getPlayedCardTriggers({ state, card, index })
-		for (const [index, trigger] of triggers.entries()) {
-			log(`Trigger: ${index + 1} (${trigger})`)
-
+		for (const trigger of getPlayedCardTriggers({ state, card, index })) {
 			// 1. Rank
 			if (card.enhancement !== 'stone') {
-				score.chips.push(['+', RANK_TO_CHIP_MAP[card.rank]])
-				log(score, '(+Chips from rank)')
+				score.push({
+					chips: ['+', RANK_TO_CHIP_MAP[card.rank]],
+					phase: 'played-cards',
+					card,
+					type: 'rank',
+					trigger,
+				})
 			}
 
 			// 2. Enhancement
 			switch (card.enhancement) {
 				case 'stone': {
-					score.chips.push(['+', 50])
-					log(score, '(+Chips from stone enhancement)')
+					score.push({
+						chips: ['+', 50],
+						phase: 'played-cards',
+						card,
+						type: 'enhancement',
+						trigger,
+					})
 					break
 				}
 				case 'bonus': {
-					score.chips.push(['+', 30])
-					log(score, '(+Chips from bonus enhancement)')
+					score.push({
+						chips: ['+', 30],
+						phase: 'played-cards',
+						card,
+						type: 'enhancement',
+						trigger,
+					})
 					break
 				}
 				case 'mult': {
-					score.multiplier.push(['+', 4])
-					log(score, '(+Mult from mult enhancement)')
+					score.push({
+						multiplier: ['+', 4],
+						phase: 'played-cards',
+						card,
+						type: 'enhancement',
+						trigger,
+					})
 					break
 				}
 				case 'lucky': {
 					const denominator = 5
 					const plusMult = 20
 					const oopses = state.jokers.filter(({ name }) => name === 'Oops! All 6s')
+					const mult = balanceMultWithLuck(plusMult, oopses.length, denominator, luck, 'plus')
 
-					score.multiplier.push(['+', balanceMultWithLuck(plusMult, oopses.length, denominator, luck, 'plus')])
-					log(score, '(+Mult from lucky enhancement)')
+					score.push({
+						multiplier: ['+', mult],
+						phase: 'played-cards',
+						card,
+						type: 'enhancement',
+						trigger,
+					})
 					break
 				}
 				case 'glass': {
-					score.multiplier.push(['*', 2])
-					log(score, '(xMult from glass enhancement)')
+					score.push({
+						multiplier: ['*', 2],
+						phase: 'played-cards',
+						card,
+						type: 'enhancement',
+						trigger,
+					})
 					break
 				}
 			}
@@ -99,18 +125,33 @@ function getScore (state: State, luck: Luck): Score {
 			// 3. Edition
 			switch (card.edition) {
 				case 'foil': {
-					score.chips.push(['+', 50])
-					log(score, '(+Chips from foil edition)')
+					score.push({
+						chips: ['+', 50],
+						phase: 'played-cards',
+						card,
+						type: 'edition',
+						trigger,
+					})
 					break
 				}
 				case 'holographic': {
-					score.multiplier.push(['+', 10])
-					log(score, '(+Mult from holographic edition)')
+					score.push({
+						multiplier: ['+', 10],
+						phase: 'played-cards',
+						card,
+						type: 'edition',
+						trigger,
+					})
 					break
 				}
 				case 'polychrome': {
-					score.multiplier.push(['*', 1.5])
-					log(score, '(xMult from polychrome edition)')
+					score.push({
+						multiplier: ['*', 1.5],
+						phase: 'played-cards',
+						card,
+						type: 'edition',
+						trigger,
+					})
 					break
 				}
 			}
@@ -121,29 +162,25 @@ function getScore (state: State, luck: Luck): Score {
 			}
 		}
 
-		logGroupEnd(`← ${card}`, score)
 	}
-	log('\n1. PLAYED CARD SCORE =>', score)
 
-	log('\n2. Scoring held cards …')
 	for (const card of state.cards.filter(({ played }) => !played)) {
-		logGroup(`\n→ ${card}`, score)
 
 		// Debuffed cards don't participate in scoring at all.
 		if (card.debuffed) {
-			logGroupEnd('!!! Debuffed !!!')
 			continue
 		}
 
-		const triggers = getHeldCardTriggers({ state, card })
-		for (const [index, trigger] of triggers.entries()) {
-			log(`Trigger: ${index + 1} (${trigger})`)
-
+		for (const trigger of getHeldCardTriggers({ state, card })) {
 			// 1. Enhancement
 			switch (card.enhancement) {
 				case 'steel': {
-					score.multiplier.push(['*', 1.5])
-					log(score, '(xMult from steel enhancement)')
+					score.push({
+						multiplier: ['*', 1.5],
+						phase: 'held-cards', card,
+						type: 'enhancement',
+						trigger,
+					})
 					break
 				}
 			}
@@ -151,33 +188,38 @@ function getScore (state: State, luck: Luck): Score {
 			// 2. Joker effects for held cards
 			for (const joker of state.jokers) {
 				scoreJokerCardEffect(joker.heldCardEffect, { state, score, joker, card, luck })
-				log(score, `(${joker})`)
 			}
 		}
 
-		logGroupEnd(`← ${card}`, score)
 	}
-	log('\n2. HELD CARD SCORE =>', score)
 
-	log('\n3. Scoring jokers …')
 	for (const joker of state.jokers) {
-		logGroup(`\n→ ${joker}`, score)
 
 		// 1. EDITION
 		switch (joker.edition) {
 			case 'foil': {
-				score.chips.push(['+', 50])
-				log(score, '(+Chips from foil edition)')
+				score.push({
+					chips: ['+', 50],
+					phase: 'jokers',
+					joker,
+					type: 'edition',
+				})
 				break
 			}
 			case 'holographic': {
-				score.multiplier.push(['+', 10])
-				log(score, '(+Mult from holographic edition)')
+				score.push({
+					multiplier: ['+', 10],
+					phase: 'jokers', joker,
+					type: 'edition',
+				})
 				break
 			}
 			case 'polychrome': {
-				score.multiplier.push(['*', 1.5])
-				log(score, '(xMult from polychrome edition)')
+				score.push({
+					multiplier: ['*', 1.5],
+					phase: 'jokers', joker,
+					type: 'edition',
+				})
 				break
 			}
 		}
@@ -185,18 +227,36 @@ function getScore (state: State, luck: Luck): Score {
 		// 2. JOKER EFFECTS
 		scoreJokerEffect(joker.effect, { state, score, joker, luck })
 
-		logGroupEnd(`← ${joker}`, score)
 	}
-	log('\n3. JOKER SCORE =>', score)
 
-	log('\n4. Scoring Observatory …')
 	const planetCount = state.observatory[state.playedHand] ?? 0
 	if (planetCount > 0) {
-		score.multiplier.push(['*', planetCount * 1.5])
+		score.push({
+			multiplier: ['*', planetCount * 1.5],
+			phase: 'consumables',
+		})
 	}
-	log('\n4. OBSERVATORY SCORE =>', score)
 
 	return score
+}
+
+/**
+ * Create a proxy for the array holding the individual score values that also prints logs for each score-affecting change.
+ */
+function createScoreProxy<T extends ScoreValue[]> (value: T) {
+	return new Proxy<T>(value, {
+		get (target, prop) {
+			if (prop === 'push') {
+				return (...scoreValues: Parameters<typeof target.push>) => {
+					for (const scoreValue of scoreValues) {
+						log(scoreValue)
+					}
+					return target.push(...scoreValues)
+				}
+			}
+			return Reflect.get(target, prop)
+		},
+	})
 }
 
 function getPlayedCardTriggers ({ state, card, index }: { state: State, card: Card, index: number }): string[] {
@@ -275,7 +335,7 @@ function getHeldCardTriggers ({ state, card }: { state: State, card: Card }): st
 	return triggers
 }
 
-function scoreJokerEffect (effect: JokerEffect | undefined, { state, score, joker, luck }: { state: State, score: Score, joker: Joker, luck: Luck }) {
+function scoreJokerEffect (effect: JokerEffect | undefined, { state, score, joker, luck }: { state: State, score: ScoreValue[], joker: Joker, luck: Luck }) {
 	const triggers = ['Regular']
 
 	// Increase triggers from Blueprint/Brainstorm
@@ -285,40 +345,35 @@ function scoreJokerEffect (effect: JokerEffect | undefined, { state, score, joke
 		.filter(notNullish)
 
 	for (const { index, name } of targets) {
-		if (index === joker.index) triggers.push(name)
+		if (index === joker.index) triggers.push(`copied ${name}`)
 	}
 
 	const jokersWithIndirectEffects = state.jokers.filter((joker) => joker.indirectEffect)
 
-	for (const [index, trigger] of triggers.entries()) {
-		log(`Trigger: ${index + 1} (${trigger})`)
+	for (const trigger of triggers) {
 		if (effect) {
-			effect.call(joker, { state, score, luck })
-			log(score, `(${joker.name})`)
+			effect.call(joker, { state, score, luck, trigger })
 		}
 
 		for (const target of targets) {
 			if (target.indirectEffect) {
-				target.indirectEffect({ state, score, joker, luck })
-				log(score, trigger)
+				target.indirectEffect({ state, score, joker, luck, trigger })
 			}
 		}
 
 		for (const jokersWithIndirectEffect of jokersWithIndirectEffects) {
 			if (jokersWithIndirectEffect.indirectEffect) {
-				jokersWithIndirectEffect.indirectEffect({ state, score, joker, luck })
-				log(score, `(${jokersWithIndirectEffect.name})`)
+				jokersWithIndirectEffect.indirectEffect({ state, score, joker, luck, trigger })
 			}
 		}
 	}
 }
 
-function scoreJokerCardEffect (effect: JokerCardEffect | undefined, { state, score, joker, card, luck }: { state: State, score: Score, joker: Joker, card: Card, luck: Luck }) {
+function scoreJokerCardEffect (effect: JokerCardEffect | undefined, { state, score, joker, card, luck }: { state: State, score: ScoreValue[], joker: Joker, card: Card, luck: Luck }) {
 	if (!effect) {
 		return
 	}
 
-	logGroup(`→ ${joker}`)
 	const triggers = ['Regular']
 
 	// Increase triggers from Blueprint/Brainstorm
@@ -328,13 +383,10 @@ function scoreJokerCardEffect (effect: JokerCardEffect | undefined, { state, sco
 		.filter(notNullish)
 
 	for (const { index, name } of targets) {
-		if (index === joker.index) triggers.push(name)
+		if (index === joker.index) triggers.push(`copied ${name}`)
 	}
 
-	for (let trigger = 0; trigger < triggers.length; trigger++) {
-		log(`Trigger: ${trigger + 1} (${triggers[trigger]})`)
-		effect.call(joker, { state, score, joker, card, luck })
-		log(score, `(${joker.name})`)
+	for (const trigger of triggers) {
+		effect.call(joker, { state, score, joker, card, luck, trigger })
 	}
-	logGroupEnd('←', score)
 }

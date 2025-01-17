@@ -1,6 +1,5 @@
 import { getState } from '#lib/getState.js'
 import { calculateScore } from '#lib/calculateScore.js'
-import { log } from '#utilities/log.js'
 import { HandLevel } from './components/HandLevel.js'
 import { JokerCard } from './components/JokerCard.js'
 import { PlayingCard } from './components/PlayingCard.js'
@@ -252,8 +251,7 @@ export class UiState {
 	}
 
 	#updateScore (state: State) {
-		const { hand, scoringCards, scores } = calculateScore(state)
-		log({ hand, scoringCards, scores })
+		const { hand, scores } = calculateScore(state)
 
 		const distinctScores = new Map<string, ResultScore>()
 		for (const score of scores) {

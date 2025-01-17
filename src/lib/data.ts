@@ -97,123 +97,212 @@ export const HELD_CARD_RETRIGGER_JOKER_NAMES: JokerName[] = [
 export const JOKER_DEFINITIONS: Record<JokerName, JokerDefinition> = {
 	'Joker': {
 		rarity: 'common',
-		effect ({ score }) {
-			score.multiplier.push(['+', 4])
+		effect ({ score, trigger }) {
+			score.push({
+				multiplier: ['+', 4],
+				phase: 'jokers',
+				joker: this,
+				trigger,
+			})
 		},
 	},
 	'Greedy Joker': {
 		rarity: 'common',
-		playedCardEffect ({ score, card }) {
-			score.multiplier.push(['+', (isSuit(card, 'Diamonds') ? 3 : 0)])
+		playedCardEffect ({ score, card, trigger }) {
+			score.push({
+				multiplier: ['+', isSuit(card, 'Diamonds') ? 3 : 0],
+				phase: 'played-cards',
+				card,
+				joker: this,
+				trigger,
+			})
 		},
 	},
 	'Lusty Joker': {
 		rarity: 'common',
-		playedCardEffect ({ score, card }) {
-			score.multiplier.push(['+', (isSuit(card, 'Hearts') ? 3 : 0)])
+		playedCardEffect ({ score, card, trigger }) {
+			score.push({
+				multiplier: ['+', isSuit(card, 'Hearts') ? 3 : 0],
+				phase: 'played-cards',
+				card,
+				joker: this,
+				trigger,
+			})
 		},
 	},
 	'Wrathful Joker': {
 		rarity: 'common',
-		playedCardEffect ({ score, card }) {
-			score.multiplier.push(['+', (isSuit(card, 'Spades') ? 3 : 0)])
+		playedCardEffect ({ score, card, trigger }) {
+			score.push({
+				multiplier: ['+', isSuit(card, 'Spades') ? 3 : 0],
+				phase: 'played-cards',
+				card,
+				joker: this,
+				trigger,
+			})
 		},
 	},
 	'Gluttonous Joker': {
 		rarity: 'common',
-		playedCardEffect ({ score, card }) {
-			score.multiplier.push(['+', (isSuit(card, 'Clubs') ? 3 : 0)])
+		playedCardEffect ({ score, card, trigger }) {
+			score.push({
+				multiplier: ['+', isSuit(card, 'Clubs') ? 3 : 0],
+				phase: 'played-cards',
+				card,
+				joker: this,
+				trigger,
+			})
 		},
 	},
 	'Jolly Joker': {
 		rarity: 'common',
-		effect ({ score, state }) {
+		effect ({ score, state, trigger }) {
 			const cards = nOfAKind(state.cards.filter(({ played }) => played), 2)
-			score.multiplier.push(['+', (cards.length > 0 ? 8 : 0)])
+			score.push({
+				multiplier: ['+', cards.length > 0 ? 8 : 0],
+				phase: 'jokers',
+				joker: this,
+				trigger,
+			})
 		},
 	},
 	'Zany Joker': {
 		rarity: 'common',
-		effect ({ score, state }) {
+		effect ({ score, state, trigger }) {
 			const cards = nOfAKind(state.cards.filter(({ played }) => played), 3)
-			score.multiplier.push(['+', (cards.length > 0 ? 8 : 0)])
+			score.push({
+				multiplier: ['+', cards.length > 0 ? 8 : 0],
+				phase: 'jokers',
+				joker: this,
+				trigger,
+			})
 		},
 	},
 	'Mad Joker': {
 		rarity: 'common',
-		effect ({ score, state }) {
+		effect ({ score, state, trigger }) {
 			const cards = twoPair(state.cards.filter(({ played }) => played))
-			score.multiplier.push(['+', (cards.length > 0 ? 8 : 0)])
+			score.push({
+				multiplier: ['+', cards.length > 0 ? 8 : 0],
+				phase: 'jokers',
+				joker: this,
+				trigger,
+			})
 		},
 	},
 	'Crazy Joker': {
 		rarity: 'common',
-		effect ({ score, state }) {
+		effect ({ score, state, trigger }) {
 			const hasFourFingers = state.jokerSet.has('Four Fingers')
 			const hasShortcut = state.jokerSet.has('Shortcut')
 			const cards = straight(state.cards.filter(({ played }) => played), hasFourFingers, hasShortcut)
-			score.multiplier.push(['+', (cards.length > 0 ? 12 : 0)])
+			score.push({
+				multiplier: ['+', cards.length > 0 ? 12 : 0],
+				phase: 'jokers',
+				joker: this,
+				trigger,
+			})
 		},
 	},
 	'Droll Joker': {
 		rarity: 'common',
-		effect ({ score, state }) {
+		effect ({ score, state, trigger }) {
 			const hasFourFingers = state.jokerSet.has('Four Fingers')
 			const hasSmearedJoker = state.jokerSet.has('Smeared Joker')
 			const cards = flush(state.cards.filter(({ played }) => played), hasFourFingers, hasSmearedJoker)
-			score.multiplier.push(['+', (cards.length > 0 ? 10 : 0)])
+			score.push({
+				multiplier: ['+', cards.length > 0 ? 10 : 0],
+				phase: 'jokers',
+				joker: this,
+				trigger,
+			})
 		},
 	},
 	'Sly Joker': {
 		rarity: 'common',
-		effect ({ score, state }) {
+		effect ({ score, state, trigger }) {
 			const cards = nOfAKind(state.cards.filter(({ played }) => played), 2)
-			score.chips.push(['+', cards.length > 0 ? 50 : 0])
+			score.push({
+				chips: ['+', cards.length > 0 ? 50 : 0],
+				phase: 'jokers',
+				joker: this,
+				trigger,
+			})
 		},
 	},
 	'Wily Joker': {
 		rarity: 'common',
-		effect ({ score, state }) {
+		effect ({ score, state, trigger }) {
 			const cards = nOfAKind(state.cards.filter(({ played }) => played), 3)
-			score.chips.push(['+', cards.length > 0 ? 100 : 0])
+			score.push({
+				chips: ['+', cards.length > 0 ? 100 : 0],
+				phase: 'jokers',
+				joker: this,
+				trigger,
+			})
 		},
 	},
 	'Clever Joker': {
 		rarity: 'common',
-		effect ({ score, state }) {
+		effect ({ score, state, trigger }) {
 			const cards = twoPair(state.cards.filter(({ played }) => played))
-			score.chips.push(['+', cards.length > 0 ? 150 : 0])
+			score.push({
+				chips: ['+', cards.length > 0 ? 150 : 0],
+				phase: 'jokers',
+				joker: this,
+				trigger,
+			})
 		},
 	},
 	'Devious Joker': {
 		rarity: 'common',
-		effect ({ score, state }) {
+		effect ({ score, state, trigger }) {
 			const hasFourFingers = state.jokerSet.has('Four Fingers')
 			const hasShortcut = state.jokerSet.has('Shortcut')
 			const cards = straight(state.cards.filter(({ played }) => played), hasFourFingers, hasShortcut)
-			score.chips.push(['+', cards.length > 0 ? 100 : 0])
+			score.push({
+				chips: ['+', cards.length > 0 ? 100 : 0],
+				phase: 'jokers',
+				joker: this,
+				trigger,
+			})
 		},
 	},
 	'Crafty Joker': {
 		rarity: 'common',
-		effect ({ score, state }) {
+		effect ({ score, state, trigger }) {
 			const hasFourFingers = state.jokerSet.has('Four Fingers')
 			const hasSmearedJoker = state.jokerSet.has('Smeared Joker')
 			const cards = flush(state.cards.filter(({ played }) => played), hasFourFingers, hasSmearedJoker)
-			score.chips.push(['+', cards.length > 0 ? 80 : 0])
+			score.push({
+				chips: ['+', cards.length > 0 ? 80 : 0],
+				phase: 'jokers',
+				joker: this,
+				trigger,
+			})
 		},
 	},
 	'Half Joker': {
 		rarity: 'common',
-		effect ({ score, state }) {
-			score.multiplier.push(['+', (state.cards.filter(({ played }) => played).length <= 3 ? 20 : 0)])
+		effect ({ score, state, trigger }) {
+			score.push({
+				multiplier: ['+', state.cards.filter(({ played }) => played).length <= 3 ? 20 : 0],
+				phase: 'jokers',
+				joker: this,
+				trigger,
+			})
 		},
 	},
 	'Joker Stencil': {
 		rarity: 'uncommon',
-		effect ({ score, state }) {
+		effect ({ score, state, trigger }) {
 			const nonStencilNonNegativeJokers = state.jokers.filter((joker) => joker.name !== 'Joker Stencil' && joker.edition !== 'negative')
-			score.multiplier.push(['*', Math.max(1, state.jokerSlots - nonStencilNonNegativeJokers.length)])
+			score.push({
+				multiplier: ['*', Math.max(1, state.jokerSlots - nonStencilNonNegativeJokers.length)],
+				phase: 'jokers',
+				joker: this,
+				trigger,
+			})
 		},
 	},
 	'Four Fingers': {
@@ -228,20 +317,35 @@ export const JOKER_DEFINITIONS: Record<JokerName, JokerDefinition> = {
 	'Ceremonial Dagger': {
 		rarity: 'uncommon',
 		hasPlusMultiplierInput: true,
-		effect ({ score }) {
-			score.multiplier.push(['+', this.plusMultiplier])
+		effect ({ score, trigger }) {
+			score.push({
+				multiplier: ['+', this.plusMultiplier],
+				phase: 'jokers',
+				joker: this,
+				trigger,
+			})
 		},
 	},
 	'Banner': {
 		rarity: 'common',
-		effect ({ score, state }) {
-			score.chips.push(['+', state.discards * 30])
+		effect ({ score, state, trigger }) {
+			score.push({
+				chips: ['+', state.discards * 30],
+				phase: 'jokers',
+				joker: this,
+				trigger,
+			})
 		},
 	},
 	'Mystic Summit': {
 		rarity: 'common',
-		effect ({ score, state }) {
-			score.multiplier.push(['+', (state.discards === 0 ? 15 : 0)])
+		effect ({ score, state, trigger }) {
+			score.push({
+				multiplier: ['+', state.discards === 0 ? 15 : 0],
+				phase: 'jokers',
+				joker: this,
+				trigger,
+			})
 		},
 	},
 	'Marble Joker': {
@@ -250,8 +354,13 @@ export const JOKER_DEFINITIONS: Record<JokerName, JokerDefinition> = {
 	'Loyalty Card': {
 		rarity: 'uncommon',
 		hasIsActiveInput: true,
-		effect ({ score }) {
-			score.multiplier.push(['*', (this.active ? 4 : 0)])
+		effect ({ score, trigger }) {
+			score.push({
+				multiplier: ['*', this.active ? 4 : 0],
+				phase: 'jokers',
+				joker: this,
+				trigger,
+			})
 		},
 	},
 	'8 Ball': {
@@ -259,8 +368,13 @@ export const JOKER_DEFINITIONS: Record<JokerName, JokerDefinition> = {
 	},
 	'Misprint': {
 		rarity: 'common',
-		effect ({ score, luck }) {
-			score.multiplier.push(['+', luck === 'all' ? 23 : luck === 'none' ? 0 : 11.5])
+		effect ({ score, luck, trigger }) {
+			score.push({
+				multiplier: ['+', luck === 'all' ? 23 : luck === 'none' ? 0 : 11.5],
+				phase: 'jokers',
+				joker: this,
+				trigger,
+			})
 		},
 	},
 	'Dusk': {
@@ -268,13 +382,18 @@ export const JOKER_DEFINITIONS: Record<JokerName, JokerDefinition> = {
 	},
 	'Raised Fist': {
 		rarity: 'common',
-		effect ({ score, state }) {
+		effect ({ score, state, trigger }) {
 			const ranks = state.cards
 				.filter(({ played }) => !played)
 				.map(({ rank }) => RANK_TO_CHIP_MAP[rank])
 			ranks.sort((a, b) => a - b)
 			const lowestCardRank = ranks[0]
-			score.multiplier.push(['+', (lowestCardRank ? (2 * lowestCardRank) : 0)])
+			score.push({
+				multiplier: ['+', lowestCardRank ? (2 * lowestCardRank) : 0],
+				phase: 'jokers',
+				joker: this,
+				trigger,
+			})
 		},
 	},
 	'Chaos the Clown': {
@@ -282,27 +401,49 @@ export const JOKER_DEFINITIONS: Record<JokerName, JokerDefinition> = {
 	},
 	'Fibonacci': {
 		rarity: 'uncommon',
-		playedCardEffect ({ score, card }) {
-			score.multiplier.push(['+', (isRank(card, ['Ace', '2', '3', '5', '8']) ? 8 : 0)])
+		playedCardEffect ({ score, card, trigger }) {
+			score.push({
+				multiplier: ['+', isRank(card, ['Ace', '2', '3', '5', '8']) ? 8 : 0],
+				phase: 'played-cards',
+				card,
+				joker: this,
+				trigger,
+			})
 		},
 	},
 	'Steel Joker': {
 		rarity: 'uncommon',
 		hasTimesMultiplierInput: true,
-		effect ({ score }) {
-			score.multiplier.push(['*', this.timesMultiplier])
+		effect ({ score, trigger }) {
+			score.push({
+				multiplier: ['*', this.timesMultiplier],
+				phase: 'jokers',
+				joker: this,
+				trigger,
+			})
 		},
 	},
 	'Scary Face': {
 		rarity: 'common',
-		playedCardEffect ({ score, state, card }) {
-			score.chips.push(['+', isFaceCard(card, state.jokerSet.has('Pareidolia')) ? 30 : 0])
+		playedCardEffect ({ score, state, card, trigger }) {
+			score.push({
+				chips: ['+', isFaceCard(card, state.jokerSet.has('Pareidolia')) ? 30 : 0],
+				phase: 'played-cards',
+				card,
+				joker: this,
+				trigger,
+			})
 		},
 	},
 	'Abstract Joker': {
 		rarity: 'common',
-		effect ({ score, state }) {
-			score.multiplier.push(['+', state.jokers.length])
+		effect ({ score, state, trigger }) {
+			score.push({
+				multiplier: ['+', state.jokers.length],
+				phase: 'jokers',
+				joker: this,
+				trigger,
+			})
 		},
 	},
 	'Delayed Gratification': {
@@ -316,28 +457,57 @@ export const JOKER_DEFINITIONS: Record<JokerName, JokerDefinition> = {
 	},
 	'Gros Michel': {
 		rarity: 'common',
-		effect ({ score }) {
-			score.multiplier.push(['+', 15])
+		effect ({ score, trigger }) {
+			score.push({
+				multiplier: ['+', 15],
+				phase: 'jokers',
+				joker: this,
+				trigger,
+			})
 		},
 	},
 	'Even Steven': {
 		rarity: 'common',
-		playedCardEffect ({ score, card }) {
-			score.multiplier.push(['+', (isRank(card, ['10', '8', '6', '4', '2']) ? 4 : 0)])
+		playedCardEffect ({ score, card, trigger }) {
+			score.push({
+				multiplier: ['+', isRank(card, ['10', '8', '6', '4', '2']) ? 4 : 0],
+				phase: 'played-cards',
+				card,
+				joker: this,
+				trigger,
+			})
 		},
 	},
 	'Odd Todd': {
 		rarity: 'common',
-		playedCardEffect ({ score, card }) {
-			score.chips.push(['+', isRank(card, ['Ace', '9', '7', '5', '3']) ? 31 : 0])
+		playedCardEffect ({ score, card, trigger }) {
+			score.push({
+				chips: ['+', isRank(card, ['Ace', '9', '7', '5', '3']) ? 31 : 0],
+				phase: 'played-cards',
+				card,
+				joker: this,
+				trigger,
+			})
 		},
 	},
 	'Scholar': {
 		rarity: 'common',
-		playedCardEffect ({ score, card }) {
+		playedCardEffect ({ score, card, trigger }) {
 			const isAce = isRank(card, 'Ace')
-			score.chips.push(['+', isAce ? 20 : 0])
-			score.multiplier.push(['+', (isAce ? 4 : 0)])
+			score.push({
+				chips: ['+', isAce ? 20 : 0],
+				phase: 'played-cards',
+				card,
+				joker: this,
+				trigger,
+			})
+			score.push({
+				multiplier: ['+', isAce ? 4 : 0],
+				phase: 'played-cards',
+				card,
+				joker: this,
+				trigger,
+			})
 		},
 	},
 	'Business Card': {
@@ -345,15 +515,25 @@ export const JOKER_DEFINITIONS: Record<JokerName, JokerDefinition> = {
 	},
 	'Supernova': {
 		rarity: 'common',
-		effect ({ score, state }) {
-			score.multiplier.push(['+', state.handLevels[state.playedHand].plays + 1])
+		effect ({ score, state, trigger }) {
+			score.push({
+				multiplier: ['+', state.handLevels[state.playedHand].plays + 1],
+				phase: 'jokers',
+				joker: this,
+				trigger,
+			})
 		},
 	},
 	'Ride the Bus': {
 		rarity: 'common',
 		hasPlusMultiplierInput: true,
-		effect ({ score }) {
-			score.multiplier.push(['+', this.plusMultiplier])
+		effect ({ score, trigger }) {
+			score.push({
+				multiplier: ['+', this.plusMultiplier],
+				phase: 'jokers',
+				joker: this,
+				trigger,
+			})
 		},
 	},
 	'Space Joker': {
@@ -368,25 +548,40 @@ export const JOKER_DEFINITIONS: Record<JokerName, JokerDefinition> = {
 	},
 	'Blackboard': {
 		rarity: 'uncommon',
-		effect ({ score, state }) {
+		effect ({ score, state, trigger }) {
 			const allHandCardsAreSpadesOrClubs = state.cards
 				.filter(({ played }) => !played)
 				.every((card) => isSuit(card, ['Spades', 'Clubs']))
-			score.multiplier.push(['*', (allHandCardsAreSpadesOrClubs ? 3 : 1)])
+			score.push({
+				multiplier: ['*', allHandCardsAreSpadesOrClubs ? 3 : 1],
+				phase: 'jokers',
+				joker: this,
+				trigger,
+			})
 		},
 	},
 	'Runner': {
 		rarity: 'common',
 		hasPlusChipsInput: true,
-		effect ({ score }) {
-			score.chips.push(['+', this.plusChips])
+		effect ({ score, trigger }) {
+			score.push({
+				chips: ['+', this.plusChips],
+				phase: 'jokers',
+				joker: this,
+				trigger,
+			})
 		},
 	},
 	'Ice Cream': {
 		rarity: 'common',
 		hasPlusChipsInput: true,
-		effect ({ score }) {
-			score.chips.push(['+', this.plusChips])
+		effect ({ score, trigger }) {
+			score.push({
+				chips: ['+', this.plusChips],
+				phase: 'jokers',
+				joker: this,
+				trigger,
+			})
 		},
 	},
 	'DNA': {
@@ -398,8 +593,13 @@ export const JOKER_DEFINITIONS: Record<JokerName, JokerDefinition> = {
 	'Blue Joker': {
 		rarity: 'common',
 		hasPlusChipsInput: true,
-		effect ({ score }) {
-			score.chips.push(['+', this.plusChips])
+		effect ({ score, trigger }) {
+			score.push({
+				chips: ['+', this.plusChips],
+				phase: 'jokers',
+				joker: this,
+				trigger,
+			})
 		},
 	},
 	'Sixth Sense': {
@@ -408,15 +608,25 @@ export const JOKER_DEFINITIONS: Record<JokerName, JokerDefinition> = {
 	'Constellation': {
 		rarity: 'uncommon',
 		hasTimesMultiplierInput: true,
-		effect ({ score }) {
-			score.multiplier.push(['*', this.timesMultiplier])
+		effect ({ score, trigger }) {
+			score.push({
+				multiplier: ['*', this.timesMultiplier],
+				phase: 'jokers',
+				joker: this,
+				trigger,
+			})
 		},
 	},
 	'Hiker': {
 		rarity: 'common',
 		hasPlusChipsInput: true,
-		effect ({ score }) {
-			score.chips.push(['+', this.plusChips])
+		effect ({ score, trigger }) {
+			score.push({
+				chips: ['+', this.plusChips],
+				phase: 'jokers',
+				joker: this,
+				trigger,
+			})
 		},
 	},
 	'Faceless Joker': {
@@ -425,8 +635,13 @@ export const JOKER_DEFINITIONS: Record<JokerName, JokerDefinition> = {
 	'Green Joker': {
 		rarity: 'common',
 		hasPlusMultiplierInput: true,
-		effect ({ score }) {
-			score.multiplier.push(['+', this.plusMultiplier])
+		effect ({ score, trigger }) {
+			score.push({
+				multiplier: ['+', this.plusMultiplier],
+				phase: 'jokers',
+				joker: this,
+				trigger,
+			})
 		},
 	},
 	'Superposition': {
@@ -437,36 +652,61 @@ export const JOKER_DEFINITIONS: Record<JokerName, JokerDefinition> = {
 	},
 	'Cavendish': {
 		rarity: 'common',
-		effect ({ score }) {
-			score.multiplier.push(['*', 3])
+		effect ({ score, trigger }) {
+			score.push({
+				multiplier: ['*', 3],
+				phase: 'jokers',
+				joker: this,
+				trigger,
+			})
 		},
 	},
 	'Card Sharp': {
 		rarity: 'uncommon',
 		hasIsActiveInput: true,
-		effect ({ score }) {
-			score.multiplier.push(['*', (this.active ? 3 : 1)])
+		effect ({ score, trigger }) {
+			score.push({
+				multiplier: ['*', this.active ? 3 : 1],
+				phase: 'jokers',
+				joker: this,
+				trigger,
+			})
 		},
 	},
 	'Red Card': {
 		rarity: 'common',
 		hasPlusMultiplierInput: true,
-		effect ({ score }) {
-			score.multiplier.push(['+', this.plusMultiplier])
+		effect ({ score, trigger }) {
+			score.push({
+				multiplier: ['+', this.plusMultiplier],
+				phase: 'jokers',
+				joker: this,
+				trigger,
+			})
 		},
 	},
 	'Madness': {
 		rarity: 'uncommon',
 		hasTimesMultiplierInput: true,
-		effect ({ score }) {
-			score.multiplier.push(['*', this.timesMultiplier])
+		effect ({ score, trigger }) {
+			score.push({
+				multiplier: ['*', this.timesMultiplier],
+				phase: 'jokers',
+				joker: this,
+				trigger,
+			})
 		},
 	},
 	'Square Joker': {
 		rarity: 'common',
 		hasPlusChipsInput: true,
-		effect ({ score }) {
-			score.chips.push(['+', this.plusChips])
+		effect ({ score, trigger }) {
+			score.push({
+				chips: ['+', this.plusChips],
+				phase: 'jokers',
+				joker: this,
+				trigger,
+			})
 		},
 	},
 	'Séance': {
@@ -478,8 +718,13 @@ export const JOKER_DEFINITIONS: Record<JokerName, JokerDefinition> = {
 	'Vampire': {
 		rarity: 'rare',
 		hasTimesMultiplierInput: true,
-		effect ({ score }) {
-			score.multiplier.push(['*', this.timesMultiplier])
+		effect ({ score, trigger }) {
+			score.push({
+				multiplier: ['*', this.timesMultiplier],
+				phase: 'jokers',
+				joker: this,
+				trigger,
+			})
 		},
 	},
 	'Shortcut': {
@@ -488,8 +733,13 @@ export const JOKER_DEFINITIONS: Record<JokerName, JokerDefinition> = {
 	'Hologram': {
 		rarity: 'uncommon',
 		hasTimesMultiplierInput: true,
-		effect ({ score }) {
-			score.multiplier.push(['*', this.timesMultiplier])
+		effect ({ score, trigger }) {
+			score.push({
+				multiplier: ['*', this.timesMultiplier],
+				phase: 'jokers',
+				joker: this,
+				trigger,
+			})
 		},
 	},
 	'Vagabond': {
@@ -497,8 +747,14 @@ export const JOKER_DEFINITIONS: Record<JokerName, JokerDefinition> = {
 	},
 	'Baron': {
 		rarity: 'rare',
-		heldCardEffect ({ score, card }) {
-			score.multiplier.push(['*', (card.rank === 'King' ? 1.5 : 1)])
+		heldCardEffect ({ score, card, trigger }) {
+			score.push({
+				multiplier: ['*', card.rank === 'King' ? 1.5 : 1],
+				phase: 'held-cards',
+				card,
+				joker: this,
+				trigger,
+			})
 		},
 	},
 	'Cloud 9': {
@@ -510,8 +766,13 @@ export const JOKER_DEFINITIONS: Record<JokerName, JokerDefinition> = {
 	'Obelisk': {
 		rarity: 'rare',
 		hasTimesMultiplierInput: true,
-		effect ({ score }) {
-			score.multiplier.push(['*', this.timesMultiplier])
+		effect ({ score, trigger }) {
+			score.push({
+				multiplier: ['*', this.timesMultiplier],
+				phase: 'jokers',
+				joker: this,
+				trigger,
+			})
 		},
 	},
 	'Midas Mask': {
@@ -522,10 +783,16 @@ export const JOKER_DEFINITIONS: Record<JokerName, JokerDefinition> = {
 	},
 	'Photograph': {
 		rarity: 'common',
-		playedCardEffect ({ score, state, card }) {
+		playedCardEffect ({ score, state, card, trigger }) {
 			const firstPlayedFaceCard = state.cards.filter(({ played }) => played).find((playedCard) => ['King', 'Queen', 'Jack'].includes(playedCard.rank))
 			const isFirstPlayedFaceCard = card.index === firstPlayedFaceCard?.index
-			score.multiplier.push(['*', (isFirstPlayedFaceCard ? 2 : 1)])
+			score.push({
+				multiplier: ['*', isFirstPlayedFaceCard ? 2 : 1],
+				phase: 'played-cards',
+				card,
+				joker: this,
+				trigger,
+			})
 		},
 	},
 	'Gift Card': {
@@ -537,8 +804,13 @@ export const JOKER_DEFINITIONS: Record<JokerName, JokerDefinition> = {
 	'Erosion': {
 		rarity: 'uncommon',
 		hasPlusMultiplierInput: true,
-		effect ({ score }) {
-			score.multiplier.push(['+', this.plusMultiplier])
+		effect ({ score, trigger }) {
+			score.push({
+				multiplier: ['+', this.plusMultiplier],
+				phase: 'jokers',
+				joker: this,
+				trigger,
+			})
 		},
 	},
 	'Reserved Parking': {
@@ -556,8 +828,13 @@ export const JOKER_DEFINITIONS: Record<JokerName, JokerDefinition> = {
 	'Fortune Teller': {
 		rarity: 'common',
 		hasPlusMultiplierInput: true,
-		effect ({ score }) {
-			score.multiplier.push(['+', this.plusMultiplier])
+		effect ({ score, trigger }) {
+			score.push({
+				multiplier: ['+', this.plusMultiplier],
+				phase: 'jokers',
+				joker: this,
+				trigger,
+			})
 		},
 	},
 	'Juggler': {
@@ -569,8 +846,13 @@ export const JOKER_DEFINITIONS: Record<JokerName, JokerDefinition> = {
 	'Stone Joker': {
 		rarity: 'uncommon',
 		hasPlusChipsInput: true,
-		effect ({ score }) {
-			score.chips.push(['+', this.plusChips])
+		effect ({ score, trigger }) {
+			score.push({
+				chips: ['+', this.plusChips],
+				phase: 'jokers',
+				joker: this,
+				trigger,
+			})
 		},
 	},
 	'Golden Joker': {
@@ -579,20 +861,35 @@ export const JOKER_DEFINITIONS: Record<JokerName, JokerDefinition> = {
 	'Lucky Cat': {
 		rarity: 'uncommon',
 		hasTimesMultiplierInput: true,
-		effect ({ score }) {
-			score.multiplier.push(['*', this.timesMultiplier])
+		effect ({ score, trigger }) {
+			score.push({
+				multiplier: ['*', this.timesMultiplier],
+				phase: 'jokers',
+				joker: this,
+				trigger,
+			})
 		},
 	},
 	'Baseball Card': {
 		rarity: 'rare',
-		indirectEffect ({ score, joker }) {
-			score.multiplier.push(['*', (joker.rarity === 'uncommon' ? 1.5 : 1)])
+		indirectEffect ({ score, joker, trigger }) {
+			score.push({
+				multiplier: ['*', joker.rarity === 'uncommon' ? 1.5 : 1],
+				phase: 'jokers',
+				joker: this,
+				trigger,
+			})
 		},
 	},
 	'Bull': {
 		rarity: 'uncommon',
-		effect ({ score, state }) {
-			score.chips.push(['+', state.money * 2])
+		effect ({ score, state, trigger }) {
+			score.push({
+				chips: ['+', state.money * 2],
+				phase: 'jokers',
+				joker: this,
+				trigger,
+			})
 		},
 	},
 	'Diet Cola': {
@@ -604,45 +901,83 @@ export const JOKER_DEFINITIONS: Record<JokerName, JokerDefinition> = {
 	'Flash Card': {
 		rarity: 'uncommon',
 		hasPlusMultiplierInput: true,
-		effect ({ score }) {
-			score.multiplier.push(['+', this.plusMultiplier])
+		effect ({ score, trigger }) {
+			score.push({
+				multiplier: ['+', this.plusMultiplier],
+				phase: 'jokers',
+				joker: this,
+				trigger,
+			})
 		},
 	},
 	'Popcorn': {
 		rarity: 'common',
 		hasPlusMultiplierInput: true,
-		effect ({ score }) {
-			score.multiplier.push(['+', this.plusMultiplier])
+		effect ({ score, trigger }) {
+			score.push({
+				multiplier: ['+', this.plusMultiplier],
+				phase: 'jokers',
+				joker: this,
+				trigger,
+			})
 		},
 	},
 	'Spare Trousers': {
 		rarity: 'uncommon',
 		hasPlusMultiplierInput: true,
-		effect ({ score }) {
-			score.multiplier.push(['+', this.plusMultiplier])
+		effect ({ score, trigger }) {
+			score.push({
+				multiplier: ['+', this.plusMultiplier],
+				phase: 'jokers',
+				joker: this,
+				trigger,
+			})
 		},
 	},
 	'Ancient Joker': {
 		// Note: Its effect does **not** does not consider which suits exist in the deck
 		rarity: 'rare',
 		hasSuitInput: true,
-		playedCardEffect ({ score, card }) {
-			score.multiplier.push(['*', (isSuit(card, this.suit!) ? 1.5 : 1)])
+		playedCardEffect ({ score, card, trigger }) {
+			score.push({
+				multiplier: ['*', isSuit(card, this.suit!) ? 1.5 : 1],
+				phase: 'played-cards',
+				card,
+				joker: this,
+				trigger,
+			})
 		},
 	},
 	'Ramen': {
 		rarity: 'uncommon',
 		hasTimesMultiplierInput: true,
-		effect ({ score }) {
-			score.multiplier.push(['*', this.timesMultiplier])
+		effect ({ score, trigger }) {
+			score.push({
+				multiplier: ['*', this.timesMultiplier],
+				phase: 'jokers',
+				joker: this,
+				trigger,
+			})
 		},
 	},
 	'Walkie Talkie': {
 		rarity: 'common',
-		playedCardEffect ({ score, card }) {
+		playedCardEffect ({ score, card, trigger }) {
 			const isFourOrTen = isRank(card, ['4', '10'])
-			score.chips.push(['+', isFourOrTen ? 10 : 0])
-			score.multiplier.push(['+', (isFourOrTen ? 4 : 0)])
+			score.push({
+				chips: ['+', isFourOrTen ? 10 : 0],
+				phase: 'played-cards',
+				card,
+				joker: this,
+				trigger,
+			})
+			score.push({
+				multiplier: ['+', isFourOrTen ? 4 : 0],
+				phase: 'played-cards',
+				card,
+				joker: this,
+				trigger,
+			})
 		},
 	},
 	'Seltzer': {
@@ -651,21 +986,37 @@ export const JOKER_DEFINITIONS: Record<JokerName, JokerDefinition> = {
 	'Castle': {
 		rarity: 'uncommon',
 		hasPlusChipsInput: true,
-		effect ({ score }) {
-			score.chips.push(['+', this.plusChips])
+		effect ({ score, trigger }) {
+			score.push({
+				chips: ['+', this.plusChips],
+				phase: 'jokers',
+				joker: this,
+				trigger,
+			})
 		},
 	},
 	'Smiley Face': {
 		rarity: 'common',
-		playedCardEffect ({ score, state, card }) {
-			score.multiplier.push(['+', (isFaceCard(card, state.jokerSet.has('Pareidolia')) ? 5 : 0)])
+		playedCardEffect ({ score, state, card, trigger }) {
+			score.push({
+				multiplier: ['+', isFaceCard(card, state.jokerSet.has('Pareidolia')) ? 5 : 0],
+				phase: 'played-cards',
+				card,
+				joker: this,
+				trigger,
+			})
 		},
 	},
 	'Campfire': {
 		rarity: 'rare',
 		hasTimesMultiplierInput: true,
-		effect ({ score }) {
-			score.multiplier.push(['*', this.timesMultiplier])
+		effect ({ score, trigger }) {
+			score.push({
+				multiplier: ['*', this.timesMultiplier],
+				phase: 'jokers',
+				joker: this,
+				trigger,
+			})
 		},
 	},
 	'Golden Ticket': {
@@ -676,8 +1027,13 @@ export const JOKER_DEFINITIONS: Record<JokerName, JokerDefinition> = {
 	},
 	'Acrobat': {
 		rarity: 'uncommon',
-		effect ({ score, state }) {
-			score.multiplier.push(['*', (state.hands === 1 ? 3 : 1)])
+		effect ({ score, state, trigger }) {
+			score.push({
+				multiplier: ['*', state.hands === 1 ? 3 : 1],
+				phase: 'jokers',
+				joker: this,
+				trigger,
+			})
 		},
 	},
 	'Sock and Buskin': {
@@ -686,8 +1042,13 @@ export const JOKER_DEFINITIONS: Record<JokerName, JokerDefinition> = {
 	'Swashbuckler': {
 		rarity: 'common',
 		hasPlusMultiplierInput: true,
-		effect ({ score }) {
-			score.multiplier.push(['+', this.plusMultiplier])
+		effect ({ score, trigger }) {
+			score.push({
+				multiplier: ['+', this.plusMultiplier],
+				phase: 'jokers',
+				joker: this,
+				trigger,
+			})
 		},
 	},
 	'Troubador': {
@@ -702,8 +1063,13 @@ export const JOKER_DEFINITIONS: Record<JokerName, JokerDefinition> = {
 	'Throwback': {
 		rarity: 'uncommon',
 		hasTimesMultiplierInput: true,
-		effect ({ score }) {
-			score.multiplier.push(['*', this.timesMultiplier])
+		effect ({ score, trigger }) {
+			score.push({
+				multiplier: ['*', this.timesMultiplier],
+				phase: 'jokers',
+				joker: this,
+				trigger,
+			})
 		},
 	},
 	'Hanging Chad': {
@@ -714,33 +1080,57 @@ export const JOKER_DEFINITIONS: Record<JokerName, JokerDefinition> = {
 	},
 	'Bloodstone': {
 		rarity: 'uncommon',
-		playedCardEffect ({ score, card, state, luck }) {
+		playedCardEffect ({ score, card, state, luck, trigger }) {
 			if (isSuit(card, 'Hearts')) {
 				const denominator = 2
 				const xMult = 2
 				const oopses = state.jokers.filter(({ name }) => name === 'Oops! All 6s')
+				const mult = balanceMultWithLuck(xMult, oopses.length, denominator, luck, 'times')
 
-				score.multiplier.push(['*', balanceMultWithLuck(xMult, oopses.length, denominator, luck, 'times')])
+				score.push({
+					multiplier: ['*', mult],
+					phase: 'played-cards',
+					card,
+					joker: this,
+					trigger,
+				})
 			}
 		},
 	},
 	'Arrowhead': {
 		rarity: 'uncommon',
-		playedCardEffect ({ score, card }) {
-			score.chips.push(['+', isSuit(card, 'Spades') ? 50 : 0])
+		playedCardEffect ({ score, card, trigger }) {
+			score.push({
+				chips: ['+', isSuit(card, 'Spades') ? 50 : 0],
+				phase: 'played-cards',
+				card,
+				joker: this,
+				trigger,
+			})
 		},
 	},
 	'Onyx Agate': {
 		rarity: 'uncommon',
-		playedCardEffect ({ score, card }) {
-			score.multiplier.push(['+', (isSuit(card, 'Clubs') ? 7 : 0)])
+		playedCardEffect ({ score, card, trigger }) {
+			score.push({
+				multiplier: ['+', isSuit(card, 'Clubs') ? 7 : 0],
+				phase: 'played-cards',
+				card,
+				joker: this,
+				trigger,
+			})
 		},
 	},
 	'Glass Joker': {
 		rarity: 'uncommon',
 		hasTimesMultiplierInput: true,
-		effect ({ score }) {
-			score.multiplier.push(['*', this.timesMultiplier])
+		effect ({ score, trigger }) {
+			score.push({
+				multiplier: ['*', this.timesMultiplier],
+				phase: 'jokers',
+				joker: this,
+				trigger,
+			})
 		},
 	},
 	'Showman': {
@@ -748,7 +1138,7 @@ export const JOKER_DEFINITIONS: Record<JokerName, JokerDefinition> = {
 	},
 	'Flower Pot': {
 		rarity: 'uncommon',
-		effect ({ score, state }) {
+		effect ({ score, state, trigger }) {
 			let hasAllSuits = false
 			const suits = ['Spades', 'Hearts', 'Clubs', 'Diamonds'] as Suit[]
 			const cards = new Set<Card>()
@@ -769,7 +1159,12 @@ export const JOKER_DEFINITIONS: Record<JokerName, JokerDefinition> = {
 				}
 			}
 
-			score.multiplier.push(['*', (hasAllSuits ? 3 : 1)])
+			score.push({
+				multiplier: ['*', hasAllSuits ? 3 : 1],
+				phase: 'jokers',
+				joker: this,
+				trigger,
+			})
 		},
 	},
 	'Blueprint': {
@@ -778,8 +1173,13 @@ export const JOKER_DEFINITIONS: Record<JokerName, JokerDefinition> = {
 	'Wee Joker': {
 		rarity: 'rare',
 		hasPlusChipsInput: true,
-		effect ({ score }) {
-			score.chips.push(['+', this.plusChips])
+		effect ({ score, trigger }) {
+			score.push({
+				chips: ['+', this.plusChips],
+				phase: 'jokers',
+				joker: this,
+				trigger,
+			})
 		},
 	},
 	'Merry Andy': {
@@ -792,17 +1192,28 @@ export const JOKER_DEFINITIONS: Record<JokerName, JokerDefinition> = {
 		rarity: 'uncommon',
 		hasRankInput: true,
 		hasSuitInput: true,
-		playedCardEffect ({ score, card }) {
-			score.multiplier.push(['*', (this.suit && isSuit(card, this.suit) && card.rank === this.rank ? 2 : 1)])
+		playedCardEffect ({ score, card, trigger }) {
+			score.push({
+				multiplier: ['*', this.suit && isSuit(card, this.suit) && card.rank === this.rank ? 2 : 1],
+				phase: 'played-cards',
+				card,
+				joker: this,
+				trigger,
+			})
 		},
 	},
 	'Seeing Double': {
 		rarity: 'uncommon',
-		effect ({ score, state }) {
+		effect ({ score, state, trigger }) {
 			const hasScoringClubsCard = state.scoringCards.some((card) => isSuit(card, 'Clubs'))
 			const hasScoringCardOfOtherSuit = state.scoringCards.some((card) => isSuit(card, ['Spades', 'Hearts', 'Diamonds']))
 
-			score.multiplier.push(['*', (hasScoringClubsCard && hasScoringCardOfOtherSuit ? 2 : 1)])
+			score.push({
+				multiplier: ['*', hasScoringClubsCard && hasScoringCardOfOtherSuit ? 2 : 1],
+				phase: 'jokers',
+				joker: this,
+				trigger,
+			})
 		},
 	},
 	'Matador': {
@@ -811,53 +1222,88 @@ export const JOKER_DEFINITIONS: Record<JokerName, JokerDefinition> = {
 	'Hit the Road': {
 		rarity: 'rare',
 		hasTimesMultiplierInput: true,
-		effect ({ score }) {
-			score.multiplier.push(['*', this.timesMultiplier])
+		effect ({ score, trigger }) {
+			score.push({
+				multiplier: ['*', this.timesMultiplier],
+				phase: 'jokers',
+				joker: this,
+				trigger,
+			})
 		},
 	},
 	'The Duo': {
 		rarity: 'rare',
-		effect ({ score, state }) {
+		effect ({ score, state, trigger }) {
 			const cards = nOfAKind(state.cards.filter(({ played }) => played), 2)
-			score.multiplier.push(['*', (cards.length > 0 ? 2 : 1)])
+			score.push({
+				multiplier: ['*', cards.length > 0 ? 2 : 1],
+				phase: 'jokers',
+				joker: this,
+				trigger,
+			})
 		},
 	},
 	'The Trio': {
 		rarity: 'rare',
-		effect ({ score, state }) {
+		effect ({ score, state, trigger }) {
 			const cards = nOfAKind(state.cards.filter(({ played }) => played), 3)
-			score.multiplier.push(['*', (cards.length > 0 ? 3 : 1)])
+			score.push({
+				multiplier: ['*', cards.length > 0 ? 3 : 1],
+				phase: 'jokers',
+				joker: this,
+				trigger,
+			})
 		},
 	},
 	'The Family': {
 		rarity: 'rare',
-		effect ({ score, state }) {
+		effect ({ score, state, trigger }) {
 			const cards = nOfAKind(state.cards.filter(({ played }) => played), 4)
-			score.multiplier.push(['*', (cards.length > 0 ? 4 : 1)])
+			score.push({
+				multiplier: ['*', cards.length > 0 ? 4 : 1],
+				phase: 'jokers',
+				joker: this,
+				trigger,
+			})
 		},
 	},
 	'The Order': {
 		rarity: 'common',
-		effect ({ score, state }) {
+		effect ({ score, state, trigger }) {
 			const hasFourFingers = state.jokerSet.has('Four Fingers')
 			const hasShortcut = state.jokerSet.has('Shortcut')
 			const cards = straight(state.cards.filter(({ played }) => played), hasFourFingers, hasShortcut)
-			score.multiplier.push(['*', (cards.length > 0 ? 3 : 1)])
+			score.push({
+				multiplier: ['*', cards.length > 0 ? 3 : 1],
+				phase: 'jokers',
+				joker: this,
+				trigger,
+			})
 		},
 	},
 	'The Tribe': {
 		rarity: 'rare',
-		effect ({ score, state }) {
+		effect ({ score, state, trigger }) {
 			const hasFourFingers = state.jokerSet.has('Four Fingers')
 			const hasSmearedJoker = state.jokerSet.has('Smeared Joker')
 			const cards = flush(state.cards.filter(({ played }) => played), hasFourFingers, hasSmearedJoker)
-			score.multiplier.push(['*', (cards.length > 0 ? 2 : 1)])
+			score.push({
+				multiplier: ['*', cards.length > 0 ? 2 : 1],
+				phase: 'jokers',
+				joker: this,
+				trigger,
+			})
 		},
 	},
 	'Stuntman': {
 		rarity: 'rare',
-		effect ({ score }) {
-			score.chips.push(['+', 250])
+		effect ({ score, trigger }) {
+			score.push({
+				chips: ['+', 250],
+				phase: 'jokers',
+				joker: this,
+				trigger,
+			})
 		},
 	},
 	'Invisible Joker': {
@@ -871,15 +1317,26 @@ export const JOKER_DEFINITIONS: Record<JokerName, JokerDefinition> = {
 	},
 	'Shoot the Moon': {
 		rarity: 'common',
-		heldCardEffect ({ score, card }) {
-			score.multiplier.push(['+', (card.rank === 'Queen' ? 13 : 0)])
+		heldCardEffect ({ score, card, trigger }) {
+			score.push({
+				multiplier: ['+', card.rank === 'Queen' ? 13 : 0],
+				phase: 'held-cards',
+				card,
+				joker: this,
+				trigger,
+			})
 		},
 	},
 	'Driver\'s license': {
 		rarity: 'rare',
 		hasIsActiveInput: true,
-		effect ({ score }) {
-			score.multiplier.push(['*', (this.active ? 3 : 1)])
+		effect ({ score, trigger }) {
+			score.push({
+				multiplier: ['*', this.active ? 3 : 1],
+				phase: 'jokers',
+				joker: this,
+				trigger,
+			})
 		},
 	},
 	'Cartomancer': {
@@ -893,30 +1350,51 @@ export const JOKER_DEFINITIONS: Record<JokerName, JokerDefinition> = {
 	},
 	'Bootstraps': {
 		rarity: 'common',
-		effect ({ score, state }) {
+		effect ({ score, state, trigger }) {
 			// Note: I'm assuming here that this can't *subtract* multiplier if money is negative.
 			const factor = Math.max(0, Math.floor(state.money / 5))
-			score.multiplier.push(['+', (factor * 2)])
+			score.push({
+				multiplier: ['+', factor * 2],
+				phase: 'jokers',
+				joker: this,
+				trigger,
+			})
 		},
 	},
 	'Canio': {
 		rarity: 'legendary',
 		hasTimesMultiplierInput: true,
-		effect ({ score }) {
-			score.multiplier.push(['*', this.timesMultiplier])
+		effect ({ score, trigger }) {
+			score.push({
+				multiplier: ['*', this.timesMultiplier],
+				phase: 'jokers',
+				joker: this,
+				trigger,
+			})
 		},
 	},
 	'Triboulet': {
 		rarity: 'legendary',
-		playedCardEffect ({ score, card }) {
-			score.multiplier.push(['*', (isRank(card, ['King', 'Queen']) ? 2 : 0)])
+		playedCardEffect ({ score, card, trigger }) {
+			score.push({
+				multiplier: ['*', isRank(card, ['King', 'Queen']) ? 2 : 0],
+				phase: 'played-cards',
+				card,
+				joker: this,
+				trigger,
+			})
 		},
 	},
 	'Yorick': {
 		rarity: 'legendary',
 		hasTimesMultiplierInput: true,
-		effect ({ score }) {
-			score.multiplier.push(['*', this.timesMultiplier])
+		effect ({ score, trigger }) {
+			score.push({
+				multiplier: ['*', this.timesMultiplier],
+				phase: 'jokers',
+				joker: this,
+				trigger,
+			})
 		},
 	},
 	'Chicot': {

@@ -1,15 +1,22 @@
 import { add, BigNumber, bignumber, divide, floor, multiply, pow } from 'mathjs'
 
-import type { DeckName, Score } from './types.js'
+import type { DeckName, ScoreValue } from './types.js'
 
-export function doBigMath (initialScore: Score, deck: DeckName) {
-	const chips = initialScore.chips.reduce((totalChips, [, chips]) => {
-		return add(totalChips, bignumber(chips))
-	}, bignumber(0))
-	const multiplier = initialScore.multiplier.reduce((totalMultiplier, [operation, multiplier]) => {
-		const operator = operation === '+' ? add : multiply
-		return operator(totalMultiplier, bignumber(multiplier))
-	}, bignumber(0))
+export function doBigMath (initialScore: ScoreValue[], deck: DeckName) {
+	let chips = bignumber(0)
+	let multiplier = bignumber(0)
+	for (const scoreValue of initialScore) {
+		if (scoreValue.chips) {
+			const [operator, value] = scoreValue.chips
+			const operation = operator === '+' ? add : multiply
+			chips = operation(chips, bignumber(value))
+		}
+		if (scoreValue.multiplier) {
+			const [operator, value] = scoreValue.multiplier
+			const operation = operator === '+' ? add : multiply
+			multiplier = operation(multiplier, bignumber(value))
+		}
+	}
 
 	let actualScore: BigNumber
 	if (deck === 'Plasma Deck') {
