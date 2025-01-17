@@ -38,7 +38,7 @@ function getScore (state: State, luck: Luck): Score {
 	const baseFactor = (state.blind.name === 'The Flint' && state.blind.active ? 0.5 : 1)
 	// The base score seems to be rounded here.
 	const score: Score = {
-		chips: [Math.round(baseScore.chips * baseFactor)],
+		chips: [['+', Math.round(baseScore.chips * baseFactor)]],
 		multiplier: [['+', Math.round(baseScore.multiplier * baseFactor)]],
 	}
 	log('\n0. BASE SCORE =>', score)
@@ -59,19 +59,19 @@ function getScore (state: State, luck: Luck): Score {
 
 			// 1. Rank
 			if (card.enhancement !== 'stone') {
-				score.chips.push(RANK_TO_CHIP_MAP[card.rank])
+				score.chips.push(['+', RANK_TO_CHIP_MAP[card.rank]])
 				log(score, '(+Chips from rank)')
 			}
 
 			// 2. Enhancement
 			switch (card.enhancement) {
 				case 'stone': {
-					score.chips.push(50)
+					score.chips.push(['+', 50])
 					log(score, '(+Chips from stone enhancement)')
 					break
 				}
 				case 'bonus': {
-					score.chips.push(30)
+					score.chips.push(['+', 30])
 					log(score, '(+Chips from bonus enhancement)')
 					break
 				}
@@ -99,7 +99,7 @@ function getScore (state: State, luck: Luck): Score {
 			// 3. Edition
 			switch (card.edition) {
 				case 'foil': {
-					score.chips.push(50)
+					score.chips.push(['+', 50])
 					log(score, '(+Chips from foil edition)')
 					break
 				}
@@ -166,7 +166,7 @@ function getScore (state: State, luck: Luck): Score {
 		// 1. EDITION
 		switch (joker.edition) {
 			case 'foil': {
-				score.chips.push(50)
+				score.chips.push(['+', 50])
 				log(score, '(+Chips from foil edition)')
 				break
 			}

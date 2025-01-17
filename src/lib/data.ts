@@ -168,21 +168,21 @@ export const JOKER_DEFINITIONS: Record<JokerName, JokerDefinition> = {
 		rarity: 'common',
 		effect ({ score, state }) {
 			const cards = nOfAKind(state.cards.filter(({ played }) => played), 2)
-			score.chips.push((cards.length > 0 ? 50 : 0))
+			score.chips.push(['+', cards.length > 0 ? 50 : 0])
 		},
 	},
 	'Wily Joker': {
 		rarity: 'common',
 		effect ({ score, state }) {
 			const cards = nOfAKind(state.cards.filter(({ played }) => played), 3)
-			score.chips.push((cards.length > 0 ? 100 : 0))
+			score.chips.push(['+', cards.length > 0 ? 100 : 0])
 		},
 	},
 	'Clever Joker': {
 		rarity: 'common',
 		effect ({ score, state }) {
 			const cards = twoPair(state.cards.filter(({ played }) => played))
-			score.chips.push((cards.length > 0 ? 150 : 0))
+			score.chips.push(['+', cards.length > 0 ? 150 : 0])
 		},
 	},
 	'Devious Joker': {
@@ -191,7 +191,7 @@ export const JOKER_DEFINITIONS: Record<JokerName, JokerDefinition> = {
 			const hasFourFingers = state.jokerSet.has('Four Fingers')
 			const hasShortcut = state.jokerSet.has('Shortcut')
 			const cards = straight(state.cards.filter(({ played }) => played), hasFourFingers, hasShortcut)
-			score.chips.push((cards.length > 0 ? 100 : 0))
+			score.chips.push(['+', cards.length > 0 ? 100 : 0])
 		},
 	},
 	'Crafty Joker': {
@@ -200,7 +200,7 @@ export const JOKER_DEFINITIONS: Record<JokerName, JokerDefinition> = {
 			const hasFourFingers = state.jokerSet.has('Four Fingers')
 			const hasSmearedJoker = state.jokerSet.has('Smeared Joker')
 			const cards = flush(state.cards.filter(({ played }) => played), hasFourFingers, hasSmearedJoker)
-			score.chips.push((cards.length > 0 ? 80 : 0))
+			score.chips.push(['+', cards.length > 0 ? 80 : 0])
 		},
 	},
 	'Half Joker': {
@@ -235,7 +235,7 @@ export const JOKER_DEFINITIONS: Record<JokerName, JokerDefinition> = {
 	'Banner': {
 		rarity: 'common',
 		effect ({ score, state }) {
-			score.chips.push((state.discards * 30))
+			score.chips.push(['+', state.discards * 30])
 		},
 	},
 	'Mystic Summit': {
@@ -296,7 +296,7 @@ export const JOKER_DEFINITIONS: Record<JokerName, JokerDefinition> = {
 	'Scary Face': {
 		rarity: 'common',
 		playedCardEffect ({ score, state, card }) {
-			score.chips.push((isFaceCard(card, state.jokerSet.has('Pareidolia')) ? 30 : 0))
+			score.chips.push(['+', isFaceCard(card, state.jokerSet.has('Pareidolia')) ? 30 : 0])
 		},
 	},
 	'Abstract Joker': {
@@ -329,14 +329,14 @@ export const JOKER_DEFINITIONS: Record<JokerName, JokerDefinition> = {
 	'Odd Todd': {
 		rarity: 'common',
 		playedCardEffect ({ score, card }) {
-			score.chips.push((isRank(card, ['Ace', '9', '7', '5', '3']) ? 31 : 0))
+			score.chips.push(['+', isRank(card, ['Ace', '9', '7', '5', '3']) ? 31 : 0])
 		},
 	},
 	'Scholar': {
 		rarity: 'common',
 		playedCardEffect ({ score, card }) {
 			const isAce = isRank(card, 'Ace')
-			score.chips.push((isAce ? 20 : 0))
+			score.chips.push(['+', isAce ? 20 : 0])
 			score.multiplier.push(['+', (isAce ? 4 : 0)])
 		},
 	},
@@ -379,14 +379,14 @@ export const JOKER_DEFINITIONS: Record<JokerName, JokerDefinition> = {
 		rarity: 'common',
 		hasPlusChipsInput: true,
 		effect ({ score }) {
-			score.chips.push(this.plusChips)
+			score.chips.push(['+', this.plusChips])
 		},
 	},
 	'Ice Cream': {
 		rarity: 'common',
 		hasPlusChipsInput: true,
 		effect ({ score }) {
-			score.chips.push(this.plusChips)
+			score.chips.push(['+', this.plusChips])
 		},
 	},
 	'DNA': {
@@ -399,7 +399,7 @@ export const JOKER_DEFINITIONS: Record<JokerName, JokerDefinition> = {
 		rarity: 'common',
 		hasPlusChipsInput: true,
 		effect ({ score }) {
-			score.chips.push(this.plusChips)
+			score.chips.push(['+', this.plusChips])
 		},
 	},
 	'Sixth Sense': {
@@ -416,7 +416,7 @@ export const JOKER_DEFINITIONS: Record<JokerName, JokerDefinition> = {
 		rarity: 'common',
 		hasPlusChipsInput: true,
 		effect ({ score }) {
-			score.chips.push(this.plusChips)
+			score.chips.push(['+', this.plusChips])
 		},
 	},
 	'Faceless Joker': {
@@ -466,7 +466,7 @@ export const JOKER_DEFINITIONS: Record<JokerName, JokerDefinition> = {
 		rarity: 'common',
 		hasPlusChipsInput: true,
 		effect ({ score }) {
-			score.chips.push(this.plusChips)
+			score.chips.push(['+', this.plusChips])
 		},
 	},
 	'Séance': {
@@ -570,7 +570,7 @@ export const JOKER_DEFINITIONS: Record<JokerName, JokerDefinition> = {
 		rarity: 'uncommon',
 		hasPlusChipsInput: true,
 		effect ({ score }) {
-			score.chips.push(this.plusChips)
+			score.chips.push(['+', this.plusChips])
 		},
 	},
 	'Golden Joker': {
@@ -592,7 +592,7 @@ export const JOKER_DEFINITIONS: Record<JokerName, JokerDefinition> = {
 	'Bull': {
 		rarity: 'uncommon',
 		effect ({ score, state }) {
-			score.chips.push((state.money * 2))
+			score.chips.push(['+', state.money * 2])
 		},
 	},
 	'Diet Cola': {
@@ -641,7 +641,7 @@ export const JOKER_DEFINITIONS: Record<JokerName, JokerDefinition> = {
 		rarity: 'common',
 		playedCardEffect ({ score, card }) {
 			const isFourOrTen = isRank(card, ['4', '10'])
-			score.chips.push((isFourOrTen ? 10 : 0))
+			score.chips.push(['+', isFourOrTen ? 10 : 0])
 			score.multiplier.push(['+', (isFourOrTen ? 4 : 0)])
 		},
 	},
@@ -652,7 +652,7 @@ export const JOKER_DEFINITIONS: Record<JokerName, JokerDefinition> = {
 		rarity: 'uncommon',
 		hasPlusChipsInput: true,
 		effect ({ score }) {
-			score.chips.push(this.plusChips)
+			score.chips.push(['+', this.plusChips])
 		},
 	},
 	'Smiley Face': {
@@ -727,7 +727,7 @@ export const JOKER_DEFINITIONS: Record<JokerName, JokerDefinition> = {
 	'Arrowhead': {
 		rarity: 'uncommon',
 		playedCardEffect ({ score, card }) {
-			score.chips.push((isSuit(card, 'Spades') ? 50 : 0))
+			score.chips.push(['+', isSuit(card, 'Spades') ? 50 : 0])
 		},
 	},
 	'Onyx Agate': {
@@ -779,7 +779,7 @@ export const JOKER_DEFINITIONS: Record<JokerName, JokerDefinition> = {
 		rarity: 'rare',
 		hasPlusChipsInput: true,
 		effect ({ score }) {
-			score.chips.push(this.plusChips)
+			score.chips.push(['+', this.plusChips])
 		},
 	},
 	'Merry Andy': {
@@ -857,7 +857,7 @@ export const JOKER_DEFINITIONS: Record<JokerName, JokerDefinition> = {
 	'Stuntman': {
 		rarity: 'rare',
 		effect ({ score }) {
-			score.chips.push(250)
+			score.chips.push(['+', 250])
 		},
 	},
 	'Invisible Joker': {

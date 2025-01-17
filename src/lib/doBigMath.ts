@@ -3,7 +3,7 @@ import { add, BigNumber, bignumber, divide, floor, multiply, pow } from 'mathjs'
 import type { DeckName, Score } from './types.js'
 
 export function doBigMath (initialScore: Score, deck: DeckName) {
-	const chips = initialScore.chips.reduce((totalChips, chips) => {
+	const chips = initialScore.chips.reduce((totalChips, [, chips]) => {
 		return add(totalChips, bignumber(chips))
 	}, bignumber(0))
 	const multiplier = initialScore.multiplier.reduce((totalMultiplier, [operation, multiplier]) => {

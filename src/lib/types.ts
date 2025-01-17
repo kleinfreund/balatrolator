@@ -24,7 +24,7 @@ export interface BaseScore {
 }
 
 export interface Score {
-	chips: number[]
+	chips: ['+', number][]
 	multiplier: ['+' | '*', number][]
 }
 
