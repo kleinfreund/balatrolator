@@ -15,7 +15,7 @@ const MINIFIED_DEFAULT_VALUE = ''
  * Separator glyphs to be used in minified strings. Chosen to not be automatically encodeURIComponent-ed when entering them in a URL so the URL stays smaller and somewhat readable.
  */
 const SEPARATOR = {
-	first: '|',
+	first: '-',
 	second: '_',
 	third: '*',
 }
