@@ -295,8 +295,8 @@ function scoreJokerEffect (effect: JokerEffect | undefined, { state, score, joke
 		.map((joker) => resolveJoker(state.jokers, joker))
 		.filter(notNullish)
 
-	for (const { name } of targets) {
-		if (name === joker.name) triggers.push(name)
+	for (const { index, name } of targets) {
+		if (index === joker.index) triggers.push(name)
 	}
 
 	const jokersWithIndirectEffects = state.jokers.filter((joker) => joker.indirectEffect)
@@ -332,24 +332,14 @@ function scoreJokerCardEffect (effect: JokerCardEffect | undefined, { state, sco
 	logGroup(`→ ${joker}`)
 	const triggers = ['Regular']
 
-	// Increase triggers from Blueprint
-	const blueprintTargets = state.jokers
-		.filter(({ name }) => name === 'Blueprint')
-		.map(({ index }) => state.jokers[index + 1])
+	// Increase triggers from Blueprint/Brainstorm
+	const targets = state.jokers
+		.filter(({ name }) => ['Blueprint', 'Brainstorm'].includes(name))
+		.map((joker) => resolveJoker(state.jokers, joker))
 		.filter(notNullish)
 
-	for (const { index } of blueprintTargets) {
-		if (index === joker.index) triggers.push(`Blueprint copying ${joker.name}`)
-	}
-
-	// Increase triggers from Brainstorm
-	const brainstormTargets = state.jokers
-		.filter(({ name }) => name === 'Brainstorm')
-		.map(() => state.jokers[0])
-		.filter(notNullish)
-
-	for (const { index } of brainstormTargets) {
-		if (index === joker.index) triggers.push(`Brainstorm copying ${joker.name}`)
+	for (const { index, name } of targets) {
+		if (index === joker.index) triggers.push(name)
 	}
 
 	for (let trigger = 0; trigger < triggers.length; trigger++) {
