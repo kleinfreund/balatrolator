@@ -17,9 +17,9 @@ export default (message: string): TestCase => {
 				{ rank: '7', suit: 'Spades', enhancement: 'wild' },
 			],
 			scores: [
-				{ score: 12, formattedScore: '12', luck: 'none' },
-				{ score: 12, formattedScore: '12', luck: 'average' },
-				{ score: 12, formattedScore: '12', luck: 'all' },
+				{ score: '12', formattedScore: '12', luck: 'none' },
+				{ score: '12', formattedScore: '12', luck: 'average' },
+				{ score: '12', formattedScore: '12', luck: 'all' },
 			],
 		},
 	}

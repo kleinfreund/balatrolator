@@ -31,9 +31,9 @@ export default (message: string): TestCase => {
 				{ rank: '2', suit: 'Hearts' },
 			],
 			scores: [
-				{ score: 3082, formattedScore: '3,082', luck: 'none' },
-				{ score: 3082, formattedScore: '3,082', luck: 'average' },
-				{ score: 3082, formattedScore: '3,082', luck: 'all' },
+				{ score: '3082', formattedScore: '3,082', luck: 'none' },
+				{ score: '3082', formattedScore: '3,082', luck: 'average' },
+				{ score: '3082', formattedScore: '3,082', luck: 'all' },
 			],
 		},
 	}

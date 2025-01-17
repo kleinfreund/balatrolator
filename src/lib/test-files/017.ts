@@ -41,9 +41,9 @@ export default (message: string): TestCase => {
 				{ rank: 'Ace', suit: 'Diamonds', enhancement: 'glass', seal: 'red' },
 			],
 			scores: [
-				{ score: 12_972_158_342_922_240, formattedScore: '1.297e16', luck: 'none' },
-				{ score: 12_972_158_342_922_240, formattedScore: '1.297e16', luck: 'average' },
-				{ score: 12_972_158_342_922_240, formattedScore: '1.297e16', luck: 'all' },
+				{ score: '12972158342922240', formattedScore: '1.297e16', luck: 'none' },
+				{ score: '12972158342922240', formattedScore: '1.297e16', luck: 'average' },
+				{ score: '12972158342922240', formattedScore: '1.297e16', luck: 'all' },
 			],
 		},
 	}

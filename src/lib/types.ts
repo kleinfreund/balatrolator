@@ -154,7 +154,7 @@ export interface State {
 export type Luck = 'none' | 'average' | 'all'
 
 export interface ResultScore {
-	score: number
+	score: string
 	formattedScore: string
 	luck: Luck
 }

@@ -48,6 +48,7 @@ describe('calculateScore', async () => {
 		(await import('./test-files/032.js')).default('Four wild + Flower Pot'),
 		(await import('./test-files/033.js')).default('Run from 2024-04-10 16:52 UTC'),
 		(await import('./test-files/034.js')).default('Run from 2024-04-09 19:20 UTC'),
+		(await import('./test-files/035.js')).default('https://www.youtube.com/watch?v=hcZF7NJGuPE'),
 	])('$message', ({ initialState, expected }) => {
 		const score = calculateScore(getState(initialState))
 

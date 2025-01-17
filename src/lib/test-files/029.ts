@@ -34,9 +34,9 @@ export default (message: string): TestCase => {
 				{ rank: '6', suit: 'Hearts', enhancement: 'lucky' },
 			],
 			scores: [
-				{ score: 369_904_053_492, formattedScore: '369,904,053,492', luck: 'none' },
-				{ score: 369_904_053_492, formattedScore: '369,904,053,492', luck: 'average' },
-				{ score: 369_904_053_492, formattedScore: '369,904,053,492', luck: 'all' },
+				{ score: '369904053492', formattedScore: '369,904,053,492', luck: 'none' },
+				{ score: '369904053492', formattedScore: '369,904,053,492', luck: 'average' },
+				{ score: '369904053492', formattedScore: '369,904,053,492', luck: 'all' },
 			],
 		},
 	}

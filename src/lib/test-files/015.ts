@@ -37,9 +37,9 @@ export default (message: string): TestCase => {
 				{ rank: 'Queen', suit: 'Diamonds', enhancement: 'glass' },
 			],
 			scores: [
-				{ score: 354294, formattedScore: '354,294', luck: 'none' },
-				{ score: 354294, formattedScore: '354,294', luck: 'average' },
-				{ score: 354294, formattedScore: '354,294', luck: 'all' },
+				{ score: '354294', formattedScore: '354,294', luck: 'none' },
+				{ score: '354294', formattedScore: '354,294', luck: 'average' },
+				{ score: '354294', formattedScore: '354,294', luck: 'all' },
 			],
 		},
 	}

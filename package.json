@@ -40,6 +40,9 @@
 		"build": "vite build",
 		"prepare": "husky"
 	},
+	"dependencies": {
+		"mathjs": "^14.0.1"
+	},
 	"devDependencies": {
 		"@commitlint/cli": "^19.6.1",
 		"@commitlint/config-conventional": "^19.6.0",

@@ -41,9 +41,9 @@ export default (message: string): TestCase => {
 				{ rank: 'King', suit: 'Hearts', edition: 'polychrome', enhancement: 'glass', seal: 'red' },
 			],
 			scores: [
-				{ score: 1.6126936982633296e+50, formattedScore: '1.613e50', luck: 'none' },
-				{ score: 1.6126936982633296e+50, formattedScore: '1.613e50', luck: 'average' },
-				{ score: 1.6126936982633296e+50, formattedScore: '1.613e50', luck: 'all' },
+				{ score: '1.6126936982633295697683283009811179373062885736448e+50', formattedScore: '1.613e50', luck: 'none' },
+				{ score: '1.6126936982633295697683283009811179373062885736448e+50', formattedScore: '1.613e50', luck: 'average' },
+				{ score: '1.6126936982633295697683283009811179373062885736448e+50', formattedScore: '1.613e50', luck: 'all' },
 			],
 		},
 	}

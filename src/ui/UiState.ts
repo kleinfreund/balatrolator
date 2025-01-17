@@ -255,7 +255,7 @@ export class UiState {
 		const { hand, scoringCards, scores } = calculateScore(state)
 		log({ hand, scoringCards, scores })
 
-		const distinctScores = new Map<number, ResultScore>()
+		const distinctScores = new Map<string, ResultScore>()
 		for (const score of scores) {
 			if (!distinctScores.has(score.score)) {
 				distinctScores.set(score.score, score)
@@ -276,7 +276,12 @@ export class UiState {
 			formattedScoreEl.textContent = score.formattedScore
 
 			const scoreEl = fragment.querySelector<HTMLElement>('[data-sc-score]')!
-			scoreEl.textContent = new Intl.NumberFormat('en').format(score.score)
+			scoreEl.textContent = score.score
+				.split('')
+				.reverse()
+				.map((digit, index) => digit + (index > 0 && index % 3 === 0 ? ',' : ''))
+				.reverse()
+				.join('')
 
 			this.#scoreCardContainer.appendChild(fragment)
 		}
