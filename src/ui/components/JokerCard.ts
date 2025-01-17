@@ -95,11 +95,11 @@ export class JokerCard extends DraggableCard {
 	}
 
 	get rank () {
-		return this.#definition.hasRankInput ? this.rankSelect.value as Rank : undefined
+		return this.rankSelect.value as Rank
 	}
 
 	get suit () {
-		return this.#definition.hasSuitInput ? this.suitSelect.value as Suit : undefined
+		return this.suitSelect.value as Suit
 	}
 
 	get active () {
@@ -125,8 +125,38 @@ export class JokerCard extends DraggableCard {
 		this.hasRendered = true
 	}
 
-	setJoker (joker: Joker) {
-		this.#joker = joker
+	get joker (): Joker {
+		if (this.#joker) {
+			return this.#joker
+		}
+
+		const index = this.parentElement!.children.length
+		const rarity = this.#definition.rarity
+		const name = this.jokerName
+		const edition = this.edition
+		const plusChips = this.plusChips
+		const plusMultiplier = this.plusMultiplier
+		const timesMultiplier = this.timesMultiplier
+		const active = this.active
+		const rank = this.rank
+		const suit = this.suit
+
+		return {
+			index,
+			rarity,
+			name,
+			edition,
+			plusChips,
+			plusMultiplier,
+			timesMultiplier,
+			active,
+			rank,
+			suit,
+		}
+	}
+
+	setJoker (joker?: Joker) {
+		this.#joker = joker ?? this.joker
 
 		const {
 			name,
@@ -137,7 +167,7 @@ export class JokerCard extends DraggableCard {
 			active,
 			rank,
 			suit,
-		} = joker
+		} = this.#joker
 
 		this.nameSelect.value = name
 		this.editionSelect.value = edition

@@ -404,10 +404,7 @@ export class UiState {
 		this.#jokerContainer.insertAdjacentHTML('beforeend', '<joker-card></joker-card>')
 		const jokerEl = this.#jokerContainer.lastElementChild
 		if (jokerEl instanceof JokerCard) {
-			if (joker) {
-				jokerEl.setJoker(joker)
-			}
-
+			jokerEl.setJoker(joker)
 			jokerEl.updateState()
 		}
 	}
@@ -416,10 +413,7 @@ export class UiState {
 		this.#playingCardContainer.insertAdjacentHTML('beforeend', '<playing-card></playing-card>')
 		const el = this.#playingCardContainer.lastElementChild
 		if (el instanceof PlayingCard) {
-			if (card) {
-				el.setCard(card)
-			}
-
+			el.setCard(card)
 			el.updateState()
 		}
 	}

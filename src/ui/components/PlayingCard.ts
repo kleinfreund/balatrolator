@@ -118,8 +118,34 @@ export class PlayingCard extends DraggableCard {
 		this.hasRendered = true
 	}
 
-	setCard (card: Card) {
-		this.#card = card
+	get card (): Card {
+		if (this.#card) {
+			return this.#card
+		}
+
+		const index = this.parentElement!.children.length
+		const rank = this.rank
+		const suit = this.suit
+		const edition = this.edition
+		const enhancement = this.enhancement
+		const seal = this.seal
+		const debuffed = this.debuffed
+		const played = this.played
+
+		return {
+			index,
+			rank,
+			suit,
+			edition,
+			enhancement,
+			seal,
+			debuffed,
+			played,
+		}
+	}
+
+	setCard (card?: Card) {
+		this.#card = card ?? this.card
 
 		const {
 			rank,
@@ -129,7 +155,7 @@ export class PlayingCard extends DraggableCard {
 			seal,
 			debuffed,
 			played,
-		} = card
+		} = this.#card
 
 		this.playedCheckbox.checked = Boolean(played)
 		this.debuffedCheckbox.checked = debuffed
