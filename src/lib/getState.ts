@@ -1,7 +1,7 @@
 import { DEFAULT_HAND_SCORE_SETS, PLANET_SCORE_SETS, JOKER_DEFINITIONS, HANDS } from './data.js'
 import { getHand } from './getHand.js'
 import { isDebuffed } from './cards.js'
-import type { Card, HandLevel, HandLevels, HandName, HandScore, InitialCard, InitialHandLevels, InitialJoker, InitialObservatory, InitialState, Joker, Observatory, Score, State } from './types.js'
+import type { BaseScore, Card, HandLevel, HandLevels, HandName, HandScore, InitialCard, InitialHandLevels, InitialJoker, InitialObservatory, InitialState, Joker, Observatory, State } from './types.js'
 
 export function getState (initialState: InitialState): State {
 	const {
@@ -76,7 +76,7 @@ function getHandLevels (initialHandLevels: InitialHandLevels): HandLevels {
 
 function getHandBaseScores (handLevels: HandLevels): HandScore {
 	const handLevelEntries = Object.entries(handLevels) as [HandName, HandLevel][]
-	const handBaseScoresEntries = handLevelEntries.map<[HandName, Score]>(([handName, { level }]) => {
+	const handBaseScoresEntries = handLevelEntries.map<[HandName, BaseScore]>(([handName, { level }]) => {
 		const defaultScore = DEFAULT_HAND_SCORE_SETS[handName]
 		const levelBasedScore = PLANET_SCORE_SETS[handName]
 

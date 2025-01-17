@@ -6,26 +6,15 @@ import { formatScore } from './formatScore.js'
 import { isFaceCard, isRank } from './cards.js'
 import { resolveJoker } from './resolveJokers.js'
 import type { Card, Joker, JokerCardEffect, JokerEffect, Luck, Result, ResultScore, Score, State } from './types.js'
+import { doBigMath } from './doBigMath.js'
 
 export function calculateScore (state: State): Result {
 	const scores: ResultScore[] = []
 
 	for (const luck of LUCKS) {
-		const { chips, multiplier } = getScore(state, luck)
+		const initialScore = getScore(state, luck)
+		const score = doBigMath(initialScore, state.deck)
 
-		log('\nReceived:', { chips, multiplier })
-		log('Expected:', { chips: 3680, multiplier: 1234e46 })
-
-		let actualScore
-		if (state.deck === 'Plasma Deck') {
-			log('Balanced:', { chips: 2.470e16, multiplier: 2.470e16 })
-			actualScore = Math.pow((chips + multiplier) / 2, 2)
-		} else {
-			actualScore = chips * multiplier
-		}
-
-		// Balatro seems to round values starting at a certain threshold and it seems to round down. 🤔
-		const score = actualScore > 10000 ? Math.floor(actualScore) : actualScore
 		scores.push({
 			score,
 			formattedScore: formatScore(score),
@@ -49,8 +38,8 @@ function getScore (state: State, luck: Luck): Score {
 	const baseFactor = (state.blind.name === 'The Flint' && state.blind.active ? 0.5 : 1)
 	// The base score seems to be rounded here.
 	const score: Score = {
-		chips: Math.round(baseScore.chips * baseFactor),
-		multiplier: Math.round(baseScore.multiplier * baseFactor),
+		chips: [Math.round(baseScore.chips * baseFactor)],
+		multiplier: [['+', Math.round(baseScore.multiplier * baseFactor)]],
 	}
 	log('\n0. BASE SCORE =>', score)
 
@@ -70,24 +59,24 @@ function getScore (state: State, luck: Luck): Score {
 
 			// 1. Rank
 			if (card.enhancement !== 'stone') {
-				score.chips += RANK_TO_CHIP_MAP[card.rank]
+				score.chips.push(RANK_TO_CHIP_MAP[card.rank])
 				log(score, '(+Chips from rank)')
 			}
 
 			// 2. Enhancement
 			switch (card.enhancement) {
 				case 'stone': {
-					score.chips += 50
+					score.chips.push(50)
 					log(score, '(+Chips from stone enhancement)')
 					break
 				}
 				case 'bonus': {
-					score.chips += 30
+					score.chips.push(30)
 					log(score, '(+Chips from bonus enhancement)')
 					break
 				}
 				case 'mult': {
-					score.multiplier += 4
+					score.multiplier.push(['+', 4])
 					log(score, '(+Mult from mult enhancement)')
 					break
 				}
@@ -96,12 +85,12 @@ function getScore (state: State, luck: Luck): Score {
 					const plusMult = 20
 					const oopses = state.jokers.filter(({ name }) => name === 'Oops! All 6s')
 
-					score.multiplier += balanceMultWithLuck(plusMult, oopses.length, denominator, luck, 'plus')
+					score.multiplier.push(['+', balanceMultWithLuck(plusMult, oopses.length, denominator, luck, 'plus')])
 					log(score, '(+Mult from lucky enhancement)')
 					break
 				}
 				case 'glass': {
-					score.multiplier *= 2
+					score.multiplier.push(['*', 2])
 					log(score, '(xMult from glass enhancement)')
 					break
 				}
@@ -110,17 +99,17 @@ function getScore (state: State, luck: Luck): Score {
 			// 3. Edition
 			switch (card.edition) {
 				case 'foil': {
-					score.chips += 50
+					score.chips.push(50)
 					log(score, '(+Chips from foil edition)')
 					break
 				}
 				case 'holographic': {
-					score.multiplier += 10
+					score.multiplier.push(['+', 10])
 					log(score, '(+Mult from holographic edition)')
 					break
 				}
 				case 'polychrome': {
-					score.multiplier *= 1.5
+					score.multiplier.push(['*', 1.5])
 					log(score, '(xMult from polychrome edition)')
 					break
 				}
@@ -153,7 +142,7 @@ function getScore (state: State, luck: Luck): Score {
 			// 1. Enhancement
 			switch (card.enhancement) {
 				case 'steel': {
-					score.multiplier *= 1.5
+					score.multiplier.push(['*', 1.5])
 					log(score, '(xMult from steel enhancement)')
 					break
 				}
@@ -177,17 +166,17 @@ function getScore (state: State, luck: Luck): Score {
 		// 1. EDITION
 		switch (joker.edition) {
 			case 'foil': {
-				score.chips += 50
+				score.chips.push(50)
 				log(score, '(+Chips from foil edition)')
 				break
 			}
 			case 'holographic': {
-				score.multiplier += 10
+				score.multiplier.push(['+', 10])
 				log(score, '(+Mult from holographic edition)')
 				break
 			}
 			case 'polychrome': {
-				score.multiplier *= 1.5
+				score.multiplier.push(['*', 1.5])
 				log(score, '(xMult from polychrome edition)')
 				break
 			}
@@ -203,7 +192,7 @@ function getScore (state: State, luck: Luck): Score {
 	log('\n4. Scoring Observatory …')
 	const planetCount = state.observatory[state.playedHand] ?? 0
 	if (planetCount > 0) {
-		score.multiplier *= planetCount * 1.5
+		score.multiplier.push(['*', planetCount * 1.5])
 	}
 	log('\n4. OBSERVATORY SCORE =>', score)
 

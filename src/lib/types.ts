@@ -18,9 +18,14 @@ export type Seal = 'none' | 'gold' | 'red' | 'blue' | 'purple'
 
 export type Enhancement = 'none' | 'bonus' | 'mult' | 'wild' | 'glass' | 'steel' | 'stone' | 'gold' | 'lucky'
 
-export interface Score {
+export interface BaseScore {
 	chips: number
 	multiplier: number
+}
+
+export interface Score {
+	chips: number[]
+	multiplier: ['+' | '*', number][]
 }
 
 export interface InitialCard {
@@ -109,7 +114,7 @@ export type InitialObservatory = Partial<Observatory>
 export type Observatory = Record<HandName, number>
 export type InitialHandLevels = Partial<HandLevels>
 export type HandLevels = Record<HandName, HandLevel>
-export type HandScore = Record<HandName, Score>
+export type HandScore = Record<HandName, BaseScore>
 
 export interface Blind {
 	name: BlindName
