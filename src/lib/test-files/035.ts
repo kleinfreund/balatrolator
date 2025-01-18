@@ -1,5 +1,4 @@
 import type { TestCase } from '#lib/calculateScore.test.js'
-import type { InitialCard } from '#lib/types.js'
 
 export default (message: string): TestCase => {
 	return {
@@ -8,8 +7,7 @@ export default (message: string): TestCase => {
 			deck: 'Plasma Deck',
 			cards: [
 				{ played: true, rank: 'King', suit: 'Hearts', enhancement: 'glass', seal: 'red' },
-				...Array.from({ length: 717 })
-					.map<InitialCard>(() => ({ rank: 'King', suit: 'Hearts', enhancement: 'steel', seal: 'red' })),
+				{ rank: 'King', suit: 'Hearts', enhancement: 'steel', seal: 'red', count: 717 },
 			],
 			jokers: [
 				{ name: 'Baron', edition: 'polychrome' },
