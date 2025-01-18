@@ -43,6 +43,7 @@ export class UiState {
 
 	#scoreCardContainer: HTMLElement
 	#playedHandEl: HTMLElement
+	#resetButton: HTMLButtonElement
 
 	#savesContainer: HTMLElement
 	#saveRowTemplate: HTMLTemplateElement
@@ -79,6 +80,8 @@ export class UiState {
 
 		this.#scoreCardContainer = form.querySelector<HTMLElement>('[data-sc-container]')!
 		this.#playedHandEl = form.querySelector<HTMLElement>('[data-sc-played-hand]')!
+		this.#resetButton = form.querySelector<HTMLButtonElement>('[data-sc-reset-button]')!
+		this.#resetButton.addEventListener('click', () => this.#reset())
 
 		this.#savesContainer = document.querySelector<HTMLElement>('[data-s-saves]')!
 		this.#saveRowTemplate = document.querySelector<HTMLTemplateElement>('template#save-row')!
@@ -113,6 +116,10 @@ export class UiState {
 		event.preventDefault()
 		const state = this.#readStateFromUi()
 		this.#applyState(state)
+	}
+
+	#reset () {
+		this.#populateUiWithState(getState({}))
 	}
 
 	#calculate () {
