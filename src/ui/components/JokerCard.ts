@@ -17,6 +17,7 @@ export class JokerCard extends DraggableCard {
 	showDuplicateModalButton: HTMLButtonElement
 	removeButton: HTMLButtonElement
 	nameSelect: HTMLSelectElement
+	countInput: HTMLInputElement
 	editionSelect: HTMLSelectElement
 	plusChipsInput: HTMLInputElement
 	plusMultiplierInput: HTMLInputElement
@@ -43,6 +44,9 @@ export class JokerCard extends DraggableCard {
 
 		this.nameSelect = this.fragment.querySelector<HTMLSelectElement>('[data-j-name]')!
 		this.nameSelect.name = `joker-name-${id}`
+
+		this.countInput = this.fragment.querySelector<HTMLInputElement>('[data-j-count]')!
+		this.countInput.name = `joker-count-${id}`
 
 		this.editionSelect = this.fragment.querySelector<HTMLSelectElement>('[data-j-edition]')!
 		this.editionSelect.name = `joker-edition-${id}`
@@ -78,6 +82,10 @@ export class JokerCard extends DraggableCard {
 		return this.nameSelect.value as JokerName
 	}
 
+	get rarity () {
+		return this.#definition.rarity
+	}
+
 	get edition () {
 		return this.editionSelect.value as JokerEdition
 	}
@@ -106,6 +114,10 @@ export class JokerCard extends DraggableCard {
 		return this.activeCheckbox.checked
 	}
 
+	get count () {
+		return Number(this.countInput.value)
+	}
+
 	connectedCallback () {
 		super.connectedCallback()
 
@@ -131,13 +143,14 @@ export class JokerCard extends DraggableCard {
 		}
 
 		const index = this.parentElement!.children.length
-		const rarity = this.#definition.rarity
+		const rarity = this.rarity
 		const name = this.jokerName
 		const edition = this.edition
 		const plusChips = this.plusChips
 		const plusMultiplier = this.plusMultiplier
 		const timesMultiplier = this.timesMultiplier
 		const active = this.active
+		const count = this.count
 		const rank = this.rank
 		const suit = this.suit
 
@@ -150,6 +163,7 @@ export class JokerCard extends DraggableCard {
 			plusMultiplier,
 			timesMultiplier,
 			active,
+			count,
 			rank,
 			suit,
 		}
@@ -167,9 +181,11 @@ export class JokerCard extends DraggableCard {
 			active,
 			rank,
 			suit,
+			count,
 		} = this.#joker
 
 		this.nameSelect.value = name
+		this.countInput.value = String(count)
 		this.editionSelect.value = edition
 		if (this.#definition.hasPlusChipsInput) this.plusChipsInput.value = String(plusChips)
 		if (this.#definition.hasPlusMultiplierInput) this.plusMultiplierInput.value = String(plusMultiplier)
@@ -217,6 +233,7 @@ export class JokerCard extends DraggableCard {
 		clone.setJoker(this.#joker)
 
 		clone.nameSelect.value = this.nameSelect.value
+		clone.countInput.value = this.countInput.value
 		clone.editionSelect.value = this.editionSelect.value
 		clone.plusChipsInput.value = this.plusChipsInput.value
 		clone.plusMultiplierInput.value = this.plusMultiplierInput.value

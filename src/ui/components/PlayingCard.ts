@@ -16,6 +16,7 @@ export class PlayingCard extends DraggableCard {
 	showDuplicateModalButton: HTMLButtonElement
 	removeButton: HTMLButtonElement
 	playedCheckbox: HTMLInputElement
+	countInput: HTMLInputElement
 	debuffedCheckbox: HTMLInputElement
 	rankSelect: HTMLSelectElement
 	suitSelect: HTMLSelectElement
@@ -41,6 +42,9 @@ export class PlayingCard extends DraggableCard {
 
 		this.playedCheckbox = this.fragment.querySelector<HTMLInputElement>('[data-c-is-played]')!
 		this.playedCheckbox.name = `card-is-played-${id}`
+
+		this.countInput = this.fragment.querySelector<HTMLInputElement>('[data-c-count]')!
+		this.countInput.name = `card-count-${id}`
 
 		this.debuffedCheckbox = this.fragment.querySelector<HTMLInputElement>('[data-c-is-debuffed]')!
 		this.debuffedCheckbox.name = `card-is-debuffed-${id}`
@@ -99,6 +103,10 @@ export class PlayingCard extends DraggableCard {
 		return this.debuffedCheckbox.checked
 	}
 
+	get count () {
+		return Number(this.countInput.value)
+	}
+
 	connectedCallback () {
 		super.connectedCallback()
 
@@ -131,6 +139,7 @@ export class PlayingCard extends DraggableCard {
 		const seal = this.seal
 		const debuffed = this.debuffed
 		const played = this.played
+		const count = this.count
 
 		return {
 			index,
@@ -141,6 +150,7 @@ export class PlayingCard extends DraggableCard {
 			seal,
 			debuffed,
 			played,
+			count,
 		}
 	}
 
@@ -155,9 +165,11 @@ export class PlayingCard extends DraggableCard {
 			seal,
 			debuffed,
 			played,
+			count,
 		} = this.#card
 
-		this.playedCheckbox.checked = Boolean(played)
+		this.playedCheckbox.checked = played
+		this.countInput.value = String(count)
 		this.debuffedCheckbox.checked = debuffed
 		this.rankSelect.value = rank
 		this.suitSelect.value = suit
@@ -202,6 +214,7 @@ export class PlayingCard extends DraggableCard {
 		clone.setCard(this.#card)
 
 		clone.playedCheckbox.checked = this.playedCheckbox.checked
+		clone.countInput.value = this.countInput.value
 		clone.debuffedCheckbox.checked = this.debuffedCheckbox.checked
 		clone.rankSelect.value = this.rankSelect.value
 		clone.suitSelect.value = this.suitSelect.value

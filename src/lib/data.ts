@@ -515,9 +515,9 @@ export const JOKER_DEFINITIONS: Record<JokerName, JokerDefinition> = {
 	},
 	'Supernova': {
 		rarity: 'common',
-		effect ({ score, state, trigger }) {
+		effect ({ score, state, playedHand, trigger }) {
 			score.push({
-				multiplier: ['+', state.handLevels[state.playedHand].plays + 1],
+				multiplier: ['+', state.handLevels[playedHand].plays + 1],
 				phase: 'jokers',
 				joker: this,
 				trigger,
@@ -1138,12 +1138,12 @@ export const JOKER_DEFINITIONS: Record<JokerName, JokerDefinition> = {
 	},
 	'Flower Pot': {
 		rarity: 'uncommon',
-		effect ({ score, state, trigger }) {
+		effect ({ score, scoringCards, trigger }) {
 			let hasAllSuits = false
 			const suits = ['Spades', 'Hearts', 'Clubs', 'Diamonds'] as Suit[]
 			const cards = new Set<Card>()
 			for (const suit of suits) {
-				for (const card of state.scoringCards) {
+				for (const card of scoringCards) {
 					if (cards.has(card)) {
 						continue
 					}
@@ -1204,9 +1204,9 @@ export const JOKER_DEFINITIONS: Record<JokerName, JokerDefinition> = {
 	},
 	'Seeing Double': {
 		rarity: 'uncommon',
-		effect ({ score, state, trigger }) {
-			const hasScoringClubsCard = state.scoringCards.some((card) => isSuit(card, 'Clubs'))
-			const hasScoringCardOfOtherSuit = state.scoringCards.some((card) => isSuit(card, ['Spades', 'Hearts', 'Diamonds']))
+		effect ({ score, scoringCards, trigger }) {
+			const hasScoringClubsCard = scoringCards.some((card) => isSuit(card, 'Clubs'))
+			const hasScoringCardOfOtherSuit = scoringCards.some((card) => isSuit(card, ['Spades', 'Hearts', 'Diamonds']))
 
 			score.push({
 				multiplier: ['*', hasScoringClubsCard && hasScoringCardOfOtherSuit ? 2 : 1],

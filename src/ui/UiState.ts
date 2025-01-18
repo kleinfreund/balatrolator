@@ -5,7 +5,7 @@ import { JokerCard } from './components/JokerCard.js'
 import { PlayingCard } from './components/PlayingCard.js'
 import { readStateFromUrl, saveStateToUrl } from './Storage.js'
 import { SaveManager } from './SaveManager.js'
-import type { BlindName, Card, DeckName, HandName, InitialState, Joker, State, ResultScore } from '#lib/types.js'
+import type { BlindName, Card, DeckName, HandName, InitialState, Joker, State, ResultScore, InitialJoker, InitialCard } from '#lib/types.js'
 
 const dateTimeFormat = new Intl.DateTimeFormat(document.documentElement.lang, {
 	year: 'numeric',
@@ -343,21 +343,23 @@ export class UiState {
 				rank: jokerCard.rank,
 				suit: jokerCard.suit,
 				active: jokerCard.active,
-			})
+				count: jokerCard.count,
+			} satisfies Required<InitialJoker>)
 		}
 
-		for (const cardEl of this.#playingCardContainer.children) {
-			if (!(cardEl instanceof PlayingCard)) continue
+		for (const playingCard of this.#playingCardContainer.children) {
+			if (!(playingCard instanceof PlayingCard)) continue
 
 			initialState.cards.push({
-				rank: cardEl.rank,
-				suit: cardEl.suit,
-				edition: cardEl.edition,
-				enhancement: cardEl.enhancement,
-				seal: cardEl.seal,
-				debuffed: cardEl.debuffed,
-				played: cardEl.played,
-			})
+				rank: playingCard.rank,
+				suit: playingCard.suit,
+				edition: playingCard.edition,
+				enhancement: playingCard.enhancement,
+				seal: playingCard.seal,
+				debuffed: playingCard.debuffed,
+				played: playingCard.played,
+				count: playingCard.count,
+			} satisfies Required<InitialCard>)
 		}
 
 		return getState(initialState)

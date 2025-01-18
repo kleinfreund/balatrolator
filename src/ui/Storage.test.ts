@@ -15,10 +15,7 @@ describe('Storage', () => {
 				blind: { name: 'Big Blind' },
 				cards: [
 					{ played: true, rank: 'Ace', suit: 'Diamonds', seal: 'red' },
-					{ played: true, rank: 'Ace', suit: 'Diamonds', enhancement: 'glass', seal: 'red' },
-					{ played: true, rank: 'Ace', suit: 'Diamonds', enhancement: 'glass', seal: 'red' },
-					{ played: true, rank: 'Ace', suit: 'Diamonds', enhancement: 'glass', seal: 'red' },
-					{ played: true, rank: 'Ace', suit: 'Diamonds', enhancement: 'glass', seal: 'red' },
+					{ played: true, rank: 'Ace', suit: 'Diamonds', enhancement: 'glass', seal: 'red', count: 4 },
 					{ rank: 'Ace', suit: 'Diamonds', enhancement: 'mult' },
 					{ rank: 'Ace', suit: 'Diamonds', enhancement: 'steel', seal: 'red' },
 					{ rank: 'Ace', suit: 'Diamonds', enhancement: 'steel', seal: 'red' },
@@ -39,7 +36,7 @@ describe('Storage', () => {
 					},
 				},
 			},
-			'---1-1--5-___________-11*_*_*_*_*_*_*_*_*_*_*_*-50*******_122*******_126*****0*3*_69****12.25***_132*******_119****5.5***-0*3***2**1_0*3**4*2**1_0*3**4*2**1_0*3**4*2**1_0*3**4*2**1_0*3**2***_0*3**5*2**_0*3**5*2**_0*3***2**',
+			'---1-1--5-___________-11*_*_*_*_*_*_*_*_*_*_*_*-50********_122********_126*****0*3**_69****12.25****_132********_119****5.5****-0*3***2**1*_0*3**4*2**1*4_0*3**2****_0*3**5*2***_0*3**5*2***_0*3***2***',
 		],
 	])('works', (initialState, expectedString) => {
 		// eslint-disable-next-line @typescript-eslint/no-empty-function

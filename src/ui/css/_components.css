@@ -157,6 +157,11 @@ hand-level {
 	display: none;
 }
 
+.c-count-input {
+	width: 3.5rem;
+	text-align: right;
+}
+
 .c-edition-input {
 	width: 8.5rem;
 }
@@ -182,6 +187,11 @@ hand-level {
 
 .joker-card[draggable="true"] {
 	cursor: ew-resize;
+}
+
+.j-count-input {
+	width: 3.5rem;
+	text-align: right;
 }
 
 .j-edition-input {

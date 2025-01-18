@@ -5,9 +5,7 @@ export default (message: string): TestCase => {
 		message,
 		initialState: {
 			cards: [
-				{ played: true, rank: '5', suit: 'Spades', enhancement: 'mult', seal: 'red' },
-				{ played: true, rank: '5', suit: 'Spades', enhancement: 'mult', seal: 'red' },
-				{ played: true, rank: '5', suit: 'Spades', enhancement: 'mult', seal: 'red' },
+				{ played: true, rank: '5', suit: 'Spades', enhancement: 'mult', seal: 'red', count: 3 },
 				{ played: true, rank: '5', suit: 'Hearts', enhancement: 'mult' },
 				{ played: true, rank: '5', suit: 'Clubs', seal: 'gold' },
 			],

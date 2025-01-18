@@ -159,6 +159,7 @@ function toJokerCode (joker: Joker): string {
 		rank,
 		suit,
 		active,
+		count,
 	} = joker
 
 	return [
@@ -170,6 +171,7 @@ function toJokerCode (joker: Joker): string {
 		rank ? RANK_INDEXES[rank] : MINIFIED_DEFAULT_VALUE,
 		suit ? SUIT_INDEXES[suit] : MINIFIED_DEFAULT_VALUE,
 		active ? 1 : MINIFIED_DEFAULT_VALUE,
+		count !== 1 ? count : MINIFIED_DEFAULT_VALUE,
 	].join(SEPARATOR.third)
 }
 
@@ -183,6 +185,7 @@ function fromJokerCode (code: string): InitialJoker {
 		rankIndex,
 		suitIndex,
 		active,
+		count,
 	] = code.split(SEPARATOR.third)
 
 	return {
@@ -194,6 +197,7 @@ function fromJokerCode (code: string): InitialJoker {
 		rank: rankIndex !== '' ? RANKS[Number(rankIndex)] as Rank : undefined,
 		suit: suitIndex !== '' ? SUITS[Number(suitIndex)] as Suit : undefined,
 		active: active === '1',
+		count: Number(count || '1'),
 	}
 }
 
@@ -206,6 +210,7 @@ function toCardCode (card: Card): string {
 		seal,
 		debuffed,
 		played,
+		count,
 	} = card
 
 	return [
@@ -216,6 +221,7 @@ function toCardCode (card: Card): string {
 		seal !== 'none' ? SEAL_INDEXES[seal] : MINIFIED_DEFAULT_VALUE,
 		debuffed ? 1 : MINIFIED_DEFAULT_VALUE,
 		played ? 1 : MINIFIED_DEFAULT_VALUE,
+		count !== 1 ? count : MINIFIED_DEFAULT_VALUE,
 	].join(SEPARATOR.third)
 }
 
@@ -228,6 +234,7 @@ function fromCardCode (code: string): InitialCard {
 		sealIndex,
 		debuffed,
 		played,
+		count,
 	] = code.split(SEPARATOR.third)
 
 	return {
@@ -238,5 +245,6 @@ function fromCardCode (code: string): InitialCard {
 		seal: SEALS[Number(sealIndex || '0')] as Seal,
 		debuffed: debuffed === '1',
 		played: played === '1',
+		count: Number(count || '1'),
 	}
 }

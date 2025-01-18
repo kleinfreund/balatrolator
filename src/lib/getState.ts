@@ -1,5 +1,4 @@
 import { DEFAULT_HAND_SCORE_SETS, PLANET_SCORE_SETS, JOKER_DEFINITIONS, HANDS } from './data.js'
-import { getHand } from './getHand.js'
 import { isDebuffed } from './cards.js'
 import type { BaseScore, Card, HandLevel, HandLevels, HandName, HandScore, InitialCard, InitialHandLevels, InitialJoker, InitialObservatory, InitialState, Joker, Observatory, State } from './types.js'
 
@@ -34,14 +33,6 @@ export function getState (initialState: InitialState): State {
 		debuffed: card.debuffed ? true : isDebuffed(card, blind, jokerSet.has('Pareidolia')),
 	}))
 
-	const hasFourFingers = jokerSet.has('Four Fingers')
-	const hasShortcut = jokerSet.has('Shortcut')
-	const hasSmearedJoker = jokerSet.has('Smeared Joker')
-	const playedCards = cards.filter((card) => card.played)
-	const { playedHand, scoringCards: preliminaryScoringCards } = getHand(playedCards, { hasFourFingers, hasShortcut, hasSmearedJoker })
-
-	const scoringCards = jokerSet.has('Splash') ? playedCards : preliminaryScoringCards
-
 	return {
 		hands,
 		discards,
@@ -55,8 +46,6 @@ export function getState (initialState: InitialState): State {
 		jokerSet,
 		jokerSlots,
 		cards,
-		playedHand,
-		scoringCards,
 	}
 }
 
@@ -90,8 +79,8 @@ function getHandBaseScores (handLevels: HandLevels): HandScore {
 	return Object.fromEntries(handBaseScoresEntries) as HandScore
 }
 
-function getJokers (initialJokers: InitialJoker[]): Joker[] {
-	return initialJokers.map((initialJoker, index) => {
+function getJokers (jokers: InitialJoker[]): Joker[] {
+	return jokers.map((joker, index) => {
 		const {
 			name,
 			edition = 'base',
@@ -101,7 +90,8 @@ function getJokers (initialJokers: InitialJoker[]): Joker[] {
 			rank,
 			suit,
 			active = false,
-		} = initialJoker
+			count = 1,
+		} = joker
 
 		const {
 			rarity,
@@ -122,6 +112,7 @@ function getJokers (initialJokers: InitialJoker[]): Joker[] {
 			rank,
 			suit,
 			active,
+			count,
 			rarity,
 			effect,
 			indirectEffect,
@@ -143,6 +134,7 @@ export function getCards (cards: InitialCard[]): Card[] {
 			seal = 'none',
 			debuffed = false,
 			played = false,
+			count = 1,
 		} = card
 
 		const modifiers = [
@@ -160,6 +152,7 @@ export function getCards (cards: InitialCard[]): Card[] {
 			seal,
 			debuffed,
 			played,
+			count,
 			index,
 			toString,
 		}

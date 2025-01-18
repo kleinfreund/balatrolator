@@ -41,6 +41,7 @@ export interface InitialCard {
 	enhancement?: Enhancement
 	debuffed?: boolean
 	played?: boolean
+	count?: number
 }
 
 export interface Card extends Required<InitialCard> {
@@ -50,6 +51,8 @@ export interface Card extends Required<InitialCard> {
 
 export interface EffectOptions {
 	state: State
+	scoringCards: Card[]
+	playedHand: HandName
 	score: ScoreValue[]
 	luck: Luck
 	trigger: string
@@ -81,6 +84,7 @@ export interface InitialJoker {
 	rank?: Rank
 	suit?: Suit
 	active?: boolean
+	count?: number
 }
 
 export interface JokerDefinition {
@@ -106,6 +110,7 @@ export interface Joker {
 	rank?: Rank
 	suit?: Suit
 	active: boolean
+	count: number
 	rarity: 'common' | 'uncommon' | 'rare' | 'legendary'
 	effect?: JokerEffect
 	indirectEffect?: JokerIndirectEffect
@@ -153,8 +158,6 @@ export interface State {
 	jokerSet: Set<JokerName>
 	jokerSlots: number
 	cards: Card[]
-	playedHand: HandName
-	scoringCards: Card[]
 }
 
 export type Luck = 'none' | 'average' | 'all'

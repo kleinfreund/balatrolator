@@ -37,7 +37,7 @@
 							<h2>Saves</h2>
 						</header>
 
-						<p>The current hand is auto-saved whenever the score updates.</p>
+						<p>The current hand is auto-saved whenever the score updates. Saves are stored in the browser's local storage.</p>
 
 						<div class="table-wrapper">
 							<table>
@@ -87,6 +87,8 @@
 									<span>Import</span>
 								</button>
 							</div>
+
+							<p>Import any saves you previously exported in JSON format.</p>
 						</form>
 					</div>
 				</div>
@@ -609,7 +611,6 @@
 					<svg class="icon">
 						<use xlink:href="#copy-icon"></use>
 					</svg>
-
 				</button>
 
 				<button class="j-remove-button button --icon" type="button" data-remove-button>
@@ -620,6 +621,12 @@
 					</svg>
 				</button>
 			</div>
+
+			<label class="j-count text-control --flat --grow">
+				<span class="label truncate">Count</span>
+				<input class="j-count-input text-input" type="number" value="1" min="0" data-j-count>
+				<span class="label truncate">×</span>
+			</label>
 
 			<label class="j-edition select-control --flat --grow">
 				<span class="label truncate">Edition</span>
@@ -721,6 +728,12 @@
 					</svg>
 				</button>
 			</div>
+
+			<label class="c-count text-control --flat --grow">
+				<span class="label truncate">Count</span>
+				<input class="c-count-input text-input" type="number" value="1" min="1" data-c-count>
+				<span class="label truncate">×</span>
+			</label>
 
 			<label class="c-is-debuffed checkbox-control">
 				<input class="c-is-debuffed-input checkbox" type="checkbox" value="is-debuffed" data-c-is-debuffed>

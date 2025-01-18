@@ -231,15 +231,14 @@ describe('minifier', () => {
 					{ name: 'Baron' },
 				],
 				cards: [
-					{ played: true, rank: 'King', suit: 'Diamonds', enhancement: 'gold' },
-					{ played: true, rank: 'King', suit: 'Diamonds', enhancement: 'gold' },
+					{ played: true, rank: 'King', suit: 'Diamonds', enhancement: 'gold', count: 2 },
 					{ played: true, rank: 'Queen', suit: 'Diamonds', enhancement: 'gold' },
 					{ played: true, rank: 'Queen', suit: 'Diamonds', enhancement: 'glass' },
 					{ played: true, rank: 'Queen', suit: 'Diamonds', enhancement: 'glass', seal: 'red' },
 					{ rank: 'King', suit: 'Diamonds', enhancement: 'gold' },
 				],
 			},
-			'1-2-3-1--13-5-___________-*_*1_*2_9*3_8*4_7*5_6*6_5*7_4*8_3*9_2*_*-18*3******_102**81*****_122*******_91*******_71*******-1*3**7***1_1*3**7***1_2*3**7***1_2*3**4***1_2*3**4*2**1_1*3**7***',
+			'1-2-3-1--13-5-___________-*_*1_*2_9*3_8*4_7*5_6*6_5*7_4*8_3*9_2*_*-18*3*******_102**81******_122********_91********_71********-1*3**7***1*2_2*3**7***1*_2*3**4***1*_2*3**4*2**1*_1*3**7****',
 			{
 				hands: 1,
 				discards: 2,
@@ -272,8 +271,7 @@ describe('minifier', () => {
 					{ name: 'Baron' },
 				],
 				cards: [
-					{ played: true, rank: 'King', suit: 'Diamonds', enhancement: 'gold' },
-					{ played: true, rank: 'King', suit: 'Diamonds', enhancement: 'gold' },
+					{ played: true, rank: 'King', suit: 'Diamonds', enhancement: 'gold', count: 2 },
 					{ played: true, rank: 'Queen', suit: 'Diamonds', enhancement: 'gold' },
 					{ played: true, rank: 'Queen', suit: 'Diamonds', enhancement: 'glass' },
 					{ played: true, rank: 'Queen', suit: 'Diamonds', enhancement: 'glass', seal: 'red' },
