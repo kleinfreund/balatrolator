@@ -1,6 +1,6 @@
 import type { ScoreValue } from '#lib/types.js'
 
-export const log = import.meta.env.VITE_DEBUG === 'true' ? logFn : () => undefined
+export const log = import.meta.env?.VITE_DEBUG === 'true' ? logFn : () => undefined
 
 function logFn ({ chips, multiplier, phase, card, joker, type, trigger }: ScoreValue): void {
 	let valueStr = ''
