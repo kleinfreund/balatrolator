@@ -1,13 +1,13 @@
-import { log } from '#utilities/log.js'
-import { notNullish } from '#utilities/notNullish.js'
-import { RANK_TO_CHIP_MAP, PLAYED_CARD_RETRIGGER_JOKER_NAMES, HELD_CARD_RETRIGGER_JOKER_NAMES, LUCKS } from './data.js'
-import { balanceMultWithLuck } from './balanceMultWithLuck.js'
-import { formatScore } from './formatScore.js'
-import { isFaceCard, isRank } from './cards.js'
-import { resolveJoker } from './resolveJokers.js'
-import { doBigMath } from './doBigMath.js'
-import { getHand } from './getHand.js'
-import type { Card, HandName, Joker, JokerCardEffect, JokerEffect, Luck, Result, ResultScore, ScoreValue, State } from './types.js'
+import { log } from '#utilities/log.ts'
+import { notNullish } from '#utilities/notNullish.ts'
+import { RANK_TO_CHIP_MAP, PLAYED_CARD_RETRIGGER_JOKER_NAMES, HELD_CARD_RETRIGGER_JOKER_NAMES, LUCKS } from './data.ts'
+import { balanceMultWithLuck } from './balanceMultWithLuck.ts'
+import { formatScore } from './formatScore.ts'
+import { isFaceCard, isRank } from './cards.ts'
+import { resolveJoker } from './resolveJokers.ts'
+import { doBigMath } from './doBigMath.ts'
+import { getHand } from './getHand.ts'
+import type { Card, HandName, Joker, JokerCardEffect, JokerEffect, Luck, Result, ResultScore, ScoreValue, State } from './types.ts'
 
 export function calculateScore (unresolvedState: State): Result {
 	const state = resolveState(unresolvedState)

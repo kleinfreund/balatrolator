@@ -1,6 +1,6 @@
-import { BLINDS, DECKS, EDITIONS, ENHANCEMENTS, HANDS, JOKER_DEFINITIONS, JOKER_EDITIONS, JOKER_NAMES, RANKS, SEALS, SUITS } from '#lib/data.js'
-import { getState } from '#lib/getState.js'
-import type { Card, Edition, Enhancement, HandLevel, InitialCard, InitialJoker, Joker, JokerName, Rank, Seal, State, Suit } from '#lib/types.js'
+import { BLINDS, DECKS, EDITIONS, ENHANCEMENTS, HANDS, JOKER_DEFINITIONS, JOKER_EDITIONS, JOKER_NAMES, RANKS, SEALS, SUITS } from '#lib/data.ts'
+import { getState } from '#lib/getState.ts'
+import type { Card, Edition, Enhancement, HandLevel, InitialCard, InitialJoker, Joker, JokerName, Rank, Seal, State, Suit } from '#lib/types.ts'
 
 /*
 I'm sorry for the code in this file; it's an abomination. Its job is compressing a `State` object into a minimal (as in size) string for the use of persisting it in the browser's URL or client-side storage (e.g. local storage). This is a context-aware form of data compression “hand-crafted” for this application.

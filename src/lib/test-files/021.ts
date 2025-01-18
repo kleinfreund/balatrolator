@@ -1,4 +1,4 @@
-import type { TestCase } from '#lib/calculateScore.test.js'
+import type { TestCase } from '#lib/calculateScore.test.ts'
 
 export default (message: string): TestCase => {
 	return {

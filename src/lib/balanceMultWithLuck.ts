@@ -1,4 +1,4 @@
-import type { Luck } from './types.js'
+import type { Luck } from './types.ts'
 
 /**
  * Balances a mult value (either +Mult or xMult) that's subject to a probabilistic effect (e.g. Bloodstone, lucky card).

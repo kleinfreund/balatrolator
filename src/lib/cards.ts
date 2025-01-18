@@ -1,4 +1,4 @@
-import type { Blind, Card, Rank, Suit } from './types.js'
+import type { Blind, Card, Rank, Suit } from './types.ts'
 
 export function isDebuffed (card: Card, blind: Blind, hasPareidolia: boolean) {
 	if (blind.active) {

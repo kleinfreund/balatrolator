@@ -1,6 +1,6 @@
 import { describe, expect, test } from 'vitest'
 
-import { resolveJoker } from './resolveJokers.js'
+import { resolveJoker } from './resolveJokers.ts'
 
 describe('resolveJoker', () => {
 	test.each([

@@ -1,11 +1,11 @@
-import { getState } from '#lib/getState.js'
-import { calculateScore } from '#lib/calculateScore.js'
-import { HandLevel } from './components/HandLevel.js'
-import { JokerCard } from './components/JokerCard.js'
-import { PlayingCard } from './components/PlayingCard.js'
-import { readStateFromUrl, saveStateToUrl } from './Storage.js'
-import { SaveManager } from './SaveManager.js'
-import type { BlindName, Card, DeckName, HandName, InitialState, Joker, State, ResultScore, InitialJoker, InitialCard } from '#lib/types.js'
+import { getState } from '#lib/getState.ts'
+import { calculateScore } from '#lib/calculateScore.ts'
+import { HandLevel } from './components/HandLevel.ts'
+import { JokerCard } from './components/JokerCard.ts'
+import { PlayingCard } from './components/PlayingCard.ts'
+import { readStateFromUrl, saveStateToUrl } from './Storage.ts'
+import { SaveManager } from './SaveManager.ts'
+import type { BlindName, Card, DeckName, HandName, InitialState, Joker, State, ResultScore, InitialJoker, InitialCard } from '#lib/types.ts'
 
 const dateTimeFormat = new Intl.DateTimeFormat(document.documentElement.lang, {
 	year: 'numeric',

@@ -1,8 +1,8 @@
 import { describe, test, expect, vi } from 'vitest'
 
-import type { InitialState } from '#lib/types.js'
-import { getState } from '#lib/getState.js'
-import { readStateFromUrl, saveStateToUrl } from './Storage.js'
+import type { InitialState } from '#lib/types.ts'
+import { getState } from '#lib/getState.ts'
+import { readStateFromUrl, saveStateToUrl } from './Storage.ts'
 
 describe('Storage', () => {
 	test.each<[InitialState, string]>([

@@ -1,8 +1,8 @@
 import { describe, test, expect } from 'vitest'
 
-import { getState } from '#lib/getState.js'
-import type { InitialState } from '#lib/types.js'
-import { deminify, minify } from './minifier.js'
+import { getState } from '#lib/getState.ts'
+import type { InitialState } from '#lib/types.ts'
+import { deminify, minify } from './minifier.ts'
 
 describe('minifier', () => {
 	test.each<[InitialState, string, InitialState]>([

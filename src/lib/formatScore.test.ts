@@ -1,6 +1,6 @@
 import { describe, test, expect } from 'vitest'
 
-import { formatScore } from './formatScore.js'
+import { formatScore } from './formatScore.ts'
 
 describe('formatScore', () => {
 	test.each([

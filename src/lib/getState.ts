@@ -1,6 +1,6 @@
-import { DEFAULT_HAND_SCORE_SETS, PLANET_SCORE_SETS, JOKER_DEFINITIONS, HANDS } from './data.js'
-import { isDebuffed } from './cards.js'
-import type { BaseScore, Card, HandLevel, HandLevels, HandName, HandScore, InitialCard, InitialHandLevels, InitialJoker, InitialObservatory, InitialState, Joker, Observatory, State } from './types.js'
+import { DEFAULT_HAND_SCORE_SETS, PLANET_SCORE_SETS, JOKER_DEFINITIONS, HANDS } from './data.ts'
+import { isDebuffed } from './cards.ts'
+import type { BaseScore, Card, HandLevel, HandLevels, HandName, HandScore, InitialCard, InitialHandLevels, InitialJoker, InitialObservatory, InitialState, Joker, Observatory, State } from './types.ts'
 
 export function getState (initialState: InitialState): State {
 	const {

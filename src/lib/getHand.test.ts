@@ -1,8 +1,8 @@
 import { describe, test, expect } from 'vitest'
 
-import { getCards } from './getState.js'
-import { GetHandOptions, getHand } from './getHand.js'
-import type { HandName, InitialCard } from './types.js'
+import { getCards } from './getState.ts'
+import { GetHandOptions, getHand } from './getHand.ts'
+import type { HandName, InitialCard } from './types.ts'
 
 interface TestCase {
 	message: string

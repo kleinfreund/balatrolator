@@ -1,4 +1,4 @@
-import type { HandName } from '#lib/types.js'
+import type { HandName } from '#lib/types.ts'
 
 export class HandLevel extends HTMLElement {
 	static {

@@ -1,6 +1,6 @@
 import { describe, test, expect } from 'vitest'
 
-import { balanceMultWithLuck } from './balanceMultWithLuck.js'
+import { balanceMultWithLuck } from './balanceMultWithLuck.ts'
 
 describe('balance', () => {
 	test.each<[...Parameters<typeof balanceMultWithLuck>, number]>([

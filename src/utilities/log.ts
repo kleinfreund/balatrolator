@@ -1,4 +1,4 @@
-import type { ScoreValue } from '#lib/types.js'
+import type { ScoreValue } from '#lib/types.ts'
 
 export const log = import.meta.env?.VITE_DEBUG === 'true' ? logFn : () => undefined
 

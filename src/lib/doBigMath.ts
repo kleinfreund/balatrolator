@@ -1,6 +1,6 @@
 import { add, BigNumber, bignumber, divide, floor, multiply, pow } from 'mathjs'
 
-import type { DeckName, ScoreValue } from './types.js'
+import type { DeckName, ScoreValue } from './types.ts'
 
 export function doBigMath (initialScore: ScoreValue[], deck: DeckName) {
 	let chips = bignumber(0)

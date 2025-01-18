@@ -1,5 +1,5 @@
-import { deminify, minify } from './minifier.js'
-import type { State } from '#lib/types.js'
+import { deminify, minify } from './minifier.ts'
+import type { State } from '#lib/types.ts'
 
 export const WebStorage = {
 	get (key: string): string | null {
