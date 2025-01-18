@@ -10,6 +10,18 @@
 > [!TIP]
 > [Example score](https://balatrolator.com/?state=---1-1--5-___________-11*_*_*_*_*_*_*_*_*_*_*_*-50*******_122*******_126*****0*3*_69****12.25***_132*******_119****5.5***-0*3***2**1_0*3**4*2**1_0*3**4*2**1_0*3**4*2**1_0*3**4*2**1_0*3**2***_0*3**5*2**_0*3**5*2**_0*3***2**) showcasing a hand played by [haelian](https://twitch.tv/haelian) on 2024-02-26 18:13 (UTC).
 
+## Features
+
+- Game features: Supports all score-influencing game features (and has tests for a lot of them)
+- Luck: Calculates worst case, average, and best case scores when odds are in play (read more below: [Tell me the odds: how probabilistic effects are handled](#tell-me-the-odds-how-probabilistic-effects-are-handled))
+- Saves: Save hands in the browser and load them later to compare different hand variations. You can also export saves as JSON files and import them again.
+- Share URLs: Share your score! The current hand is persisted in the URL and the saves.
+- Quality of life: Duplicate jokers/playing cards or set their play count to input high-scoring endless game hands.
+
+## Non-features
+
+- No hand optimizations: the goal of this calculator is to predict/verify scores (i.e doing the math). I leave being clever to you. 🤡 (Also: I might change my mind on this. 🃏)
+
 ## Contributing
 
 [Contribution guidelines for this project](CONTRIBUTING.md)
