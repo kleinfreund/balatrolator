@@ -1,4 +1,3 @@
-import { log } from '#utilities/log.ts'
 import { notNullish } from '#utilities/notNullish.ts'
 import { RANK_TO_CHIP_MAP, PLAYED_CARD_RETRIGGER_JOKER_NAMES, HELD_CARD_RETRIGGER_JOKER_NAMES, LUCKS } from './data.ts'
 import { balanceMultWithLuck } from './balanceMultWithLuck.ts'
@@ -64,7 +63,7 @@ function getScore (state: State, playedHand: HandName, scoringCards: Card[], luc
 	// The Flint halves the base chips and multiplier.
 	const baseFactor = (state.blind.name === 'The Flint' && state.blind.active ? 0.5 : 1)
 	// The base score seems to be rounded here.
-	const score = createScoreProxy<ScoreValue[]>([])
+	const score: ScoreValue[] = []
 	score.push({
 		chips: ['+', Math.round(baseScore.chips * baseFactor)],
 		phase: 'base',
@@ -264,25 +263,6 @@ function getScore (state: State, playedHand: HandName, scoringCards: Card[], luc
 	}
 
 	return score
-}
-
-/**
- * Create a proxy for the array holding the individual score values that also prints logs for each score-affecting change.
- */
-function createScoreProxy<T extends ScoreValue[]> (value: T) {
-	return new Proxy<T>(value, {
-		get (target, prop) {
-			if (prop === 'push') {
-				return (...scoreValues: Parameters<typeof target.push>) => {
-					for (const scoreValue of scoreValues) {
-						log(scoreValue)
-					}
-					return target.push(...scoreValues)
-				}
-			}
-			return Reflect.get(target, prop)
-		},
-	})
 }
 
 function getPlayedCardTriggers ({ state, card, index }: { state: State, card: Card, index: number }): string[] {

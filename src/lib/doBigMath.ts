@@ -1,5 +1,6 @@
 import { add, BigNumber, bignumber, divide, floor, multiply, pow } from 'mathjs'
 
+import { log } from '#utilities/log.ts'
 import type { DeckName, ScoreValue } from './types.ts'
 
 export function doBigMath (initialScore: ScoreValue[], deck: DeckName) {
@@ -16,6 +17,11 @@ export function doBigMath (initialScore: ScoreValue[], deck: DeckName) {
 			const operation = operator === '+' ? add : multiply
 			multiplier = operation(multiplier, bignumber(value))
 		}
+
+		log(scoreValue, {
+			chips: chips.toString(),
+			multiplier: multiplier.toString(),
+		})
 	}
 
 	let actualScore: BigNumber
