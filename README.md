@@ -22,11 +22,7 @@
 
 - No hand optimizations: the goal of this calculator is to predict/verify scores (i.e doing the math). I leave being clever to you. 🤡 (Also: I might change my mind on this. 🃏)
 
-## Contributing
-
-[Contribution guidelines for this project](CONTRIBUTING.md)
-
-## Notes
+## Documentation
 
 ### Tell me the odds: how probabilistic effects are handled
 
@@ -43,3 +39,17 @@ Balatrolator always returns deterministic scores and doesn't roll any “dice”
 “Average luck” means probabilistic effects are counted with the scores that you can expect on average. That is, the resulting score is the one you would get as if you would play the same hand an infinite amount of times and averaged the resulting scores. In other words, a lucky card's +Mult value of 20 with standard odds of 1 in 5 would add 4 (20 * 1/5). “Oops! All 6s” jokers do factor into this math: having two instances of that joker would raise the odds of a lucky card's +Mult effect to 4 in 5 and so the value scored would be 16 (20 * 4/5).
 
 Of special note is the case when there are enough instances of the “Oops! All 6s” joker to guarantee an effect in the game. In that case, the three luck modes become irrelevant and the score is calculated the same way it would in “all luck” mode.
+
+## Contributing
+
+[Contribution guidelines for this project](CONTRIBUTING.md)
+
+## Development
+
+### Calculate score via CLI
+
+After cloning this repository, run the following to calculate a score with a Balatrolator save export in JSON format.
+
+```sh
+node --experimental-strip-types balatrolator.ts 'Current hand.json'
+```
