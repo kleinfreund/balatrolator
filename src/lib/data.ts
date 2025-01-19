@@ -496,12 +496,6 @@ export const JOKER_DEFINITIONS: Record<JokerName, JokerDefinition> = {
 			const isAce = isRank(card, 'Ace')
 			score.push({
 				chips: ['+', isAce ? 20 : 0],
-				phase: 'played-cards',
-				card,
-				joker: this,
-				trigger,
-			})
-			score.push({
 				multiplier: ['+', isAce ? 4 : 0],
 				phase: 'played-cards',
 				card,
@@ -966,12 +960,6 @@ export const JOKER_DEFINITIONS: Record<JokerName, JokerDefinition> = {
 			const isFourOrTen = isRank(card, ['4', '10'])
 			score.push({
 				chips: ['+', isFourOrTen ? 10 : 0],
-				phase: 'played-cards',
-				card,
-				joker: this,
-				trigger,
-			})
-			score.push({
 				multiplier: ['+', isFourOrTen ? 4 : 0],
 				phase: 'played-cards',
 				card,
