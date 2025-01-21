@@ -205,7 +205,8 @@ function getScore (state: State, playedHand: HandName, scoringCards: Card[], luc
 				case 'steel': {
 					score.push({
 						multiplier: ['*', 1.5],
-						phase: 'held-cards', card,
+						phase: 'held-cards',
+						card,
 						type: 'enhancement',
 						trigger,
 					})
@@ -325,14 +326,6 @@ function getHeldCardTriggers ({ state, card }: { state: State, card: Card }): st
 		switch (name) {
 			case 'Mime': {
 				triggers.push(name)
-				break
-			}
-			case 'Seltzer': {
-				triggers.push(name)
-				break
-			}
-			case 'Sock and Buskin': {
-				if (isFaceCard(card, state.jokerSet.has('Pareidolia'))) triggers.push(name)
 				break
 			}
 		}

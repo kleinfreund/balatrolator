@@ -89,8 +89,6 @@ export const PLAYED_CARD_RETRIGGER_JOKER_NAMES: JokerName[] = [
 	'Hack',
 ]
 export const HELD_CARD_RETRIGGER_JOKER_NAMES: JokerName[] = [
-	'Seltzer',
-	'Sock and Buskin',
 	'Mime',
 ]
 

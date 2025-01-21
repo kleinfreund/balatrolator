@@ -49,6 +49,7 @@ describe('calculateScore', async () => {
 		(await import('./test-files/033.ts')).default('Run from 2024-04-10 16:52 UTC'),
 		(await import('./test-files/034.ts')).default('Run from 2024-04-09 19:20 UTC'),
 		(await import('./test-files/035.ts')).default('https://www.youtube.com/watch?v=hcZF7NJGuPE'),
+		(await import('./test-files/036.ts')).default('Regression test for #17'),
 	])('$message', ({ initialState, expected }) => {
 		const score = calculateScore(getState(initialState))
 
