@@ -74,12 +74,21 @@ function getScore (state: State, playedHand: HandName, scoringCards: Card[], luc
 	})
 
 	for (const [index, card] of scoringCards.entries()) {
-		// Debuffed cards don't participate in scoring at all.
-		if (card.debuffed) {
-			continue
-		}
-
 		for (const trigger of getPlayedCardTriggers({ state, card, index })) {
+			// Debuffed cards don't participate in scoring for played cards except that they still apply stone enhancement.
+			if (card.debuffed) {
+				if (card.enhancement === 'stone') {
+					score.push({
+						chips: ['+', 50],
+						phase: 'played-cards',
+						card,
+						type: 'enhancement',
+						trigger,
+					})
+				}
+				continue
+			}
+
 			// 1. Rank
 			if (card.enhancement !== 'stone') {
 				score.push({
@@ -194,12 +203,12 @@ function getScore (state: State, playedHand: HandName, scoringCards: Card[], luc
 	}
 
 	for (const card of state.cards.filter(({ played }) => !played)) {
-		// Debuffed cards don't participate in scoring at all.
-		if (card.debuffed) {
-			continue
-		}
-
 		for (const trigger of getHeldCardTriggers({ state, card })) {
+			// Debuffed cards don't participate in scoring for held cards at all.
+			if (card.debuffed) {
+				continue
+			}
+
 			// 1. Enhancement
 			switch (card.enhancement) {
 				case 'steel': {

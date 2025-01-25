@@ -26,6 +26,10 @@ export function isFaceCard (card: Card, hasPareidolia: boolean) {
 }
 
 export function isRank (card: Card, rank: Rank | Rank[]): boolean {
+	if (card.debuffed) {
+		return false
+	}
+
 	if (card.enhancement === 'stone') {
 		return false
 	}
@@ -35,11 +39,17 @@ export function isRank (card: Card, rank: Rank | Rank[]): boolean {
 }
 
 export function isSuit (card: Card, suit: Suit | Suit[]): boolean {
+	// Apparently, debuffed cards don't count as any suit **unless** they're wild. Then, they count as their original suit.
+	if (card.debuffed && card.enhancement !== 'wild') {
+		return false
+	}
+
 	if (card.enhancement === 'stone') {
 		return false
 	}
 
-	if (card.enhancement === 'wild') {
+	// Apparently, wild cards only count as any suit **if** they're not debuffed. Then, they count as their original suit.
+	if (card.enhancement === 'wild' && !card.debuffed) {
 		return true
 	}
 
