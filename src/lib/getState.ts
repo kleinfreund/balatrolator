@@ -19,7 +19,7 @@ export function getState (initialState: InitialState): State {
 	const observatory = getObservatory(initialObservatory)
 	const handLevels = getHandLevels(initialHandLevels)
 	const handBaseScores = getHandBaseScores(handLevels)
-	const jokers = getJokers(initialJokers)
+	const jokers = initialJokers.map(getJoker)
 	const jokerSet = new Set(jokers.map(({ name }) => name))
 
 	const blindIsActive = jokerSet.has('Chicot') ? false : (initialBlind?.active ?? true)
@@ -28,7 +28,7 @@ export function getState (initialState: InitialState): State {
 		active: blindIsActive,
 	}
 
-	const cards = getCards(initialCards).map((card) => ({
+	const cards = initialCards.map(getCard).map((card) => ({
 		...card,
 		debuffed: card.debuffed ? true : isDebuffed(card, blind, jokerSet.has('Pareidolia')),
 	}))
@@ -79,82 +79,78 @@ function getHandBaseScores (handLevels: HandLevels): HandScore {
 	return Object.fromEntries(handBaseScoresEntries) as HandScore
 }
 
-function getJokers (jokers: InitialJoker[]): Joker[] {
-	return jokers.map((joker, index) => {
-		const {
-			name,
-			edition = 'base',
-			plusChips = 0,
-			plusMultiplier = 0,
-			timesMultiplier = 1,
-			rank,
-			suit,
-			active = false,
-			count = 1,
-		} = joker
+function getJoker (initialJoker: InitialJoker, index = 0): Joker {
+	const {
+		name,
+		edition = 'base',
+		plusChips = 0,
+		plusMultiplier = 0,
+		timesMultiplier = 1,
+		rank,
+		suit,
+		active = false,
+		count = 1,
+	} = initialJoker
 
-		const {
-			rarity,
-			effect,
-			indirectEffect,
-			playedCardEffect,
-			heldCardEffect,
-		} = JOKER_DEFINITIONS[name]
-		const modifiers = [edition !== 'base' ? edition : undefined].filter((modifier) => modifier !== undefined)
-		const toString = () => `${name}` + (modifiers.length > 0 ? ` (${modifiers.join(', ')})` : '')
+	const {
+		rarity,
+		effect,
+		indirectEffect,
+		playedCardEffect,
+		heldCardEffect,
+	} = JOKER_DEFINITIONS[name]
+	const modifiers = [edition !== 'base' ? edition : undefined].filter((modifier) => modifier !== undefined)
+	const toString = () => `${name}` + (modifiers.length > 0 ? ` (${modifiers.join(', ')})` : '')
 
-		return {
-			name,
-			edition,
-			plusChips,
-			plusMultiplier,
-			timesMultiplier,
-			rank,
-			suit,
-			active,
-			count,
-			rarity,
-			effect,
-			indirectEffect,
-			playedCardEffect,
-			heldCardEffect,
-			index,
-			toString,
-		}
-	})
+	return {
+		name,
+		edition,
+		plusChips,
+		plusMultiplier,
+		timesMultiplier,
+		rank,
+		suit,
+		active,
+		count,
+		rarity,
+		effect,
+		indirectEffect,
+		playedCardEffect,
+		heldCardEffect,
+		index,
+		toString,
+	}
 }
 
-export function getCards (cards: InitialCard[]): Card[] {
-	return cards.map((card, index) => {
-		const {
-			rank,
-			suit,
-			edition = 'base',
-			enhancement = 'none',
-			seal = 'none',
-			debuffed = false,
-			played = false,
-			count = 1,
-		} = card
+export function getCard (initialCard: InitialCard, index = 0): Card {
+	const {
+		rank,
+		suit,
+		edition = 'base',
+		enhancement = 'none',
+		seal = 'none',
+		debuffed = false,
+		played = false,
+		count = 1,
+	} = initialCard
 
-		const modifiers = [
-			edition !== 'base' ? edition : undefined,
-			enhancement !== 'none' ? enhancement : undefined,
-			seal !== 'none' ? seal : undefined,
-		].filter((modifier) => modifier !== undefined)
-		const toString = () => `${rank} of ${suit}` + (modifiers.length > 0 ? ` (${modifiers.join(', ')})` : '')
+	const modifiers = [
+		edition !== 'base' ? edition : undefined,
+		enhancement !== 'none' ? enhancement : undefined,
+		seal !== 'none' ? seal : undefined,
+	].filter((modifier) => modifier !== undefined)
+	const toString = () => `${rank} of ${suit}` + (modifiers.length > 0 ? ` (${modifiers.join(', ')})` : '')
 
-		return {
-			rank,
-			suit,
-			edition,
-			enhancement,
-			seal,
-			debuffed,
-			played,
-			count,
-			index,
-			toString,
-		}
-	})
+	return {
+		rank,
+		suit,
+		edition,
+		enhancement,
+		seal,
+		debuffed,
+		played,
+		count,
+		index,
+		toString,
+	}
 }

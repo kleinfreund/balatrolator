@@ -1,6 +1,6 @@
 import { describe, test, expect } from 'vitest'
 
-import { getCards } from './getState.ts'
+import { getCard } from './getState.ts'
 import { GetHandOptions, getHand } from './getHand.ts'
 import type { HandName, InitialCard } from './types.ts'
 
@@ -603,7 +603,7 @@ describe('getHand', () => {
 			],
 		},
 	])('$message', ({ initialCards, options, expectedPlayedHand, expectedScoringCards }) => {
-		const cards = getCards(initialCards)
+		const cards = initialCards.map(getCard)
 
 		const { playedHand, scoringCards } = getHand(cards, options)
 
