@@ -354,7 +354,7 @@ export const JOKER_DEFINITIONS: Record<JokerName, JokerDefinition> = {
 		hasIsActiveInput: true,
 		effect ({ score, trigger }) {
 			score.push({
-				multiplier: ['*', this.active ? 4 : 0],
+				multiplier: ['*', this.active ? 4 : 1],
 				phase: 'jokers',
 				joker: this,
 				trigger,
