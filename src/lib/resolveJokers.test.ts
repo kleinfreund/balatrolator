@@ -58,6 +58,14 @@ describe('resolveJoker', () => {
 				{ index: 0, name: 'Blueprint' },
 				{ index: 1, name: 'Brainstorm' },
 			],
+			undefined,
+			undefined,
+		],
+		[
+			[
+				{ index: 0, name: 'Blueprint' },
+				{ index: 1, name: 'Brainstorm' },
+			],
 			{ index: 1, name: 'Brainstorm' },
 			undefined,
 		],
