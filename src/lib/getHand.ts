@@ -13,73 +13,92 @@ const DEFAULT_OPTIONS: Required<GetHandOptions> = {
 	hasSmearedJoker: false,
 }
 
-export function getHand (cards: Card[], options: GetHandOptions = DEFAULT_OPTIONS): { playedHand: HandName, scoringCards: Card[] } {
+export function getHand (playedCards: Card[], options: GetHandOptions = DEFAULT_OPTIONS): { playedHand: HandName, scoringCards: Card[] } {
 	const {
 		hasFourFingers = DEFAULT_OPTIONS.hasFourFingers,
 		hasShortcut = DEFAULT_OPTIONS.hasShortcut,
 		hasSmearedJoker = DEFAULT_OPTIONS.hasSmearedJoker,
 	} = options
+	const playedStoneCards = playedCards.filter(({ enhancement }) => enhancement === 'stone')
 
-	const fiveOfAKindCards = nOfAKind(cards, 5)
-	const flushCards = flush(cards, hasFourFingers, hasSmearedJoker)
+	const fiveOfAKindCards = nOfAKind(playedCards, 5)
+	const flushCards = flush(playedCards, hasFourFingers, hasSmearedJoker)
 	if (fiveOfAKindCards.length > 0 && flushCards.length > 0) {
-		const scoringCards = combineCards(cards, fiveOfAKindCards, flushCards)
+		const scoringCards = combineCards(playedCards, playedStoneCards, fiveOfAKindCards, flushCards)
 
 		return { playedHand: 'Flush Five', scoringCards }
 	}
 
-	const fullHouseCards = fullHouse(cards)
+	const fullHouseCards = fullHouse(playedCards)
 	if (fullHouseCards.length > 0 && flushCards.length > 0) {
-		const scoringCards = combineCards(cards, fullHouseCards, flushCards)
+		const scoringCards = combineCards(playedCards, playedStoneCards, fullHouseCards, flushCards)
 
 		return { playedHand: 'Flush House', scoringCards }
 	}
 
 	if (fiveOfAKindCards.length > 0) {
-		return { playedHand: 'Five of a Kind', scoringCards: fiveOfAKindCards }
+		const scoringCards = combineCards(playedCards, fiveOfAKindCards, playedStoneCards)
+
+		return { playedHand: 'Five of a Kind', scoringCards }
 	}
 
-	const straightCards = straight(cards, hasFourFingers, hasShortcut)
+	const straightCards = straight(playedCards, hasFourFingers, hasShortcut)
 	if (flushCards.length > 0 && straightCards.length > 0) {
-		const scoringCards = combineCards(cards, flushCards, straightCards)
+		const scoringCards = combineCards(playedCards, playedStoneCards, flushCards, straightCards)
 
 		return { playedHand: 'Straight Flush', scoringCards }
 	}
 
-	const fourOfAKindCards = nOfAKind(cards, 4)
+	const fourOfAKindCards = nOfAKind(playedCards, 4)
 	if (fourOfAKindCards.length > 0) {
-		return { playedHand: 'Four of a Kind', scoringCards: fourOfAKindCards }
+		const scoringCards = combineCards(playedCards, fourOfAKindCards, playedStoneCards)
+
+		return { playedHand: 'Four of a Kind', scoringCards }
 	}
 
 	if (fullHouseCards.length > 0) {
-		return { playedHand: 'Full House', scoringCards: fullHouseCards }
+		const scoringCards = combineCards(playedCards, fullHouseCards, playedStoneCards)
+
+		return { playedHand: 'Full House', scoringCards }
 	}
 
 	if (flushCards.length > 0) {
-		return { playedHand: 'Flush', scoringCards: flushCards }
+		const scoringCards = combineCards(playedCards, flushCards, playedStoneCards)
+
+		return { playedHand: 'Flush', scoringCards }
 	}
 
 	if (straightCards.length > 0) {
-		return { playedHand: 'Straight', scoringCards: straightCards }
+		const scoringCards = combineCards(playedCards, straightCards, playedStoneCards)
+
+		return { playedHand: 'Straight', scoringCards }
 	}
 
-	const threeOfAKindCards = nOfAKind(cards, 3)
+	const threeOfAKindCards = nOfAKind(playedCards, 3)
 	if (threeOfAKindCards.length > 0) {
-		return { playedHand: 'Three of a Kind', scoringCards: threeOfAKindCards }
+		const scoringCards = combineCards(playedCards, threeOfAKindCards, playedStoneCards)
+
+		return { playedHand: 'Three of a Kind', scoringCards }
 	}
 
-	const twoPairCards = twoPair(cards)
+	const twoPairCards = twoPair(playedCards)
 	if (twoPairCards.length > 0) {
-		return { playedHand: 'Two Pair', scoringCards: twoPairCards }
+		const scoringCards = combineCards(playedCards, twoPairCards, playedStoneCards)
+
+		return { playedHand: 'Two Pair', scoringCards }
 	}
 
-	const twoOfAKindCards = nOfAKind(cards, 2)
+	const twoOfAKindCards = nOfAKind(playedCards, 2)
 	if (twoOfAKindCards.length > 0) {
-		return { playedHand: 'Pair', scoringCards: twoOfAKindCards }
+		const scoringCards = combineCards(playedCards, twoOfAKindCards, playedStoneCards)
+
+		return { playedHand: 'Pair', scoringCards }
 	}
 
-	const highCardCards = highCard(cards)
-	return { playedHand: 'High Card', scoringCards: highCardCards }
+	const highCardCards = highCard(playedCards)
+	const scoringCards = combineCards(playedCards, highCardCards, playedStoneCards)
+
+	return { playedHand: 'High Card', scoringCards }
 }
 
 export function fullHouse (cards: Card[]): Card[] {
@@ -258,6 +277,10 @@ export function highCard (cards: Card[]): Card[] {
 	let highestChips = 0
 
 	for (const card of cards) {
+		if (card.enhancement === 'stone' && highestCard === undefined) {
+			highestCard = card
+		}
+
 		const chips = RANK_TO_CHIP_MAP[card.rank]
 
 		if (chips > highestChips) {
@@ -266,17 +289,15 @@ export function highCard (cards: Card[]): Card[] {
 		}
 	}
 
-	return highestCard ? [highestCard] : []
+	return [highestCard as Card]
 }
 
-function combineCards (scoringCards: Card[], cardsA: Card[], cardsB: Card[]): Card[] {
-	return scoringCards.filter((card) => {
-		if (cardsA.some(({ rank, suit }) => rank === card.rank && suit === card.suit)) {
-			return true
-		}
-
-		if (cardsB.some(({ rank, suit }) => rank === card.rank && suit === card.suit)) {
-			return true
+function combineCards (playedCards: Card[], ...cardLists: Card[][]): Card[] {
+	return playedCards.filter((playedCard) => {
+		for (const cards of cardLists) {
+			if (cards.some(({ index }) => index === playedCard.index)) {
+				return true
+			}
 		}
 
 		return false

@@ -115,7 +115,7 @@ describe('getHand', () => {
 			],
 		},
 		{
-			message: 'Straight flush + Four Fingers + Shortcut + Smeared Joker',
+			message: 'Straight Flush + Four Fingers + Shortcut + Smeared Joker',
 			initialCards: [
 				{ rank: '8', suit: 'Spades' },
 				{ rank: '10', suit: 'Hearts' },
@@ -138,7 +138,7 @@ describe('getHand', () => {
 			],
 		},
 		{
-			message: 'Straight flush + Four Fingers + Shortcut',
+			message: 'Straight Flush + Four Fingers + Shortcut',
 			initialCards: [
 				{ rank: '8', suit: 'Spades' },
 				{ rank: '10', suit: 'Hearts' },
@@ -160,7 +160,7 @@ describe('getHand', () => {
 			],
 		},
 		{
-			message: 'Straight flush + Four Fingers',
+			message: 'Straight Flush + Four Fingers',
 			initialCards: [
 				{ rank: '9', suit: 'Spades' },
 				{ rank: '10', suit: 'Hearts' },
@@ -181,7 +181,27 @@ describe('getHand', () => {
 			],
 		},
 		{
-			message: 'Straight flush',
+			message: 'Straight Flush + Four Fingers + four cards only',
+			initialCards: [
+				{ rank: '9', suit: 'Hearts' },
+				{ rank: '10', suit: 'Hearts' },
+				{ rank: '8', suit: 'Hearts' },
+				{ rank: '7', suit: 'Hearts' },
+				{ rank: '2', suit: 'Diamonds' },
+			],
+			options: {
+				hasFourFingers: true,
+			},
+			expectedPlayedHand: 'Straight Flush',
+			expectedScoringCards: [
+				{ rank: '9', suit: 'Hearts' },
+				{ rank: '10', suit: 'Hearts' },
+				{ rank: '8', suit: 'Hearts' },
+				{ rank: '7', suit: 'Hearts' },
+			],
+		},
+		{
+			message: 'Straight Flush',
 			initialCards: [
 				{ rank: '9', suit: 'Hearts' },
 				{ rank: '10', suit: 'Hearts' },
@@ -331,6 +351,27 @@ describe('getHand', () => {
 				{ rank: '9', suit: 'Hearts' },
 				{ rank: '3', suit: 'Hearts' },
 				{ rank: '2', suit: 'Hearts' },
+			],
+		},
+		{
+			message: 'Flush + Four Fingers + stone card',
+			initialCards: [
+				{ rank: '10', suit: 'Hearts' },
+				{ rank: '9', suit: 'Hearts' },
+				{ rank: '3', suit: 'Hearts' },
+				{ rank: '2', suit: 'Hearts' },
+				{ rank: 'King', suit: 'Spades', enhancement: 'stone' },
+			],
+			options: {
+				hasFourFingers: true,
+			},
+			expectedPlayedHand: 'Flush',
+			expectedScoringCards: [
+				{ rank: '10', suit: 'Hearts' },
+				{ rank: '9', suit: 'Hearts' },
+				{ rank: '3', suit: 'Hearts' },
+				{ rank: '2', suit: 'Hearts' },
+				{ rank: 'King', suit: 'Spades', enhancement: 'stone' },
 			],
 		},
 		{
@@ -602,6 +643,39 @@ describe('getHand', () => {
 				{ rank: 'Ace', suit: 'Hearts' },
 			],
 		},
+		{
+			message: 'High card + stone card',
+			initialCards: [
+				{ rank: 'King', suit: 'Clubs', enhancement: 'stone' },
+				{ rank: 'Ace', suit: 'Hearts' },
+				{ rank: '7', suit: 'Clubs' },
+			],
+			expectedPlayedHand: 'High Card',
+			expectedScoringCards: [
+				{ rank: 'King', suit: 'Clubs', enhancement: 'stone' },
+				{ rank: 'Ace', suit: 'Hearts' },
+			],
+		},
+		{
+			message: 'Almost Flush + Four Fingers + stone cards',
+			initialCards: [
+				{ rank: '10', suit: 'Hearts' },
+				{ rank: '9', suit: 'Hearts' },
+				// This card breaks up the Flush because it has stone enhancement.
+				{ rank: '3', suit: 'Hearts', enhancement: 'stone' },
+				{ rank: '2', suit: 'Hearts' },
+				{ rank: 'King', suit: 'Spades', enhancement: 'stone' },
+			],
+			options: {
+				hasFourFingers: true,
+			},
+			expectedPlayedHand: 'High Card',
+			expectedScoringCards: [
+				{ rank: '10', suit: 'Hearts' },
+				{ rank: '3', suit: 'Hearts', enhancement: 'stone' },
+				{ rank: 'King', suit: 'Spades', enhancement: 'stone' },
+			],
+		},
 	])('$message', ({ initialCards, options, expectedPlayedHand, expectedScoringCards }) => {
 		const cards = initialCards.map(getCard)
 
@@ -609,5 +683,6 @@ describe('getHand', () => {
 
 		expect(playedHand).toEqual(expectedPlayedHand)
 		expect(scoringCards).toMatchObject(expectedScoringCards)
+		expect(scoringCards.length).toBe(expectedScoringCards.length)
 	})
 })
