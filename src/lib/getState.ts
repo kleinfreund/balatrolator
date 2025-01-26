@@ -79,8 +79,9 @@ function getHandBaseScores (handLevels: HandLevels): HandScore {
 	return Object.fromEntries(handBaseScoresEntries) as HandScore
 }
 
-function getJoker (initialJoker: InitialJoker, index = 0): Joker {
+function getJoker (initialJoker: InitialJoker, listIndex = 0): Joker {
 	const {
+		index = listIndex,
 		name,
 		edition = 'base',
 		plusChips = 0,
@@ -103,6 +104,7 @@ function getJoker (initialJoker: InitialJoker, index = 0): Joker {
 	const toString = () => `${name}` + (modifiers.length > 0 ? ` (${modifiers.join(', ')})` : '')
 
 	return {
+		index,
 		name,
 		edition,
 		plusChips,
@@ -117,13 +119,13 @@ function getJoker (initialJoker: InitialJoker, index = 0): Joker {
 		indirectEffect,
 		playedCardEffect,
 		heldCardEffect,
-		index,
 		toString,
 	}
 }
 
-export function getCard (initialCard: InitialCard, index = 0): Card {
+export function getCard (initialCard: InitialCard, listIndex = 0): Card {
 	const {
+		index = listIndex,
 		rank,
 		suit,
 		edition = 'base',
@@ -142,6 +144,7 @@ export function getCard (initialCard: InitialCard, index = 0): Card {
 	const toString = () => `${rank} of ${suit}` + (modifiers.length > 0 ? ` (${modifiers.join(', ')})` : '')
 
 	return {
+		index,
 		rank,
 		suit,
 		edition,
@@ -150,7 +153,6 @@ export function getCard (initialCard: InitialCard, index = 0): Card {
 		debuffed,
 		played,
 		count,
-		index,
 		toString,
 	}
 }

@@ -34,6 +34,7 @@ export interface ScoreValue {
 }
 
 export interface InitialCard {
+	index?: number
 	rank: Rank
 	suit: Suit
 	edition?: Edition
@@ -76,6 +77,7 @@ export interface Probability {
 }
 
 export interface InitialJoker {
+	index?: number
 	name: JokerName
 	edition?: JokerEdition
 	plusChips?: number

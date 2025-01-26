@@ -351,7 +351,7 @@ export class UiState {
 				suit: jokerCard.suit,
 				active: jokerCard.active,
 				count: jokerCard.count,
-			} satisfies Required<InitialJoker>)
+			} satisfies Omit<Required<InitialJoker>, 'index'>)
 		}
 
 		for (const playingCard of this.#playingCardContainer.children) {
@@ -366,7 +366,7 @@ export class UiState {
 				debuffed: playingCard.debuffed,
 				played: playingCard.played,
 				count: playingCard.count,
-			} satisfies Required<InitialCard>)
+			} satisfies Omit<Required<InitialCard>, 'index'>)
 		}
 
 		return getState(initialState)

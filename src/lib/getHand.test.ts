@@ -9,7 +9,7 @@ interface TestCase {
 	initialCards: InitialCard[]
 	options?: GetHandOptions
 	expectedPlayedHand: HandName
-	expectedScoringCards: InitialCard[]
+	expectedScoringCards: (Omit<InitialCard, 'index'> & { index: number })[]
 }
 
 describe('getHand', () => {
@@ -29,11 +29,11 @@ describe('getHand', () => {
 			},
 			expectedPlayedHand: 'Flush Five',
 			expectedScoringCards: [
-				{ rank: '10', suit: 'Spades' },
-				{ rank: '10', suit: 'Hearts' },
-				{ rank: '10', suit: 'Hearts' },
-				{ rank: '10', suit: 'Hearts' },
-				{ rank: '10', suit: 'Diamonds' },
+				{ index: 0, rank: '10', suit: 'Spades' },
+				{ index: 1, rank: '10', suit: 'Hearts' },
+				{ index: 2, rank: '10', suit: 'Hearts' },
+				{ index: 3, rank: '10', suit: 'Hearts' },
+				{ index: 4, rank: '10', suit: 'Diamonds' },
 			],
 		},
 		{
@@ -50,11 +50,11 @@ describe('getHand', () => {
 			},
 			expectedPlayedHand: 'Flush Five',
 			expectedScoringCards: [
-				{ rank: '10', suit: 'Hearts' },
-				{ rank: '10', suit: 'Hearts' },
-				{ rank: '10', suit: 'Hearts' },
-				{ rank: '10', suit: 'Hearts' },
-				{ rank: '10', suit: 'Diamonds' },
+				{ index: 0, rank: '10', suit: 'Hearts' },
+				{ index: 1, rank: '10', suit: 'Hearts' },
+				{ index: 2, rank: '10', suit: 'Hearts' },
+				{ index: 3, rank: '10', suit: 'Hearts' },
+				{ index: 4, rank: '10', suit: 'Diamonds' },
 			],
 		},
 		{
@@ -71,11 +71,11 @@ describe('getHand', () => {
 			},
 			expectedPlayedHand: 'Flush Five',
 			expectedScoringCards: [
-				{ rank: '10', suit: 'Diamonds' },
-				{ rank: '10', suit: 'Hearts' },
-				{ rank: '10', suit: 'Hearts' },
-				{ rank: '10', suit: 'Hearts' },
-				{ rank: '10', suit: 'Hearts' },
+				{ index: 0, rank: '10', suit: 'Diamonds' },
+				{ index: 1, rank: '10', suit: 'Hearts' },
+				{ index: 2, rank: '10', suit: 'Hearts' },
+				{ index: 3, rank: '10', suit: 'Hearts' },
+				{ index: 4, rank: '10', suit: 'Hearts' },
 			],
 		},
 		{
@@ -89,11 +89,11 @@ describe('getHand', () => {
 			],
 			expectedPlayedHand: 'Flush Five',
 			expectedScoringCards: [
-				{ rank: '10', suit: 'Hearts' },
-				{ rank: '10', suit: 'Hearts' },
-				{ rank: '10', suit: 'Hearts' },
-				{ rank: '10', suit: 'Hearts' },
-				{ rank: '10', suit: 'Hearts' },
+				{ index: 0, rank: '10', suit: 'Hearts' },
+				{ index: 1, rank: '10', suit: 'Hearts' },
+				{ index: 2, rank: '10', suit: 'Hearts' },
+				{ index: 3, rank: '10', suit: 'Hearts' },
+				{ index: 4, rank: '10', suit: 'Hearts' },
 			],
 		},
 		{
@@ -107,11 +107,11 @@ describe('getHand', () => {
 			],
 			expectedPlayedHand: 'Five of a Kind',
 			expectedScoringCards: [
-				{ rank: '10', suit: 'Hearts' },
-				{ rank: '10', suit: 'Hearts' },
-				{ rank: '10', suit: 'Hearts' },
-				{ rank: '10', suit: 'Hearts' },
-				{ rank: '10', suit: 'Spades' },
+				{ index: 0, rank: '10', suit: 'Hearts' },
+				{ index: 1, rank: '10', suit: 'Hearts' },
+				{ index: 2, rank: '10', suit: 'Hearts' },
+				{ index: 3, rank: '10', suit: 'Hearts' },
+				{ index: 4, rank: '10', suit: 'Spades' },
 			],
 		},
 		{
@@ -130,11 +130,11 @@ describe('getHand', () => {
 			},
 			expectedPlayedHand: 'Straight Flush',
 			expectedScoringCards: [
-				{ rank: '8', suit: 'Spades' },
-				{ rank: '10', suit: 'Hearts' },
-				{ rank: '6', suit: 'Diamonds' },
-				{ rank: '4', suit: 'Diamonds' },
-				{ rank: '2', suit: 'Hearts' },
+				{ index: 0, rank: '8', suit: 'Spades' },
+				{ index: 1, rank: '10', suit: 'Hearts' },
+				{ index: 2, rank: '6', suit: 'Diamonds' },
+				{ index: 3, rank: '4', suit: 'Diamonds' },
+				{ index: 4, rank: '2', suit: 'Hearts' },
 			],
 		},
 		{
@@ -152,11 +152,11 @@ describe('getHand', () => {
 			},
 			expectedPlayedHand: 'Straight Flush',
 			expectedScoringCards: [
-				{ rank: '8', suit: 'Spades' },
-				{ rank: '10', suit: 'Hearts' },
-				{ rank: '6', suit: 'Hearts' },
-				{ rank: '4', suit: 'Hearts' },
-				{ rank: '2', suit: 'Hearts' },
+				{ index: 0, rank: '8', suit: 'Spades' },
+				{ index: 1, rank: '10', suit: 'Hearts' },
+				{ index: 2, rank: '6', suit: 'Hearts' },
+				{ index: 3, rank: '4', suit: 'Hearts' },
+				{ index: 4, rank: '2', suit: 'Hearts' },
 			],
 		},
 		{
@@ -173,11 +173,11 @@ describe('getHand', () => {
 			},
 			expectedPlayedHand: 'Straight Flush',
 			expectedScoringCards: [
-				{ rank: '9', suit: 'Spades' },
-				{ rank: '10', suit: 'Hearts' },
-				{ rank: '8', suit: 'Hearts' },
-				{ rank: '7', suit: 'Hearts' },
-				{ rank: '2', suit: 'Hearts' },
+				{ index: 0, rank: '9', suit: 'Spades' },
+				{ index: 1, rank: '10', suit: 'Hearts' },
+				{ index: 2, rank: '8', suit: 'Hearts' },
+				{ index: 3, rank: '7', suit: 'Hearts' },
+				{ index: 4, rank: '2', suit: 'Hearts' },
 			],
 		},
 		{
@@ -194,10 +194,10 @@ describe('getHand', () => {
 			},
 			expectedPlayedHand: 'Straight Flush',
 			expectedScoringCards: [
-				{ rank: '9', suit: 'Hearts' },
-				{ rank: '10', suit: 'Hearts' },
-				{ rank: '8', suit: 'Hearts' },
-				{ rank: '7', suit: 'Hearts' },
+				{ index: 0, rank: '9', suit: 'Hearts' },
+				{ index: 1, rank: '10', suit: 'Hearts' },
+				{ index: 2, rank: '8', suit: 'Hearts' },
+				{ index: 3, rank: '7', suit: 'Hearts' },
 			],
 		},
 		{
@@ -211,11 +211,11 @@ describe('getHand', () => {
 			],
 			expectedPlayedHand: 'Straight Flush',
 			expectedScoringCards: [
-				{ rank: '9', suit: 'Hearts' },
-				{ rank: '10', suit: 'Hearts' },
-				{ rank: '8', suit: 'Hearts' },
-				{ rank: '7', suit: 'Hearts' },
-				{ rank: '6', suit: 'Hearts' },
+				{ index: 0, rank: '9', suit: 'Hearts' },
+				{ index: 1, rank: '10', suit: 'Hearts' },
+				{ index: 2, rank: '8', suit: 'Hearts' },
+				{ index: 3, rank: '7', suit: 'Hearts' },
+				{ index: 4, rank: '6', suit: 'Hearts' },
 			],
 		},
 		{
@@ -229,10 +229,10 @@ describe('getHand', () => {
 			],
 			expectedPlayedHand: 'Four of a Kind',
 			expectedScoringCards: [
-				{ rank: '10', suit: 'Hearts' },
-				{ rank: '10', suit: 'Hearts' },
-				{ rank: '10', suit: 'Hearts' },
-				{ rank: '10', suit: 'Hearts' },
+				{ index: 0, rank: '10', suit: 'Hearts' },
+				{ index: 1, rank: '10', suit: 'Hearts' },
+				{ index: 2, rank: '10', suit: 'Hearts' },
+				{ index: 3, rank: '10', suit: 'Hearts' },
 			],
 		},
 		{
@@ -249,11 +249,11 @@ describe('getHand', () => {
 			},
 			expectedPlayedHand: 'Flush House',
 			expectedScoringCards: [
-				{ rank: '10', suit: 'Clubs' },
-				{ rank: '10', suit: 'Clubs' },
-				{ rank: '10', suit: 'Clubs' },
-				{ rank: '2', suit: 'Spades' },
-				{ rank: '2', suit: 'Spades' },
+				{ index: 0, rank: '10', suit: 'Clubs' },
+				{ index: 1, rank: '10', suit: 'Clubs' },
+				{ index: 2, rank: '10', suit: 'Clubs' },
+				{ index: 3, rank: '2', suit: 'Spades' },
+				{ index: 4, rank: '2', suit: 'Spades' },
 			],
 		},
 		{
@@ -267,11 +267,11 @@ describe('getHand', () => {
 			],
 			expectedPlayedHand: 'Flush House',
 			expectedScoringCards: [
-				{ rank: '10', suit: 'Hearts' },
-				{ rank: '10', suit: 'Hearts' },
-				{ rank: '10', suit: 'Hearts' },
-				{ rank: '2', suit: 'Hearts' },
-				{ rank: '2', suit: 'Hearts' },
+				{ index: 0, rank: '10', suit: 'Hearts' },
+				{ index: 1, rank: '10', suit: 'Hearts' },
+				{ index: 2, rank: '10', suit: 'Hearts' },
+				{ index: 3, rank: '2', suit: 'Hearts' },
+				{ index: 4, rank: '2', suit: 'Hearts' },
 			],
 		},
 		{
@@ -285,11 +285,11 @@ describe('getHand', () => {
 			],
 			expectedPlayedHand: 'Full House',
 			expectedScoringCards: [
-				{ rank: '10', suit: 'Hearts' },
-				{ rank: '10', suit: 'Hearts' },
-				{ rank: '10', suit: 'Hearts' },
-				{ rank: '2', suit: 'Hearts' },
-				{ rank: '2', suit: 'Spades' },
+				{ index: 0, rank: '10', suit: 'Hearts' },
+				{ index: 1, rank: '10', suit: 'Hearts' },
+				{ index: 2, rank: '10', suit: 'Hearts' },
+				{ index: 3, rank: '2', suit: 'Hearts' },
+				{ index: 4, rank: '2', suit: 'Spades' },
 			],
 		},
 		{
@@ -307,10 +307,10 @@ describe('getHand', () => {
 			},
 			expectedPlayedHand: 'Flush',
 			expectedScoringCards: [
-				{ rank: '10', suit: 'Hearts' },
-				{ rank: '9', suit: 'Clubs', enhancement: 'wild' },
-				{ rank: '3', suit: 'Diamonds' },
-				{ rank: '2', suit: 'Diamonds', enhancement: 'wild' },
+				{ index: 0, rank: '10', suit: 'Hearts' },
+				{ index: 1, rank: '9', suit: 'Clubs', enhancement: 'wild' },
+				{ index: 2, rank: '3', suit: 'Diamonds' },
+				{ index: 3, rank: '2', suit: 'Diamonds', enhancement: 'wild' },
 			],
 		},
 		{
@@ -327,10 +327,10 @@ describe('getHand', () => {
 			},
 			expectedPlayedHand: 'Flush',
 			expectedScoringCards: [
-				{ rank: '10', suit: 'Hearts' },
-				{ rank: '9', suit: 'Clubs', enhancement: 'wild' },
-				{ rank: '3', suit: 'Hearts' },
-				{ rank: '2', suit: 'Diamonds', enhancement: 'wild' },
+				{ index: 0, rank: '10', suit: 'Hearts' },
+				{ index: 1, rank: '9', suit: 'Clubs', enhancement: 'wild' },
+				{ index: 2, rank: '3', suit: 'Hearts' },
+				{ index: 3, rank: '2', suit: 'Diamonds', enhancement: 'wild' },
 			],
 		},
 		{
@@ -347,10 +347,10 @@ describe('getHand', () => {
 			},
 			expectedPlayedHand: 'Flush',
 			expectedScoringCards: [
-				{ rank: '10', suit: 'Hearts' },
-				{ rank: '9', suit: 'Hearts' },
-				{ rank: '3', suit: 'Hearts' },
-				{ rank: '2', suit: 'Hearts' },
+				{ index: 0, rank: '10', suit: 'Hearts' },
+				{ index: 1, rank: '9', suit: 'Hearts' },
+				{ index: 2, rank: '3', suit: 'Hearts' },
+				{ index: 3, rank: '2', suit: 'Hearts' },
 			],
 		},
 		{
@@ -367,11 +367,11 @@ describe('getHand', () => {
 			},
 			expectedPlayedHand: 'Flush',
 			expectedScoringCards: [
-				{ rank: '10', suit: 'Hearts' },
-				{ rank: '9', suit: 'Hearts' },
-				{ rank: '3', suit: 'Hearts' },
-				{ rank: '2', suit: 'Hearts' },
-				{ rank: 'King', suit: 'Spades', enhancement: 'stone' },
+				{ index: 0, rank: '10', suit: 'Hearts' },
+				{ index: 1, rank: '9', suit: 'Hearts' },
+				{ index: 2, rank: '3', suit: 'Hearts' },
+				{ index: 3, rank: '2', suit: 'Hearts' },
+				{ index: 4, rank: 'King', suit: 'Spades', enhancement: 'stone' },
 			],
 		},
 		{
@@ -388,11 +388,11 @@ describe('getHand', () => {
 			},
 			expectedPlayedHand: 'Flush',
 			expectedScoringCards: [
-				{ rank: '10', suit: 'Hearts' },
-				{ rank: '9', suit: 'Clubs', enhancement: 'wild' },
-				{ rank: '3', suit: 'Hearts' },
-				{ rank: '2', suit: 'Diamonds', enhancement: 'wild' },
-				{ rank: 'King', suit: 'Diamonds' },
+				{ index: 0, rank: '10', suit: 'Hearts' },
+				{ index: 1, rank: '9', suit: 'Clubs', enhancement: 'wild' },
+				{ index: 2, rank: '3', suit: 'Hearts' },
+				{ index: 3, rank: '2', suit: 'Diamonds', enhancement: 'wild' },
+				{ index: 4, rank: 'King', suit: 'Diamonds' },
 			],
 		},
 		{
@@ -406,11 +406,11 @@ describe('getHand', () => {
 			],
 			expectedPlayedHand: 'Flush',
 			expectedScoringCards: [
-				{ rank: '10', suit: 'Hearts' },
-				{ rank: '9', suit: 'Clubs', enhancement: 'wild' },
-				{ rank: '3', suit: 'Hearts' },
-				{ rank: '2', suit: 'Diamonds', enhancement: 'wild' },
-				{ rank: 'King', suit: 'Hearts' },
+				{ index: 0, rank: '10', suit: 'Hearts' },
+				{ index: 1, rank: '9', suit: 'Clubs', enhancement: 'wild' },
+				{ index: 2, rank: '3', suit: 'Hearts' },
+				{ index: 3, rank: '2', suit: 'Diamonds', enhancement: 'wild' },
+				{ index: 4, rank: 'King', suit: 'Hearts' },
 			],
 		},
 		{
@@ -427,11 +427,11 @@ describe('getHand', () => {
 			},
 			expectedPlayedHand: 'Flush',
 			expectedScoringCards: [
-				{ rank: '10', suit: 'Hearts' },
-				{ rank: '9', suit: 'Hearts' },
-				{ rank: '3', suit: 'Hearts' },
-				{ rank: '2', suit: 'Diamonds' },
-				{ rank: 'King', suit: 'Diamonds' },
+				{ index: 0, rank: '10', suit: 'Hearts' },
+				{ index: 1, rank: '9', suit: 'Hearts' },
+				{ index: 2, rank: '3', suit: 'Hearts' },
+				{ index: 3, rank: '2', suit: 'Diamonds' },
+				{ index: 4, rank: 'King', suit: 'Diamonds' },
 			],
 		},
 		{
@@ -445,11 +445,11 @@ describe('getHand', () => {
 			],
 			expectedPlayedHand: 'Flush',
 			expectedScoringCards: [
-				{ rank: '10', suit: 'Hearts' },
-				{ rank: '9', suit: 'Hearts' },
-				{ rank: '3', suit: 'Hearts' },
-				{ rank: '2', suit: 'Hearts' },
-				{ rank: 'King', suit: 'Hearts' },
+				{ index: 0, rank: '10', suit: 'Hearts' },
+				{ index: 1, rank: '9', suit: 'Hearts' },
+				{ index: 2, rank: '3', suit: 'Hearts' },
+				{ index: 3, rank: '2', suit: 'Hearts' },
+				{ index: 4, rank: 'King', suit: 'Hearts' },
 			],
 		},
 		{
@@ -463,11 +463,11 @@ describe('getHand', () => {
 			],
 			expectedPlayedHand: 'Straight',
 			expectedScoringCards: [
-				{ rank: 'King', suit: 'Clubs' },
-				{ rank: 'Queen', suit: 'Clubs' },
-				{ rank: 'Ace', suit: 'Hearts' },
-				{ rank: 'Jack', suit: 'Spades' },
-				{ rank: '10', suit: 'Diamonds' },
+				{ index: 0, rank: 'King', suit: 'Clubs' },
+				{ index: 1, rank: 'Queen', suit: 'Clubs' },
+				{ index: 2, rank: 'Ace', suit: 'Hearts' },
+				{ index: 3, rank: 'Jack', suit: 'Spades' },
+				{ index: 4, rank: '10', suit: 'Diamonds' },
 			],
 		},
 		{
@@ -481,11 +481,11 @@ describe('getHand', () => {
 			],
 			expectedPlayedHand: 'Straight',
 			expectedScoringCards: [
-				{ rank: '5', suit: 'Clubs' },
-				{ rank: '4', suit: 'Clubs' },
-				{ rank: 'Ace', suit: 'Hearts' },
-				{ rank: '2', suit: 'Spades' },
-				{ rank: '3', suit: 'Diamonds' },
+				{ index: 0, rank: '5', suit: 'Clubs' },
+				{ index: 1, rank: '4', suit: 'Clubs' },
+				{ index: 2, rank: 'Ace', suit: 'Hearts' },
+				{ index: 3, rank: '2', suit: 'Spades' },
+				{ index: 4, rank: '3', suit: 'Diamonds' },
 			],
 		},
 		{
@@ -499,7 +499,7 @@ describe('getHand', () => {
 			],
 			expectedPlayedHand: 'High Card',
 			expectedScoringCards: [
-				{ rank: 'Ace', suit: 'Hearts' },
+				{ index: 2, rank: 'Ace', suit: 'Hearts' },
 			],
 		},
 		{
@@ -517,11 +517,11 @@ describe('getHand', () => {
 			},
 			expectedPlayedHand: 'Straight',
 			expectedScoringCards: [
-				{ rank: '4', suit: 'Clubs' },
-				{ rank: '5', suit: 'Clubs' },
-				{ rank: '7', suit: 'Hearts' },
-				{ rank: '3', suit: 'Diamonds' },
-				{ rank: '2', suit: 'Spades' },
+				{ index: 0, rank: '4', suit: 'Clubs' },
+				{ index: 1, rank: '5', suit: 'Clubs' },
+				{ index: 2, rank: '7', suit: 'Hearts' },
+				{ index: 3, rank: '3', suit: 'Diamonds' },
+				{ index: 4, rank: '2', suit: 'Spades' },
 			],
 		},
 		{
@@ -538,10 +538,10 @@ describe('getHand', () => {
 			},
 			expectedPlayedHand: 'Straight',
 			expectedScoringCards: [
-				{ rank: '4', suit: 'Clubs' },
-				{ rank: '5', suit: 'Clubs' },
-				{ rank: '3', suit: 'Diamonds' },
-				{ rank: '2', suit: 'Spades' },
+				{ index: 0, rank: '4', suit: 'Clubs' },
+				{ index: 1, rank: '5', suit: 'Clubs' },
+				{ index: 3, rank: '3', suit: 'Diamonds' },
+				{ index: 4, rank: '2', suit: 'Spades' },
 			],
 		},
 		{
@@ -558,11 +558,11 @@ describe('getHand', () => {
 			},
 			expectedPlayedHand: 'Straight',
 			expectedScoringCards: [
-				{ rank: '6', suit: 'Clubs' },
-				{ rank: '8', suit: 'Clubs' },
-				{ rank: '10', suit: 'Hearts' },
-				{ rank: '2', suit: 'Spades' },
-				{ rank: '4', suit: 'Diamonds' },
+				{ index: 0, rank: '6', suit: 'Clubs' },
+				{ index: 1, rank: '8', suit: 'Clubs' },
+				{ index: 2, rank: '10', suit: 'Hearts' },
+				{ index: 3, rank: '2', suit: 'Spades' },
+				{ index: 4, rank: '4', suit: 'Diamonds' },
 			],
 		},
 		{
@@ -576,11 +576,11 @@ describe('getHand', () => {
 			],
 			expectedPlayedHand: 'Straight',
 			expectedScoringCards: [
-				{ rank: '6', suit: 'Hearts' },
-				{ rank: '5', suit: 'Clubs' },
-				{ rank: '4', suit: 'Clubs' },
-				{ rank: '3', suit: 'Diamonds' },
-				{ rank: '2', suit: 'Spades' },
+				{ index: 0, rank: '6', suit: 'Hearts' },
+				{ index: 1, rank: '5', suit: 'Clubs' },
+				{ index: 2, rank: '4', suit: 'Clubs' },
+				{ index: 3, rank: '3', suit: 'Diamonds' },
+				{ index: 4, rank: '2', suit: 'Spades' },
 			],
 		},
 		{
@@ -594,9 +594,9 @@ describe('getHand', () => {
 			],
 			expectedPlayedHand: 'Three of a Kind',
 			expectedScoringCards: [
-				{ rank: 'King', suit: 'Hearts' },
-				{ rank: 'King', suit: 'Clubs' },
-				{ rank: 'King', suit: 'Clubs' },
+				{ index: 0, rank: 'King', suit: 'Hearts' },
+				{ index: 1, rank: 'King', suit: 'Clubs' },
+				{ index: 2, rank: 'King', suit: 'Clubs' },
 			],
 		},
 		{
@@ -610,10 +610,10 @@ describe('getHand', () => {
 			],
 			expectedPlayedHand: 'Two Pair',
 			expectedScoringCards: [
-				{ rank: 'King', suit: 'Hearts' },
-				{ rank: 'King', suit: 'Clubs' },
-				{ rank: '7', suit: 'Clubs' },
-				{ rank: '7', suit: 'Diamonds' },
+				{ index: 0, rank: 'King', suit: 'Hearts' },
+				{ index: 1, rank: 'King', suit: 'Clubs' },
+				{ index: 2, rank: '7', suit: 'Clubs' },
+				{ index: 3, rank: '7', suit: 'Diamonds' },
 			],
 		},
 		{
@@ -627,8 +627,8 @@ describe('getHand', () => {
 			],
 			expectedPlayedHand: 'Pair',
 			expectedScoringCards: [
-				{ rank: 'King', suit: 'Hearts' },
-				{ rank: 'King', suit: 'Clubs' },
+				{ index: 0, rank: 'King', suit: 'Hearts' },
+				{ index: 1, rank: 'King', suit: 'Clubs' },
 			],
 		},
 		{
@@ -640,7 +640,7 @@ describe('getHand', () => {
 			],
 			expectedPlayedHand: 'High Card',
 			expectedScoringCards: [
-				{ rank: 'Ace', suit: 'Hearts' },
+				{ index: 1, rank: 'Ace', suit: 'Hearts' },
 			],
 		},
 		{
@@ -652,8 +652,8 @@ describe('getHand', () => {
 			],
 			expectedPlayedHand: 'High Card',
 			expectedScoringCards: [
-				{ rank: 'King', suit: 'Clubs', enhancement: 'stone' },
-				{ rank: 'Ace', suit: 'Hearts' },
+				{ index: 0, rank: 'King', suit: 'Clubs', enhancement: 'stone' },
+				{ index: 1, rank: 'Ace', suit: 'Hearts' },
 			],
 		},
 		{
@@ -671,9 +671,9 @@ describe('getHand', () => {
 			},
 			expectedPlayedHand: 'High Card',
 			expectedScoringCards: [
-				{ rank: '10', suit: 'Hearts' },
-				{ rank: '3', suit: 'Hearts', enhancement: 'stone' },
-				{ rank: 'King', suit: 'Spades', enhancement: 'stone' },
+				{ index: 0, rank: '10', suit: 'Hearts' },
+				{ index: 2, rank: '3', suit: 'Hearts', enhancement: 'stone' },
+				{ index: 4, rank: 'King', suit: 'Spades', enhancement: 'stone' },
 			],
 		},
 	])('$message', ({ initialCards, options, expectedPlayedHand, expectedScoringCards }) => {
@@ -681,8 +681,13 @@ describe('getHand', () => {
 
 		const { playedHand, scoringCards } = getHand(cards, options)
 
-		expect(playedHand).toEqual(expectedPlayedHand)
-		expect(scoringCards).toMatchObject(expectedScoringCards)
+		expect(playedHand).toBe(expectedPlayedHand)
+
+		// Map the expected scoring cards (which are of type `InitialCard`) to complete scoring cards (of type `Card`) by using their index as the key in a find predicate. This way, we can use `toStrictEqual` assertions below.
+		const completeExpectedScoringCards = expectedScoringCards.map(({ index }) => {
+			return scoringCards.find((scoringCard) => scoringCard.index === index)!
+		})
+		expect(scoringCards).toStrictEqual(completeExpectedScoringCards)
 		expect(scoringCards.length).toBe(expectedScoringCards.length)
 	})
 })
