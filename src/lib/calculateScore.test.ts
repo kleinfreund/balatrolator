@@ -51,6 +51,7 @@ describe('calculateScore', async () => {
 		(await import('./test-files/035.ts')).default('https://www.youtube.com/watch?v=hcZF7NJGuPE'),
 		(await import('./test-files/036.ts')).default('Regression test for #17'),
 		(await import('./test-files/037.ts')).default('Regression test for #18'),
+		(await import('./test-files/038.ts')).default('Regression test for #20'),
 	])('$message', ({ initialState, expected }) => {
 		const score = calculateScore(getState(initialState))
 

@@ -437,7 +437,7 @@ export const JOKER_DEFINITIONS: Record<JokerName, JokerDefinition> = {
 		rarity: 'common',
 		effect ({ score, state, trigger }) {
 			score.push({
-				multiplier: ['+', state.jokers.length],
+				multiplier: ['+', 3 * state.jokers.length],
 				phase: 'jokers',
 				joker: this,
 				trigger,
