@@ -53,7 +53,6 @@ function getObservatory (initialObservatory: InitialObservatory): Observatory {
 	const observatoryEntries = HANDS.map((handName) => [handName, initialObservatory[handName] ?? 0])
 
 	return Object.fromEntries(observatoryEntries) as Observatory
-
 }
 
 function getHandLevels (initialHandLevels: InitialHandLevels): HandLevels {
