@@ -1,5 +1,6 @@
 const registeredContainers = new Set<Element>()
 let isDragging = false
+const FORMAT_PREFIX = 'dragged-element-id:'
 
 export class DraggableCard extends HTMLElement {
 	container: HTMLElement | undefined
@@ -48,7 +49,8 @@ export class DraggableCard extends HTMLElement {
 			isDragging = true
 			event.dataTransfer.effectAllowed = 'move'
 			event.dataTransfer.dropEffect = 'move'
-			event.dataTransfer.setData('text/plain', draggedEl.id)
+			// Dirty workaround: Store the drag'n'drop data in the format to get around browser security measures that prevent reading the data in event types other than `drop`.
+			event.dataTransfer.setData(`${FORMAT_PREFIX}${draggedEl.id}`, draggedEl.id)
 		}
 	}
 
@@ -87,7 +89,9 @@ function getDragEventData (event: DragEvent, container: Element): Element | null
 		return null
 	}
 
-	const draggedElId = event.dataTransfer.getData('text/plain')
+	// Dirty workaround: Read data from the format key instead of using `getData`.
+	const format = event.dataTransfer.types.find((format) => format.startsWith(FORMAT_PREFIX))
+	const draggedElId = format ? format.substring(FORMAT_PREFIX.length) : undefined
 	if (draggedElId && container) {
 		const draggedEl = Array.from(container.children).find((el) => el.id === draggedElId)
 
