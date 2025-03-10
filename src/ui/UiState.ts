@@ -104,12 +104,22 @@ export class UiState {
 
 		// Quick and dirty way to update the state whenever necessary
 		form.addEventListener('change', () => this.#calculate())
+
+		// Re-calculate score after re-ordering cards
+		new MutationObserver(this.#handleMutation).observe(this.#jokerContainer, { childList: true })
+		new MutationObserver(this.#handleMutation).observe(this.#playingCardContainer, { childList: true })
 	}
 
 	init () {
 		// Read the state from the URL first, then read it from web storage, and finally, fall back to the default/initial state.
 		const state = readStateFromUrl() ?? this.#getAutoSaveState() ?? getState({})
 		this.#populateUiWithState(state)
+	}
+
+	#handleMutation: MutationCallback = (mutationList) => {
+		if (mutationList.some(({ type }) => type === 'childList')) {
+			this.#calculate()
+		}
 	}
 
 	#handleSubmit (event: SubmitEvent) {
