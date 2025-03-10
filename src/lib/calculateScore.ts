@@ -356,7 +356,6 @@ function scoreJokerEffect (effect: JokerEffect | undefined, options: { state: St
 		if (index === options.joker.index) triggers.push(`copied ${name}`)
 	}
 
-	const jokersWithIndirectEffects = options.state.jokers.filter((joker) => joker.indirectEffect)
 
 	for (const trigger of triggers) {
 		if (effect) {
@@ -368,11 +367,11 @@ function scoreJokerEffect (effect: JokerEffect | undefined, options: { state: St
 				target.indirectEffect({ ...options, trigger })
 			}
 		}
+	}
 
-		for (const jokersWithIndirectEffect of jokersWithIndirectEffects) {
-			if (jokersWithIndirectEffect.indirectEffect) {
-				jokersWithIndirectEffect.indirectEffect({ ...options, trigger })
-			}
+	for (const joker of options.state.jokers) {
+		if (joker.indirectEffect) {
+			joker.indirectEffect({ ...options, trigger: `indirect for ${options.joker.name}` })
 		}
 	}
 }
