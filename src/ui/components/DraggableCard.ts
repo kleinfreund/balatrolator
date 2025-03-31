@@ -2,6 +2,8 @@ const registeredContainers = new Set<Element>()
 let isDragging = false
 const FORMAT_PREFIX = 'dragged-element-id:'
 
+let lastDraggedElId: string | null = null
+
 export class DraggableCard extends HTMLElement {
 	container: HTMLElement | undefined
 
@@ -71,9 +73,12 @@ export class DraggableCard extends HTMLElement {
 			return
 		}
 
-		if (getDragEventData(event, this.container)) {
+		const draggedEl = getDragEventData(event, this.container)
+		if (draggedEl) {
 			// **Allow** dropping off an element to occur
 			event.preventDefault()
+			// Safari workaround: Store the drag event data during the dragover event to work around an issue in Safari that makes it impossible to read `event.dataTransfer.types` during the dragend event.
+			lastDraggedElId = draggedEl.id
 		}
 	}
 
@@ -91,7 +96,9 @@ function getDragEventData (event: DragEvent, container: Element): Element | null
 
 	// Dirty workaround: Read data from the format key instead of using `getData`.
 	const format = event.dataTransfer.types.find((format) => format.startsWith(FORMAT_PREFIX))
-	const draggedElId = format ? format.substring(FORMAT_PREFIX.length) : undefined
+	const draggedElId = format ? format.substring(FORMAT_PREFIX.length) : lastDraggedElId
+	lastDraggedElId = null
+
 	if (draggedElId && container) {
 		const draggedEl = Array.from(container.children).find((el) => el.id === draggedElId)
 
