@@ -9,6 +9,11 @@ export function formatScore (score: string): string {
 	}
 
 	const bigNumber = bignumber(score)
+	if (bigNumber.lessThan(10_000)) {
+		return new Intl.NumberFormat('en', { maximumFractionDigits: 1 })
+			.format(bigNumber.toNumber())
+	}
+
 	if (bigNumber.lessThan(1_000_000_000_000)) {
 		return new Intl.NumberFormat('en', { maximumFractionDigits: 0 })
 			.format(bigNumber.toNumber())
