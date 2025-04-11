@@ -291,12 +291,16 @@ export class UiState {
 			formattedScoreEl.textContent = score.formattedScore
 
 			const scoreEl = fragment.querySelector<HTMLElement>('[data-sc-score]')!
-			scoreEl.textContent = score.score
-				.split('')
-				.reverse()
-				.map((digit, index) => digit + (index > 0 && index % 3 === 0 ? ',' : ''))
-				.reverse()
-				.join('')
+
+			const thousandsSeparatedScore = score.score.includes('.')
+				? score.score
+				: score.score
+					.split('')
+					.toReversed()
+					.map((digit, index) => digit + (index > 0 && index % 3 === 0 ? ',' : ''))
+					.toReversed()
+					.join('')
+			scoreEl.textContent = thousandsSeparatedScore
 
 			this.#scoreCardContainer.appendChild(fragment)
 		}
