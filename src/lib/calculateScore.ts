@@ -267,7 +267,7 @@ function getScore (state: State, playedHand: HandName, scoringCards: Card[], luc
 	const planetCount = state.observatory[playedHand] ?? 0
 	if (planetCount > 0) {
 		score.push({
-			multiplier: ['*', planetCount * 1.5],
+			multiplier: ['*', Math.pow(1.5, planetCount)],
 			phase: 'consumables',
 		})
 	}
