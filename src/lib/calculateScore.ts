@@ -309,7 +309,7 @@ function getPlayedCardTriggers ({ state, card, index }: { state: State, card: Ca
 				break
 			}
 			case 'Sock and Buskin': {
-				if (isFaceCard(card, state.jokerSet.has('Pareidolia'))) triggers.push(name)
+				if (isFaceCard(card, state.jokerSet)) triggers.push(name)
 				break
 			}
 		}

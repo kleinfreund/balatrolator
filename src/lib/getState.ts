@@ -30,7 +30,7 @@ export function getState (initialState: InitialState): State {
 
 	const cards = initialCards.map(getCard).map((card) => ({
 		...card,
-		debuffed: card.debuffed ? true : isDebuffed(card, blind, jokerSet.has('Pareidolia')),
+		debuffed: card.debuffed ? true : isDebuffed(card, blind, jokerSet),
 	}))
 
 	return {
@@ -78,7 +78,7 @@ function getHandBaseScores (handLevels: HandLevels): HandScore {
 	return Object.fromEntries(handBaseScoresEntries) as HandScore
 }
 
-function getJoker (initialJoker: InitialJoker, listIndex = 0): Joker {
+export function getJoker (initialJoker: InitialJoker, listIndex = 0): Joker {
 	const {
 		index = listIndex,
 		name,

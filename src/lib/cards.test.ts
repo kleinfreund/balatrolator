@@ -10,7 +10,7 @@ describe('cards', () => {
 				parameters: [
 					getCard({ rank: '2', suit: 'Hearts' }),
 					{ active: true, name: 'Small Blind' },
-					false,
+					new Set(),
 				],
 				expected: false,
 			},
@@ -18,7 +18,7 @@ describe('cards', () => {
 				parameters: [
 					getCard({ rank: '2', suit: 'Hearts' }),
 					{ active: true, name: 'Verdant Leaf' },
-					false,
+					new Set(),
 				],
 				expected: true,
 			},
@@ -26,7 +26,7 @@ describe('cards', () => {
 				parameters: [
 					getCard({ rank: '2', suit: 'Clubs' }),
 					{ active: true, name: 'The Club' },
-					false,
+					new Set(),
 				],
 				expected: true,
 			},
@@ -34,7 +34,7 @@ describe('cards', () => {
 				parameters: [
 					getCard({ rank: '2', suit: 'Spades' }),
 					{ active: true, name: 'The Goad' },
-					false,
+					new Set(),
 				],
 				expected: true,
 			},
@@ -42,7 +42,7 @@ describe('cards', () => {
 				parameters: [
 					getCard({ rank: '2', suit: 'Hearts' }),
 					{ active: true, name: 'The Head' },
-					false,
+					new Set(),
 				],
 				expected: true,
 			},
@@ -50,7 +50,7 @@ describe('cards', () => {
 				parameters: [
 					getCard({ rank: '2', suit: 'Diamonds' }),
 					{ active: true, name: 'The Window' },
-					false,
+					new Set(),
 				],
 				expected: true,
 			},
@@ -58,7 +58,7 @@ describe('cards', () => {
 				parameters: [
 					getCard({ rank: 'King', suit: 'Diamonds' }),
 					{ active: true, name: 'The Plant' },
-					false,
+					new Set(),
 				],
 				expected: true,
 			},
@@ -66,7 +66,7 @@ describe('cards', () => {
 				parameters: [
 					getCard({ rank: '2', suit: 'Diamonds' }),
 					{ active: true, name: 'The Plant' },
-					true,
+					new Set(['Pareidolia']),
 				],
 				expected: true,
 			},
@@ -80,7 +80,7 @@ describe('cards', () => {
 			{
 				parameters: [
 					getCard({ rank: '2', suit: 'Hearts' }),
-					false,
+					new Set(),
 				],
 				expected: false,
 			},
@@ -144,6 +144,7 @@ describe('cards', () => {
 				parameters: [
 					getCard({ rank: '2', suit: 'Hearts' }),
 					'Diamonds',
+					new Set(),
 				],
 				expected: false,
 			},
@@ -151,6 +152,7 @@ describe('cards', () => {
 				parameters: [
 					getCard({ rank: '2', suit: 'Hearts' }),
 					['Diamonds', 'Clubs'],
+					new Set(),
 				],
 				expected: false,
 			},
@@ -158,6 +160,7 @@ describe('cards', () => {
 				parameters: [
 					getCard({ rank: '2', suit: 'Diamonds' }),
 					'Diamonds',
+					new Set(),
 				],
 				expected: true,
 			},
@@ -165,6 +168,7 @@ describe('cards', () => {
 				parameters: [
 					getCard({ rank: '2', suit: 'Diamonds' }),
 					['Diamonds', 'Clubs'],
+					new Set(),
 				],
 				expected: true,
 			},
@@ -172,6 +176,7 @@ describe('cards', () => {
 				parameters: [
 					getCard({ debuffed: true, rank: '2', suit: 'Diamonds' }),
 					['Diamonds', 'Clubs'],
+					new Set(),
 				],
 				expected: false,
 			},
@@ -179,6 +184,7 @@ describe('cards', () => {
 				parameters: [
 					getCard({ rank: '2', suit: 'Diamonds', enhancement: 'stone' }),
 					['Diamonds', 'Clubs'],
+					new Set(),
 				],
 				expected: false,
 			},
@@ -186,6 +192,7 @@ describe('cards', () => {
 				parameters: [
 					getCard({ rank: '2', suit: 'Hearts', enhancement: 'wild' }),
 					['Diamonds', 'Clubs'],
+					new Set(),
 				],
 				expected: true,
 			},
@@ -193,6 +200,7 @@ describe('cards', () => {
 				parameters: [
 					getCard({ debuffed: true, rank: '2', suit: 'Hearts', enhancement: 'wild' }),
 					['Diamonds', 'Clubs'],
+					new Set(),
 				],
 				expected: false,
 			},
@@ -200,8 +208,73 @@ describe('cards', () => {
 				parameters: [
 					getCard({ debuffed: true, rank: '2', suit: 'Diamonds', enhancement: 'wild' }),
 					['Diamonds', 'Clubs'],
+					new Set(),
 				],
 				expected: true,
+			},
+			{
+				parameters: [
+					getCard({ rank: '2', suit: 'Clubs' }),
+					'Spades',
+					new Set(['Smeared Joker']),
+				],
+				expected: true,
+			},
+			{
+				parameters: [
+					getCard({ rank: '2', suit: 'Spades' }),
+					'Clubs',
+					new Set(['Smeared Joker']),
+				],
+				expected: true,
+			},
+			{
+				parameters: [
+					getCard({ rank: '2', suit: 'Diamonds' }),
+					'Hearts',
+					new Set(['Smeared Joker']),
+				],
+				expected: true,
+			},
+			{
+				parameters: [
+					getCard({ rank: '2', suit: 'Hearts' }),
+					'Diamonds',
+					new Set(['Smeared Joker']),
+				],
+				expected: true,
+			},
+			{
+				parameters: [
+					getCard({ rank: '2', suit: 'Clubs' }),
+					'Hearts',
+					new Set(['Smeared Joker']),
+				],
+				expected: false,
+			},
+			{
+				parameters: [
+					getCard({ rank: '2', suit: 'Spades' }),
+					'Diamonds',
+					new Set(['Smeared Joker']),
+				],
+				expected: false,
+			},
+			{
+				parameters: [
+					getCard({ rank: '2', suit: 'Diamonds' }),
+					'Clubs',
+					new Set(['Smeared Joker']),
+				],
+				expected: false,
+			},
+			{
+				parameters: [
+					getCard({ rank: '2', suit: 'Hearts' }),
+					'Spades',
+					new Set(['Smeared Joker']),
+				],
+				expected: false,
 			},
 		])('works', ({ parameters, expected }) => {
 			expect(isSuit(...parameters)).toBe(expected)

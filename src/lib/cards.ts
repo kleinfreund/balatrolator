@@ -1,14 +1,14 @@
-import type { Blind, Card, Rank, Suit } from './types.ts'
+import type { Blind, Card, JokerName, Rank, Suit } from './types.ts'
 
-export function isDebuffed (card: Card, blind: Blind, hasPareidolia: boolean) {
+export function isDebuffed (card: Card, blind: Blind, jokerSet: Set<JokerName>) {
 	if (blind.active) {
 		if (
 			(blind.name === 'Verdant Leaf') ||
-			(blind.name === 'The Club' && isSuit(card, 'Clubs')) ||
-			(blind.name === 'The Goad' && isSuit(card, 'Spades')) ||
-			(blind.name === 'The Head' && isSuit(card, 'Hearts')) ||
-			(blind.name === 'The Window' && isSuit(card, 'Diamonds')) ||
-			(blind.name === 'The Plant' && isFaceCard(card, hasPareidolia))
+			(blind.name === 'The Club' && isSuit(card, 'Clubs', jokerSet)) ||
+			(blind.name === 'The Goad' && isSuit(card, 'Spades', jokerSet)) ||
+			(blind.name === 'The Head' && isSuit(card, 'Hearts', jokerSet)) ||
+			(blind.name === 'The Window' && isSuit(card, 'Diamonds', jokerSet)) ||
+			(blind.name === 'The Plant' && isFaceCard(card, jokerSet))
 		) {
 			return true
 		}
@@ -17,8 +17,8 @@ export function isDebuffed (card: Card, blind: Blind, hasPareidolia: boolean) {
 	return false
 }
 
-export function isFaceCard (card: Card, hasPareidolia: boolean) {
-	if (hasPareidolia) {
+export function isFaceCard (card: Card, jokerSet: Set<JokerName>) {
+	if (jokerSet.has('Pareidolia')) {
 		return true
 	}
 
@@ -38,7 +38,7 @@ export function isRank (card: Card, rank: Rank | Rank[]): boolean {
 	return ranks.includes(card.rank)
 }
 
-export function isSuit (card: Card, suit: Suit | Suit[]): boolean {
+export function isSuit (card: Card, suit: Suit | Suit[], jokerSet: Set<JokerName>): boolean {
 	// Apparently, debuffed cards don't count as any suit **unless** they're wild. Then, they count as their original suit.
 	if (card.debuffed && card.enhancement !== 'wild') {
 		return false
@@ -53,6 +53,25 @@ export function isSuit (card: Card, suit: Suit | Suit[]): boolean {
 		return true
 	}
 
-	const suits = Array.isArray(suit) ? suit : [suit]
-	return suits.includes(card.suit)
+	const suits = new Set(Array.isArray(suit) ? suit : [suit])
+
+	if (jokerSet.has('Smeared Joker')) {
+		if (suits.has('Clubs')) {
+			suits.add('Spades')
+		}
+
+		if (suits.has('Spades')) {
+			suits.add('Clubs')
+		}
+
+		if (suits.has('Hearts')) {
+			suits.add('Diamonds')
+		}
+
+		if (suits.has('Diamonds')) {
+			suits.add('Hearts')
+		}
+	}
+
+	return suits.has(card.suit)
 }
