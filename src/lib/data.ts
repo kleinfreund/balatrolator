@@ -191,9 +191,7 @@ export const JOKER_DEFINITIONS: Record<JokerName, JokerDefinition> = {
 	'Crazy Joker': {
 		rarity: 'common',
 		effect ({ state, score, trigger }) {
-			const hasFourFingers = state.jokerSet.has('Four Fingers')
-			const hasShortcut = state.jokerSet.has('Shortcut')
-			const cards = straight(state.cards.filter(({ played }) => played), hasFourFingers, hasShortcut)
+			const cards = straight(state.cards.filter(({ played }) => played), state.jokerSet)
 			score.push({
 				multiplier: ['+', cards.length > 0 ? 12 : 0],
 				phase: 'jokers',
@@ -205,9 +203,7 @@ export const JOKER_DEFINITIONS: Record<JokerName, JokerDefinition> = {
 	'Droll Joker': {
 		rarity: 'common',
 		effect ({ state, score, trigger }) {
-			const hasFourFingers = state.jokerSet.has('Four Fingers')
-			const hasSmearedJoker = state.jokerSet.has('Smeared Joker')
-			const cards = flush(state.cards.filter(({ played }) => played), hasFourFingers, hasSmearedJoker)
+			const cards = flush(state.cards.filter(({ played }) => played), state.jokerSet)
 			score.push({
 				multiplier: ['+', cards.length > 0 ? 10 : 0],
 				phase: 'jokers',
@@ -255,9 +251,7 @@ export const JOKER_DEFINITIONS: Record<JokerName, JokerDefinition> = {
 	'Devious Joker': {
 		rarity: 'common',
 		effect ({ state, score, trigger }) {
-			const hasFourFingers = state.jokerSet.has('Four Fingers')
-			const hasShortcut = state.jokerSet.has('Shortcut')
-			const cards = straight(state.cards.filter(({ played }) => played), hasFourFingers, hasShortcut)
+			const cards = straight(state.cards.filter(({ played }) => played), state.jokerSet)
 			score.push({
 				chips: ['+', cards.length > 0 ? 100 : 0],
 				phase: 'jokers',
@@ -269,9 +263,7 @@ export const JOKER_DEFINITIONS: Record<JokerName, JokerDefinition> = {
 	'Crafty Joker': {
 		rarity: 'common',
 		effect ({ state, score, trigger }) {
-			const hasFourFingers = state.jokerSet.has('Four Fingers')
-			const hasSmearedJoker = state.jokerSet.has('Smeared Joker')
-			const cards = flush(state.cards.filter(({ played }) => played), hasFourFingers, hasSmearedJoker)
+			const cards = flush(state.cards.filter(({ played }) => played), state.jokerSet)
 			score.push({
 				chips: ['+', cards.length > 0 ? 80 : 0],
 				phase: 'jokers',
@@ -1260,9 +1252,7 @@ export const JOKER_DEFINITIONS: Record<JokerName, JokerDefinition> = {
 	'The Order': {
 		rarity: 'common',
 		effect ({ state, score, trigger }) {
-			const hasFourFingers = state.jokerSet.has('Four Fingers')
-			const hasShortcut = state.jokerSet.has('Shortcut')
-			const cards = straight(state.cards.filter(({ played }) => played), hasFourFingers, hasShortcut)
+			const cards = straight(state.cards.filter(({ played }) => played), state.jokerSet)
 			score.push({
 				multiplier: ['*', cards.length > 0 ? 3 : 1],
 				phase: 'jokers',
@@ -1274,9 +1264,7 @@ export const JOKER_DEFINITIONS: Record<JokerName, JokerDefinition> = {
 	'The Tribe': {
 		rarity: 'rare',
 		effect ({ state, score, trigger }) {
-			const hasFourFingers = state.jokerSet.has('Four Fingers')
-			const hasSmearedJoker = state.jokerSet.has('Smeared Joker')
-			const cards = flush(state.cards.filter(({ played }) => played), hasFourFingers, hasSmearedJoker)
+			const cards = flush(state.cards.filter(({ played }) => played), state.jokerSet)
 			score.push({
 				multiplier: ['*', cards.length > 0 ? 2 : 1],
 				phase: 'jokers',

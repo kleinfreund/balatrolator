@@ -12,10 +12,7 @@ export function calculateScore (unresolvedState: State): Result {
 	const state = resolveState(unresolvedState)
 
 	const playedCards = state.cards.filter((card) => card.played)
-	const hasFourFingers = state.jokerSet.has('Four Fingers')
-	const hasShortcut = state.jokerSet.has('Shortcut')
-	const hasSmearedJoker = state.jokerSet.has('Smeared Joker')
-	const { playedHand, scoringCards: preliminaryScoringCards } = getHand(playedCards, { hasFourFingers, hasShortcut, hasSmearedJoker })
+	const { playedHand, scoringCards: preliminaryScoringCards } = getHand(playedCards, state.jokerSet)
 	const scoringCards = state.jokerSet.has('Splash') ? playedCards : preliminaryScoringCards
 
 	const scores = LUCKS.map<ResultScore>((luck) => {

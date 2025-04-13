@@ -1,13 +1,13 @@
 import { describe, test, expect } from 'vitest'
 
 import { getCard } from './getState.ts'
-import { GetHandOptions, getHand } from './getHand.ts'
-import type { HandName, InitialCard } from './types.ts'
+import { getHand } from './getHand.ts'
+import type { HandName, InitialCard, JokerName } from './types.ts'
 
 interface TestCase {
 	message: string
 	initialCards: InitialCard[]
-	options?: GetHandOptions
+	jokerSet?: Set<JokerName>
 	expectedPlayedHand: HandName
 	expectedScoringCards: (Omit<InitialCard, 'index'> & { index: number })[]
 }
@@ -23,10 +23,7 @@ describe('getHand', () => {
 				{ rank: '10', suit: 'Hearts' },
 				{ rank: '10', suit: 'Diamonds' },
 			],
-			options: {
-				hasSmearedJoker: true,
-				hasFourFingers: true,
-			},
+			jokerSet: new Set(['Smeared Joker', 'Four Fingers']),
 			expectedPlayedHand: 'Flush Five',
 			expectedScoringCards: [
 				{ index: 0, rank: '10', suit: 'Spades' },
@@ -45,9 +42,7 @@ describe('getHand', () => {
 				{ rank: '10', suit: 'Hearts' },
 				{ rank: '10', suit: 'Diamonds' },
 			],
-			options: {
-				hasFourFingers: true,
-			},
+			jokerSet: new Set(['Four Fingers']),
 			expectedPlayedHand: 'Flush Five',
 			expectedScoringCards: [
 				{ index: 0, rank: '10', suit: 'Hearts' },
@@ -66,9 +61,7 @@ describe('getHand', () => {
 				{ rank: '10', suit: 'Hearts' },
 				{ rank: '10', suit: 'Hearts' },
 			],
-			options: {
-				hasSmearedJoker: true,
-			},
+			jokerSet: new Set(['Smeared Joker']),
 			expectedPlayedHand: 'Flush Five',
 			expectedScoringCards: [
 				{ index: 0, rank: '10', suit: 'Diamonds' },
@@ -123,11 +116,7 @@ describe('getHand', () => {
 				{ rank: '4', suit: 'Diamonds' },
 				{ rank: '2', suit: 'Hearts' },
 			],
-			options: {
-				hasFourFingers: true,
-				hasShortcut: true,
-				hasSmearedJoker: true,
-			},
+			jokerSet: new Set(['Four Fingers', 'Shortcut', 'Smeared Joker']),
 			expectedPlayedHand: 'Straight Flush',
 			expectedScoringCards: [
 				{ index: 0, rank: '8', suit: 'Spades' },
@@ -146,10 +135,7 @@ describe('getHand', () => {
 				{ rank: '4', suit: 'Hearts' },
 				{ rank: '2', suit: 'Hearts' },
 			],
-			options: {
-				hasFourFingers: true,
-				hasShortcut: true,
-			},
+			jokerSet: new Set(['Four Fingers', 'Shortcut']),
 			expectedPlayedHand: 'Straight Flush',
 			expectedScoringCards: [
 				{ index: 0, rank: '8', suit: 'Spades' },
@@ -168,9 +154,7 @@ describe('getHand', () => {
 				{ rank: '7', suit: 'Hearts' },
 				{ rank: '2', suit: 'Hearts' },
 			],
-			options: {
-				hasFourFingers: true,
-			},
+			jokerSet: new Set(['Four Fingers']),
 			expectedPlayedHand: 'Straight Flush',
 			expectedScoringCards: [
 				{ index: 0, rank: '9', suit: 'Spades' },
@@ -189,9 +173,7 @@ describe('getHand', () => {
 				{ rank: '7', suit: 'Hearts' },
 				{ rank: '2', suit: 'Diamonds' },
 			],
-			options: {
-				hasFourFingers: true,
-			},
+			jokerSet: new Set(['Four Fingers']),
 			expectedPlayedHand: 'Straight Flush',
 			expectedScoringCards: [
 				{ index: 0, rank: '9', suit: 'Hearts' },
@@ -244,9 +226,7 @@ describe('getHand', () => {
 				{ rank: '2', suit: 'Spades' },
 				{ rank: '2', suit: 'Spades' },
 			],
-			options: {
-				hasSmearedJoker: true,
-			},
+			jokerSet: new Set(['Smeared Joker']),
 			expectedPlayedHand: 'Flush House',
 			expectedScoringCards: [
 				{ index: 0, rank: '10', suit: 'Clubs' },
@@ -301,10 +281,7 @@ describe('getHand', () => {
 				{ rank: '2', suit: 'Diamonds', enhancement: 'wild' },
 				{ rank: 'King', suit: 'Spades' },
 			],
-			options: {
-				hasFourFingers: true,
-				hasSmearedJoker: true,
-			},
+			jokerSet: new Set(['Four Fingers', 'Smeared Joker']),
 			expectedPlayedHand: 'Flush',
 			expectedScoringCards: [
 				{ index: 0, rank: '10', suit: 'Hearts' },
@@ -322,9 +299,7 @@ describe('getHand', () => {
 				{ rank: '2', suit: 'Diamonds', enhancement: 'wild' },
 				{ rank: 'King', suit: 'Spades' },
 			],
-			options: {
-				hasFourFingers: true,
-			},
+			jokerSet: new Set(['Four Fingers']),
 			expectedPlayedHand: 'Flush',
 			expectedScoringCards: [
 				{ index: 0, rank: '10', suit: 'Hearts' },
@@ -342,9 +317,7 @@ describe('getHand', () => {
 				{ rank: '2', suit: 'Hearts' },
 				{ rank: 'King', suit: 'Spades' },
 			],
-			options: {
-				hasFourFingers: true,
-			},
+			jokerSet: new Set(['Four Fingers']),
 			expectedPlayedHand: 'Flush',
 			expectedScoringCards: [
 				{ index: 0, rank: '10', suit: 'Hearts' },
@@ -362,9 +335,7 @@ describe('getHand', () => {
 				{ rank: '2', suit: 'Hearts' },
 				{ rank: 'King', suit: 'Spades', enhancement: 'stone' },
 			],
-			options: {
-				hasFourFingers: true,
-			},
+			jokerSet: new Set(['Four Fingers']),
 			expectedPlayedHand: 'Flush',
 			expectedScoringCards: [
 				{ index: 0, rank: '10', suit: 'Hearts' },
@@ -383,9 +354,7 @@ describe('getHand', () => {
 				{ rank: '2', suit: 'Diamonds', enhancement: 'wild' },
 				{ rank: 'King', suit: 'Diamonds' },
 			],
-			options: {
-				hasSmearedJoker: true,
-			},
+			jokerSet: new Set(['Smeared Joker']),
 			expectedPlayedHand: 'Flush',
 			expectedScoringCards: [
 				{ index: 0, rank: '10', suit: 'Hearts' },
@@ -422,9 +391,7 @@ describe('getHand', () => {
 				{ rank: '2', suit: 'Diamonds' },
 				{ rank: 'King', suit: 'Diamonds' },
 			],
-			options: {
-				hasSmearedJoker: true,
-			},
+			jokerSet: new Set(['Smeared Joker']),
 			expectedPlayedHand: 'Flush',
 			expectedScoringCards: [
 				{ index: 0, rank: '10', suit: 'Hearts' },
@@ -511,10 +478,7 @@ describe('getHand', () => {
 				{ rank: '3', suit: 'Diamonds' },
 				{ rank: '2', suit: 'Spades' },
 			],
-			options: {
-				hasFourFingers: true,
-				hasShortcut: true,
-			},
+			jokerSet: new Set(['Four Fingers', 'Shortcut']),
 			expectedPlayedHand: 'Straight',
 			expectedScoringCards: [
 				{ index: 0, rank: '4', suit: 'Clubs' },
@@ -533,9 +497,7 @@ describe('getHand', () => {
 				{ rank: '3', suit: 'Diamonds' },
 				{ rank: '2', suit: 'Spades' },
 			],
-			options: {
-				hasFourFingers: true,
-			},
+			jokerSet: new Set(['Four Fingers']),
 			expectedPlayedHand: 'Straight',
 			expectedScoringCards: [
 				{ index: 0, rank: '4', suit: 'Clubs' },
@@ -553,9 +515,7 @@ describe('getHand', () => {
 				{ rank: '2', suit: 'Spades' },
 				{ rank: '4', suit: 'Diamonds' },
 			],
-			options: {
-				hasShortcut: true,
-			},
+			jokerSet: new Set(['Shortcut']),
 			expectedPlayedHand: 'Straight',
 			expectedScoringCards: [
 				{ index: 0, rank: '6', suit: 'Clubs' },
@@ -666,9 +626,7 @@ describe('getHand', () => {
 				{ rank: '2', suit: 'Hearts' },
 				{ rank: 'King', suit: 'Spades', enhancement: 'stone' },
 			],
-			options: {
-				hasFourFingers: true,
-			},
+			jokerSet: new Set(['Four Fingers']),
 			expectedPlayedHand: 'High Card',
 			expectedScoringCards: [
 				{ index: 0, rank: '10', suit: 'Hearts' },
@@ -676,10 +634,10 @@ describe('getHand', () => {
 				{ index: 4, rank: 'King', suit: 'Spades', enhancement: 'stone' },
 			],
 		},
-	])('$message', ({ initialCards, options, expectedPlayedHand, expectedScoringCards }) => {
+	])('$message', ({ initialCards, jokerSet, expectedPlayedHand, expectedScoringCards }) => {
 		const cards = initialCards.map(getCard)
 
-		const { playedHand, scoringCards } = getHand(cards, options)
+		const { playedHand, scoringCards } = getHand(cards, jokerSet ?? new Set())
 
 		expect(playedHand).toBe(expectedPlayedHand)
 

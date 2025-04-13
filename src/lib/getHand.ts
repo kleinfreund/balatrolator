@@ -1,28 +1,11 @@
 import { RANK_TO_CHIP_MAP, RANK_TO_INDEX_MAP } from './data.ts'
-import type { Card, HandName, Rank, Suit } from './types.ts'
+import type { Card, HandName, JokerName, Rank, Suit } from './types.ts'
 
-export interface GetHandOptions {
-	hasFourFingers?: boolean
-	hasShortcut?: boolean
-	hasSmearedJoker?: boolean
-}
-
-const DEFAULT_OPTIONS: Required<GetHandOptions> = {
-	hasFourFingers: false,
-	hasShortcut: false,
-	hasSmearedJoker: false,
-}
-
-export function getHand (playedCards: Card[], options: GetHandOptions = DEFAULT_OPTIONS): { playedHand: HandName, scoringCards: Card[] } {
-	const {
-		hasFourFingers = DEFAULT_OPTIONS.hasFourFingers,
-		hasShortcut = DEFAULT_OPTIONS.hasShortcut,
-		hasSmearedJoker = DEFAULT_OPTIONS.hasSmearedJoker,
-	} = options
+export function getHand (playedCards: Card[], jokerSet: Set<JokerName>): { playedHand: HandName, scoringCards: Card[] } {
 	const playedStoneCards = playedCards.filter(({ enhancement }) => enhancement === 'stone')
 
 	const fiveOfAKindCards = nOfAKind(playedCards, 5)
-	const flushCards = flush(playedCards, hasFourFingers, hasSmearedJoker)
+	const flushCards = flush(playedCards, jokerSet)
 	if (fiveOfAKindCards.length > 0 && flushCards.length > 0) {
 		const scoringCards = combineCards(playedCards, playedStoneCards, fiveOfAKindCards, flushCards)
 
@@ -42,7 +25,7 @@ export function getHand (playedCards: Card[], options: GetHandOptions = DEFAULT_
 		return { playedHand: 'Five of a Kind', scoringCards }
 	}
 
-	const straightCards = straight(playedCards, hasFourFingers, hasShortcut)
+	const straightCards = straight(playedCards, jokerSet)
 	if (flushCards.length > 0 && straightCards.length > 0) {
 		const scoringCards = combineCards(playedCards, playedStoneCards, flushCards, straightCards)
 
@@ -135,8 +118,8 @@ const SMEARED_JOKER_PAIRS: Record<Suit, Suit> = {
 	'Diamonds': 'Hearts',
 }
 
-export function flush (cards: Card[], hasFourFingers: boolean, hasSmearedJoker: boolean): Card[] {
-	const flushnessThreshold = hasFourFingers ? 4 : 5
+export function flush (cards: Card[], jokerSet: Set<JokerName>): Card[] {
+	const flushnessThreshold = jokerSet.has('Four Fingers') ? 4 : 5
 	const map = new Map<Suit, Card[]>()
 
 	for (const card of cards) {
@@ -144,7 +127,7 @@ export function flush (cards: Card[], hasFourFingers: boolean, hasSmearedJoker: 
 
 		const suits: Suit[] = card.enhancement === 'wild'
 			? ['Spades', 'Hearts', 'Clubs', 'Diamonds']
-			: hasSmearedJoker
+			: jokerSet.has('Smeared Joker')
 				? [card.suit, SMEARED_JOKER_PAIRS[card.suit]]
 				: [card.suit]
 
@@ -166,9 +149,9 @@ export function flush (cards: Card[], hasFourFingers: boolean, hasSmearedJoker: 
 	return []
 }
 
-export function straight (cards: Card[], hasFourFingers: boolean, hasShortcut: boolean): Card[] {
-	const straightnessThreshold = hasFourFingers ? 4 : 5
-	const gap = hasShortcut ? 2 : 1
+export function straight (cards: Card[], jokerSet: Set<JokerName>): Card[] {
+	const straightnessThreshold = jokerSet.has('Four Fingers') ? 4 : 5
+	const gap = jokerSet.has('Shortcut') ? 2 : 1
 	const cardIndexes = cards
 		.filter(({ enhancement }) => enhancement !== 'stone')
 		.map(({ rank }) => {
