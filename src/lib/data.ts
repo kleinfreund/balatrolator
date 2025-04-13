@@ -1125,6 +1125,10 @@ export const JOKER_DEFINITIONS: Record<JokerName, JokerDefinition> = {
 	'Flower Pot': {
 		rarity: 'uncommon',
 		effect ({ state, score, scoringCards, trigger }) {
+			if (scoringCards.length < 4) {
+				return
+			}
+
 			let hasAllSuits = false
 			const suits = ['Spades', 'Hearts', 'Clubs', 'Diamonds'] as Suit[]
 			const cards = new Set<Card>()
