@@ -181,6 +181,9 @@ export function straight (cards: Card[], jokerSet: Set<JokerName>): Card[] {
 				// Mark the hand as a straight but continue evaluating to determine _all scoring_ cards, not just the ones needed to form a straight.
 				isStraight = true
 			}
+		} else if (scoringCardIndexes.includes(cardIndex)) {
+			// If a card's index is already recorded as scoring, ignore it as it shouldn't reset the straight check. This covers for playing a Straight with 3 4 4 5 6 while holding Four Fingers.
+			continue
 		} else if (!isStraight) {
 			// If the hand isn't already a straight and the straightness is broken, start over by clearing the preliminary list of scoring card indexes and assuming the next card is the start of a straight.
 			scoringCardIndexes.length = 0
