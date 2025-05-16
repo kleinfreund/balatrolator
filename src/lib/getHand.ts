@@ -141,7 +141,7 @@ export function flush (cards: Card[], jokerSet: Set<JokerName>): Card[] {
 	}
 
 	for (const cards of map.values()) {
-		if (cards.length === flushnessThreshold) {
+		if (cards.length >= flushnessThreshold) {
 			return cards
 		}
 	}

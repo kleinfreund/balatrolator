@@ -634,6 +634,25 @@ describe('getHand', () => {
 				{ index: 4, rank: 'King', suit: 'Spades', enhancement: 'stone' },
 			],
 		},
+		{
+			message: 'Straight Flush (regression test for #27)',
+			initialCards: [
+				{ rank: 'Ace', suit: 'Spades' },
+				{ rank: '8', suit: 'Spades' },
+				{ rank: '7', suit: 'Spades' },
+				{ rank: '6', suit: 'Spades' },
+				{ rank: '5', suit: 'Spades' },
+			],
+			jokerSet: new Set(['Four Fingers']),
+			expectedPlayedHand: 'Straight Flush',
+			expectedScoringCards: [
+				{ index: 0, rank: 'Ace', suit: 'Spades' },
+				{ index: 1, rank: '8', suit: 'Spades' },
+				{ index: 2, rank: '7', suit: 'Spades' },
+				{ index: 3, rank: '6', suit: 'Spades' },
+				{ index: 4, rank: '5', suit: 'Spades' },
+			],
+		},
 	])('$message', ({ initialCards, jokerSet, expectedPlayedHand, expectedScoringCards }) => {
 		const cards = initialCards.map(getCard)
 
