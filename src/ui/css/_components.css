@@ -264,6 +264,10 @@ hand-level {
 	display: none;
 }
 
+.j-rank-input {
+	width: 5.5rem;
+}
+
 .joker-card.--has-rank:not(.--has-suit) .j-card-of,
 .joker-card:not(.--has-rank).--has-suit .j-card-of {
 	display: none;
@@ -271,6 +275,10 @@ hand-level {
 
 .joker-card:not(.--has-suit) .j-suit {
 	display: none;
+}
+
+.j-suit-input {
+	width: 7rem;
 }
 
 .j-plus-chips-input {

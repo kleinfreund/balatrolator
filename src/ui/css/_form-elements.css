@@ -24,7 +24,7 @@
 }
 
 .input-list>* {
-	flex-grow: 1;
+	flex: 1;
 }
 
 /* BUTTON */
@@ -98,7 +98,7 @@
 
 .text-input {
 	display: block;
-	width: max-content;
+	width: 100%;
 	max-width: 100%;
 	height: 2rem;
 	margin: 0;

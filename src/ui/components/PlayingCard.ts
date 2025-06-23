@@ -18,11 +18,11 @@ export class PlayingCard extends DraggableCard {
 	playedCheckbox: HTMLInputElement
 	countInput: HTMLInputElement
 	debuffedCheckbox: HTMLInputElement
-	rankSelect: HTMLSelectElement
-	suitSelect: HTMLSelectElement
-	editionSelect: HTMLSelectElement
-	enhancementSelect: HTMLSelectElement
-	sealSelect: HTMLSelectElement
+	rankInput: HTMLInputElement
+	suitInput: HTMLInputElement
+	editionInput: HTMLInputElement
+	enhancementInput: HTMLInputElement
+	sealInput: HTMLInputElement
 
 	constructor () {
 		super()
@@ -49,20 +49,45 @@ export class PlayingCard extends DraggableCard {
 		this.debuffedCheckbox = this.fragment.querySelector<HTMLInputElement>('[data-c-is-debuffed]')!
 		this.debuffedCheckbox.name = `card-is-debuffed-${id}`
 
-		this.rankSelect = this.fragment.querySelector<HTMLSelectElement>('[data-c-rank]')!
-		this.rankSelect.name = `card-rank-${id}`
+		this.rankInput = this.fragment.querySelector<HTMLInputElement>('[data-c-rank]')!
+		this.rankInput.name = `card-rank-${id}`
+		this.rankInput.addEventListener('change', () => {
+			const rankOption = document.querySelector(`datalist#rank-options option[value="${this.rank}"]`)
+			this.rankInput.setCustomValidity(rankOption ? '' : `“${this.rank}” is not a rank.`)
+			this.rankInput.reportValidity()
+		})
 
-		this.suitSelect = this.fragment.querySelector<HTMLSelectElement>('[data-c-suit]')!
-		this.suitSelect.name = `card-suit-${id}`
+		this.suitInput = this.fragment.querySelector<HTMLInputElement>('[data-c-suit]')!
+		this.suitInput.name = `card-suit-${id}`
+		this.suitInput.addEventListener('change', () => {
+			const suitOption = document.querySelector(`datalist#suit-options option[value="${this.suit}"]`)
+			this.suitInput.setCustomValidity(suitOption ? '' : `“${this.suit}” is not a suit.`)
+			this.suitInput.reportValidity()
+		})
 
-		this.editionSelect = this.fragment.querySelector<HTMLSelectElement>('[data-c-edition]')!
-		this.editionSelect.name = `card-edition-${id}`
+		this.editionInput = this.fragment.querySelector<HTMLInputElement>('[data-c-edition]')!
+		this.editionInput.name = `card-edition-${id}`
+		this.editionInput.addEventListener('change', () => {
+			const editionOption = document.querySelector(`datalist#playing-card-edition-options option[value="${this.edition}"]`)
+			this.editionInput.setCustomValidity(editionOption ? '' : `“${this.edition}” is not an edition.`)
+			this.editionInput.reportValidity()
+		})
 
-		this.enhancementSelect = this.fragment.querySelector<HTMLSelectElement>('[data-c-enhancement]')!
-		this.enhancementSelect.name = `card-enhancement-${id}`
+		this.enhancementInput = this.fragment.querySelector<HTMLInputElement>('[data-c-enhancement]')!
+		this.enhancementInput.name = `card-enhancement-${id}`
+		this.enhancementInput.addEventListener('change', () => {
+			const editionOption = document.querySelector(`datalist#enhancement-options option[value="${this.edition}"]`)
+			this.enhancementInput.setCustomValidity(editionOption ? '' : `“${this.edition}” is not an enhancement.`)
+			this.enhancementInput.reportValidity()
+		})
 
-		this.sealSelect = this.fragment.querySelector<HTMLSelectElement>('[data-c-seal]')!
-		this.sealSelect.name = `card-seal-${id}`
+		this.sealInput = this.fragment.querySelector<HTMLInputElement>('[data-c-seal]')!
+		this.sealInput.name = `card-seal-${id}`
+		this.sealInput.addEventListener('change', () => {
+			const editionOption = document.querySelector(`datalist#seal-options option[value="${this.edition}"]`)
+			this.sealInput.setCustomValidity(editionOption ? '' : `“${this.edition}” is not a seal.`)
+			this.sealInput.reportValidity()
+		})
 
 		this.addEventListener('click', (event) => {
 			if (event.currentTarget && !isInteractive(event)) {
@@ -76,23 +101,23 @@ export class PlayingCard extends DraggableCard {
 	}
 
 	get rank () {
-		return this.rankSelect.value as Rank
+		return this.rankInput.value as Rank
 	}
 
 	get suit () {
-		return this.suitSelect.value as Suit
+		return this.suitInput.value as Suit
 	}
 
 	get edition () {
-		return this.editionSelect.value as Edition
+		return this.editionInput.value as Edition
 	}
 
 	get enhancement () {
-		return this.enhancementSelect.value as Enhancement
+		return this.enhancementInput.value as Enhancement
 	}
 
 	get seal () {
-		return this.sealSelect.value as Seal
+		return this.sealInput.value as Seal
 	}
 
 	get played () {
@@ -171,11 +196,11 @@ export class PlayingCard extends DraggableCard {
 		this.playedCheckbox.checked = played
 		this.countInput.value = String(count)
 		this.debuffedCheckbox.checked = debuffed
-		this.rankSelect.value = rank
-		this.suitSelect.value = suit
-		this.editionSelect.value = edition
-		this.enhancementSelect.value = enhancement
-		this.sealSelect.value = seal
+		this.rankInput.value = rank
+		this.suitInput.value = suit
+		this.editionInput.value = edition
+		this.enhancementInput.value = enhancement
+		this.sealInput.value = seal
 	}
 
 	updateState () {
@@ -186,13 +211,13 @@ export class PlayingCard extends DraggableCard {
 		)
 
 		// This is shitty. Make it better. I shouldn't be querying unrelated DOM elements here.
-		const blindNameSelect = this.ownerDocument.querySelector('[data-r-blind-name]') as HTMLSelectElement
+		const blindNameInput = this.ownerDocument.querySelector('[data-r-blind-name]') as HTMLInputElement
 		const blindIsActiveCheckbox = this.ownerDocument.querySelector('[data-r-blind-is-active]') as HTMLInputElement
 
 		;[
 			this.playedCheckbox.checked ? '--is-played' : null,
 			this.debuffedCheckbox.checked ? '--is-debuffed' : null,
-			blindNameSelect.value === 'The Pillar' && blindIsActiveCheckbox.checked ? '--is-blind-the-pillar' : undefined,
+			blindNameInput.value === 'The Pillar' && blindIsActiveCheckbox.checked ? '--is-blind-the-pillar' : undefined,
 		].filter(notNullish).forEach((className) => this.classList.add(className))
 	}
 
@@ -216,11 +241,11 @@ export class PlayingCard extends DraggableCard {
 		clone.playedCheckbox.checked = this.playedCheckbox.checked
 		clone.countInput.value = this.countInput.value
 		clone.debuffedCheckbox.checked = this.debuffedCheckbox.checked
-		clone.rankSelect.value = this.rankSelect.value
-		clone.suitSelect.value = this.suitSelect.value
-		clone.editionSelect.value = this.editionSelect.value
-		clone.enhancementSelect.value = this.enhancementSelect.value
-		clone.sealSelect.value = this.sealSelect.value
+		clone.rankInput.value = this.rankInput.value
+		clone.suitInput.value = this.suitInput.value
+		clone.editionInput.value = this.editionInput.value
+		clone.enhancementInput.value = this.enhancementInput.value
+		clone.sealInput.value = this.sealInput.value
 
 		return clone
 	}

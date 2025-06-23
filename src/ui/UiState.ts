@@ -25,9 +25,9 @@ export class UiState {
 	#handsInput: HTMLInputElement
 	#discardsInput: HTMLInputElement
 	#moneyInput: HTMLInputElement
-	#blindNameSelect: HTMLSelectElement
+	#blindNameInput: HTMLInputElement
 	#blindIsActiveCheckbox: HTMLInputElement
-	#deckSelect: HTMLSelectElement
+	#deckInput: HTMLInputElement
 	#observatoryInputs: NodeListOf<HTMLInputElement>
 	#jokerSlotsInput: HTMLInputElement
 
@@ -54,13 +54,32 @@ export class UiState {
 		const form = document.querySelector<HTMLFormElement>('[data-form]')!
 		this.#form = form
 		form.addEventListener('submit', (event) => this.#handleSubmit(event))
+		form.addEventListener('input', (event) => {
+			if (event.target instanceof HTMLInputElement) {
+				event.target.setCustomValidity('')
+			}
+		})
 
 		this.#handsInput = form.querySelector<HTMLInputElement>('[data-r-hands]')!
 		this.#discardsInput = form.querySelector<HTMLInputElement>('[data-r-discards]')!
 		this.#moneyInput = form.querySelector<HTMLInputElement>('[data-r-money]')!
-		this.#blindNameSelect = form.querySelector<HTMLSelectElement>('[data-r-blind-name]')!
+
+		this.#blindNameInput = form.querySelector<HTMLInputElement>('[data-r-blind-name]')!
+		this.#blindNameInput.addEventListener('change', () => {
+			const rankOption = document.querySelector(`datalist#blind-name-options option[value="${this.#blindNameInput.value}"]`)
+			this.#blindNameInput.setCustomValidity(rankOption ? '' : `“${this.#blindNameInput.value}” is not a blind.`)
+			this.#blindNameInput.reportValidity()
+		})
+
 		this.#blindIsActiveCheckbox = form.querySelector<HTMLInputElement>('[data-r-blind-is-active]')!
-		this.#deckSelect = form.querySelector<HTMLSelectElement>('[data-r-deck]')!
+
+		this.#deckInput = form.querySelector<HTMLInputElement>('[data-r-deck]')!
+		this.#deckInput.addEventListener('change', () => {
+			const rankOption = document.querySelector(`datalist#deck-options option[value="${this.#deckInput.value}"]`)
+			this.#deckInput.setCustomValidity(rankOption ? '' : `“${this.#deckInput.value}” is not a deck.`)
+			this.#deckInput.reportValidity()
+		})
+
 		this.#observatoryInputs = form.querySelectorAll<HTMLInputElement>('[data-r-observatory-hand]')
 		this.#jokerSlotsInput = form.querySelector<HTMLInputElement>('[data-r-joker-slots]')!
 
@@ -134,15 +153,17 @@ export class UiState {
 
 	#calculate () {
 		this.#form.requestSubmit()
-		for (const el of this.#playingCardContainer.children) {
-			if (el instanceof PlayingCard) {
-				el.updateState()
+		if (this.#form.checkValidity()) {
+			for (const el of this.#playingCardContainer.children) {
+				if (el instanceof PlayingCard) {
+					el.updateState()
+				}
 			}
-		}
 
-		for (const el of this.#jokerContainer.children) {
-			if (el instanceof JokerCard) {
-				el.updateState()
+			for (const el of this.#jokerContainer.children) {
+				if (el instanceof JokerCard) {
+					el.updateState()
+				}
 			}
 		}
 	}
@@ -393,9 +414,9 @@ export class UiState {
 		this.#handsInput.value = String(state.hands)
 		this.#discardsInput.value = String(state.discards)
 		this.#moneyInput.value = String(state.money)
-		this.#blindNameSelect.value = state.blind.name
+		this.#blindNameInput.value = state.blind.name
 		this.#blindIsActiveCheckbox.checked = state.blind.active
-		this.#deckSelect.value = state.deck
+		this.#deckInput.value = state.deck
 		this.#jokerSlotsInput.value = String(state.jokerSlots)
 
 		for (const observatoryInput of this.#observatoryInputs) {

@@ -16,15 +16,15 @@ export class JokerCard extends DraggableCard {
 	fragment: Element
 	showDuplicateModalButton: HTMLButtonElement
 	removeButton: HTMLButtonElement
-	nameSelect: HTMLSelectElement
+	nameInput: HTMLInputElement
 	countInput: HTMLInputElement
-	editionSelect: HTMLSelectElement
+	editionInput: HTMLInputElement
 	plusChipsInput: HTMLInputElement
 	plusMultiplierInput: HTMLInputElement
 	timesMultiplierInput: HTMLInputElement
 	activeCheckbox: HTMLInputElement
-	rankSelect: HTMLSelectElement
-	suitSelect: HTMLSelectElement
+	rankInput: HTMLInputElement
+	suitInput: HTMLInputElement
 
 	constructor () {
 		super()
@@ -42,14 +42,24 @@ export class JokerCard extends DraggableCard {
 		this.showDuplicateModalButton = this.fragment.querySelector<HTMLButtonElement>('[popovertarget="j-duplicate-modal"]')!
 		this.showDuplicateModalButton.addEventListener('click', this.showDuplicateModal)
 
-		this.nameSelect = this.fragment.querySelector<HTMLSelectElement>('[data-j-name]')!
-		this.nameSelect.name = `joker-name-${id}`
+		this.nameInput = this.fragment.querySelector<HTMLInputElement>('[data-j-name]')!
+		this.nameInput.name = `joker-name-${id}`
+		this.nameInput.addEventListener('change', () => {
+			const nameOption = document.querySelector(`datalist#joker-options option[value="${this.jokerName}"]`)
+			this.nameInput.setCustomValidity(nameOption ? '' : `“${this.jokerName}” is not a Joker.`)
+			this.nameInput.reportValidity()
+		})
 
 		this.countInput = this.fragment.querySelector<HTMLInputElement>('[data-j-count]')!
 		this.countInput.name = `joker-count-${id}`
 
-		this.editionSelect = this.fragment.querySelector<HTMLSelectElement>('[data-j-edition]')!
-		this.editionSelect.name = `joker-edition-${id}`
+		this.editionInput = this.fragment.querySelector<HTMLInputElement>('[data-j-edition]')!
+		this.editionInput.name = `joker-edition-${id}`
+		this.editionInput.addEventListener('change', () => {
+			const editionOption = document.querySelector(`datalist#joker-edition-options option[value="${this.edition}"]`)
+			this.editionInput.setCustomValidity(editionOption ? '' : `“${this.edition}” is not an edition.`)
+			this.editionInput.reportValidity()
+		})
 
 		this.plusChipsInput = this.fragment.querySelector<HTMLInputElement>('[data-j-plus-chips]')!
 		this.plusChipsInput.name = `joker-plusChips-${id}`
@@ -63,11 +73,21 @@ export class JokerCard extends DraggableCard {
 		this.activeCheckbox = this.fragment.querySelector<HTMLInputElement>('[data-j-is-active]')!
 		this.activeCheckbox.name = `joker-active-${id}`
 
-		this.rankSelect = this.fragment.querySelector<HTMLSelectElement>('[data-j-rank]')!
-		this.rankSelect.name = `joker-rank-${id}`
+		this.rankInput = this.fragment.querySelector<HTMLInputElement>('[data-j-rank]')!
+		this.rankInput.name = `joker-rank-${id}`
+		this.rankInput.addEventListener('change', () => {
+			const rankOption = document.querySelector(`datalist#rank-options option[value="${this.rank}"]`)
+			this.rankInput.setCustomValidity(rankOption ? '' : `“${this.rank}” is not a rank.`)
+			this.rankInput.reportValidity()
+		})
 
-		this.suitSelect = this.fragment.querySelector<HTMLSelectElement>('[data-j-suit]')!
-		this.suitSelect.name = `joker-suit-${id}`
+		this.suitInput = this.fragment.querySelector<HTMLInputElement>('[data-j-suit]')!
+		this.suitInput.name = `joker-suit-${id}`
+		this.suitInput.addEventListener('change', () => {
+			const suitOption = document.querySelector(`datalist#suit-options option[value="${this.suit}"]`)
+			this.suitInput.setCustomValidity(suitOption ? '' : `“${this.suit}” is not a suit.`)
+			this.suitInput.reportValidity()
+		})
 	}
 
 	get [Symbol.toStringTag] () {
@@ -79,7 +99,7 @@ export class JokerCard extends DraggableCard {
 	}
 
 	get jokerName () {
-		return this.nameSelect.value as JokerName
+		return this.nameInput.value as JokerName
 	}
 
 	get rarity () {
@@ -87,7 +107,7 @@ export class JokerCard extends DraggableCard {
 	}
 
 	get edition () {
-		return this.editionSelect.value as JokerEdition
+		return this.editionInput.value as JokerEdition
 	}
 
 	get plusChips () {
@@ -103,11 +123,11 @@ export class JokerCard extends DraggableCard {
 	}
 
 	get rank () {
-		return this.rankSelect.value as Rank
+		return this.rankInput.value as Rank
 	}
 
 	get suit () {
-		return this.suitSelect.value as Suit
+		return this.suitInput.value as Suit
 	}
 
 	get active () {
@@ -184,15 +204,15 @@ export class JokerCard extends DraggableCard {
 			count,
 		} = this.#joker
 
-		this.nameSelect.value = name
+		this.nameInput.value = name
 		this.countInput.value = String(count)
-		this.editionSelect.value = edition
+		this.editionInput.value = edition
 		if (this.#definition.hasPlusChipsInput) this.plusChipsInput.value = String(plusChips)
 		if (this.#definition.hasPlusMultiplierInput) this.plusMultiplierInput.value = String(plusMultiplier)
 		if (this.#definition.hasTimesMultiplierInput) this.timesMultiplierInput.value = String(timesMultiplier)
 		if (this.#definition.hasIsActiveInput) this.activeCheckbox.checked = Boolean(active)
-		if (this.#definition.hasRankInput && rank) this.rankSelect.value = String(rank)
-		if (this.#definition.hasSuitInput && suit) this.suitSelect.value = String(suit)
+		if (this.#definition.hasRankInput && rank) this.rankInput.value = String(rank)
+		if (this.#definition.hasSuitInput && suit) this.suitInput.value = String(suit)
 	}
 
 	updateState () {
@@ -232,15 +252,15 @@ export class JokerCard extends DraggableCard {
 		const clone = this.cloneNode(true) as JokerCard
 		clone.setJoker(this.#joker)
 
-		clone.nameSelect.value = this.nameSelect.value
+		clone.nameInput.value = this.nameInput.value
 		clone.countInput.value = this.countInput.value
-		clone.editionSelect.value = this.editionSelect.value
+		clone.editionInput.value = this.editionInput.value
 		clone.plusChipsInput.value = this.plusChipsInput.value
 		clone.plusMultiplierInput.value = this.plusMultiplierInput.value
 		clone.timesMultiplierInput.value = this.timesMultiplierInput.value
 		clone.activeCheckbox.checked = this.activeCheckbox.checked
-		clone.rankSelect.value = this.rankSelect.value
-		clone.suitSelect.value = this.suitSelect.value
+		clone.rankInput.value = this.rankInput.value
+		clone.suitInput.value = this.suitInput.value
 
 		return clone
 	}
