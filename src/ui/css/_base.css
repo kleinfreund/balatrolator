@@ -1,12 +1,21 @@
 html {
-	--c-background: var(--c-grey-light);
 	--c-text: var(--c-black);
+	--c-background: var(--c-grey-light);
+	--c-background-light: var(--c-grey-light);
+	--c-background-lighter: var(--c-grey-lighter);
+	--c-border: var(--c-grey-dark);
 
 	font-family: var(--f-family);
 	font-size: var(--f-size);
 	line-height: var(--f-line-height);
 	color: var(--c-text);
 	background-color: var(--c-background);
+}
+
+@media (prefers-contrast: more) {
+	html {
+		--c-border: var(--c-black);
+	}
 }
 
 h1:not(:first-child),

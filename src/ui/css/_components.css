@@ -41,14 +41,16 @@
 }
 
 .panel {
-	--c-text: var(--c-black);
-	--c-border: var(--c-grey-dark);
-	--c-background-light: var(--c-grey-lighter);
-
 	padding: 0.5rem;
 	border: 2px solid var(--c-border);
 	border-radius: 0.5rem;
-	background-color: var(--c-background-light);
+	background-color: var(--c-background-lighter);
+}
+
+@media (prefers-contrast: more) {
+	.panel {
+		--c-border: var(--c-grey-dark);
+	}
 }
 
 .panel-header {
@@ -68,6 +70,15 @@
 	border-radius: 0.5rem;
 	color: var(--c-text);
 	background-color: var(--c-background-light);
+}
+
+@media (prefers-contrast: more) {
+	.card {
+		--c-text: var(--c-black);
+		--c-border: var(--c-black);
+		--c-background-light: var(--c-grey-light);
+		--c-background-lighter: var(--c-white);
+	}
 }
 
 .card:not(.increase-specificity) {
@@ -120,6 +131,15 @@ hand-level {
 	width: initial;
 }
 
+@media (prefers-contrast: more) {
+	hand-level {
+		--c-text: var(--c-black);
+		--c-border: var(--c-black);
+		--c-background-light: var(--c-grey-light);
+		--c-background-lighter: var(--c-white);
+	}
+}
+
 .h-level-input {
 	text-align: right;
 	width: 4rem;
@@ -139,6 +159,15 @@ hand-level {
 	--c-background-lighter: var(--c-yellow-lighter);
 
 	display: block;
+}
+
+@media (prefers-contrast: more) {
+	.playing-card {
+		--c-text: var(--c-black);
+		--c-border: var(--c-black);
+		--c-background-light: var(--c-grey-light);
+		--c-background-lighter: var(--c-white);
+	}
 }
 
 .playing-card[draggable="true"] {
@@ -183,6 +212,15 @@ hand-level {
 	--c-background-lighter: var(--c-red-lighter);
 
 	display: block;
+}
+
+@media (prefers-contrast: more) {
+	.joker-card {
+		--c-text: var(--c-black);
+		--c-border: var(--c-black);
+		--c-background-light: var(--c-grey-light);
+		--c-background-lighter: var(--c-white);
+	}
 }
 
 .joker-card[draggable="true"] {
@@ -259,6 +297,15 @@ hand-level {
 	--c-background-lighter: var(--c-green-lighter);
 
 	font-size: 1.2em;
+}
+
+@media (prefers-contrast: more) {
+	.score-card {
+		--c-text: var(--c-black);
+		--c-border: var(--c-black);
+		--c-background-light: var(--c-grey-light);
+		--c-background-lighter: var(--c-white);
+	}
 }
 
 .score-entry {

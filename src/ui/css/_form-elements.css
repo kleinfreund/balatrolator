@@ -40,7 +40,14 @@
 	align-items: center;
 	gap: 0.25rem;
 	color: var(--c-text);
-	background-color: var(--c-background-lighter, var(--c-background));
+	background-color: var(--c-background-lighter);
+}
+
+@media (prefers-contrast: more) {
+	.button,
+	::file-selector-button {
+		background-color: var(--c-white);
+	}
 }
 
 ::file-selector-button {
@@ -50,7 +57,14 @@
 
 .button:hover,
 ::file-selector-button:hover {
-	background-color: var(--c-background-light, var(--c-background));
+	background-color: var(--c-background-light);
+}
+
+@media (prefers-contrast: more) {
+	.button:hover,
+	::file-selector-button:hover {
+		background-color: var(--c-background-lighter);
+	}
 }
 
 .button:where(.--icon) {
@@ -92,7 +106,13 @@
 	border: 2px solid var(--c-border);
 	border-radius: 0.25rem;
 	color: var(--c-text);
-	background-color: var(--c-background-lighter, var(--c-background));
+	background-color: var(--c-background-lighter);
+}
+
+@media (prefers-contrast: more) {
+	.text-input {
+		background-color: var(--c-white);
+	}
 }
 
 .text-control:where(.--grow)>.text-input {
@@ -128,7 +148,13 @@
 	border: 2px solid var(--c-border);
 	border-radius: 0.25rem;
 	color: var(--c-text);
-	background-color: var(--c-background-lighter, var(--c-background));
+	background-color: var(--c-background-lighter);
+}
+
+@media (prefers-contrast: more) {
+	.select {
+		background-color: var(--c-white);
+	}
 }
 
 .select-control:where(.--grow)>.select {
