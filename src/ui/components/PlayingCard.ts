@@ -51,42 +51,47 @@ export class PlayingCard extends DraggableCard {
 
 		this.rankInput = this.fragment.querySelector<HTMLInputElement>('[data-c-rank]')!
 		this.rankInput.name = `card-rank-${id}`
-		this.rankInput.addEventListener('change', () => {
-			const rankOption = document.querySelector(`datalist#rank-options option[value="${this.rank}"]`)
-			this.rankInput.setCustomValidity(rankOption ? '' : `“${this.rank}” is not a rank.`)
-			this.rankInput.reportValidity()
+		this.rankInput.addEventListener('change', (event) => {
+			const input = event.target as HTMLInputElement
+			const option = document.querySelector(`datalist#rank-options option[value="${input.value}"]`)
+			input.setCustomValidity(option ? '' : `“${input.value}” is not a rank.`)
+			input.reportValidity()
 		})
 
 		this.suitInput = this.fragment.querySelector<HTMLInputElement>('[data-c-suit]')!
 		this.suitInput.name = `card-suit-${id}`
-		this.suitInput.addEventListener('change', () => {
-			const suitOption = document.querySelector(`datalist#suit-options option[value="${this.suit}"]`)
-			this.suitInput.setCustomValidity(suitOption ? '' : `“${this.suit}” is not a suit.`)
-			this.suitInput.reportValidity()
+		this.suitInput.addEventListener('change', (event) => {
+			const input = event.target as HTMLInputElement
+			const option = document.querySelector(`datalist#suit-options option[value="${input.value}"]`)
+			input.setCustomValidity(option ? '' : `“${input.value}” is not a suit.`)
+			input.reportValidity()
 		})
 
 		this.editionInput = this.fragment.querySelector<HTMLInputElement>('[data-c-edition]')!
 		this.editionInput.name = `card-edition-${id}`
-		this.editionInput.addEventListener('change', () => {
-			const editionOption = document.querySelector(`datalist#playing-card-edition-options option[value="${this.edition}"]`)
-			this.editionInput.setCustomValidity(editionOption ? '' : `“${this.edition}” is not an edition.`)
-			this.editionInput.reportValidity()
+		this.editionInput.addEventListener('change', (event) => {
+			const input = event.target as HTMLInputElement
+			const option = document.querySelector(`datalist#playing-card-edition-options option[value="${input.value}"]`)
+			input.setCustomValidity(option ? '' : `“${input.value}” is not an edition.`)
+			input.reportValidity()
 		})
 
 		this.enhancementInput = this.fragment.querySelector<HTMLInputElement>('[data-c-enhancement]')!
 		this.enhancementInput.name = `card-enhancement-${id}`
-		this.enhancementInput.addEventListener('change', () => {
-			const editionOption = document.querySelector(`datalist#enhancement-options option[value="${this.edition}"]`)
-			this.enhancementInput.setCustomValidity(editionOption ? '' : `“${this.edition}” is not an enhancement.`)
-			this.enhancementInput.reportValidity()
+		this.enhancementInput.addEventListener('change', (event) => {
+			const input = event.target as HTMLInputElement
+			const option = document.querySelector(`datalist#enhancement-options option[value="${input.value}"]`)
+			input.setCustomValidity(option ? '' : `“${input.value}” is not an enhancement.`)
+			input.reportValidity()
 		})
 
 		this.sealInput = this.fragment.querySelector<HTMLInputElement>('[data-c-seal]')!
 		this.sealInput.name = `card-seal-${id}`
-		this.sealInput.addEventListener('change', () => {
-			const editionOption = document.querySelector(`datalist#seal-options option[value="${this.edition}"]`)
-			this.sealInput.setCustomValidity(editionOption ? '' : `“${this.edition}” is not a seal.`)
-			this.sealInput.reportValidity()
+		this.sealInput.addEventListener('change', (event) => {
+			const input = event.target as HTMLInputElement
+			const option = document.querySelector(`datalist#seal-options option[value="${input.value}"]`)
+			input.setCustomValidity(option ? '' : `“${input.value}” is not a seal.`)
+			input.reportValidity()
 		})
 
 		this.addEventListener('click', (event) => {

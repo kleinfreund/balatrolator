@@ -65,19 +65,21 @@ export class UiState {
 		this.#moneyInput = form.querySelector<HTMLInputElement>('[data-r-money]')!
 
 		this.#blindNameInput = form.querySelector<HTMLInputElement>('[data-r-blind-name]')!
-		this.#blindNameInput.addEventListener('change', () => {
-			const rankOption = document.querySelector(`datalist#blind-name-options option[value="${this.#blindNameInput.value}"]`)
-			this.#blindNameInput.setCustomValidity(rankOption ? '' : `“${this.#blindNameInput.value}” is not a blind.`)
-			this.#blindNameInput.reportValidity()
+		this.#blindNameInput.addEventListener('change', (event) => {
+			const input = event.target as HTMLInputElement
+			const option = document.querySelector(`datalist#blind-name-options option[value="${input.value}"]`)
+			input.setCustomValidity(option ? '' : `“${input.value}” is not a blind.`)
+			input.reportValidity()
 		})
 
 		this.#blindIsActiveCheckbox = form.querySelector<HTMLInputElement>('[data-r-blind-is-active]')!
 
 		this.#deckInput = form.querySelector<HTMLInputElement>('[data-r-deck]')!
-		this.#deckInput.addEventListener('change', () => {
-			const rankOption = document.querySelector(`datalist#deck-options option[value="${this.#deckInput.value}"]`)
-			this.#deckInput.setCustomValidity(rankOption ? '' : `“${this.#deckInput.value}” is not a deck.`)
-			this.#deckInput.reportValidity()
+		this.#deckInput.addEventListener('change', (event) => {
+			const input = event.target as HTMLInputElement
+			const option = document.querySelector(`datalist#deck-options option[value="${input.value}"]`)
+			input.setCustomValidity(option ? '' : `“${input.value}” is not a deck.`)
+			input.reportValidity()
 		})
 
 		this.#observatoryInputs = form.querySelectorAll<HTMLInputElement>('[data-r-observatory-hand]')
