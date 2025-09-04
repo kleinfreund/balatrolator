@@ -192,9 +192,7 @@ function getScore (state: State, playedHand: HandName, scoringCards: Card[], luc
 
 			// 4. Joker effects for played cards
 			for (const joker of state.jokers) {
-				if (joker.playedCardEffect) {
-					scoreJokerCardEffect(joker.playedCardEffect, { state, playedHand, scoringCards, score, joker, card, luck })
-				}
+				scoreJokerCardEffect(joker.playedCardEffect, { state, playedHand, scoringCards, score, joker, card, luck })
 			}
 		}
 	}
@@ -219,6 +217,15 @@ function getScore (state: State, playedHand: HandName, scoringCards: Card[], luc
 					break
 				}
 			}
+		}
+
+		// TODO: Yeah, so this looks wrong. The separate for loop for held card effects ensures that cards are scored in order of the cards first. So a steel card with Mime is counted twice before a next card with Raised Fist is counted. Without doing this, the second steel scoring happens hafter the next card. Concerningly, the same logic applied to played card effects breaks a couple of tests I'm confident are correct.
+		// eslint-disable-next-line @typescript-eslint/no-unused-vars
+		for (const _trigger of getHeldCardTriggers({ state, card })) {
+			// Debuffed cards don't participate in scoring for held cards at all.
+			if (card.debuffed) {
+				continue
+			}
 
 			// 2. Joker effects for held cards
 			for (const joker of state.jokers) {
@@ -228,7 +235,7 @@ function getScore (state: State, playedHand: HandName, scoringCards: Card[], luc
 	}
 
 	for (const joker of state.jokers) {
-		// 1. EDITION
+		// 1. Edition
 		switch (joker.edition) {
 			case 'foil': {
 				score.push({
@@ -257,7 +264,7 @@ function getScore (state: State, playedHand: HandName, scoringCards: Card[], luc
 			}
 		}
 
-		// 2. JOKER EFFECTS
+		// 2. Joker effects
 		scoreJokerEffect(joker.effect, { state, playedHand, scoringCards, score, joker, luck })
 	}
 
@@ -352,7 +359,6 @@ function scoreJokerEffect (effect: JokerEffect | undefined, options: { state: St
 	for (const { index, name } of targets) {
 		if (index === options.joker.index) triggers.push(`copied ${name}`)
 	}
-
 
 	for (const trigger of triggers) {
 		if (effect) {

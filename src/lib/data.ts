@@ -372,15 +372,29 @@ export const JOKER_DEFINITIONS: Record<JokerName, JokerDefinition> = {
 	},
 	'Raised Fist': {
 		rarity: 'common',
-		effect ({ state, score, trigger }) {
-			const ranks = state.cards
-				.filter(({ played }) => !played)
-				.map(({ rank }) => RANK_TO_CHIP_MAP[rank])
-			ranks.sort((a, b) => a - b)
-			const lowestCardRank = ranks[0]
+		heldCardEffect ({ state, card, score, trigger }) {
+			// Stone cards won't add any mult.
+			if (card.enhancement === 'stone') {
+				return
+			}
+
+			const handCards = state.cards.filter(({ played }) => !played)
+			if (handCards.length === 0) {
+				return
+			}
+
+			const handCardsLowestRankFirst = handCards.sort((cardA, cardB) => RANK_TO_CHIP_MAP[cardA.rank] - RANK_TO_CHIP_MAP[cardB.rank])
+			const lowestRank = handCardsLowestRankFirst[0]!.rank
+			const lowestHandCards = handCards.filter(({ rank }) => rank === lowestRank)
+			const lastLowestHandCard = lowestHandCards.at(-1)!
+			// If the current card isn't the *last* lowest, it's not relevant.
+			if (lastLowestHandCard.index !== card.index) {
+				return
+			}
+
 			score.push({
-				multiplier: ['+', lowestCardRank ? (2 * lowestCardRank) : 0],
-				phase: 'jokers',
+				multiplier: ['+', 2 * RANK_TO_CHIP_MAP[lastLowestHandCard.rank]],
+				phase: 'held-cards',
 				joker: this,
 				trigger,
 			})
