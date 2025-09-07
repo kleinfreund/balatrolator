@@ -277,7 +277,12 @@ function getScore (state: State, playedHand: HandName, scoringCards: Card[], luc
 			joker.effect({ state, playedHand, scoringCards, score, luck, trigger: 'Regular' })
 		}
 
-		scoreJokerIndirectEffect({ state, playedHand, scoringCards, score, joker, luck })
+		// 3. Indirect Joker effects (i.e. effects depending on other jokers, e.g. Baseball Card)
+		if (joker.indirectEffect) {
+			for (const dependentJoker of state.jokers) {
+				joker.indirectEffect({ state, playedHand, scoringCards, score, joker: dependentJoker, luck, trigger: 'Regular' })
+			}
+		}
 	}
 
 	const planetCount = state.observatory[playedHand] ?? 0
@@ -373,32 +378,4 @@ function getJokerTriggers (options: { state: State, joker: Joker }) {
 	}
 
 	return triggers
-}
-
-function scoreJokerIndirectEffect (options: { state: State, playedHand: HandName, scoringCards: Card[], score: ScoreValue[], joker: Joker, luck: Luck }) {
-	const triggers = ['Regular']
-
-	// Increase triggers from Blueprint/Brainstorm
-	const targets = options.state.jokers
-		.filter(({ name }) => ['Blueprint', 'Brainstorm'].includes(name))
-		.map((joker) => resolveJoker(options.state.jokers, joker))
-		.filter(notNullish)
-
-	for (const { index, name } of targets) {
-		if (index === options.joker.index) triggers.push(`copied ${name}`)
-	}
-
-	for (const trigger of triggers) {
-		for (const target of targets) {
-			if (target.indirectEffect) {
-				target.indirectEffect({ ...options, trigger })
-			}
-		}
-	}
-
-	for (const joker of options.state.jokers) {
-		if (joker.indirectEffect) {
-			joker.indirectEffect({ ...options, trigger: `indirect for ${options.joker.name}` })
-		}
-	}
 }

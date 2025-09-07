@@ -1174,6 +1174,13 @@ export const JOKER_DEFINITIONS: Record<JokerName, JokerDefinition> = {
 				resolvedJoker.effect(options)
 			}
 		},
+		indirectEffect (options) {
+			const resolvedJoker = resolveJoker(options.state.jokers, this)
+
+			if (resolvedJoker && resolvedJoker.indirectEffect) {
+				resolvedJoker.indirectEffect(options)
+			}
+		},
 	},
 	'Wee Joker': {
 		rarity: 'rare',
@@ -1317,6 +1324,13 @@ export const JOKER_DEFINITIONS: Record<JokerName, JokerDefinition> = {
 
 			if (resolvedJoker && resolvedJoker.effect) {
 				resolvedJoker.effect(options)
+			}
+		},
+		indirectEffect (options) {
+			const resolvedJoker = resolveJoker(options.state.jokers, this)
+
+			if (resolvedJoker && resolvedJoker.indirectEffect) {
+				resolvedJoker.indirectEffect(options)
 			}
 		},
 	},
