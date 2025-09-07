@@ -6,7 +6,7 @@ export default (message: string): TestCase => {
 		initialState: {
 			cards: [
 				{ played: true, rank: 'Queen', suit: 'Diamonds' },
-				{ rank: 'Queen', suit: 'Hearts', enhancement: 'steel' },
+				{ rank: 'Queen', suit: 'Hearts', enhancement: 'Steel' },
 			],
 			jokers: [
 				{ name: 'Sock and Buskin' },

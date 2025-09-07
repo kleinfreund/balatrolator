@@ -149,7 +149,7 @@
 									<label class="r-blind-name text-control --flat --grow">
 										<span class="label truncate">Blind</span>
 
-										<input class="r-blind-name-input text-input" list="blind-name-options" value="Small Blind" name="blindName" data-r-blind-name>
+										<input class="r-blind-name-input text-input" list="blind-name-options" autocomplete="off" value="Small Blind" name="blindName" data-r-blind-name>
 
 										<span class="secondary-label">Influences: Debuffed cards, scoring</span>
 									</label>
@@ -166,7 +166,7 @@
 								<label class="r-deck text-control --flat --grow">
 									<span class="label truncate">Deck</span>
 
-									<input class="r-deck-input text-input" list="deck-options" value="Red Deck" name="deck" data-r-deck>
+									<input class="r-deck-input text-input" list="deck-options" autocomplete="off" value="Red Deck" name="deck" data-r-deck>
 
 									<span class="secondary-label">Influences: Scoring with Plasma Deck</span>
 								</label>
@@ -413,7 +413,7 @@
 				<label class="j-name text-control">
 					<span class="visually-hidden">Joker name</span>
 
-					<input class="j-name-input text-input" list="joker-options" value="8 Ball" data-j-name>
+					<input class="j-name-input text-input" list="joker-options" autocomplete="off" value="8 Ball" data-j-name>
 				</label>
 
 				<button class="j-duplicate-button button --icon" type="button" popovertarget="j-duplicate-modal">
@@ -442,7 +442,7 @@
 			<label class="j-edition text-control --flat --grow">
 				<span class="label truncate">Edition</span>
 
-				<input class="j-edition-input text-input" list="joker-edition-options" value="base" data-j-edition>
+				<input class="j-edition-input text-input" list="joker-edition-options" autocomplete="off" value="base" data-j-edition>
 			</label>
 
 			<div class="joker-effects stack">
@@ -474,7 +474,7 @@
 					<label class="j-rank text-control">
 						<span class="visually-hidden">Rank</span>
 
-						<input class="j-rank-input text-input" list="rank-options" value="Ace" data-j-rank>
+						<input class="j-rank-input text-input" list="rank-options" autocomplete="off" value="Ace" data-j-rank>
 					</label>
 
 					<span class="j-card-of">of</span>
@@ -482,7 +482,7 @@
 					<label class="j-suit text-control">
 						<span class="visually-hidden">Suit</span>
 
-						<input class="j-suit-input text-input" list="suit-options" value="Clubs" data-j-suit>
+						<input class="j-suit-input text-input" list="suit-options" autocomplete="off" value="Clubs" data-j-suit>
 					</label>
 				</div>
 			</div>
@@ -531,7 +531,7 @@
 				<label class="c-rank text-control">
 					<span class="visually-hidden">Rank</span>
 
-					<input class="c-rank-input text-input" list="rank-options" value="Ace" data-c-rank>
+					<input class="c-rank-input text-input" list="rank-options" autocomplete="off" value="Ace" data-c-rank>
 				</label>
 
 				of
@@ -539,26 +539,26 @@
 				<label class="c-suit text-control">
 					<span class="visually-hidden">Suit</span>
 
-					<input class="c-suit-input text-input" list="suit-options" value="Clubs" data-c-suit>
+					<input class="c-suit-input text-input" list="suit-options" autocomplete="off" value="Clubs" data-c-suit>
 				</label>
 			</div>
 
 			<label class="c-edition text-control --flat --grow">
 				<span class="label truncate">Edition</span>
 
-				<input class="c-edition-input text-input" list="playing-card-edition-options" value="base" data-c-edition>
+				<input class="c-edition-input text-input" list="playing-card-edition-options" autocomplete="off" value="base" data-c-edition>
 			</label>
 
 			<label class="c-enhancement text-control --flat --grow">
 				<span class="label truncate">Enhancement</span>
 
-				<input class="c-enhancement-input text-input" list="enhancement-options" value="none" data-c-enhancement>
+				<input class="c-enhancement-input text-input" list="enhancement-options" autocomplete="off" value="none" data-c-enhancement>
 			</label>
 
 			<label class="c-seal text-control --flat --grow">
 				<span class="label truncate">Seal</span>
 
-				<input class="c-seal-input text-input" list="seal-options" value="none" data-c-seal>
+				<input class="c-seal-input text-input" list="seal-options" autocomplete="off" value="none" data-c-seal>
 			</label>
 		</div>
 	</template>
@@ -580,266 +580,266 @@
 	</template>
 
 	<datalist id="blind-name-options">
-		<option value="Small Blind">Small Blind</option>
-		<option value="Big Blind">Big Blind</option>
-		<option value="The Hook">The Hook</option>
-		<option value="The Ox">The Ox</option>
-		<option value="The House">The House</option>
-		<option value="The Wall">The Wall</option>
-		<option value="The Wheel">The Wheel</option>
-		<option value="The Arm">The Arm</option>
-		<option value="The Club">The Club</option>
-		<option value="The Fish">The Fish</option>
-		<option value="The Psychic">The Psychic</option>
-		<option value="The Goad">The Goad</option>
-		<option value="The Water">The Water</option>
-		<option value="The Window">The Window</option>
-		<option value="The Manacle">The Manacle</option>
-		<option value="The Eye">The Eye</option>
-		<option value="The Mouth">The Mouth</option>
-		<option value="The Plant">The Plant</option>
-		<option value="The Serpent">The Serpent</option>
-		<option value="The Pillar">The Pillar</option>
-		<option value="The Needle">The Needle</option>
-		<option value="The Head">The Head</option>
-		<option value="The Tooth">The Tooth</option>
-		<option value="The Flint">The Flint</option>
-		<option value="The Mark">The Mark</option>
-		<option value="Amber Acorn">Amber Acorn</option>
-		<option value="Verdant Leaf">Verdant Leaf</option>
-		<option value="Violet Vessel">Violet Vessel</option>
-		<option value="Crimson Heart">Crimson Heart</option>
-		<option value="Cerulean Bell">Cerulean Bell</option>
+		<option value="Small Blind"></option>
+		<option value="Big Blind"></option>
+		<option value="The Hook"></option>
+		<option value="The Ox"></option>
+		<option value="The House"></option>
+		<option value="The Wall"></option>
+		<option value="The Wheel"></option>
+		<option value="The Arm"></option>
+		<option value="The Club"></option>
+		<option value="The Fish"></option>
+		<option value="The Psychic"></option>
+		<option value="The Goad"></option>
+		<option value="The Water"></option>
+		<option value="The Window"></option>
+		<option value="The Manacle"></option>
+		<option value="The Eye"></option>
+		<option value="The Mouth"></option>
+		<option value="The Plant"></option>
+		<option value="The Serpent"></option>
+		<option value="The Pillar"></option>
+		<option value="The Needle"></option>
+		<option value="The Head"></option>
+		<option value="The Tooth"></option>
+		<option value="The Flint"></option>
+		<option value="The Mark"></option>
+		<option value="Amber Acorn"></option>
+		<option value="Verdant Leaf"></option>
+		<option value="Violet Vessel"></option>
+		<option value="Crimson Heart"></option>
+		<option value="Cerulean Bell"></option>
 	</datalist>
 
 	<datalist id="deck-options">
-		<option value="Red Deck">Red Deck</option>
-		<option value="Blue Deck">Blue Deck</option>
-		<option value="Yellow Deck">Yellow Deck</option>
-		<option value="Green Deck">Green Deck</option>
-		<option value="Black Deck">Black Deck</option>
-		<option value="Magic Deck">Magic Deck</option>
-		<option value="Nebula Deck">Nebula Deck</option>
-		<option value="Ghost Deck">Ghost Deck</option>
-		<option value="Abandoned Deck">Abandoned Deck</option>
-		<option value="Checkered Deck">Checkered Deck</option>
-		<option value="Zodiac Deck">Zodiac Deck</option>
-		<option value="Painted Deck">Painted Deck</option>
-		<option value="Anaglyph Deck">Anaglyph Deck</option>
-		<option value="Plasma Deck">Plasma Deck</option>
-		<option value="Erratic Deck">Erratic Deck</option>
-		<option value="Challenge Deck">Challenge Deck</option>
+		<option value="Red Deck"></option>
+		<option value="Blue Deck"></option>
+		<option value="Yellow Deck"></option>
+		<option value="Green Deck"></option>
+		<option value="Black Deck"></option>
+		<option value="Magic Deck"></option>
+		<option value="Nebula Deck"></option>
+		<option value="Ghost Deck"></option>
+		<option value="Abandoned Deck"></option>
+		<option value="Checkered Deck"></option>
+		<option value="Zodiac Deck"></option>
+		<option value="Painted Deck"></option>
+		<option value="Anaglyph Deck"></option>
+		<option value="Plasma Deck"></option>
+		<option value="Erratic Deck"></option>
+		<option value="Challenge Deck"></option>
 	</datalist>
 
 	<datalist id="joker-options">
-		<option value="8 Ball">8 Ball</option>
-		<option value="Abstract Joker">Abstract Joker</option>
-		<option value="Acrobat">Acrobat</option>
-		<option value="Ancient Joker">Ancient Joker</option>
-		<option value="Arrowhead">Arrowhead</option>
-		<option value="Astronomer">Astronomer</option>
-		<option value="Banner">Banner</option>
-		<option value="Baron">Baron</option>
-		<option value="Baseball Card">Baseball Card</option>
-		<option value="Blackboard">Blackboard</option>
-		<option value="Bloodstone">Bloodstone</option>
-		<option value="Blue Joker">Blue Joker</option>
-		<option value="Blueprint">Blueprint</option>
-		<option value="Bootstraps">Bootstraps</option>
-		<option value="Brainstorm">Brainstorm</option>
-		<option value="Bull">Bull</option>
-		<option value="Burglar">Burglar</option>
-		<option value="Burnt Joker">Burnt Joker</option>
-		<option value="Business Card">Business Card</option>
-		<option value="Campfire">Campfire</option>
-		<option value="Canio">Canio</option>
-		<option value="Card Sharp">Card Sharp</option>
-		<option value="Cartomancer">Cartomancer</option>
-		<option value="Castle">Castle</option>
-		<option value="Cavendish">Cavendish</option>
-		<option value="Ceremonial Dagger">Ceremonial Dagger</option>
-		<option value="Certificate">Certificate</option>
-		<option value="Chaos the Clown">Chaos the Clown</option>
-		<option value="Chicot">Chicot</option>
-		<option value="Clever Joker">Clever Joker</option>
-		<option value="Cloud 9">Cloud 9</option>
-		<option value="Constellation">Constellation</option>
-		<option value="Crafty Joker">Crafty Joker</option>
-		<option value="Crazy Joker">Crazy Joker</option>
-		<option value="Credit Card">Credit Card</option>
-		<option value="Delayed Gratification">Delayed Gratification</option>
-		<option value="Devious Joker">Devious Joker</option>
-		<option value="Diet Cola">Diet Cola</option>
-		<option value="DNA">DNA</option>
-		<option value="Driver's license">Driver's license</option>
-		<option value="Droll Joker">Droll Joker</option>
-		<option value="Drunkard">Drunkard</option>
-		<option value="Dusk">Dusk</option>
-		<option value="Egg">Egg</option>
-		<option value="Erosion">Erosion</option>
-		<option value="Even Steven">Even Steven</option>
-		<option value="Faceless Joker">Faceless Joker</option>
-		<option value="Fibonacci">Fibonacci</option>
-		<option value="Flash Card">Flash Card</option>
-		<option value="Flower Pot">Flower Pot</option>
-		<option value="Fortune Teller">Fortune Teller</option>
-		<option value="Four Fingers">Four Fingers</option>
-		<option value="Gift Card">Gift Card</option>
-		<option value="Glass Joker">Glass Joker</option>
-		<option value="Gluttonous Joker">Gluttonous Joker</option>
-		<option value="Golden Joker">Golden Joker</option>
-		<option value="Golden Ticket">Golden Ticket</option>
-		<option value="Greedy Joker">Greedy Joker</option>
-		<option value="Green Joker">Green Joker</option>
-		<option value="Gros Michel">Gros Michel</option>
-		<option value="Hack">Hack</option>
-		<option value="Half Joker">Half Joker</option>
-		<option value="Hallucination">Hallucination</option>
-		<option value="Hanging Chad">Hanging Chad</option>
-		<option value="Hiker">Hiker</option>
-		<option value="Hit the Road">Hit the Road</option>
-		<option value="Hologram">Hologram</option>
-		<option value="Ice Cream">Ice Cream</option>
-		<option value="Invisible Joker">Invisible Joker</option>
-		<option value="Joker Stencil">Joker Stencil</option>
-		<option value="Joker">Joker</option>
-		<option value="Jolly Joker">Jolly Joker</option>
-		<option value="Juggler">Juggler</option>
-		<option value="Loyalty Card">Loyalty Card</option>
-		<option value="Luchador">Luchador</option>
-		<option value="Lucky Cat">Lucky Cat</option>
-		<option value="Lusty Joker">Lusty Joker</option>
-		<option value="Mad Joker">Mad Joker</option>
-		<option value="Madness">Madness</option>
-		<option value="Mail-in Rebate">Mail-in Rebate</option>
-		<option value="Marble Joker">Marble Joker</option>
-		<option value="Matador">Matador</option>
-		<option value="Merry Andy">Merry Andy</option>
-		<option value="Midas Mask">Midas Mask</option>
-		<option value="Mime">Mime</option>
-		<option value="Misprint">Misprint</option>
-		<option value="Mr. Bones">Mr. Bones</option>
-		<option value="Mystic Summit">Mystic Summit</option>
-		<option value="Obelisk">Obelisk</option>
-		<option value="Odd Todd">Odd Todd</option>
-		<option value="Onyx Agate">Onyx Agate</option>
-		<option value="Oops! All 6s">Oops! All 6s</option>
-		<option value="Pareidolia">Pareidolia</option>
-		<option value="Perkeo">Perkeo</option>
-		<option value="Photograph">Photograph</option>
-		<option value="Popcorn">Popcorn</option>
-		<option value="Raised Fist">Raised Fist</option>
-		<option value="Ramen">Ramen</option>
-		<option value="Red Card">Red Card</option>
-		<option value="Reserved Parking">Reserved Parking</option>
-		<option value="Ride the Bus">Ride the Bus</option>
-		<option value="Riff-Raff">Riff-Raff</option>
-		<option value="Rocket">Rocket</option>
-		<option value="Rough Gem">Rough Gem</option>
-		<option value="Runner">Runner</option>
-		<option value="Satellite">Satellite</option>
-		<option value="Scary Face">Scary Face</option>
-		<option value="Scholar">Scholar</option>
-		<option value="Séance">Séance</option>
-		<option value="Seeing Double">Seeing Double</option>
-		<option value="Seltzer">Seltzer</option>
-		<option value="Shoot the Moon">Shoot the Moon</option>
-		<option value="Shortcut">Shortcut</option>
-		<option value="Showman">Showman</option>
-		<option value="Sixth Sense">Sixth Sense</option>
-		<option value="Sly Joker">Sly Joker</option>
-		<option value="Smeared Joker">Smeared Joker</option>
-		<option value="Smiley Face">Smiley Face</option>
-		<option value="Sock and Buskin">Sock and Buskin</option>
-		<option value="Space Joker">Space Joker</option>
-		<option value="Spare Trousers">Spare Trousers</option>
-		<option value="Splash">Splash</option>
-		<option value="Square Joker">Square Joker</option>
-		<option value="Steel Joker">Steel Joker</option>
-		<option value="Stone Joker">Stone Joker</option>
-		<option value="Stuntman">Stuntman</option>
-		<option value="Supernova">Supernova</option>
-		<option value="Superposition">Superposition</option>
-		<option value="Swashbuckler">Swashbuckler</option>
-		<option value="The Duo">The Duo</option>
-		<option value="The Family">The Family</option>
-		<option value="The Idol">The Idol</option>
-		<option value="The Order">The Order</option>
-		<option value="The Tribe">The Tribe</option>
-		<option value="The Trio">The Trio</option>
-		<option value="Throwback">Throwback</option>
-		<option value="To Do List">To Do List</option>
-		<option value="To the Moon">To the Moon</option>
-		<option value="Trading Card">Trading Card</option>
-		<option value="Triboulet">Triboulet</option>
-		<option value="Troubador">Troubador</option>
-		<option value="Turtle Bean">Turtle Bean</option>
-		<option value="Vagabond">Vagabond</option>
-		<option value="Vampire">Vampire</option>
-		<option value="Walkie Talkie">Walkie Talkie</option>
-		<option value="Wee Joker">Wee Joker</option>
-		<option value="Wily Joker">Wily Joker</option>
-		<option value="Wrathful Joker">Wrathful Joker</option>
-		<option value="Yorick">Yorick</option>
-		<option value="Zany Joker">Zany Joker</option>
+		<option value="8 Ball"></option>
+		<option value="Abstract Joker"></option>
+		<option value="Acrobat"></option>
+		<option value="Ancient Joker"></option>
+		<option value="Arrowhead"></option>
+		<option value="Astronomer"></option>
+		<option value="Banner"></option>
+		<option value="Baron"></option>
+		<option value="Baseball Card"></option>
+		<option value="Blackboard"></option>
+		<option value="Bloodstone"></option>
+		<option value="Blue Joker"></option>
+		<option value="Blueprint"></option>
+		<option value="Bootstraps"></option>
+		<option value="Brainstorm"></option>
+		<option value="Bull"></option>
+		<option value="Burglar"></option>
+		<option value="Burnt Joker"></option>
+		<option value="Business Card"></option>
+		<option value="Campfire"></option>
+		<option value="Canio"></option>
+		<option value="Card Sharp"></option>
+		<option value="Cartomancer"></option>
+		<option value="Castle"></option>
+		<option value="Cavendish"></option>
+		<option value="Ceremonial Dagger"></option>
+		<option value="Certificate"></option>
+		<option value="Chaos the Clown"></option>
+		<option value="Chicot"></option>
+		<option value="Clever Joker"></option>
+		<option value="Cloud 9"></option>
+		<option value="Constellation"></option>
+		<option value="Crafty Joker"></option>
+		<option value="Crazy Joker"></option>
+		<option value="Credit Card"></option>
+		<option value="Delayed Gratification"></option>
+		<option value="Devious Joker"></option>
+		<option value="Diet Cola"></option>
+		<option value="DNA"></option>
+		<option value="Driver's license"></option>
+		<option value="Droll Joker"></option>
+		<option value="Drunkard"></option>
+		<option value="Dusk"></option>
+		<option value="Egg"></option>
+		<option value="Erosion"></option>
+		<option value="Even Steven"></option>
+		<option value="Faceless Joker"></option>
+		<option value="Fibonacci"></option>
+		<option value="Flash Card"></option>
+		<option value="Flower Pot"></option>
+		<option value="Fortune Teller"></option>
+		<option value="Four Fingers"></option>
+		<option value="Gift Card"></option>
+		<option value="Glass Joker"></option>
+		<option value="Gluttonous Joker"></option>
+		<option value="Golden Joker"></option>
+		<option value="Golden Ticket"></option>
+		<option value="Greedy Joker"></option>
+		<option value="Green Joker"></option>
+		<option value="Gros Michel"></option>
+		<option value="Hack"></option>
+		<option value="Half Joker"></option>
+		<option value="Hallucination"></option>
+		<option value="Hanging Chad"></option>
+		<option value="Hiker"></option>
+		<option value="Hit the Road"></option>
+		<option value="Hologram"></option>
+		<option value="Ice Cream"></option>
+		<option value="Invisible Joker"></option>
+		<option value="Joker Stencil"></option>
+		<option value="Joker"></option>
+		<option value="Jolly Joker"></option>
+		<option value="Juggler"></option>
+		<option value="Loyalty Card"></option>
+		<option value="Luchador"></option>
+		<option value="Lucky Cat"></option>
+		<option value="Lusty Joker"></option>
+		<option value="Mad Joker"></option>
+		<option value="Madness"></option>
+		<option value="Mail-in Rebate"></option>
+		<option value="Marble Joker"></option>
+		<option value="Matador"></option>
+		<option value="Merry Andy"></option>
+		<option value="Midas Mask"></option>
+		<option value="Mime"></option>
+		<option value="Misprint"></option>
+		<option value="Mr. Bones"></option>
+		<option value="Mystic Summit"></option>
+		<option value="Obelisk"></option>
+		<option value="Odd Todd"></option>
+		<option value="Onyx Agate"></option>
+		<option value="Oops! All 6s"></option>
+		<option value="Pareidolia"></option>
+		<option value="Perkeo"></option>
+		<option value="Photograph"></option>
+		<option value="Popcorn"></option>
+		<option value="Raised Fist"></option>
+		<option value="Ramen"></option>
+		<option value="Red Card"></option>
+		<option value="Reserved Parking"></option>
+		<option value="Ride the Bus"></option>
+		<option value="Riff-Raff"></option>
+		<option value="Rocket"></option>
+		<option value="Rough Gem"></option>
+		<option value="Runner"></option>
+		<option value="Satellite"></option>
+		<option value="Scary Face"></option>
+		<option value="Scholar"></option>
+		<option value="Séance"></option>
+		<option value="Seeing Double"></option>
+		<option value="Seltzer"></option>
+		<option value="Shoot the Moon"></option>
+		<option value="Shortcut"></option>
+		<option value="Showman"></option>
+		<option value="Sixth Sense"></option>
+		<option value="Sly Joker"></option>
+		<option value="Smeared Joker"></option>
+		<option value="Smiley Face"></option>
+		<option value="Sock and Buskin"></option>
+		<option value="Space Joker"></option>
+		<option value="Spare Trousers"></option>
+		<option value="Splash"></option>
+		<option value="Square Joker"></option>
+		<option value="Steel Joker"></option>
+		<option value="Stone Joker"></option>
+		<option value="Stuntman"></option>
+		<option value="Supernova"></option>
+		<option value="Superposition"></option>
+		<option value="Swashbuckler"></option>
+		<option value="The Duo"></option>
+		<option value="The Family"></option>
+		<option value="The Idol"></option>
+		<option value="The Order"></option>
+		<option value="The Tribe"></option>
+		<option value="The Trio"></option>
+		<option value="Throwback"></option>
+		<option value="To Do List"></option>
+		<option value="To the Moon"></option>
+		<option value="Trading Card"></option>
+		<option value="Triboulet"></option>
+		<option value="Troubador"></option>
+		<option value="Turtle Bean"></option>
+		<option value="Vagabond"></option>
+		<option value="Vampire"></option>
+		<option value="Walkie Talkie"></option>
+		<option value="Wee Joker"></option>
+		<option value="Wily Joker"></option>
+		<option value="Wrathful Joker"></option>
+		<option value="Yorick"></option>
+		<option value="Zany Joker"></option>
 	</datalist>
 
 	<datalist id="rank-options">
-		<option value="Ace">Ace</option>
-		<option value="King">King</option>
-		<option value="Queen">Queen</option>
-		<option value="Jack">Jack</option>
-		<option value="10">10</option>
-		<option value="9">9</option>
-		<option value="8">8</option>
-		<option value="7">7</option>
-		<option value="6">6</option>
-		<option value="5">5</option>
-		<option value="4">4</option>
-		<option value="3">3</option>
-		<option value="2">2</option>
+		<option value="Ace"></option>
+		<option value="King"></option>
+		<option value="Queen"></option>
+		<option value="Jack"></option>
+		<option value="10"></option>
+		<option value="9"></option>
+		<option value="8"></option>
+		<option value="7"></option>
+		<option value="6"></option>
+		<option value="5"></option>
+		<option value="4"></option>
+		<option value="3"></option>
+		<option value="2"></option>
 	</datalist>
 
 	<datalist id="suit-options">
-		<option value="Clubs">Clubs</option>
-		<option value="Spades">Spades</option>
-		<option value="Hearts">Hearts</option>
-		<option value="Diamonds">Diamonds</option>
+		<option value="Clubs"></option>
+		<option value="Spades"></option>
+		<option value="Hearts"></option>
+		<option value="Diamonds"></option>
 	</datalist>
 
 	<datalist id="joker-edition-options">
-		<option value="base">Base</option>
-		<option value="foil">Foil</option>
-		<option value="holographic">Holographic</option>
-		<option value="polychrome">Polychrome</option>
-		<option value="negative">Negative</option>
+		<option value="Base"></option>
+		<option value="Foil"></option>
+		<option value="Holographic"></option>
+		<option value="Polychrome"></option>
+		<option value="Negative"></option>
 	</datalist>
 
 	<datalist id="playing-card-edition-options">
-		<option value="base">Base</option>
-		<option value="foil">Foil</option>
-		<option value="holographic">Holographic</option>
-		<option value="polychrome">Polychrome</option>
+		<option value="Base"></option>
+		<option value="Foil"></option>
+		<option value="Holographic"></option>
+		<option value="Polychrome"></option>
 	</datalist>
 
 	<datalist id="enhancement-options">
-		<option value="none">None</option>
-		<option value="bonus">Bonus</option>
-		<option value="mult">Mult</option>
-		<option value="wild">Wild</option>
-		<option value="glass">Glass</option>
-		<option value="steel">Steel</option>
-		<option value="stone">Stone</option>
-		<option value="gold">Gold</option>
-		<option value="lucky">Lucky</option>
+		<option value="None"></option>
+		<option value="Bonus"></option>
+		<option value="Mult"></option>
+		<option value="Wild"></option>
+		<option value="Glass"></option>
+		<option value="Steel"></option>
+		<option value="Stone"></option>
+		<option value="Gold"></option>
+		<option value="Lucky"></option>
 	</datalist>
 
 	<datalist id="seal-options">
-		<option value="none">None</option>
-		<option value="gold">Gold</option>
-		<option value="red">Red</option>
-		<option value="blue">Blue</option>
-		<option value="purple">Purple</option>
+		<option value="None"></option>
+		<option value="Gold"></option>
+		<option value="Red"></option>
+		<option value="Blue"></option>
+		<option value="Purple"></option>
 	</datalist>
 
 	<svg style="display: none;">

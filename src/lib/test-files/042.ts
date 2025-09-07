@@ -11,8 +11,8 @@ export default (message: string): TestCase => {
 				{ played: true, rank: '9', suit: 'Hearts' },
 				{ played: true, rank: '8', suit: 'Hearts' },
 				{ played: true, rank: '5', suit: 'Hearts' },
-				{ played: false, rank: 'King', suit: 'Clubs', enhancement: 'steel' },
-				{ played: false, rank: 'King', suit: 'Clubs', enhancement: 'steel' },
+				{ played: false, rank: 'King', suit: 'Clubs', enhancement: 'Steel' },
+				{ played: false, rank: 'King', suit: 'Clubs', enhancement: 'Steel' },
 				{ played: false, rank: '10', suit: 'Clubs' },
 			],
 			jokers: [

@@ -8,7 +8,7 @@ export default (message: string): TestCase => {
 			cards: [
 				{ played: true, rank: '10', suit: 'Spades' },
 				{ played: true, rank: '10', suit: 'Clubs' },
-				{ played: true, rank: '8', suit: 'Spades', enhancement: 'stone' },
+				{ played: true, rank: '8', suit: 'Spades', enhancement: 'Stone' },
 				{ played: true, rank: '6', suit: 'Spades' },
 				{ played: true, rank: '6', suit: 'Spades' },
 			],
@@ -25,7 +25,7 @@ export default (message: string): TestCase => {
 			scoringCards: [
 				{ rank: '10', suit: 'Spades' },
 				{ rank: '10', suit: 'Clubs' },
-				{ rank: '8', suit: 'Spades', enhancement: 'stone' },
+				{ rank: '8', suit: 'Spades', enhancement: 'Stone' },
 				{ rank: '6', suit: 'Spades' },
 				{ rank: '6', suit: 'Spades' },
 			],

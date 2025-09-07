@@ -5,16 +5,16 @@ export default (message: string): TestCase => {
 		message,
 		initialState: {
 			cards: [
-				{ played: true, rank: '5', suit: 'Spades', enhancement: 'mult', seal: 'red', count: 3 },
-				{ played: true, rank: '5', suit: 'Hearts', enhancement: 'mult' },
-				{ played: true, rank: '5', suit: 'Clubs', seal: 'gold' },
+				{ played: true, rank: '5', suit: 'Spades', enhancement: 'Mult', seal: 'Red', count: 3 },
+				{ played: true, rank: '5', suit: 'Hearts', enhancement: 'Mult' },
+				{ played: true, rank: '5', suit: 'Clubs', seal: 'Gold' },
 			],
 			jokers: [
 				{ name: 'Sixth Sense' },
 				{ name: 'Odd Todd' },
 				{ name: 'Smiley Face' },
-				{ name: 'Pareidolia', edition: 'polychrome' },
-				{ name: 'Swashbuckler', edition: 'foil', plusMultiplier: 12 },
+				{ name: 'Pareidolia', edition: 'Polychrome' },
+				{ name: 'Swashbuckler', edition: 'Foil', plusMultiplier: 12 },
 			],
 			handLevels: {
 				'Five of a Kind': {
@@ -26,11 +26,11 @@ export default (message: string): TestCase => {
 		expected: {
 			hand: 'Five of a Kind',
 			scoringCards: [
-				{ rank: '5', suit: 'Spades', enhancement: 'mult', seal: 'red' },
-				{ rank: '5', suit: 'Spades', enhancement: 'mult', seal: 'red' },
-				{ rank: '5', suit: 'Spades', enhancement: 'mult', seal: 'red' },
-				{ rank: '5', suit: 'Hearts', enhancement: 'mult' },
-				{ rank: '5', suit: 'Clubs', seal: 'gold' },
+				{ rank: '5', suit: 'Spades', enhancement: 'Mult', seal: 'Red' },
+				{ rank: '5', suit: 'Spades', enhancement: 'Mult', seal: 'Red' },
+				{ rank: '5', suit: 'Spades', enhancement: 'Mult', seal: 'Red' },
+				{ rank: '5', suit: 'Hearts', enhancement: 'Mult' },
+				{ rank: '5', suit: 'Clubs', seal: 'Gold' },
 			],
 			scores: [
 				{ score: '67294', formattedScore: '67,294', luck: 'none' },

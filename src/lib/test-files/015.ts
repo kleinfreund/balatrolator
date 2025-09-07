@@ -5,16 +5,16 @@ export default (message: string): TestCase => {
 		message,
 		initialState: {
 			cards: [
-				{ played: true, rank: 'Queen', suit: 'Diamonds', enhancement: 'gold' },
-				{ played: true, rank: 'Queen', suit: 'Diamonds', enhancement: 'gold' },
-				{ played: true, rank: 'Queen', suit: 'Diamonds', enhancement: 'gold' },
+				{ played: true, rank: 'Queen', suit: 'Diamonds', enhancement: 'Gold' },
+				{ played: true, rank: 'Queen', suit: 'Diamonds', enhancement: 'Gold' },
+				{ played: true, rank: 'Queen', suit: 'Diamonds', enhancement: 'Gold' },
 				{ played: true, rank: 'Queen', suit: 'Diamonds' },
-				{ played: true, rank: 'Queen', suit: 'Diamonds', enhancement: 'glass' },
-				{ rank: 'King', suit: 'Hearts', enhancement: 'gold' },
-				{ rank: 'King', suit: 'Diamonds', enhancement: 'gold' },
+				{ played: true, rank: 'Queen', suit: 'Diamonds', enhancement: 'Glass' },
+				{ rank: 'King', suit: 'Hearts', enhancement: 'Gold' },
+				{ rank: 'King', suit: 'Diamonds', enhancement: 'Gold' },
 			],
 			jokers: [
-				{ name: 'Mime', edition: 'polychrome' },
+				{ name: 'Mime', edition: 'Polychrome' },
 				{ name: 'Castle', plusChips: 78 },
 				{ name: 'Blueprint' },
 				{ name: 'Baseball Card' },
@@ -30,11 +30,11 @@ export default (message: string): TestCase => {
 		expected: {
 			hand: 'Flush Five',
 			scoringCards: [
-				{ rank: 'Queen', suit: 'Diamonds', enhancement: 'gold' },
-				{ rank: 'Queen', suit: 'Diamonds', enhancement: 'gold' },
-				{ rank: 'Queen', suit: 'Diamonds', enhancement: 'gold' },
+				{ rank: 'Queen', suit: 'Diamonds', enhancement: 'Gold' },
+				{ rank: 'Queen', suit: 'Diamonds', enhancement: 'Gold' },
+				{ rank: 'Queen', suit: 'Diamonds', enhancement: 'Gold' },
 				{ rank: 'Queen', suit: 'Diamonds' },
-				{ rank: 'Queen', suit: 'Diamonds', enhancement: 'glass' },
+				{ rank: 'Queen', suit: 'Diamonds', enhancement: 'Glass' },
 			],
 			scores: [
 				{ score: '354294', formattedScore: '354,294', luck: 'none' },

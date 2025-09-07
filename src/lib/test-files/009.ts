@@ -7,11 +7,11 @@ export default (message: string): TestCase => {
 			money: 17,
 			cards: [
 				{ played: true, rank: 'King', suit: 'Hearts' },
-				{ played: true, rank: '10', suit: 'Hearts', enhancement: 'glass' },
+				{ played: true, rank: '10', suit: 'Hearts', enhancement: 'Glass' },
 				{ played: true, rank: '6', suit: 'Hearts' },
 				{ played: true, rank: '4', suit: 'Hearts' },
 				{ played: true, rank: '2', suit: 'Hearts' },
-				{ rank: '5', suit: 'Diamonds', enhancement: 'steel' },
+				{ rank: '5', suit: 'Diamonds', enhancement: 'Steel' },
 			],
 			jokers: [
 				{ name: 'Even Steven' },
@@ -25,7 +25,7 @@ export default (message: string): TestCase => {
 			hand: 'Flush',
 			scoringCards: [
 				{ rank: 'King', suit: 'Hearts' },
-				{ rank: '10', suit: 'Hearts', enhancement: 'glass' },
+				{ rank: '10', suit: 'Hearts', enhancement: 'Glass' },
 				{ rank: '6', suit: 'Hearts' },
 				{ rank: '4', suit: 'Hearts' },
 				{ rank: '2', suit: 'Hearts' },

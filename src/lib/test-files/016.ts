@@ -6,15 +6,15 @@ export default (message: string): TestCase => {
 		initialState: {
 			blind: { name: 'The Flint' },
 			cards: [
-				{ played: true, rank: 'King', suit: 'Diamonds', enhancement: 'gold' },
-				{ played: true, rank: 'King', suit: 'Diamonds', enhancement: 'gold' },
-				{ played: true, rank: 'Queen', suit: 'Diamonds', enhancement: 'gold' },
-				{ played: true, rank: 'Queen', suit: 'Diamonds', enhancement: 'glass' },
-				{ played: true, rank: 'Queen', suit: 'Diamonds', enhancement: 'glass', seal: 'red' },
-				{ rank: 'King', suit: 'Diamonds', enhancement: 'gold' },
+				{ played: true, rank: 'King', suit: 'Diamonds', enhancement: 'Gold' },
+				{ played: true, rank: 'King', suit: 'Diamonds', enhancement: 'Gold' },
+				{ played: true, rank: 'Queen', suit: 'Diamonds', enhancement: 'Gold' },
+				{ played: true, rank: 'Queen', suit: 'Diamonds', enhancement: 'Glass' },
+				{ played: true, rank: 'Queen', suit: 'Diamonds', enhancement: 'Glass', seal: 'Red' },
+				{ rank: 'King', suit: 'Diamonds', enhancement: 'Gold' },
 			],
 			jokers: [
-				{ name: 'Mime', edition: 'polychrome' },
+				{ name: 'Mime', edition: 'Polychrome' },
 				{ name: 'Castle', plusChips: 81 },
 				{ name: 'Blueprint' },
 				{ name: 'Baseball Card' },
@@ -30,11 +30,11 @@ export default (message: string): TestCase => {
 		expected: {
 			hand: 'Flush House',
 			scoringCards: [
-				{ rank: 'King', suit: 'Diamonds', enhancement: 'gold' },
-				{ rank: 'King', suit: 'Diamonds', enhancement: 'gold' },
-				{ rank: 'Queen', suit: 'Diamonds', enhancement: 'gold' },
-				{ rank: 'Queen', suit: 'Diamonds', enhancement: 'glass' },
-				{ rank: 'Queen', suit: 'Diamonds', enhancement: 'glass', seal: 'red' },
+				{ rank: 'King', suit: 'Diamonds', enhancement: 'Gold' },
+				{ rank: 'King', suit: 'Diamonds', enhancement: 'Gold' },
+				{ rank: 'Queen', suit: 'Diamonds', enhancement: 'Gold' },
+				{ rank: 'Queen', suit: 'Diamonds', enhancement: 'Glass' },
+				{ rank: 'Queen', suit: 'Diamonds', enhancement: 'Glass', seal: 'Red' },
 			],
 			scores: [
 				{ score: '284173', formattedScore: '284,173', luck: 'none' },

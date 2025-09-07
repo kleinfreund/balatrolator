@@ -5,11 +5,11 @@ export default (message: string): TestCase => {
 		message,
 		initialState: {
 			cards: [
-				{ played: true, rank: 'Jack', suit: 'Hearts', edition: 'holographic', enhancement: 'lucky', seal: 'red' },
-				{ played: true, rank: 'Jack', suit: 'Hearts', edition: 'holographic', enhancement: 'lucky', seal: 'red' },
-				{ played: true, rank: 'Jack', suit: 'Hearts', edition: 'holographic', enhancement: 'lucky', seal: 'red' },
-				{ played: true, rank: 'Jack', suit: 'Hearts', edition: 'holographic', enhancement: 'lucky', seal: 'red' },
-				{ played: true, rank: 'Jack', suit: 'Hearts', edition: 'holographic', enhancement: 'lucky', seal: 'red' },
+				{ played: true, rank: 'Jack', suit: 'Hearts', edition: 'Holographic', enhancement: 'Lucky', seal: 'Red' },
+				{ played: true, rank: 'Jack', suit: 'Hearts', edition: 'Holographic', enhancement: 'Lucky', seal: 'Red' },
+				{ played: true, rank: 'Jack', suit: 'Hearts', edition: 'Holographic', enhancement: 'Lucky', seal: 'Red' },
+				{ played: true, rank: 'Jack', suit: 'Hearts', edition: 'Holographic', enhancement: 'Lucky', seal: 'Red' },
+				{ played: true, rank: 'Jack', suit: 'Hearts', edition: 'Holographic', enhancement: 'Lucky', seal: 'Red' },
 			],
 			jokers: [
 				{ name: 'Sock and Buskin' },
@@ -28,11 +28,11 @@ export default (message: string): TestCase => {
 		expected: {
 			hand: 'Flush Five',
 			scoringCards: [
-				{ rank: 'Jack', suit: 'Hearts', edition: 'holographic', enhancement: 'lucky', seal: 'red' },
-				{ rank: 'Jack', suit: 'Hearts', edition: 'holographic', enhancement: 'lucky', seal: 'red' },
-				{ rank: 'Jack', suit: 'Hearts', edition: 'holographic', enhancement: 'lucky', seal: 'red' },
-				{ rank: 'Jack', suit: 'Hearts', edition: 'holographic', enhancement: 'lucky', seal: 'red' },
-				{ rank: 'Jack', suit: 'Hearts', edition: 'holographic', enhancement: 'lucky', seal: 'red' },
+				{ rank: 'Jack', suit: 'Hearts', edition: 'Holographic', enhancement: 'Lucky', seal: 'Red' },
+				{ rank: 'Jack', suit: 'Hearts', edition: 'Holographic', enhancement: 'Lucky', seal: 'Red' },
+				{ rank: 'Jack', suit: 'Hearts', edition: 'Holographic', enhancement: 'Lucky', seal: 'Red' },
+				{ rank: 'Jack', suit: 'Hearts', edition: 'Holographic', enhancement: 'Lucky', seal: 'Red' },
+				{ rank: 'Jack', suit: 'Hearts', edition: 'Holographic', enhancement: 'Lucky', seal: 'Red' },
 			],
 			scores: [
 				{ score: '56104413326638560', formattedScore: '5.610e16', luck: 'none' },

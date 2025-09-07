@@ -5,18 +5,18 @@ export default (message: string): TestCase => {
 		message,
 		initialState: {
 			cards: [
-				{ played: true, rank: '5', suit: 'Spades', enhancement: 'mult' },
-				{ played: true, rank: '5', suit: 'Spades', enhancement: 'mult' },
-				{ played: true, rank: '5', suit: 'Spades', enhancement: 'mult' },
-				{ played: true, rank: '5', suit: 'Spades', enhancement: 'mult', seal: 'red' },
-				{ played: true, rank: '5', suit: 'Spades', enhancement: 'mult', seal: 'red' },
+				{ played: true, rank: '5', suit: 'Spades', enhancement: 'Mult' },
+				{ played: true, rank: '5', suit: 'Spades', enhancement: 'Mult' },
+				{ played: true, rank: '5', suit: 'Spades', enhancement: 'Mult' },
+				{ played: true, rank: '5', suit: 'Spades', enhancement: 'Mult', seal: 'Red' },
+				{ played: true, rank: '5', suit: 'Spades', enhancement: 'Mult', seal: 'Red' },
 			],
 			jokers: [
 				{ name: 'Sixth Sense' },
 				{ name: 'Smiley Face' },
-				{ name: 'Pareidolia', edition: 'polychrome' },
+				{ name: 'Pareidolia', edition: 'Polychrome' },
 				{ name: 'The Family' },
-				{ name: 'Swashbuckler', edition: 'foil', plusMultiplier: 14 },
+				{ name: 'Swashbuckler', edition: 'Foil', plusMultiplier: 14 },
 			],
 			handLevels: {
 				'Flush Five': {
@@ -28,11 +28,11 @@ export default (message: string): TestCase => {
 		expected: {
 			hand: 'Flush Five',
 			scoringCards: [
-				{ rank: '5', suit: 'Spades', enhancement: 'mult' },
-				{ rank: '5', suit: 'Spades', enhancement: 'mult' },
-				{ rank: '5', suit: 'Spades', enhancement: 'mult' },
-				{ rank: '5', suit: 'Spades', enhancement: 'mult', seal: 'red' },
-				{ rank: '5', suit: 'Spades', enhancement: 'mult', seal: 'red' },
+				{ rank: '5', suit: 'Spades', enhancement: 'Mult' },
+				{ rank: '5', suit: 'Spades', enhancement: 'Mult' },
+				{ rank: '5', suit: 'Spades', enhancement: 'Mult' },
+				{ rank: '5', suit: 'Spades', enhancement: 'Mult', seal: 'Red' },
+				{ rank: '5', suit: 'Spades', enhancement: 'Mult', seal: 'Red' },
 			],
 			scores: [
 				{ score: '119560', formattedScore: '119,560', luck: 'none' },

@@ -164,7 +164,7 @@ function toJokerCode (joker: Joker): string {
 
 	return [
 		JOKER_INDEXES[name],
-		edition !== 'base' ? JOKER_EDITION_INDEXES[edition] : MINIFIED_DEFAULT_VALUE,
+		edition !== 'Base' ? JOKER_EDITION_INDEXES[edition] : MINIFIED_DEFAULT_VALUE,
 		plusChips !== 0 ? plusChips : MINIFIED_DEFAULT_VALUE,
 		plusMultiplier !== 0 ? plusMultiplier : MINIFIED_DEFAULT_VALUE,
 		timesMultiplier !== 1 ? timesMultiplier : MINIFIED_DEFAULT_VALUE,
@@ -216,9 +216,9 @@ function toCardCode (card: Card): string {
 	return [
 		RANK_INDEXES[rank],
 		SUIT_INDEXES[suit],
-		edition !== 'base' ? EDITION_INDEXES[edition] : MINIFIED_DEFAULT_VALUE,
-		enhancement !== 'none' ? ENHANCEMENT_INDEXES[enhancement] : MINIFIED_DEFAULT_VALUE,
-		seal !== 'none' ? SEAL_INDEXES[seal] : MINIFIED_DEFAULT_VALUE,
+		edition !== 'Base' ? EDITION_INDEXES[edition] : MINIFIED_DEFAULT_VALUE,
+		enhancement !== 'None' ? ENHANCEMENT_INDEXES[enhancement] : MINIFIED_DEFAULT_VALUE,
+		seal !== 'None' ? SEAL_INDEXES[seal] : MINIFIED_DEFAULT_VALUE,
 		debuffed ? 1 : MINIFIED_DEFAULT_VALUE,
 		played ? 1 : MINIFIED_DEFAULT_VALUE,
 		count !== 1 ? count : MINIFIED_DEFAULT_VALUE,

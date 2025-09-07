@@ -10,13 +10,13 @@ export type Rank = 'Ace' | 'King' | 'Queen' | 'Jack' | '10' | '9' | '8' | '7' | 
 
 export type Suit = 'Clubs' | 'Spades' | 'Hearts' | 'Diamonds'
 
-export type Edition = 'base' | 'foil' | 'holographic' | 'polychrome'
+export type Edition = 'Base' | 'Foil' | 'Holographic' | 'Polychrome'
 
-export type JokerEdition = Edition | 'negative'
+export type JokerEdition = Edition | 'Negative'
 
-export type Seal = 'none' | 'gold' | 'red' | 'blue' | 'purple'
+export type Seal = 'None' | 'Gold' | 'Red' | 'Blue' | 'Purple'
 
-export type Enhancement = 'none' | 'bonus' | 'mult' | 'wild' | 'glass' | 'steel' | 'stone' | 'gold' | 'lucky'
+export type Enhancement = 'None' | 'Bonus' | 'Mult' | 'Wild' | 'Glass' | 'Steel' | 'Stone' | 'Gold' | 'Lucky'
 
 export interface BaseScore {
 	chips: number

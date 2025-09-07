@@ -30,7 +30,7 @@ export function isRank (card: Card, rank: Rank | Rank[]): boolean {
 		return false
 	}
 
-	if (card.enhancement === 'stone') {
+	if (card.enhancement === 'Stone') {
 		return false
 	}
 
@@ -40,16 +40,16 @@ export function isRank (card: Card, rank: Rank | Rank[]): boolean {
 
 export function isSuit (card: Card, suit: Suit | Suit[], jokerSet: Set<JokerName>): boolean {
 	// Apparently, debuffed cards don't count as any suit **unless** they're wild. Then, they count as their original suit.
-	if (card.debuffed && card.enhancement !== 'wild') {
+	if (card.debuffed && card.enhancement !== 'Wild') {
 		return false
 	}
 
-	if (card.enhancement === 'stone') {
+	if (card.enhancement === 'Stone') {
 		return false
 	}
 
 	// Apparently, wild cards only count as any suit **if** they're not debuffed. Then, they count as their original suit.
-	if (card.enhancement === 'wild' && !card.debuffed) {
+	if (card.enhancement === 'Wild' && !card.debuffed) {
 		return true
 	}
 

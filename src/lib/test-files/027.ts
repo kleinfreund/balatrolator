@@ -7,8 +7,8 @@ export default (message: string): TestCase => {
 			blind: { name: 'The Pillar' },
 			cards: [
 				{ played: true, rank: '8', suit: 'Spades' },
-				{ played: true, rank: '7', suit: 'Spades', enhancement: 'lucky' },
-				{ played: true, rank: '7', suit: 'Hearts', enhancement: 'lucky' },
+				{ played: true, rank: '7', suit: 'Spades', enhancement: 'Lucky' },
+				{ played: true, rank: '7', suit: 'Hearts', enhancement: 'Lucky' },
 				{ played: true, rank: '5', suit: 'Spades' },
 				{ played: true, rank: '2', suit: 'Spades' },
 			],
@@ -20,8 +20,8 @@ export default (message: string): TestCase => {
 		expected: {
 			hand: 'Pair',
 			scoringCards: [
-				{ rank: '7', suit: 'Spades', enhancement: 'lucky' },
-				{ rank: '7', suit: 'Hearts', enhancement: 'lucky' },
+				{ rank: '7', suit: 'Spades', enhancement: 'Lucky' },
+				{ rank: '7', suit: 'Hearts', enhancement: 'Lucky' },
 			],
 			scores: [
 				{ score: '248', formattedScore: '248', luck: 'none' },

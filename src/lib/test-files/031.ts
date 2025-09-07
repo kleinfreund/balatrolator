@@ -5,7 +5,7 @@ export default (message: string): TestCase => {
 		message,
 		initialState: {
 			cards: [
-				{ played: true, rank: '7', suit: 'Spades', enhancement: 'wild' },
+				{ played: true, rank: '7', suit: 'Spades', enhancement: 'Wild' },
 			],
 			jokers: [
 				{ name: 'Flower Pot' },
@@ -14,7 +14,7 @@ export default (message: string): TestCase => {
 		expected: {
 			hand: 'High Card',
 			scoringCards: [
-				{ rank: '7', suit: 'Spades', enhancement: 'wild' },
+				{ rank: '7', suit: 'Spades', enhancement: 'Wild' },
 			],
 			scores: [
 				{ score: '12', formattedScore: '12', luck: 'none' },

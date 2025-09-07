@@ -6,11 +6,11 @@ export default (message: string): TestCase => {
 		initialState: {
 			hands: 1,
 			cards: [
-				{ played: true, rank: 'King', suit: 'Hearts', enhancement: 'lucky' },
-				{ played: true, rank: 'King', suit: 'Hearts', enhancement: 'lucky' },
-				{ played: true, rank: 'Jack', suit: 'Hearts', enhancement: 'lucky' },
-				{ played: true, rank: 'Ace', suit: 'Hearts', enhancement: 'lucky' },
-				{ played: true, rank: '6', suit: 'Hearts', enhancement: 'lucky' },
+				{ played: true, rank: 'King', suit: 'Hearts', enhancement: 'Lucky' },
+				{ played: true, rank: 'King', suit: 'Hearts', enhancement: 'Lucky' },
+				{ played: true, rank: 'Jack', suit: 'Hearts', enhancement: 'Lucky' },
+				{ played: true, rank: 'Ace', suit: 'Hearts', enhancement: 'Lucky' },
+				{ played: true, rank: '6', suit: 'Hearts', enhancement: 'Lucky' },
 			],
 			jokers: [
 				{ name: 'Sock and Buskin' },
@@ -27,11 +27,11 @@ export default (message: string): TestCase => {
 		expected: {
 			hand: 'Flush',
 			scoringCards: [
-				{ rank: 'King', suit: 'Hearts', enhancement: 'lucky' },
-				{ rank: 'King', suit: 'Hearts', enhancement: 'lucky' },
-				{ rank: 'Jack', suit: 'Hearts', enhancement: 'lucky' },
-				{ rank: 'Ace', suit: 'Hearts', enhancement: 'lucky' },
-				{ rank: '6', suit: 'Hearts', enhancement: 'lucky' },
+				{ rank: 'King', suit: 'Hearts', enhancement: 'Lucky' },
+				{ rank: 'King', suit: 'Hearts', enhancement: 'Lucky' },
+				{ rank: 'Jack', suit: 'Hearts', enhancement: 'Lucky' },
+				{ rank: 'Ace', suit: 'Hearts', enhancement: 'Lucky' },
+				{ rank: '6', suit: 'Hearts', enhancement: 'Lucky' },
 			],
 			scores: [
 				{ score: '369904053492', formattedScore: '369,904,053,492', luck: 'none' },

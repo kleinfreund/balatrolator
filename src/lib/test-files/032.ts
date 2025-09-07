@@ -5,10 +5,10 @@ export default (message: string): TestCase => {
 		message,
 		initialState: {
 			cards: [
-				{ played: true, rank: '7', suit: 'Spades', enhancement: 'wild' },
-				{ played: true, rank: '7', suit: 'Spades', enhancement: 'wild' },
-				{ played: true, rank: '7', suit: 'Spades', enhancement: 'wild' },
-				{ played: true, rank: '7', suit: 'Spades', enhancement: 'wild' },
+				{ played: true, rank: '7', suit: 'Spades', enhancement: 'Wild' },
+				{ played: true, rank: '7', suit: 'Spades', enhancement: 'Wild' },
+				{ played: true, rank: '7', suit: 'Spades', enhancement: 'Wild' },
+				{ played: true, rank: '7', suit: 'Spades', enhancement: 'Wild' },
 			],
 			jokers: [
 				{ name: 'Flower Pot' },
@@ -17,10 +17,10 @@ export default (message: string): TestCase => {
 		expected: {
 			hand: 'Four of a Kind',
 			scoringCards: [
-				{ rank: '7', suit: 'Spades', enhancement: 'wild' },
-				{ rank: '7', suit: 'Spades', enhancement: 'wild' },
-				{ rank: '7', suit: 'Spades', enhancement: 'wild' },
-				{ rank: '7', suit: 'Spades', enhancement: 'wild' },
+				{ rank: '7', suit: 'Spades', enhancement: 'Wild' },
+				{ rank: '7', suit: 'Spades', enhancement: 'Wild' },
+				{ rank: '7', suit: 'Spades', enhancement: 'Wild' },
+				{ rank: '7', suit: 'Spades', enhancement: 'Wild' },
 			],
 			scores: [
 				{ score: '1848', formattedScore: '1,848', luck: 'none' },

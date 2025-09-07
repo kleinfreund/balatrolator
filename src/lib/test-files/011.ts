@@ -9,12 +9,12 @@ export default (message: string): TestCase => {
 				{ played: true, rank: '5', suit: 'Clubs' },
 				{ played: true, rank: '5', suit: 'Clubs' },
 				{ played: true, rank: '5', suit: 'Clubs' },
-				{ played: true, rank: '5', suit: 'Spades', enhancement: 'glass', seal: 'red' },
+				{ played: true, rank: '5', suit: 'Spades', enhancement: 'Glass', seal: 'Red' },
 			],
 			jokers: [
 				{ name: 'Sixth Sense' },
 				{ name: 'Odd Todd' },
-				{ name: 'Swashbuckler', edition: 'foil', plusMultiplier: 5 },
+				{ name: 'Swashbuckler', edition: 'Foil', plusMultiplier: 5 },
 				{ name: 'Ceremonial Dagger', plusMultiplier: 0 },
 			],
 		},
@@ -25,7 +25,7 @@ export default (message: string): TestCase => {
 				{ rank: '5', suit: 'Clubs' },
 				{ rank: '5', suit: 'Clubs' },
 				{ rank: '5', suit: 'Clubs' },
-				{ rank: '5', suit: 'Spades', enhancement: 'glass', seal: 'red' },
+				{ rank: '5', suit: 'Spades', enhancement: 'Glass', seal: 'Red' },
 			],
 			scores: [
 				{ score: '20458', formattedScore: '20,458', luck: 'none' },

@@ -8,7 +8,7 @@ export default (message: string): TestCase => {
 				{ played: true, rank: 'Ace', suit: 'Clubs' },
 				{ played: true, rank: 'Ace', suit: 'Diamonds' },
 				{ played: true, rank: '4', suit: 'Spades' },
-				{ played: true, rank: '4', suit: 'Hearts', edition: 'holographic' },
+				{ played: true, rank: '4', suit: 'Hearts', edition: 'Holographic' },
 			],
 		},
 		expected: {
@@ -17,7 +17,7 @@ export default (message: string): TestCase => {
 				{ rank: 'Ace', suit: 'Clubs' },
 				{ rank: 'Ace', suit: 'Diamonds' },
 				{ rank: '4', suit: 'Spades' },
-				{ rank: '4', suit: 'Hearts', edition: 'holographic' },
+				{ rank: '4', suit: 'Hearts', edition: 'Holographic' },
 			],
 			scores: [
 				{ score: '600', formattedScore: '600', luck: 'none' },

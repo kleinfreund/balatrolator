@@ -6,11 +6,11 @@ export default (message: string): TestCase => {
 		initialState: {
 			deck: 'Plasma Deck',
 			cards: [
-				{ played: true, rank: 'King', suit: 'Hearts', enhancement: 'glass', seal: 'red' },
-				{ rank: 'King', suit: 'Hearts', enhancement: 'steel', seal: 'red', count: 717 },
+				{ played: true, rank: 'King', suit: 'Hearts', enhancement: 'Glass', seal: 'Red' },
+				{ rank: 'King', suit: 'Hearts', enhancement: 'Steel', seal: 'Red', count: 717 },
 			],
 			jokers: [
-				{ name: 'Baron', edition: 'polychrome' },
+				{ name: 'Baron', edition: 'Polychrome' },
 				{ name: 'Bloodstone' },
 				{ name: 'Blueprint' },
 				{ name: 'Brainstorm' },
@@ -31,7 +31,7 @@ export default (message: string): TestCase => {
 		expected: {
 			hand: 'High Card',
 			scoringCards: [
-				{ played: true, rank: 'King', suit: 'Hearts', enhancement: 'glass', seal: 'red' },
+				{ played: true, rank: 'King', suit: 'Hearts', enhancement: 'Glass', seal: 'Red' },
 			],
 			scores: [
 				{ score: '9.023857337268104913218459280216065826628171546625882008934341205e+9095', formattedScore: '9.024e9095', luck: 'none' },

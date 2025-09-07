@@ -2,7 +2,7 @@ import { RANK_TO_CHIP_MAP, RANK_TO_INDEX_MAP } from './data.ts'
 import type { Card, HandName, JokerName, Rank, Suit } from './types.ts'
 
 export function getHand (playedCards: Card[], jokerSet: Set<JokerName>): { playedHand: HandName, scoringCards: Card[] } {
-	const playedStoneCards = playedCards.filter(({ enhancement }) => enhancement === 'stone')
+	const playedStoneCards = playedCards.filter(({ enhancement }) => enhancement === 'Stone')
 
 	const fiveOfAKindCards = nOfAKind(playedCards, 5)
 	const flushCards = flush(playedCards, jokerSet)
@@ -88,7 +88,7 @@ export function fullHouse (cards: Card[]): Card[] {
 	const map = new Map<Rank, Card[]>()
 
 	for (const card of cards) {
-		if (card.enhancement === 'stone') continue
+		if (card.enhancement === 'Stone') continue
 
 		if (!map.has(card.rank)) {
 			map.set(card.rank, [])
@@ -123,9 +123,9 @@ export function flush (cards: Card[], jokerSet: Set<JokerName>): Card[] {
 	const map = new Map<Suit, Card[]>()
 
 	for (const card of cards) {
-		if (card.enhancement === 'stone') continue
+		if (card.enhancement === 'Stone') continue
 
-		const suits: Suit[] = card.enhancement === 'wild'
+		const suits: Suit[] = card.enhancement === 'Wild'
 			? ['Spades', 'Hearts', 'Clubs', 'Diamonds']
 			: jokerSet.has('Smeared Joker')
 				? [card.suit, SMEARED_JOKER_PAIRS[card.suit]]
@@ -153,7 +153,7 @@ export function straight (cards: Card[], jokerSet: Set<JokerName>): Card[] {
 	const straightnessThreshold = jokerSet.has('Four Fingers') ? 4 : 5
 	const gap = jokerSet.has('Shortcut') ? 2 : 1
 	const cardIndexes = cards
-		.filter(({ enhancement }) => enhancement !== 'stone')
+		.filter(({ enhancement }) => enhancement !== 'Stone')
 		.map(({ rank }) => {
 			if (rank === 'Ace') {
 				// Count an Ace both for its natural rank (i.e. succeeding a “King”) and for its special rank (i.e. preceeding a “2”).
@@ -210,7 +210,7 @@ export function twoPair (cards: Card[]): Card[] {
 	const map = new Map<Rank, Card[]>()
 
 	for (const card of cards) {
-		if (card.enhancement === 'stone') continue
+		if (card.enhancement === 'Stone') continue
 
 		if (!map.has(card.rank)) {
 			map.set(card.rank, [])
@@ -239,7 +239,7 @@ export function nOfAKind (cards: Card[], n: number): Card[] {
 	const map = new Map<Rank, Card[]>()
 
 	for (const card of cards) {
-		if (card.enhancement === 'stone') continue
+		if (card.enhancement === 'Stone') continue
 
 		if (!map.has(card.rank)) {
 			map.set(card.rank, [])
@@ -263,7 +263,7 @@ export function highCard (cards: Card[]): Card[] {
 	let highestChips = 0
 
 	for (const card of cards) {
-		if (card.enhancement === 'stone' && highestCard === undefined) {
+		if (card.enhancement === 'Stone' && highestCard === undefined) {
 			highestCard = card
 		}
 

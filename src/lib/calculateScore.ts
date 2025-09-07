@@ -74,7 +74,7 @@ function getScore (state: State, playedHand: HandName, scoringCards: Card[], luc
 		for (const trigger of getPlayedCardTriggers({ state, card, index })) {
 			// Debuffed cards don't participate in scoring for played cards except that they still apply stone enhancement.
 			if (card.debuffed) {
-				if (card.enhancement === 'stone') {
+				if (card.enhancement === 'Stone') {
 					score.push({
 						chips: ['+', 50],
 						phase: 'played-cards',
@@ -87,7 +87,7 @@ function getScore (state: State, playedHand: HandName, scoringCards: Card[], luc
 			}
 
 			// 1. Rank
-			if (card.enhancement !== 'stone') {
+			if (card.enhancement !== 'Stone') {
 				score.push({
 					chips: ['+', RANK_TO_CHIP_MAP[card.rank]],
 					phase: 'played-cards',
@@ -99,7 +99,7 @@ function getScore (state: State, playedHand: HandName, scoringCards: Card[], luc
 
 			// 2. Enhancement
 			switch (card.enhancement) {
-				case 'stone': {
+				case 'Stone': {
 					score.push({
 						chips: ['+', 50],
 						phase: 'played-cards',
@@ -109,7 +109,7 @@ function getScore (state: State, playedHand: HandName, scoringCards: Card[], luc
 					})
 					break
 				}
-				case 'bonus': {
+				case 'Bonus': {
 					score.push({
 						chips: ['+', 30],
 						phase: 'played-cards',
@@ -119,7 +119,7 @@ function getScore (state: State, playedHand: HandName, scoringCards: Card[], luc
 					})
 					break
 				}
-				case 'mult': {
+				case 'Mult': {
 					score.push({
 						multiplier: ['+', 4],
 						phase: 'played-cards',
@@ -129,7 +129,7 @@ function getScore (state: State, playedHand: HandName, scoringCards: Card[], luc
 					})
 					break
 				}
-				case 'lucky': {
+				case 'Lucky': {
 					const denominator = 5
 					const plusMult = 20
 					const oopses = state.jokers.filter(({ name }) => name === 'Oops! All 6s')
@@ -144,7 +144,7 @@ function getScore (state: State, playedHand: HandName, scoringCards: Card[], luc
 					})
 					break
 				}
-				case 'glass': {
+				case 'Glass': {
 					score.push({
 						multiplier: ['*', 2],
 						phase: 'played-cards',
@@ -158,7 +158,7 @@ function getScore (state: State, playedHand: HandName, scoringCards: Card[], luc
 
 			// 3. Edition
 			switch (card.edition) {
-				case 'foil': {
+				case 'Foil': {
 					score.push({
 						chips: ['+', 50],
 						phase: 'played-cards',
@@ -168,7 +168,7 @@ function getScore (state: State, playedHand: HandName, scoringCards: Card[], luc
 					})
 					break
 				}
-				case 'holographic': {
+				case 'Holographic': {
 					score.push({
 						multiplier: ['+', 10],
 						phase: 'played-cards',
@@ -178,7 +178,7 @@ function getScore (state: State, playedHand: HandName, scoringCards: Card[], luc
 					})
 					break
 				}
-				case 'polychrome': {
+				case 'Polychrome': {
 					score.push({
 						multiplier: ['*', 1.5],
 						phase: 'played-cards',
@@ -206,7 +206,7 @@ function getScore (state: State, playedHand: HandName, scoringCards: Card[], luc
 
 			// 1. Enhancement
 			switch (card.enhancement) {
-				case 'steel': {
+				case 'Steel': {
 					score.push({
 						multiplier: ['*', 1.5],
 						phase: 'held-cards',
@@ -237,7 +237,7 @@ function getScore (state: State, playedHand: HandName, scoringCards: Card[], luc
 	for (const joker of state.jokers) {
 		// 1. Edition
 		switch (joker.edition) {
-			case 'foil': {
+			case 'Foil': {
 				score.push({
 					chips: ['+', 50],
 					phase: 'jokers',
@@ -246,7 +246,7 @@ function getScore (state: State, playedHand: HandName, scoringCards: Card[], luc
 				})
 				break
 			}
-			case 'holographic': {
+			case 'Holographic': {
 				score.push({
 					multiplier: ['+', 10],
 					phase: 'jokers', joker,
@@ -254,7 +254,7 @@ function getScore (state: State, playedHand: HandName, scoringCards: Card[], luc
 				})
 				break
 			}
-			case 'polychrome': {
+			case 'Polychrome': {
 				score.push({
 					multiplier: ['*', 1.5],
 					phase: 'jokers', joker,
@@ -286,7 +286,7 @@ function getScore (state: State, playedHand: HandName, scoringCards: Card[], luc
 function getPlayedCardTriggers ({ state, card, index }: { state: State, card: Card, index: number }): string[] {
 	const triggers = ['Regular']
 
-	if (card.seal === 'red') {
+	if (card.seal === 'Red') {
 		triggers.push('Red Seal')
 	}
 
@@ -329,7 +329,7 @@ function getPlayedCardTriggers ({ state, card, index }: { state: State, card: Ca
 function getHeldCardTriggers ({ state, card }: { state: State, card: Card }): string[] {
 	const triggers = ['Regular']
 
-	if (card.seal === 'red') {
+	if (card.seal === 'Red') {
 		triggers.push('Red Seal')
 	}
 

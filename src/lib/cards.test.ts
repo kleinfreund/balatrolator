@@ -128,7 +128,7 @@ describe('cards', () => {
 			},
 			{
 				parameters: [
-					getCard({ rank: '4', suit: 'Hearts', enhancement: 'stone' }),
+					getCard({ rank: '4', suit: 'Hearts', enhancement: 'Stone' }),
 					['4', 'Ace'],
 				],
 				expected: false,
@@ -182,7 +182,7 @@ describe('cards', () => {
 			},
 			{
 				parameters: [
-					getCard({ rank: '2', suit: 'Diamonds', enhancement: 'stone' }),
+					getCard({ rank: '2', suit: 'Diamonds', enhancement: 'Stone' }),
 					['Diamonds', 'Clubs'],
 					new Set(),
 				],
@@ -190,7 +190,7 @@ describe('cards', () => {
 			},
 			{
 				parameters: [
-					getCard({ rank: '2', suit: 'Hearts', enhancement: 'wild' }),
+					getCard({ rank: '2', suit: 'Hearts', enhancement: 'Wild' }),
 					['Diamonds', 'Clubs'],
 					new Set(),
 				],
@@ -198,7 +198,7 @@ describe('cards', () => {
 			},
 			{
 				parameters: [
-					getCard({ debuffed: true, rank: '2', suit: 'Hearts', enhancement: 'wild' }),
+					getCard({ debuffed: true, rank: '2', suit: 'Hearts', enhancement: 'Wild' }),
 					['Diamonds', 'Clubs'],
 					new Set(),
 				],
@@ -206,7 +206,7 @@ describe('cards', () => {
 			},
 			{
 				parameters: [
-					getCard({ debuffed: true, rank: '2', suit: 'Diamonds', enhancement: 'wild' }),
+					getCard({ debuffed: true, rank: '2', suit: 'Diamonds', enhancement: 'Wild' }),
 					['Diamonds', 'Clubs'],
 					new Set(),
 				],

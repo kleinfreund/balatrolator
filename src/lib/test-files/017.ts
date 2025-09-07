@@ -6,15 +6,15 @@ export default (message: string): TestCase => {
 		initialState: {
 			blind: { name: 'Big Blind' },
 			cards: [
-				{ played: true, rank: 'Ace', suit: 'Diamonds', seal: 'red' },
-				{ played: true, rank: 'Ace', suit: 'Diamonds', enhancement: 'glass', seal: 'red' },
-				{ played: true, rank: 'Ace', suit: 'Diamonds', enhancement: 'glass', seal: 'red' },
-				{ played: true, rank: 'Ace', suit: 'Diamonds', enhancement: 'glass', seal: 'red' },
-				{ played: true, rank: 'Ace', suit: 'Diamonds', enhancement: 'glass', seal: 'red' },
-				{ rank: 'Ace', suit: 'Diamonds', enhancement: 'mult' },
-				{ rank: 'Ace', suit: 'Diamonds', enhancement: 'steel', seal: 'red' },
-				{ rank: 'Ace', suit: 'Diamonds', enhancement: 'steel', seal: 'red' },
-				{ rank: 'Ace', suit: 'Diamonds', seal: 'red' },
+				{ played: true, rank: 'Ace', suit: 'Diamonds', seal: 'Red' },
+				{ played: true, rank: 'Ace', suit: 'Diamonds', enhancement: 'Glass', seal: 'Red' },
+				{ played: true, rank: 'Ace', suit: 'Diamonds', enhancement: 'Glass', seal: 'Red' },
+				{ played: true, rank: 'Ace', suit: 'Diamonds', enhancement: 'Glass', seal: 'Red' },
+				{ played: true, rank: 'Ace', suit: 'Diamonds', enhancement: 'Glass', seal: 'Red' },
+				{ rank: 'Ace', suit: 'Diamonds', enhancement: 'Mult' },
+				{ rank: 'Ace', suit: 'Diamonds', enhancement: 'Steel', seal: 'Red' },
+				{ rank: 'Ace', suit: 'Diamonds', enhancement: 'Steel', seal: 'Red' },
+				{ rank: 'Ace', suit: 'Diamonds', seal: 'Red' },
 			],
 			jokers: [
 				{ name: 'DNA' },
@@ -34,11 +34,11 @@ export default (message: string): TestCase => {
 		expected: {
 			hand: 'Flush Five',
 			scoringCards: [
-				{ rank: 'Ace', suit: 'Diamonds', seal: 'red' },
-				{ rank: 'Ace', suit: 'Diamonds', enhancement: 'glass', seal: 'red' },
-				{ rank: 'Ace', suit: 'Diamonds', enhancement: 'glass', seal: 'red' },
-				{ rank: 'Ace', suit: 'Diamonds', enhancement: 'glass', seal: 'red' },
-				{ rank: 'Ace', suit: 'Diamonds', enhancement: 'glass', seal: 'red' },
+				{ rank: 'Ace', suit: 'Diamonds', seal: 'Red' },
+				{ rank: 'Ace', suit: 'Diamonds', enhancement: 'Glass', seal: 'Red' },
+				{ rank: 'Ace', suit: 'Diamonds', enhancement: 'Glass', seal: 'Red' },
+				{ rank: 'Ace', suit: 'Diamonds', enhancement: 'Glass', seal: 'Red' },
+				{ rank: 'Ace', suit: 'Diamonds', enhancement: 'Glass', seal: 'Red' },
 			],
 			scores: [
 				{ score: '12972158342922240', formattedScore: '1.297e16', luck: 'none' },

@@ -10,10 +10,10 @@ export const DECKS: DeckName[] = ['Red Deck', 'Blue Deck', 'Yellow Deck', 'Green
 
 export const HANDS: HandName[] = ['Flush Five', 'Flush House', 'Five of a Kind', 'Straight Flush', 'Four of a Kind', 'Full House', 'Flush', 'Straight', 'Three of a Kind', 'Two Pair', 'Pair', 'High Card']
 
-export const ENHANCEMENTS: Enhancement[] = ['none', 'bonus', 'mult', 'wild', 'glass', 'steel', 'stone', 'gold', 'lucky']
-export const SEALS: Seal[] = ['none', 'gold', 'red', 'blue', 'purple']
-export const EDITIONS: Edition[] = ['base', 'foil', 'holographic', 'polychrome']
-export const JOKER_EDITIONS: JokerEdition[] = ['base', 'foil', 'holographic', 'polychrome', 'negative']
+export const ENHANCEMENTS: Enhancement[] = ['None', 'Bonus', 'Mult', 'Wild', 'Glass', 'Steel', 'Stone', 'Gold', 'Lucky']
+export const SEALS: Seal[] = ['None', 'Gold', 'Red', 'Blue', 'Purple']
+export const EDITIONS: Edition[] = ['Base', 'Foil', 'Holographic', 'Polychrome']
+export const JOKER_EDITIONS: JokerEdition[] = ['Base', 'Foil', 'Holographic', 'Polychrome', 'Negative']
 
 export const RANKS: Rank[] = ['Ace', 'King', 'Queen', 'Jack', '10', '9', '8', '7', '6', '5', '4', '3', '2']
 export const SUITS: Suit[] = ['Clubs', 'Spades', 'Hearts', 'Diamonds']
@@ -287,7 +287,7 @@ export const JOKER_DEFINITIONS: Record<JokerName, JokerDefinition> = {
 	'Joker Stencil': {
 		rarity: 'uncommon',
 		effect ({ state, score, trigger }) {
-			const nonStencilNonNegativeJokers = state.jokers.filter((joker) => joker.name !== 'Joker Stencil' && joker.edition !== 'negative')
+			const nonStencilNonNegativeJokers = state.jokers.filter((joker) => joker.name !== 'Joker Stencil' && joker.edition !== 'Negative')
 			score.push({
 				multiplier: ['*', Math.max(1, state.jokerSlots - nonStencilNonNegativeJokers.length)],
 				phase: 'jokers',
@@ -375,7 +375,7 @@ export const JOKER_DEFINITIONS: Record<JokerName, JokerDefinition> = {
 		rarity: 'common',
 		heldCardEffect ({ state, card, score, trigger }) {
 			// Stone cards won't add any mult.
-			if (card.enhancement === 'stone') {
+			if (card.enhancement === 'Stone') {
 				return
 			}
 

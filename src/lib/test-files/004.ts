@@ -10,7 +10,7 @@ export default (message: string): TestCase => {
 				{ played: true, rank: '8', suit: 'Diamonds' },
 				{ played: true, rank: '7', suit: 'Diamonds' },
 				{ played: true, rank: '6', suit: 'Diamonds' },
-				{ rank: '3', suit: 'Spades', enhancement: 'steel' },
+				{ rank: '3', suit: 'Spades', enhancement: 'Steel' },
 			],
 			jokers: [
 				{ name: 'Supernova' },

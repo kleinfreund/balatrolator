@@ -5,7 +5,7 @@ export default (message: string): TestCase => {
 		message,
 		initialState: {
 			cards: [
-				{ played: true, rank: '2', suit: 'Hearts', seal: 'red', count: 3 },
+				{ played: true, rank: '2', suit: 'Hearts', seal: 'Red', count: 3 },
 				{ played: true, rank: '3', suit: 'Hearts' },
 				{ played: true, rank: '4', suit: 'Hearts' },
 			],
@@ -23,9 +23,9 @@ export default (message: string): TestCase => {
 		expected: {
 			hand: 'Flush',
 			scoringCards: [
-				{ rank: '2', suit: 'Hearts', seal: 'red' },
-				{ rank: '2', suit: 'Hearts', seal: 'red' },
-				{ rank: '2', suit: 'Hearts', seal: 'red' },
+				{ rank: '2', suit: 'Hearts', seal: 'Red' },
+				{ rank: '2', suit: 'Hearts', seal: 'Red' },
+				{ rank: '2', suit: 'Hearts', seal: 'Red' },
 				{ rank: '3', suit: 'Hearts' },
 				{ rank: '4', suit: 'Hearts' },
 			],

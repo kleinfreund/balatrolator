@@ -14,12 +14,12 @@ describe('Storage', () => {
 			{
 				blind: { name: 'Big Blind' },
 				cards: [
-					{ played: true, rank: 'Ace', suit: 'Diamonds', seal: 'red' },
-					{ played: true, rank: 'Ace', suit: 'Diamonds', enhancement: 'glass', seal: 'red', count: 4 },
-					{ rank: 'Ace', suit: 'Diamonds', enhancement: 'mult' },
-					{ rank: 'Ace', suit: 'Diamonds', enhancement: 'steel', seal: 'red' },
-					{ rank: 'Ace', suit: 'Diamonds', enhancement: 'steel', seal: 'red' },
-					{ rank: 'Ace', suit: 'Diamonds', seal: 'red' },
+					{ played: true, rank: 'Ace', suit: 'Diamonds', seal: 'Red' },
+					{ played: true, rank: 'Ace', suit: 'Diamonds', enhancement: 'Glass', seal: 'Red', count: 4 },
+					{ rank: 'Ace', suit: 'Diamonds', enhancement: 'Mult' },
+					{ rank: 'Ace', suit: 'Diamonds', enhancement: 'Steel', seal: 'Red' },
+					{ rank: 'Ace', suit: 'Diamonds', enhancement: 'Steel', seal: 'Red' },
+					{ rank: 'Ace', suit: 'Diamonds', seal: 'Red' },
 				],
 				jokers: [
 					{ name: 'DNA' },

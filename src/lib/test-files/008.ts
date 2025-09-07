@@ -6,12 +6,12 @@ export default (message: string): TestCase => {
 		initialState: {
 			money: 5,
 			cards: [
-				{ played: true, rank: 'Queen', suit: 'Diamonds', enhancement: 'wild' },
+				{ played: true, rank: 'Queen', suit: 'Diamonds', enhancement: 'Wild' },
 				{ played: true, rank: 'Jack', suit: 'Clubs' },
 				{ played: true, rank: '10', suit: 'Diamonds' },
 				{ played: true, rank: '9', suit: 'Spades' },
 				{ played: true, rank: '8', suit: 'Spades' },
-				{ rank: '5', suit: 'Diamonds', enhancement: 'steel' },
+				{ rank: '5', suit: 'Diamonds', enhancement: 'Steel' },
 			],
 			jokers: [
 				{ name: 'Sly Joker' },
@@ -24,7 +24,7 @@ export default (message: string): TestCase => {
 		expected: {
 			hand: 'Straight',
 			scoringCards: [
-				{ rank: 'Queen', suit: 'Diamonds', enhancement: 'wild' },
+				{ rank: 'Queen', suit: 'Diamonds', enhancement: 'Wild' },
 				{ rank: 'Jack', suit: 'Clubs' },
 				{ rank: '10', suit: 'Diamonds' },
 				{ rank: '9', suit: 'Spades' },

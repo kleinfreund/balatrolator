@@ -82,7 +82,7 @@ export function getJoker (initialJoker: InitialJoker, listIndex = 0): Joker {
 	const {
 		index = listIndex,
 		name,
-		edition = 'base',
+		edition = 'Base',
 		plusChips = 0,
 		plusMultiplier = 0,
 		timesMultiplier = 1,
@@ -99,7 +99,7 @@ export function getJoker (initialJoker: InitialJoker, listIndex = 0): Joker {
 		playedCardEffect,
 		heldCardEffect,
 	} = JOKER_DEFINITIONS[name]
-	const modifiers = [edition !== 'base' ? edition : undefined].filter((modifier) => modifier !== undefined)
+	const modifiers = [edition !== 'Base' ? edition : undefined].filter((modifier) => modifier !== undefined)
 	const toString = () => `${name}` + (modifiers.length > 0 ? ` (${modifiers.join(', ')})` : '')
 
 	return {
@@ -127,18 +127,18 @@ export function getCard (initialCard: InitialCard, listIndex = 0): Card {
 		index = listIndex,
 		rank,
 		suit,
-		edition = 'base',
-		enhancement = 'none',
-		seal = 'none',
+		edition = 'Base',
+		enhancement = 'None',
+		seal = 'None',
 		debuffed = false,
 		played = false,
 		count = 1,
 	} = initialCard
 
 	const modifiers = [
-		edition !== 'base' ? edition : undefined,
-		enhancement !== 'none' ? enhancement : undefined,
-		seal !== 'none' ? seal : undefined,
+		edition !== 'Base' ? edition : undefined,
+		enhancement !== 'None' ? enhancement : undefined,
+		seal !== 'None' ? seal : undefined,
 	].filter((modifier) => modifier !== undefined)
 	const toString = () => `${rank} of ${suit}` + (modifiers.length > 0 ? ` (${modifiers.join(', ')})` : '')
 
