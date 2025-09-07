@@ -6,7 +6,7 @@ import { isFaceCard, isRank } from './cards.ts'
 import { resolveJoker } from './resolveJokers.ts'
 import { doBigMath } from './doBigMath.ts'
 import { getHand } from './getHand.ts'
-import type { Card, HandName, Joker, JokerCardEffect, Luck, Result, ResultScore, ScoreValue, State } from './types.ts'
+import type { Card, HandName, Joker, Luck, Result, ResultScore, ScoreValue, State } from './types.ts'
 
 export function calculateScore (unresolvedState: State): Result {
 	const state = resolveState(unresolvedState)
@@ -192,7 +192,11 @@ function getScore (state: State, playedHand: HandName, scoringCards: Card[], luc
 
 			// 4. Joker effects for played cards
 			for (const joker of state.jokers) {
-				scoreJokerCardEffect(joker.playedCardEffect, { state, playedHand, scoringCards, score, joker, card, luck })
+				if (joker.playedCardEffect) {
+					for (const trigger of getJokerTriggers({ state, joker })) {
+						joker.playedCardEffect({ state, playedHand, scoringCards, score, card, luck, trigger })
+					}
+				}
 			}
 		}
 	}
@@ -229,7 +233,11 @@ function getScore (state: State, playedHand: HandName, scoringCards: Card[], luc
 
 			// 2. Joker effects for held cards
 			for (const joker of state.jokers) {
-				scoreJokerCardEffect(joker.heldCardEffect, { state, playedHand, scoringCards, score, joker, card, luck })
+				if (joker.heldCardEffect) {
+					for (const trigger of getJokerTriggers({ state, joker })) {
+						joker.heldCardEffect({ state, playedHand, scoringCards, score, card, luck, trigger })
+					}
+				}
 			}
 		}
 	}
@@ -351,6 +359,22 @@ function getHeldCardTriggers ({ state, card }: { state: State, card: Card }): st
 	return triggers
 }
 
+function getJokerTriggers (options: { state: State, joker: Joker }) {
+	const triggers = ['Regular']
+
+	// Increase triggers from Blueprint/Brainstorm
+	const resolvedJokers = options.state.jokers
+		.filter(({ name }) => ['Blueprint', 'Brainstorm'].includes(name))
+		.map((joker) => resolveJoker(options.state.jokers, joker))
+		.filter(notNullish)
+
+	for (const { index, name } of resolvedJokers) {
+		if (index === options.joker.index) triggers.push(`copied ${name}`)
+	}
+
+	return triggers
+}
+
 function scoreJokerIndirectEffect (options: { state: State, playedHand: HandName, scoringCards: Card[], score: ScoreValue[], joker: Joker, luck: Luck }) {
 	const triggers = ['Regular']
 
@@ -376,27 +400,5 @@ function scoreJokerIndirectEffect (options: { state: State, playedHand: HandName
 		if (joker.indirectEffect) {
 			joker.indirectEffect({ ...options, trigger: `indirect for ${options.joker.name}` })
 		}
-	}
-}
-
-function scoreJokerCardEffect (effect: JokerCardEffect | undefined, options: { state: State, playedHand: HandName, scoringCards: Card[], score: ScoreValue[], joker: Joker, card: Card, luck: Luck }) {
-	if (!effect) {
-		return
-	}
-
-	const triggers = ['Regular']
-
-	// Increase triggers from Blueprint/Brainstorm
-	const targets = options.state.jokers
-		.filter(({ name }) => ['Blueprint', 'Brainstorm'].includes(name))
-		.map((joker) => resolveJoker(options.state.jokers, joker))
-		.filter(notNullish)
-
-	for (const { index, name } of targets) {
-		if (index === options.joker.index) triggers.push(`copied ${name}`)
-	}
-
-	for (const trigger of triggers) {
-		effect.call(options.joker, { ...options, trigger })
 	}
 }
