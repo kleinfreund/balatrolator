@@ -243,7 +243,7 @@ function getScore (state: State, playedHand: HandName, scoringCards: Card[], luc
 	}
 
 	for (const joker of state.jokers) {
-		// 1. Edition
+		// 1. Edition (plus)
 		switch (joker.edition) {
 			case 'Foil': {
 				score.push({
@@ -262,14 +262,6 @@ function getScore (state: State, playedHand: HandName, scoringCards: Card[], luc
 				})
 				break
 			}
-			case 'Polychrome': {
-				score.push({
-					multiplier: ['*', 1.5],
-					phase: 'jokers', joker,
-					type: 'edition',
-				})
-				break
-			}
 		}
 
 		// 2. Joker effects
@@ -281,6 +273,18 @@ function getScore (state: State, playedHand: HandName, scoringCards: Card[], luc
 		if (joker.indirectEffect) {
 			for (const dependentJoker of state.jokers) {
 				joker.indirectEffect({ state, playedHand, scoringCards, score, joker: dependentJoker, luck, trigger: 'Regular' })
+			}
+		}
+
+		// 4. Edition (mult)
+		switch (joker.edition) {
+			case 'Polychrome': {
+				score.push({
+					multiplier: ['*', 1.5],
+					phase: 'jokers', joker,
+					type: 'edition',
+				})
+				break
 			}
 		}
 	}
