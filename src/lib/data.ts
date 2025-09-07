@@ -2,6 +2,7 @@ import { balanceMultWithLuck } from './balanceMultWithLuck.ts'
 import { flush, nOfAKind, straight, twoPair } from './getHand.ts'
 import { isFaceCard, isRank, isSuit } from './cards.ts'
 import type { BaseScore, BlindName, Card, DeckName, Edition, Enhancement, HandName, JokerDefinition, JokerEdition, JokerName, Luck, Rank, Seal, Suit } from './types.ts'
+import { resolveJoker } from './resolveJokers.ts'
 
 export const BLINDS: BlindName[] = ['Small Blind', 'Big Blind', 'The Hook', 'The Ox', 'The House', 'The Wall', 'The Wheel', 'The Arm', 'The Club', 'The Fish', 'The Psychic', 'The Goad', 'The Water', 'The Window', 'The Manacle', 'The Eye', 'The Mouth', 'The Plant', 'The Serpent', 'The Pillar', 'The Needle', 'The Head', 'The Tooth', 'The Flint', 'The Mark', 'Amber Acorn', 'Verdant Leaf', 'Violet Vessel', 'Crimson Heart', 'Cerulean Bell']
 
@@ -1165,6 +1166,13 @@ export const JOKER_DEFINITIONS: Record<JokerName, JokerDefinition> = {
 	},
 	'Blueprint': {
 		rarity: 'rare',
+		effect (options) {
+			const resolvedJoker = resolveJoker(options.state.jokers, this)
+
+			if (resolvedJoker && resolvedJoker.effect) {
+				resolvedJoker.effect(options)
+			}
+		},
 	},
 	'Wee Joker': {
 		rarity: 'rare',
@@ -1303,6 +1311,13 @@ export const JOKER_DEFINITIONS: Record<JokerName, JokerDefinition> = {
 	},
 	'Brainstorm': {
 		rarity: 'rare',
+		effect (options) {
+			const resolvedJoker = resolveJoker(options.state.jokers, this)
+
+			if (resolvedJoker && resolvedJoker.effect) {
+				resolvedJoker.effect(options)
+			}
+		},
 	},
 	'Satellite': {
 		rarity: 'uncommon',

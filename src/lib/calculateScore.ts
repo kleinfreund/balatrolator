@@ -6,7 +6,7 @@ import { isFaceCard, isRank } from './cards.ts'
 import { resolveJoker } from './resolveJokers.ts'
 import { doBigMath } from './doBigMath.ts'
 import { getHand } from './getHand.ts'
-import type { Card, HandName, Joker, JokerCardEffect, JokerEffect, Luck, Result, ResultScore, ScoreValue, State } from './types.ts'
+import type { Card, HandName, Joker, JokerCardEffect, Luck, Result, ResultScore, ScoreValue, State } from './types.ts'
 
 export function calculateScore (unresolvedState: State): Result {
 	const state = resolveState(unresolvedState)
@@ -265,7 +265,11 @@ function getScore (state: State, playedHand: HandName, scoringCards: Card[], luc
 		}
 
 		// 2. Joker effects
-		scoreJokerEffect(joker.effect, { state, playedHand, scoringCards, score, joker, luck })
+		if (joker.effect) {
+			joker.effect({ state, playedHand, scoringCards, score, luck, trigger: 'Regular' })
+		}
+
+		scoreJokerIndirectEffect({ state, playedHand, scoringCards, score, joker, luck })
 	}
 
 	const planetCount = state.observatory[playedHand] ?? 0
@@ -347,7 +351,7 @@ function getHeldCardTriggers ({ state, card }: { state: State, card: Card }): st
 	return triggers
 }
 
-function scoreJokerEffect (effect: JokerEffect | undefined, options: { state: State, playedHand: HandName, scoringCards: Card[], score: ScoreValue[], joker: Joker, luck: Luck }) {
+function scoreJokerIndirectEffect (options: { state: State, playedHand: HandName, scoringCards: Card[], score: ScoreValue[], joker: Joker, luck: Luck }) {
 	const triggers = ['Regular']
 
 	// Increase triggers from Blueprint/Brainstorm
@@ -361,10 +365,6 @@ function scoreJokerEffect (effect: JokerEffect | undefined, options: { state: St
 	}
 
 	for (const trigger of triggers) {
-		if (effect) {
-			effect.call(options.joker, { ...options, trigger })
-		}
-
 		for (const target of targets) {
 			if (target.indirectEffect) {
 				target.indirectEffect({ ...options, trigger })
