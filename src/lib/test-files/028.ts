@@ -29,7 +29,7 @@ export default (message: string): TestCase => {
 				{ rank: 'Ace', suit: 'Hearts', enhancement: 'Lucky' },
 				{ rank: '6', suit: 'Hearts', enhancement: 'Lucky' },
 			],
-			scores: [
+			results: [
 				{ score: '6837', formattedScore: '6,837', luck: 'none' },
 				{ score: '99969896', formattedScore: '99,969,896', luck: 'average' },
 				{ score: '369904053492', formattedScore: '369,904,053,492', luck: 'all' },

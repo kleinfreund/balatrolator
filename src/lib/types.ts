@@ -164,14 +164,9 @@ export interface State {
 
 export type Luck = 'none' | 'average' | 'all'
 
-export interface ResultScore {
+export interface Result {
 	score: string
 	formattedScore: string
 	luck: Luck
-}
-
-export interface Result {
-	hand: HandName
-	scoringCards: Card[]
-	scores: ResultScore[]
+	log: string[]
 }

@@ -34,7 +34,7 @@ export default (message: string): TestCase => {
 				{ rank: 'Jack', suit: 'Hearts', edition: 'Holographic', enhancement: 'Lucky', seal: 'Red' },
 				{ rank: 'Jack', suit: 'Hearts', edition: 'Holographic', enhancement: 'Lucky', seal: 'Red' },
 			],
-			scores: [
+			results: [
 				{ score: '56104413326638560', formattedScore: '5.610e16', luck: 'none' },
 				{ score: '66190599992094560', formattedScore: '6.619e16', luck: 'average' },
 				{ score: '81319879990278560', formattedScore: '8.132e16', luck: 'all' },

@@ -1,5 +1,4 @@
 import { uniqueId } from '#ui/uniqueId.ts'
-import { notNullish } from '#utilities/notNullish.ts'
 import { DraggableCard } from './DraggableCard.ts'
 import type { Card, Edition, Enhancement, Rank, Seal, Suit } from '#lib/types.ts'
 
@@ -222,8 +221,10 @@ export class PlayingCard extends DraggableCard {
 		;[
 			this.playedCheckbox.checked ? '--is-played' : null,
 			this.debuffedCheckbox.checked ? '--is-debuffed' : null,
-			blindNameInput.value === 'The Pillar' && blindIsActiveCheckbox.checked ? '--is-blind-the-pillar' : undefined,
-		].filter(notNullish).forEach((className) => this.classList.add(className))
+			blindNameInput.value === 'The Pillar' && blindIsActiveCheckbox.checked ? '--is-blind-the-pillar' : null,
+		]
+			.filter((className) => className !== null)
+			.forEach((className) => this.classList.add(className))
 	}
 
 	showDuplicateModal = (event: Event) => {

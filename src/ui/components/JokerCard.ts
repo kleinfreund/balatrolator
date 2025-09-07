@@ -1,6 +1,5 @@
 import { uniqueId } from '#ui/uniqueId.ts'
 import { JOKER_DEFINITIONS } from '#lib/data.ts'
-import { notNullish } from '#utilities/notNullish.ts'
 import { DraggableCard } from './DraggableCard.ts'
 import type { Joker, JokerEdition, JokerName, Rank, Suit } from '#lib/types.ts'
 
@@ -236,7 +235,9 @@ export class JokerCard extends DraggableCard {
 			this.#definition.hasIsActiveInput ? '--has-is-active': null,
 			this.#definition.hasRankInput ? '--has-rank': null,
 			this.#definition.hasSuitInput ? '--has-suit': null,
-		].filter(notNullish).forEach((className) => this.classList.add(className))
+		]
+			.filter((className) => className !== null)
+			.forEach((className) => this.classList.add(className))
 	}
 
 	showDuplicateModal = (event: Event) => {

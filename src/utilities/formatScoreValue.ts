@@ -1,11 +1,9 @@
 import type { ScoreValue } from '#lib/types.ts'
 
-export const log = import.meta.env?.VITE_DEBUG === 'true' ? logFn : () => undefined
-
-function logFn (
+export function formatScoreValue (
 	{ chips, multiplier, phase, card, joker, type, trigger }: ScoreValue,
 	currentScoreValue: { chips: string, multiplier: string },
-): void {
+): string {
 	let valueStr = ''
 	if (chips) {
 		const [operator, value] = chips
@@ -22,10 +20,11 @@ function logFn (
 	}
 
 	if (valueStr === '') {
-		return
+		return ''
 	}
 
-	let str = `${phase}:${valueStr}`
+	const prefix = `${phase}:`
+	let str = `${prefix.padEnd(13)}${valueStr}`
 	if (joker) {
 		str += ` from ${joker}`
 
@@ -43,7 +42,5 @@ function logFn (
 		str += ` (trigger: ${trigger})`
 	}
 
-	str += ` → ${currentScoreValue.chips}×${currentScoreValue.multiplier}`
-
-	console.log(str)
+	return str + ` → ${currentScoreValue.chips}×${currentScoreValue.multiplier}`
 }

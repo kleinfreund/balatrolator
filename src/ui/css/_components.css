@@ -11,12 +11,12 @@
 .form {
 	display: grid;
 	grid-template-areas:
-		'hands round'
-		'hands jokers'
-		'hands cards'
-		'hands score'
+		'hands round round'
+		'hands jokers jokers'
+		'hands cards cards'
+		'hands score log'
 	;
-	grid-template-columns: 15rem minmax(0, 1fr);
+	grid-template-columns: 15rem minmax(0, 1fr) minmax(0, 3fr);
 	gap: 0.5rem;
 }
 
@@ -40,6 +40,10 @@
 	grid-area: score;
 }
 
+.form__log {
+	grid-area: log;
+}
+
 .panel {
 	padding: 0.5rem;
 	border: 2px solid var(--c-border);
@@ -56,6 +60,7 @@
 .panel-header {
 	display: inline-flex;
 	align-items: center;
+	flex-wrap: wrap;
 	gap: 0.5rem;
 }
 
@@ -349,4 +354,12 @@ hand-level {
 
 .s-save-name-input {
 	width: 15rem;
+}
+
+.log {
+	max-height: 15rem;
+}
+
+.log:empty {
+	display: none;
 }

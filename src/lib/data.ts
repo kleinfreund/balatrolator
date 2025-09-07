@@ -82,17 +82,6 @@ export const RANK_TO_INDEX_MAP: Record<Rank, number> = {
 	'2': 2,
 }
 
-export const PLAYED_CARD_RETRIGGER_JOKER_NAMES: JokerName[] = [
-	'Seltzer',
-	'Sock and Buskin',
-	'Dusk',
-	'Hanging Chad',
-	'Hack',
-]
-export const HELD_CARD_RETRIGGER_JOKER_NAMES: JokerName[] = [
-	'Mime',
-]
-
 export const JOKER_DEFINITIONS: Record<JokerName, JokerDefinition> = {
 	'Joker': {
 		rarity: 'common',

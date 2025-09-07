@@ -16,7 +16,7 @@ export default (message: string): TestCase => {
 			scoringCards: [
 				{ rank: 'Jack', suit: 'Spades' },
 			],
-			scores: [
+			results: [
 				{ score: '60', formattedScore: '60', luck: 'none' },
 				{ score: '60', formattedScore: '60', luck: 'average' },
 				{ score: '60', formattedScore: '60', luck: 'all' },

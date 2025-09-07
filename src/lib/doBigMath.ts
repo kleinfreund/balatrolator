@@ -1,12 +1,13 @@
 import { add, BigNumber, bignumber, divide, floor, multiply, pow } from 'mathjs'
 
-import { log } from '#utilities/log.ts'
+import { formatScoreValue } from '#utilities/formatScoreValue.ts'
 import type { DeckName, ScoreValue } from './types.ts'
 
-export function doBigMath (initialScore: ScoreValue[], deck: DeckName) {
+export function doBigMath (scoreValues: ScoreValue[], deck: DeckName) {
 	let chips = bignumber(0)
 	let multiplier = bignumber(0)
-	for (const scoreValue of initialScore) {
+	const log: string[] = []
+	for (const scoreValue of scoreValues) {
 		if (scoreValue.chips) {
 			const [operator, value] = scoreValue.chips
 			const operation = operator === '+' ? add : multiply
@@ -18,10 +19,15 @@ export function doBigMath (initialScore: ScoreValue[], deck: DeckName) {
 			multiplier = operation(multiplier, bignumber(value))
 		}
 
-		log(scoreValue, {
+		const formattedScoreValue = formatScoreValue(scoreValue, {
 			chips: chips.toString(),
 			multiplier: multiplier.toString(),
 		})
+		log.push(formattedScoreValue)
+
+		if (import.meta.env?.VITE_DEBUG === 'true') {
+			console.log(formattedScoreValue)
+		}
 	}
 
 	let actualScore: BigNumber
@@ -33,5 +39,5 @@ export function doBigMath (initialScore: ScoreValue[], deck: DeckName) {
 
 	// Balatro seems to round values starting at a certain threshold and it seems to round down. 🤔
 	const score = actualScore.greaterThan(10000) ? floor(actualScore) : actualScore
-	return score.toString()
+	return { score: score.toString(), log }
 }

@@ -1,35 +1,39 @@
-import { notNullish } from '#utilities/notNullish.ts'
-import { RANK_TO_CHIP_MAP, PLAYED_CARD_RETRIGGER_JOKER_NAMES, HELD_CARD_RETRIGGER_JOKER_NAMES, LUCKS } from './data.ts'
+import { RANK_TO_CHIP_MAP, LUCKS } from './data.ts'
 import { balanceMultWithLuck } from './balanceMultWithLuck.ts'
 import { formatScore } from './formatScore.ts'
 import { isFaceCard, isRank } from './cards.ts'
 import { resolveJoker } from './resolveJokers.ts'
 import { doBigMath } from './doBigMath.ts'
 import { getHand } from './getHand.ts'
-import type { Card, HandName, Joker, Luck, Result, ResultScore, ScoreValue, State } from './types.ts'
+import type { Card, HandName, Joker, Luck, Result, ScoreValue, State } from './types.ts'
 
-export function calculateScore (unresolvedState: State): Result {
+export function calculateScore (unresolvedState: State): {
+	hand: HandName
+	scoringCards: Card[]
+	results: Result[]
+} {
 	const state = resolveState(unresolvedState)
 
 	const playedCards = state.cards.filter((card) => card.played)
 	const { playedHand, scoringCards: preliminaryScoringCards } = getHand(playedCards, state.jokerSet)
 	const scoringCards = state.jokerSet.has('Splash') ? playedCards : preliminaryScoringCards
 
-	const scores = LUCKS.map<ResultScore>((luck) => {
-		const initialScore = getScore(state, playedHand, scoringCards, luck)
-		const score = doBigMath(initialScore, state.deck)
+	const results = LUCKS.map<Result>((luck) => {
+		const scoreValues = getScore(state, playedHand, scoringCards, luck)
+		const { score, log } = doBigMath(scoreValues, state.deck)
 
 		return {
 			score,
 			formattedScore: formatScore(score),
 			luck,
+			log,
 		}
 	})
 
 	return {
 		hand: playedHand,
 		scoringCards,
-		scores,
+		results,
 	}
 }
 
@@ -307,34 +311,33 @@ function getPlayedCardTriggers ({ state, card, index }: { state: State, card: Ca
 		triggers.push('Red Seal')
 	}
 
-	const retriggerJokerNames = state.jokers
-		.map((joker) => resolveJoker(state.jokers, joker))
-		.filter(notNullish)
-		.filter(({ name }) => PLAYED_CARD_RETRIGGER_JOKER_NAMES.includes(name))
-		.map(({ name }) => name)
+	for (const joker of state.jokers) {
+		const resolvedJoker = resolveJoker(state.jokers, joker)
+		if (resolvedJoker === undefined) {
+			continue
+		}
 
-	for (const name of retriggerJokerNames) {
-		switch (name) {
+		switch (resolvedJoker.name) {
 			case 'Dusk': {
-				if (state.hands === 1) triggers.push(name)
+				if (state.hands === 1) triggers.push(resolvedJoker.name)
 				break
 			}
 			case 'Hack': {
-				if (isRank(card, ['2', '3', '4', '5'])) triggers.push(name)
+				if (isRank(card, ['2', '3', '4', '5'])) triggers.push(resolvedJoker.name)
 				break
 			}
 			case 'Hanging Chad': {
 				if (index === 0) {
-					triggers.push(name, name)
+					triggers.push(resolvedJoker.name, resolvedJoker.name)
 				}
 				break
 			}
 			case 'Seltzer': {
-				triggers.push(name)
+				triggers.push(resolvedJoker.name)
 				break
 			}
 			case 'Sock and Buskin': {
-				if (isFaceCard(card, state.jokerSet)) triggers.push(name)
+				if (isFaceCard(card, state.jokerSet)) triggers.push(resolvedJoker.name)
 				break
 			}
 		}
@@ -350,16 +353,15 @@ function getHeldCardTriggers ({ state, card }: { state: State, card: Card }): st
 		triggers.push('Red Seal')
 	}
 
-	const retriggerJokerNames = state.jokers
-		.map((joker) => resolveJoker(state.jokers, joker))
-		.filter(notNullish)
-		.filter(({ name }) => HELD_CARD_RETRIGGER_JOKER_NAMES.includes(name))
-		.map(({ name }) => name)
+	for (const joker of state.jokers) {
+		const resolvedJoker = resolveJoker(state.jokers, joker)
+		if (resolvedJoker === undefined) {
+			continue
+		}
 
-	for (const name of retriggerJokerNames) {
-		switch (name) {
+		switch (resolvedJoker.name) {
 			case 'Mime': {
-				triggers.push(name)
+				triggers.push(resolvedJoker.name)
 				break
 			}
 		}
@@ -372,13 +374,17 @@ function getJokerTriggers (options: { state: State, joker: Joker }) {
 	const triggers = ['Regular']
 
 	// Increase triggers from Blueprint/Brainstorm
-	const resolvedJokers = options.state.jokers
-		.filter(({ name }) => ['Blueprint', 'Brainstorm'].includes(name))
-		.map((joker) => resolveJoker(options.state.jokers, joker))
-		.filter(notNullish)
+	for (const joker of options.state.jokers) {
+		if (['Blueprint', 'Brainstorm'].includes(joker.name)) {
+			const resolvedJoker = resolveJoker(options.state.jokers, joker)
+			if (resolvedJoker === undefined) {
+				continue
+			}
 
-	for (const { index, name } of resolvedJokers) {
-		if (index === options.joker.index) triggers.push(`copied ${name}`)
+			if (resolvedJoker.index === options.joker.index) {
+				triggers.push(joker.name)
+			}
+		}
 	}
 
 	return triggers

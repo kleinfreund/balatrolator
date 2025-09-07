@@ -2,13 +2,14 @@ import { describe, test, expect } from 'vitest'
 
 import { calculateScore } from './calculateScore.ts'
 import { getState } from './getState.ts'
-import type { Card, InitialState } from './types.ts'
+import type { Card, InitialState, Result } from './types.ts'
 
 export interface TestCase {
 	message: string
 	initialState: InitialState
-	expected: Omit<ReturnType<typeof calculateScore>, 'scoringCards'> & {
+	expected: Omit<ReturnType<typeof calculateScore>, 'scoringCards' | 'results'> & {
 		scoringCards: Partial<Card>[]
+		results: Omit<Result, 'log'>[]
 	}
 }
 
@@ -62,6 +63,6 @@ describe('calculateScore', async () => {
 
 		expect(score.hand).toEqual(expected.hand)
 		expect(score.scoringCards).toMatchObject(expected.scoringCards)
-		expect(score.scores).toMatchObject(expected.scores)
+		expect(score.results).toMatchObject(expected.results)
 	})
 })

@@ -5,7 +5,7 @@ import { JokerCard } from './components/JokerCard.ts'
 import { PlayingCard } from './components/PlayingCard.ts'
 import { readStateFromUrl, saveStateToUrl } from './Storage.ts'
 import { SaveManager } from './SaveManager.ts'
-import type { BlindName, Card, DeckName, HandName, InitialState, Joker, State, ResultScore, InitialJoker, InitialCard } from '#lib/types.ts'
+import type { BlindName, Card, DeckName, HandName, InitialState, Joker, State, Result, InitialJoker, InitialCard } from '#lib/types.ts'
 
 const dateTimeFormat = new Intl.DateTimeFormat(document.documentElement.lang, {
 	year: 'numeric',
@@ -44,6 +44,8 @@ export class UiState {
 	#scoreCardContainer: HTMLElement
 	#playedHandEl: HTMLElement
 	#resetButton: HTMLButtonElement
+
+	#log: HTMLPreElement
 
 	#savesContainer: HTMLElement
 	#saveRowTemplate: HTMLTemplateElement
@@ -103,6 +105,8 @@ export class UiState {
 		this.#playedHandEl = form.querySelector<HTMLElement>('[data-sc-played-hand]')!
 		this.#resetButton = form.querySelector<HTMLButtonElement>('[data-sc-reset-button]')!
 		this.#resetButton.addEventListener('click', () => this.#reset())
+
+		this.#log = form.querySelector<HTMLPreElement>('[data-sc-log]')!
 
 		this.#savesContainer = document.querySelector<HTMLElement>('[data-s-saves]')!
 		this.#saveRowTemplate = document.querySelector<HTMLTemplateElement>('template#save-row')!
@@ -291,33 +295,33 @@ export class UiState {
 	}
 
 	#updateScore (state: State) {
-		const { hand, scores } = calculateScore(state)
+		const { hand, results } = calculateScore(state)
 
-		const distinctScores = new Map<string, ResultScore>()
-		for (const score of scores) {
-			if (!distinctScores.has(score.score)) {
-				distinctScores.set(score.score, score)
+		const resultsByScore = new Map<string, Result>()
+		for (const result of results) {
+			if (!resultsByScore.has(result.score)) {
+				resultsByScore.set(result.score, result)
 			}
 		}
 
 		this.#playedHandEl.textContent = hand
 
 		this.#scoreCardContainer.innerHTML = ''
-		for (const score of distinctScores.values()) {
+		for (const result of resultsByScore.values()) {
 			const template = document.querySelector<HTMLTemplateElement>('template#score-card')!
 			const fragment = template.content.cloneNode(true) as Element
 
 			const luckEl = fragment.querySelector<HTMLElement>('[data-sc-luck]')!
-			luckEl.textContent = score.luck
+			luckEl.textContent = result.luck
 
 			const formattedScoreEl = fragment.querySelector<HTMLElement>('[data-sc-formatted-score]')!
-			formattedScoreEl.textContent = score.formattedScore
+			formattedScoreEl.textContent = result.formattedScore
 
 			const scoreEl = fragment.querySelector<HTMLElement>('[data-sc-score]')!
 
-			const thousandsSeparatedScore = score.score.includes('.')
-				? score.score
-				: score.score
+			const thousandsSeparatedScore = result.score.includes('.')
+				? result.score
+				: result.score
 					.split('')
 					.toReversed()
 					.map((digit, index) => digit + (index > 0 && index % 3 === 0 ? ',' : ''))
@@ -327,6 +331,8 @@ export class UiState {
 
 			this.#scoreCardContainer.appendChild(fragment)
 		}
+
+		this.#log.innerHTML = Array.from(resultsByScore.values()).map((result) => result.log.join('\n')).join('\n\n')
 	}
 
 	/**
