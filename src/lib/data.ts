@@ -516,6 +516,7 @@ export const JOKER_DEFINITIONS: Record<JokerName, JokerDefinition> = {
 		rarity: 'common',
 		effect ({ state, score, playedHand, trigger }) {
 			score.push({
+				// TODO: This is a conceptual mistake. The values input by the user should be the effective values after having played a hand and so we shouldn't `+ 1` here and instead have users input a value that's one higher than when they played a corresponding hand. All other inputs in Balatrolator work like this and hand levels are the only exception. This is a breaking change.
 				multiplier: ['+', state.handLevels[playedHand].plays + 1],
 				phase: 'jokers',
 				joker: this,
