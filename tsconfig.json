@@ -12,7 +12,8 @@
 		"lib": [
 			"dom",
 			"dom.iterable",
-			"es2023"
+			"es2023",
+			"esnext.disposable"
 		],
 		"allowUnreachableCode": false,
 		"noImplicitAny": true,
