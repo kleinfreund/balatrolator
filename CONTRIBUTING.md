@@ -9,7 +9,7 @@ This project follows a [code of conduct](https://github.com/kleinfreund/balatrol
 The following software will be required to contribute to this project:
 
 - git
-- Node.js (see .nvmrc file for version)
+- Node.js (see .node-version file for version)
 - npm (version 10 or higher)
 
 ## Development
