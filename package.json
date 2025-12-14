@@ -41,7 +41,7 @@
 		"prepare": "husky"
 	},
 	"dependencies": {
-		"mathjs": "14.9.1"
+		"mathjs": "15.1.0"
 	},
 	"devDependencies": {
 		"@commitlint/cli": "20.2.0",
