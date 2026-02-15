@@ -16,6 +16,13 @@
 </head>
 
 <body>
+	<script type="module">
+		if (window.self !== window.top) {
+			document.body.insertAdjacentHTML('afterbegin', `<p>This website is **not** the real Balatrolator Balatro score calculator. Go to <a href="https://balatrolator.com/">balatrolator.com</a>.</p>`)
+			document.querySelector('main')?.remove()
+		}
+	</script>
+
 	<main class="main-content">
 		<div class="stack">
 			<div class="list">
