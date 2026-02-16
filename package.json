@@ -2,7 +2,7 @@
 	"name": "balatrolator",
 	"version": "1.0.1f",
 	"license": "MIT",
-	"description": "Balatrolator, a Balatro score calculator",
+	"description": "Balatrolator, a Balatro calculator",
 	"author": {
 		"name": "Philipp Rudloff",
 		"url": "https://kleinfreund.de"

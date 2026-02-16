@@ -2,7 +2,7 @@
 
 [![Tests passing](https://github.com/kleinfreund/balatrolator/workflows/Tests/badge.svg)](https://github.com/kleinfreund/balatrolator/actions)
 
-[Balatrolator](https://balatrolator.com/) is a score calculator for [Balatro](https://www.playbalatro.com/). It's a fan project and not affiliated with the makers of Balatro.
+[Balatrolator](https://balatrolator.com/) is a [Balatro](https://www.playbalatro.com/) score calculator. It's a fan project and not affiliated with the makers of Balatro.
 
 > [!NOTE]
 > Please, [report any bugs you encounter](https://github.com/kleinfreund/balatrolator/issues/new/choose).
