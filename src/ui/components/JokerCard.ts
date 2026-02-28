@@ -1,5 +1,6 @@
 import { uniqueId } from '#ui/uniqueId.ts'
 import { JOKER_DEFINITIONS } from '#lib/data.ts'
+import { ComboBox } from './ComboBox.ts'
 import { DraggableCard } from './DraggableCard.ts'
 import type { Joker, JokerEdition, JokerName, Rank, Suit } from '#lib/types.ts'
 
@@ -15,15 +16,15 @@ export class JokerCard extends DraggableCard {
 	fragment: Element
 	showDuplicateModalButton: HTMLButtonElement
 	removeButton: HTMLButtonElement
-	nameInput: HTMLInputElement
+	nameInput: ComboBox
 	countInput: HTMLInputElement
-	editionInput: HTMLInputElement
+	editionInput: HTMLSelectElement
 	plusChipsInput: HTMLInputElement
 	plusMultiplierInput: HTMLInputElement
 	timesMultiplierInput: HTMLInputElement
 	activeCheckbox: HTMLInputElement
-	rankInput: HTMLInputElement
-	suitInput: HTMLInputElement
+	rankInput: HTMLSelectElement
+	suitInput: HTMLSelectElement
 
 	constructor () {
 		super()
@@ -41,26 +42,16 @@ export class JokerCard extends DraggableCard {
 		this.showDuplicateModalButton = this.fragment.querySelector<HTMLButtonElement>('[popovertarget="j-duplicate-modal"]')!
 		this.showDuplicateModalButton.addEventListener('click', this.showDuplicateModal)
 
-		this.nameInput = this.fragment.querySelector<HTMLInputElement>('[data-j-name]')!
-		this.nameInput.name = `joker-name-${id}`
-		this.nameInput.addEventListener('change', (event) => {
-			const input = event.target as HTMLInputElement
-			const option = document.querySelector(`datalist#joker-options option[value="${input.value}"]`)
-			input.setCustomValidity(option ? '' : `“${input.value}” is not a Joker.`)
-			input.reportValidity()
-		})
+		this.nameInput = this.fragment.querySelector<ComboBox>('[data-j-name]')!
+		this.nameInput.setAttribute('id', `joker-name-${id}`)
+		this.nameInput.setAttribute('name', `joker-name-${id}`)
 
 		this.countInput = this.fragment.querySelector<HTMLInputElement>('[data-j-count]')!
 		this.countInput.name = `joker-count-${id}`
 
-		this.editionInput = this.fragment.querySelector<HTMLInputElement>('[data-j-edition]')!
+		this.editionInput = this.fragment.querySelector<HTMLSelectElement>('[data-j-edition]')!
+		this.editionInput.id = `joker-edition-${id}`
 		this.editionInput.name = `joker-edition-${id}`
-		this.editionInput.addEventListener('change', (event) => {
-			const input = event.target as HTMLInputElement
-			const option = document.querySelector(`datalist#joker-edition-options option[value="${input.value}"]`)
-			input.setCustomValidity(option ? '' : `“${input.value}” is not an edition.`)
-			input.reportValidity()
-		})
 
 		this.plusChipsInput = this.fragment.querySelector<HTMLInputElement>('[data-j-plus-chips]')!
 		this.plusChipsInput.name = `joker-plusChips-${id}`
@@ -74,23 +65,13 @@ export class JokerCard extends DraggableCard {
 		this.activeCheckbox = this.fragment.querySelector<HTMLInputElement>('[data-j-is-active]')!
 		this.activeCheckbox.name = `joker-active-${id}`
 
-		this.rankInput = this.fragment.querySelector<HTMLInputElement>('[data-j-rank]')!
+		this.rankInput = this.fragment.querySelector<HTMLSelectElement>('[data-j-rank]')!
+		this.rankInput.id = `joker-rank-${id}`
 		this.rankInput.name = `joker-rank-${id}`
-		this.rankInput.addEventListener('change', (event) => {
-			const input = event.target as HTMLInputElement
-			const option = document.querySelector(`datalist#rank-options option[value="${input.value}"]`)
-			input.setCustomValidity(option ? '' : `“${input.value}” is not a rank.`)
-			input.reportValidity()
-		})
 
-		this.suitInput = this.fragment.querySelector<HTMLInputElement>('[data-j-suit]')!
+		this.suitInput = this.fragment.querySelector<HTMLSelectElement>('[data-j-suit]')!
+		this.suitInput.id = `joker-suit-${id}`
 		this.suitInput.name = `joker-suit-${id}`
-		this.suitInput.addEventListener('change', (event) => {
-			const input = event.target as HTMLInputElement
-			const option = document.querySelector(`datalist#suit-options option[value="${input.value}"]`)
-			input.setCustomValidity(option ? '' : `“${input.value}” is not a suit.`)
-			input.reportValidity()
-		})
 	}
 
 	get [Symbol.toStringTag] () {

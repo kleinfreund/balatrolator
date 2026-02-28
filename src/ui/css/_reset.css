@@ -18,7 +18,9 @@ ul,
 ol,
 dl,
 dd,
-figure {
+figure,
+fieldset,
+legend {
 	margin: 0;
 	padding: 0;
 }
@@ -32,9 +34,14 @@ main {
 
 button,
 input,
-select {
+select,
+fieldset {
 	font-size: 100%;
 	line-height: inherit;
 	font-family: inherit;
 	font-weight: inherit;
+}
+
+fieldset {
+	border: none;
 }

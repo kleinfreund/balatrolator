@@ -8,5 +8,6 @@ export default defineConfig({
 		coverage: {
 			include: ['src'],
 		},
+		include: ['src/**/*.test.ts'],
 	},
 })

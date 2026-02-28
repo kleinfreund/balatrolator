@@ -1,9 +1,5 @@
 /* LABEL */
 
-.label {
-	font-weight: bold;
-}
-
 .action-list {
 	display: flex;
 	align-items: stretch;
@@ -12,6 +8,33 @@
 
 .action-list>:not(.button):not(.push-left) {
 	flex: 1;
+}
+
+/* CONTROL */
+
+.control-box:where(.--flat) {
+	display: flex;
+	justify-content: space-between;
+	align-items: baseline;
+	gap: 0.25rem;
+	flex-wrap: wrap;
+}
+
+.control-box>.label,
+.control-box>.secondary-label {
+	display: block;
+}
+
+.secondary-label {
+	font-size: 0.9em;
+}
+
+.control-box:where(.--flat) .secondary-label {
+	flex-basis: 100%;
+}
+
+.control-box:where(.--grow)>:is(.text-input, .combo-box, .select) {
+	flex-grow: 1;
 }
 
 /* INPUT LIST */
@@ -31,7 +54,7 @@
 
 .button,
 ::file-selector-button {
-	height: 2rem;
+	min-block-size: 2rem;
 	margin: 0;
 	padding: 0 1rem;
 	border: 2px solid var(--c-border);
@@ -68,8 +91,8 @@
 }
 
 .button:where(.--icon) {
-	padding-right: 0.2rem;
-	padding-left: 0.2rem;
+	padding-inline-end: 0.2rem;
+	padding-inline-start: 0.2rem;
 	justify-content: center;
 }
 
@@ -79,28 +102,11 @@
 
 /* TEXT CONTROL */
 
-.text-control:where(.--flat) {
-	display: flex;
-	justify-content: space-between;
-	align-items: baseline;
-	gap: 0.25rem;
-	flex-wrap: wrap;
-}
-
-.text-control>.label,
-.text-control>.secondary-label {
-	display: block;
-}
-
-.text-control:where(.--flat) .secondary-label {
-	flex-basis: 100%;
-}
-
 .text-input {
 	display: block;
-	width: 100%;
-	max-width: 100%;
-	height: 2rem;
+	inline-size: 100%;
+	max-inline-size: 100%;
+	block-size: 2rem;
 	margin: 0;
 	padding: 0 0.25rem;
 	border: 2px solid var(--c-border);
@@ -115,34 +121,13 @@
 	}
 }
 
-.text-control:where(.--grow)>.text-input {
-	flex-grow: 1;
-}
-
 /* SELECT CONTROL */
-
-.select-control:where(.--flat) {
-	display: flex;
-	justify-content: space-between;
-	align-items: baseline;
-	gap: 0.25rem;
-	flex-wrap: wrap;
-}
-
-.select-control>.label,
-.select-control>.secondary-label {
-	display: block;
-}
-
-.select-control:where(.--flat) .secondary-label {
-	flex-basis: 100%;
-}
 
 .select {
 	display: block;
-	width: 100%;
-	max-width: 100%;
-	height: 2rem;
+	inline-size: 100%;
+	max-inline-size: 100%;
+	block-size: 2rem;
 	margin: 0;
 	padding: 0 0.25rem;
 	border: 2px solid var(--c-border);
@@ -155,10 +140,6 @@
 	.select {
 		background-color: var(--c-white);
 	}
-}
-
-.select-control:where(.--grow)>.select {
-	flex-grow: 1;
 }
 
 /* CHECKBOX */

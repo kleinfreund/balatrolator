@@ -1,5 +1,8 @@
+import './components/ComboBox.ts'
+
 import { getState } from '#lib/getState.ts'
 import { calculateScore } from '#lib/calculateScore.ts'
+import type { ComboBox } from './components/ComboBox.ts'
 import { HandLevel } from './components/HandLevel.ts'
 import { JokerCard } from './components/JokerCard.ts'
 import { PlayingCard } from './components/PlayingCard.ts'
@@ -25,9 +28,9 @@ export class UiState {
 	#handsInput: HTMLInputElement
 	#discardsInput: HTMLInputElement
 	#moneyInput: HTMLInputElement
-	#blindNameInput: HTMLInputElement
+	#blindNameInput: ComboBox
 	#blindIsActiveCheckbox: HTMLInputElement
-	#deckInput: HTMLInputElement
+	#deckInput: ComboBox
 	#observatoryInputs: NodeListOf<HTMLInputElement>
 	#jokerSlotsInput: HTMLInputElement
 
@@ -56,36 +59,18 @@ export class UiState {
 		const form = document.querySelector<HTMLFormElement>('[data-form]')!
 		this.#form = form
 		form.addEventListener('submit', (event) => this.#handleSubmit(event))
-		form.addEventListener('input', (event) => {
-			if (event.target instanceof HTMLInputElement) {
-				event.target.setCustomValidity('')
-			}
-		})
 
-		this.#handsInput = form.querySelector<HTMLInputElement>('[data-r-hands]')!
-		this.#discardsInput = form.querySelector<HTMLInputElement>('[data-r-discards]')!
-		this.#moneyInput = form.querySelector<HTMLInputElement>('[data-r-money]')!
+		this.#handsInput = form.querySelector<HTMLInputElement>('[name="hands"]')!
+		this.#discardsInput = form.querySelector<HTMLInputElement>('[name="discards"]')!
+		this.#moneyInput = form.querySelector<HTMLInputElement>('[name="money"]')!
 
-		this.#blindNameInput = form.querySelector<HTMLInputElement>('[data-r-blind-name]')!
-		this.#blindNameInput.addEventListener('change', (event) => {
-			const input = event.target as HTMLInputElement
-			const option = document.querySelector(`datalist#blind-name-options option[value="${input.value}"]`)
-			input.setCustomValidity(option ? '' : `“${input.value}” is not a blind.`)
-			input.reportValidity()
-		})
+		this.#blindNameInput = form.querySelector<ComboBox>('[name="blindName"]')!
+		this.#blindIsActiveCheckbox = form.querySelector<HTMLInputElement>('[name="blindIsActive"]')!
 
-		this.#blindIsActiveCheckbox = form.querySelector<HTMLInputElement>('[data-r-blind-is-active]')!
-
-		this.#deckInput = form.querySelector<HTMLInputElement>('[data-r-deck]')!
-		this.#deckInput.addEventListener('change', (event) => {
-			const input = event.target as HTMLInputElement
-			const option = document.querySelector(`datalist#deck-options option[value="${input.value}"]`)
-			input.setCustomValidity(option ? '' : `“${input.value}” is not a deck.`)
-			input.reportValidity()
-		})
+		this.#deckInput = form.querySelector<ComboBox>('[name="deck"]')!
 
 		this.#observatoryInputs = form.querySelectorAll<HTMLInputElement>('[data-r-observatory-hand]')
-		this.#jokerSlotsInput = form.querySelector<HTMLInputElement>('[data-r-joker-slots]')!
+		this.#jokerSlotsInput = form.querySelector<HTMLInputElement>('[name="jokerSlots"]')!
 
 		this.#handLevelContainer = form.querySelector<HTMLElement>('[data-h-container]')!
 
@@ -128,7 +113,9 @@ export class UiState {
 		}
 
 		// Quick and dirty way to update the state whenever necessary
-		form.addEventListener('change', () => this.#calculate())
+		form.addEventListener('change', () => {
+			this.#calculate()
+		})
 
 		// Re-calculate score after re-ordering cards
 		new MutationObserver(this.#handleMutation).observe(this.#jokerContainer, { childList: true })

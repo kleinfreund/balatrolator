@@ -1,34 +1,14 @@
 {
-	"compilerOptions": {
-		"baseUrl": ".",
-		"rootDir": ".",
-		"outDir": "dist",
-		"sourceMap": false,
-		"noEmit": true,
-		"target": "es2023",
-		"module": "es2022",
-		"moduleResolution": "Bundler",
-		"allowImportingTsExtensions": true,
-		"lib": [
-			"dom",
-			"dom.iterable",
-			"es2023",
-			"esnext.disposable"
-		],
-		"allowUnreachableCode": false,
-		"noImplicitAny": true,
-		"noImplicitReturns": true,
-		"noImplicitThis": true,
-		"noUncheckedIndexedAccess": true,
-		"noUnusedLocals": true,
-		"noUnusedParameters": true,
-		"strict": true,
-		"strictNullChecks": true,
-		"types": [
-			"vite/client"
-		]
-	},
-	"include": [
-		"./src/**/*.ts"
-	]
+  "files": [],
+  "references": [
+    {
+      "path": "./tsconfig.node.json"
+    },
+    {
+      "path": "./tsconfig.app.json"
+    },
+    {
+      "path": "./tsconfig.vitest.json"
+    }
+  ]
 }

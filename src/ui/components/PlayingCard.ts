@@ -1,4 +1,5 @@
 import { uniqueId } from '#ui/uniqueId.ts'
+import { ComboBox } from './ComboBox.ts'
 import { DraggableCard } from './DraggableCard.ts'
 import type { Card, Edition, Enhancement, Rank, Seal, Suit } from '#lib/types.ts'
 
@@ -17,11 +18,11 @@ export class PlayingCard extends DraggableCard {
 	playedCheckbox: HTMLInputElement
 	countInput: HTMLInputElement
 	debuffedCheckbox: HTMLInputElement
-	rankInput: HTMLInputElement
-	suitInput: HTMLInputElement
-	editionInput: HTMLInputElement
-	enhancementInput: HTMLInputElement
-	sealInput: HTMLInputElement
+	rankInput: HTMLSelectElement
+	suitInput: HTMLSelectElement
+	editionInput: HTMLSelectElement
+	enhancementInput: HTMLSelectElement
+	sealInput: HTMLSelectElement
 
 	constructor () {
 		super()
@@ -48,50 +49,25 @@ export class PlayingCard extends DraggableCard {
 		this.debuffedCheckbox = this.fragment.querySelector<HTMLInputElement>('[data-c-is-debuffed]')!
 		this.debuffedCheckbox.name = `card-is-debuffed-${id}`
 
-		this.rankInput = this.fragment.querySelector<HTMLInputElement>('[data-c-rank]')!
+		this.rankInput = this.fragment.querySelector<HTMLSelectElement>('[data-c-rank]')!
+		this.rankInput.id = `card-rank-${id}`
 		this.rankInput.name = `card-rank-${id}`
-		this.rankInput.addEventListener('change', (event) => {
-			const input = event.target as HTMLInputElement
-			const option = document.querySelector(`datalist#rank-options option[value="${input.value}"]`)
-			input.setCustomValidity(option ? '' : `“${input.value}” is not a rank.`)
-			input.reportValidity()
-		})
 
-		this.suitInput = this.fragment.querySelector<HTMLInputElement>('[data-c-suit]')!
+		this.suitInput = this.fragment.querySelector<HTMLSelectElement>('[data-c-suit]')!
+		this.suitInput.id = `card-suit-${id}`
 		this.suitInput.name = `card-suit-${id}`
-		this.suitInput.addEventListener('change', (event) => {
-			const input = event.target as HTMLInputElement
-			const option = document.querySelector(`datalist#suit-options option[value="${input.value}"]`)
-			input.setCustomValidity(option ? '' : `“${input.value}” is not a suit.`)
-			input.reportValidity()
-		})
 
-		this.editionInput = this.fragment.querySelector<HTMLInputElement>('[data-c-edition]')!
+		this.editionInput = this.fragment.querySelector<HTMLSelectElement>('[data-c-edition]')!
+		this.editionInput.id = `card-edition-${id}`
 		this.editionInput.name = `card-edition-${id}`
-		this.editionInput.addEventListener('change', (event) => {
-			const input = event.target as HTMLInputElement
-			const option = document.querySelector(`datalist#playing-card-edition-options option[value="${input.value}"]`)
-			input.setCustomValidity(option ? '' : `“${input.value}” is not an edition.`)
-			input.reportValidity()
-		})
 
-		this.enhancementInput = this.fragment.querySelector<HTMLInputElement>('[data-c-enhancement]')!
+		this.enhancementInput = this.fragment.querySelector<HTMLSelectElement>('[data-c-enhancement]')!
+		this.enhancementInput.id = `card-enhancement-${id}`
 		this.enhancementInput.name = `card-enhancement-${id}`
-		this.enhancementInput.addEventListener('change', (event) => {
-			const input = event.target as HTMLInputElement
-			const option = document.querySelector(`datalist#enhancement-options option[value="${input.value}"]`)
-			input.setCustomValidity(option ? '' : `“${input.value}” is not an enhancement.`)
-			input.reportValidity()
-		})
 
-		this.sealInput = this.fragment.querySelector<HTMLInputElement>('[data-c-seal]')!
+		this.sealInput = this.fragment.querySelector<HTMLSelectElement>('[data-c-seal]')!
+		this.sealInput.id = `card-seal-${id}`
 		this.sealInput.name = `card-seal-${id}`
-		this.sealInput.addEventListener('change', (event) => {
-			const input = event.target as HTMLInputElement
-			const option = document.querySelector(`datalist#seal-options option[value="${input.value}"]`)
-			input.setCustomValidity(option ? '' : `“${input.value}” is not a seal.`)
-			input.reportValidity()
-		})
 
 		this.addEventListener('click', (event) => {
 			if (event.currentTarget && !isInteractive(event)) {
@@ -215,8 +191,8 @@ export class PlayingCard extends DraggableCard {
 		)
 
 		// This is shitty. Make it better. I shouldn't be querying unrelated DOM elements here.
-		const blindNameInput = this.ownerDocument.querySelector('[data-r-blind-name]') as HTMLInputElement
-		const blindIsActiveCheckbox = this.ownerDocument.querySelector('[data-r-blind-is-active]') as HTMLInputElement
+		const blindNameInput = this.ownerDocument.querySelector<ComboBox>('[name="blindName"]')!
+		const blindIsActiveCheckbox = this.ownerDocument.querySelector<HTMLInputElement>('[name="blindIsActive"]')!
 
 		;[
 			this.playedCheckbox.checked ? '--is-played' : null,

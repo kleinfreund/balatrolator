@@ -32,11 +32,11 @@ ol:not(:first-child),
 dl:not(:first-child),
 table:not(:first-child),
 figure:not(:first-child) {
-	margin-top: 0.5rem;
+	margin-block-start: 0.5rem;
 }
 
 ul {
-	padding-left: 1rem;
+	padding-inline-start: 1rem;
 }
 
 a {
@@ -45,6 +45,10 @@ a {
 
 a:hover {
 	color: var(--c-blue-dark);
+}
+
+legend {
+	font-weight: bold;
 }
 
 dialog {
@@ -57,7 +61,7 @@ dialog::backdrop {
 
 table {
 	border-collapse: collapse;
-	width: 100%;
+	inline-size: 100%;
 }
 
 th {
@@ -70,9 +74,22 @@ td {
 }
 
 tbody tr {
-	border-top: 2px solid var(--c-border);
+	border-block-start: 2px solid var(--c-border);
 }
 
 pre {
 	overflow-x: auto;
+	font-family: var(--f-family-mono);
+}
+
+[hidden] {
+	display: none !important;
+}
+
+::placeholder {
+	font-style: italic;
+}
+
+::-webkit-inner-spin-button {
+	margin-inline-start: 2px;
 }

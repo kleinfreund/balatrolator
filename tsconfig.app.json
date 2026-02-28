@@ -1,0 +1,29 @@
+{
+	"include": [
+		"./src/**/*",
+		"./balatrolator.ts"
+	],
+	"compilerOptions": {
+		"noEmit": true,
+		"module": "ESNext",
+		"target": "ESNext",
+		"moduleResolution": "Bundler",
+		"allowImportingTsExtensions": true,
+    "moduleDetection": "force",
+    "esModuleInterop": true,
+		"lib": [
+			"DOM",
+			"DOM.Iterable",
+			"ES2024"
+		],
+		"allowUnreachableCode": false,
+		"noImplicitAny": true,
+		"noImplicitReturns": true,
+		"noImplicitThis": true,
+		"noUncheckedIndexedAccess": true,
+		"noUnusedLocals": true,
+		"noUnusedParameters": true,
+		"strict": true,
+		"strictNullChecks": true
+	}
+}

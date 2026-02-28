@@ -2,6 +2,20 @@
 	margin-block-start: 0.5rem;
 }
 
+.card-stack {
+	display: flex;
+	flex-direction: column;
+	gap: 0.5rem;
+}
+
+.card-stack > * {
+	flex: 1;
+}
+
+.card-stack:not(.increase-specificity) {
+  max-inline-size: var(--s-card-max-inline-size);
+}
+
 .columns {
 	--threshold: 40rem;
 
@@ -43,7 +57,7 @@
 }
 
 .badge {
-	display: inline-block;
+	display: inline block;
 	padding: 0 0.5rem;
 	color: var(--c-text);
 	background-color: var(--c-background-lighter);
@@ -52,7 +66,7 @@
 }
 
 .push-left {
-	margin-left: auto;
+	margin-inline-start: auto;
 }
 
 .truncate {

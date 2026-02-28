@@ -11,5 +11,5 @@ if (typeof path !== 'string' || path === '') {
 
 const content = readFileSync(path, { encoding: 'utf-8' })
 const state = getState(JSON.parse(content))
-const { hand, scores } = calculateScore(state)
-console.info(JSON.stringify({ hand, scores }, null, 2))
+const { hand, results } = calculateScore(state)
+console.info(JSON.stringify({ hand, results }, null, 2))

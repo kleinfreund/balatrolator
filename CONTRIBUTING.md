@@ -33,16 +33,40 @@ npm run start:debug
 ```
 
 
-### Run tests
+### Run node tests
 
 ```sh
-npm run test
+npm run test:node
 ```
 
 In debug mode:
 
 ```sh
-npm run test:debug
+npm run test:node:debug
+```
+
+### Run browser tests
+
+Before running the Playwright tests for the first time (and every time Playwright was updated), the browsers it uses have to be (re-)installed:
+
+```sh
+npx playwright install chromium
+```
+
+#### Headless
+
+Run the tests in headless mode from the CLI.
+
+```sh
+npm run test:browser
+```
+
+#### UI
+
+Run the tests in head mode in a dedicated browser UI.
+
+```sh
+npm run test:browser:ui
 ```
 
 ### Committing changes

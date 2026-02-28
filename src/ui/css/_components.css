@@ -1,11 +1,26 @@
 .icon {
 	fill: currentColor;
-	width: 1.33333rem;
-	height: 1.33333rem;
+	inline-size: 1.33333rem;
+	block-size: 1.33333rem;
 }
 
 .main-content {
 	margin: 0.5rem;
+}
+
+.header {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 0.5rem;
+}
+
+.introduction {
+	flex: 2;
+}
+
+.saves {
+	flex: 3;
+	min-inline-size: 0;
 }
 
 .form {
@@ -58,7 +73,7 @@
 }
 
 .panel-header {
-	display: inline-flex;
+	display: inline flex;
 	align-items: center;
 	flex-wrap: wrap;
 	gap: 0.5rem;
@@ -87,11 +102,11 @@
 }
 
 .card:not(.increase-specificity) {
-	max-width: 16rem;
+	max-inline-size: var(--s-card-max-inline-size);
 }
 
 .observatory-card:not(.increase-specificity) {
-	max-width: calc(32rem + 0.5rem);
+	max-inline-size: calc(32rem + 0.5rem);
 }
 
 /* ROUND DATA */
@@ -101,39 +116,39 @@
 }
 
 .r-hands-input {
-	width: 4rem;
+	inline-size: 4rem;
 }
 
 .r-discards-input {
-	width: 4rem;
+	inline-size: 4rem;
 }
 
 .r-money-input {
-	width: 4.5rem;
+	inline-size: 4.5rem;
 }
 
 .r-blind-name-input {
-	width: 9.5rem;
+	inline-size: 9.5rem;
 }
 
 .r-deck-input {
-	width: 10rem;
+	inline-size: 10rem;
 }
 
 .r-joker-slots-input {
-	width: 4rem;
+	inline-size: 4rem;
 }
 
 .r-observatory-input {
 	text-align: right;
-	width: 4.5rem;
+	inline-size: 4.5rem;
 }
 
 /* HAND LEVELS */
 
 hand-level {
 	display: block;
-	width: initial;
+	inline-size: initial;
 }
 
 @media (prefers-contrast: more) {
@@ -147,12 +162,12 @@ hand-level {
 
 .h-level-input {
 	text-align: right;
-	width: 4rem;
+	inline-size: 4rem;
 }
 
 .h-plays-input {
 	text-align: right;
-	width: 5rem;
+	inline-size: 5rem;
 }
 
 /* CARDS */
@@ -180,11 +195,11 @@ hand-level {
 }
 
 .playing-card:where(.--is-played) {
-	margin-bottom: 1.5rem;
+	margin-block-end: 1.5rem;
 }
 
 .playing-card:not(:where(.--is-played)) {
-	margin-top: 1.5rem;
+	margin-block-start: 1.5rem;
 }
 
 .playing-card:not(.--is-blind-the-pillar) .c-is-debuffed {
@@ -192,20 +207,20 @@ hand-level {
 }
 
 .c-count-input {
-	width: 3.5rem;
+	inline-size: 3.5rem;
 	text-align: right;
 }
 
 .c-edition-input {
-	width: 8.5rem;
+	inline-size: 8.5rem;
 }
 
 .c-enhancement-input {
-	width: 5.5rem;
+	inline-size: 5.5rem;
 }
 
 .c-seal-input {
-	width: 5.5rem;
+	inline-size: 5.5rem;
 }
 
 /* JOKERS */
@@ -233,12 +248,12 @@ hand-level {
 }
 
 .j-count-input {
-	width: 3.5rem;
+	inline-size: 3.5rem;
 	text-align: right;
 }
 
 .j-edition-input {
-	width: 8.5rem;
+	inline-size: 8.5rem;
 }
 
 .joker-card:not(.--has-plus-chips):not(.--has-plus-multiplier):not(.--has-times-multiplier):not(.--has-is-active):not(.--has-rank):not(.--has-suit) .joker-effects {
@@ -270,7 +285,7 @@ hand-level {
 }
 
 .j-rank-input {
-	width: 5.5rem;
+	inline-size: 5.5rem;
 }
 
 .joker-card.--has-rank:not(.--has-suit) .j-card-of,
@@ -283,21 +298,21 @@ hand-level {
 }
 
 .j-suit-input {
-	width: 7rem;
+	inline-size: 7rem;
 }
 
 .j-plus-chips-input {
-	width: 7rem;
+	inline-size: 7rem;
 	text-align: right;
 }
 
 .j-plus-multiplier-input {
-	width: 7rem;
+	inline-size: 7rem;
 	text-align: right;
 }
 
 .j-times-multiplier-input {
-	width: 7rem;
+	inline-size: 7rem;
 	text-align: right;
 }
 
@@ -323,9 +338,14 @@ hand-level {
 
 .score-entry {
 	display: flex;
+	flex-wrap: wrap;
 	justify-content: space-between;
 	align-items: baseline;
 	gap: 0.25rem;
+
+	.badge {
+		flex-shrink: 0;
+	}
 }
 
 .exact-score {
@@ -334,13 +354,12 @@ hand-level {
 }
 
 .table-wrapper {
-	min-inline-size: 48rem;
-	max-height: 15rem;
-	overflow-y: auto
+	max-block-size: 15rem;
+	overflow-x: auto
 }
 
 .actions-cell {
-	width: 10rem;
+	inline-size: 10rem;
 	text-align: right;
 }
 
@@ -353,11 +372,12 @@ hand-level {
 }
 
 .s-save-name-input {
-	width: 15rem;
+	inline-size: 15rem;
 }
 
 .log {
-	max-height: 15rem;
+	max-block-size: 15rem;
+	font-size: 0.8em;
 }
 
 .log:empty {

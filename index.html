@@ -25,10 +25,10 @@
 
 	<main class="main-content">
 		<div class="stack">
-			<div class="list">
-				<div class="panel">
+			<div class="header">
+				<div class="introduction panel">
 					<header class="panel-header">
-						<h1>Balatrolator 🃏🧮</h1>
+						<h1>Balatrolator</h1>
 					</header>
 
 					<p>Balatrolator is a score calculator for <a href="https://www.playbalatro.com/">Balatro</a>. Go, buy the game!</p>
@@ -40,7 +40,7 @@
 					<p>Made with love by <a href="https://kleinfreund.de">kleinfreund</a>. ❤️</p>
 				</div>
 
-				<div class="panel">
+				<div class="saves panel">
 					<div class="stack">
 						<header class="panel-header">
 							<h2>Saves</h2>
@@ -64,7 +64,7 @@
 
 						<form data-s-form>
 							<div class="s-save-container">
-								<label class="s-save-name text-control --flat --grow">
+								<label class="s-save-name control-box --flat --grow">
 									<span class="label truncate">Save name</span>
 
 									<input class="s-save-name-input text-input" name="name" type="text" required placeholder="Hand 1" data-s-name-input>
@@ -80,13 +80,26 @@
 							</div>
 						</form>
 
-						<form data-s-import-form>
-							<div class="s-import-container">
-								<label class="s-import text-control --flat --grow">
-									<span class="label truncate">Import save</span>
+						<form class="stack" data-s-import-form>
+							<h3>Import save</h3>
 
-									<input class="s-import-input file-input" name="import" type="file" accept=".json,application/json" required data-s-import-input>
-								</label>
+							<div class="s-import-container">
+								<div class="s-import control-box --flat --grow">
+									<label class="visually-hidden" for="import">Import save</label>
+
+									<input
+										class="s-import-input file-input"
+										id="import"
+										name="import"
+										type="file"
+										accept=".json,application/json"
+										required
+										aria-describedby="import-description"
+										data-s-import-input
+									>
+
+									<span class="secondary-label" id="import-description">Import any saves you previously exported in JSON format.</span>
+								</div>
 
 								<button class="s-import-button button" type="submit" data-s-import-button>
 									<svg class="icon">
@@ -96,8 +109,6 @@
 									<span>Import</span>
 								</button>
 							</div>
-
-							<p>Import any saves you previously exported in JSON format.</p>
 						</form>
 					</div>
 				</div>
@@ -121,129 +132,156 @@
 						</header>
 
 						<div class="list">
-							<div class="card">
-								<label class="r-hands text-control --flat --grow">
-									<span class="label truncate">Hands</span>
+							<div class="card-stack">
+								<div class="card">
+									<div class="r-hands control-box --flat --grow">
+										<label class="label truncate" for="hands">Hands</label>
 
-									<input class="r-hands-input text-input" name="hands" type="number" min="0" value="0" data-r-hands>
+										<input class="r-hands-input text-input" id="hands" name="hands" type="number" min="0" value="0" aria-describedby="hands-description">
 
-									<span class="secondary-label">Influences: Acrobat</span>
-								</label>
-							</div>
+										<span class="secondary-label" id="hands-description">Influences: Acrobat</span>
+									</div>
+								</div>
 
-							<div class="card">
-								<label class="r-discards text-control --flat --grow">
-									<span class="label truncate">Discards</span>
+								<div class="card">
+									<div class="r-discards control-box --flat --grow">
+										<label class="label truncate" for="discards">Discards</label>
 
-									<input class="r-discards-input text-input" name="discards" type="number" min="0" value="0" data-r-discards>
+										<input class="r-discards-input text-input" id="discards" name="discards" type="number" min="0" value="0" aria-describedby="discards-description">
 
-									<span class="secondary-label">Influences: Banner, Mystic Summit</span>
-								</label>
-							</div>
-
-							<div class="card">
-								<label class="r-money text-control --flat --grow">
-									<span class="label truncate">Money</span>
-
-									<input class="r-money-input text-input" name="money" type="number" value="0" data-r-money>
-
-									<span class="secondary-label">Influences: Bull, Bootstraps</span>
-								</label>
-							</div>
-
-							<div class="card">
-								<div class="stack">
-									<label class="r-blind-name text-control --flat --grow">
-										<span class="label truncate">Blind</span>
-
-										<input class="r-blind-name-input text-input" list="blind-name-options" autocomplete="off" value="Small Blind" name="blindName" data-r-blind-name>
-
-										<span class="secondary-label">Influences: Debuffed cards, scoring</span>
-									</label>
-
-									<label class="r-blind-is-active checkbox-control">
-										<input class="r-blind-is-active-input checkbox" name="blindIsActive" type="checkbox" value="is-active" checked data-r-blind-is-active>
-
-										<span class="label">Active?</span>
-									</label>
+										<span class="secondary-label" id="discards-description">Influences: Banner, Mystic Summit</span>
+									</div>
 								</div>
 							</div>
 
-							<div class="card">
-								<label class="r-deck text-control --flat --grow">
-									<span class="label truncate">Deck</span>
+							<div class="card-stack">
+								<div class="card">
+									<div class="r-money control-box --flat --grow">
+										<label class="label truncate" for="money">Money</label>
 
-									<input class="r-deck-input text-input" list="deck-options" autocomplete="off" value="Red Deck" name="deck" data-r-deck>
+										<input class="r-money-input text-input" id="money" name="money" type="number" value="0" aria-describedby="money-description">
 
-									<span class="secondary-label">Influences: Scoring with Plasma Deck</span>
-								</label>
+										<span class="secondary-label" id="money-description">Influences: Bull, Bootstraps</span>
+									</div>
+								</div>
+
+								<div class="card">
+									<div class="stack">
+										<div class="r-blind-name control-box --flat --grow">
+											<label class="label truncate" for="blindName">Blind</label>
+
+											<combo-box
+												class="r-blind-name-input"
+												id="blindName"
+												name="blindName"
+												value="Small Blind"
+												options-json="blindNamesJson"
+												button-label="Show blind options"
+												input-label="Filter blinds"
+												listbox-label="Blinds"
+												aria-describedby="blindName-description"
+											></combo-box>
+
+											<span class="secondary-label" id="blindName-description">Influences: Debuffed cards, scoring</span>
+										</div>
+
+										<label class="r-blind-is-active checkbox-control">
+											<input class="r-blind-is-active-input checkbox" name="blindIsActive" type="checkbox" value="is-active" checked>
+
+											<span class="label" aria-hidden="true">Active?</span>
+											<span class="visually-hidden">Blind active</span>
+										</label>
+									</div>
+								</div>
 							</div>
 
-							<div class="card">
-								<label class="r-joker-slots text-control --flat --grow">
-									<span class="label truncate">Joker slots</span>
+							<div class="card-stack">
+								<div class="card">
+									<div class="r-deck control-box --flat --grow">
+										<label class="label truncate" for="deck">Deck</label>
 
-									<input class="r-joker-slots-input text-input" type="number" name="jokerSlots" value="5" data-r-joker-slots>
+										<combo-box
+											class="r-deck-input"
+											id="deck"
+											name="deck"
+											value="Red Deck"
+											options-json="decksJson"
+											button-label="Show deck options"
+											input-label="Filter decks"
+											listbox-label="Decks"
+											aria-describedby="deck-description"
+										></combo-box>
 
-									<span class="secondary-label">Influences: Joker Stencil</span>
-								</label>
+										<span class="secondary-label" id="deck-description">Influences: Scoring with Plasma Deck</span>
+									</div>
+								</div>
+
+								<div class="card">
+									<div class="r-joker-slots control-box --flat --grow">
+										<label class="label truncate" for="jokerSlots">Joker slots</label>
+
+										<input class="r-joker-slots-input text-input" id="jokerSlots" name="jokerSlots" type="number" value="5" aria-describedby="jokerSlots-description">
+
+										<span class="secondary-label" id="jokerSlots-description">Influences: Joker Stencil</span>
+									</div>
+								</div>
 							</div>
 
 							<div class="card observatory-card">
-								<div class="stack">
-									<span class="label truncate">Observatory</span>
+								<fieldset class="stack">
+									<legend><span class="label truncate">Observatory</span></legend>
 
 									<div class="r-observatory-input-list stack">
-										<label class="text-control --flat">
+										<label class="control-box --flat">
 											<span class="label truncate">Pluto</span>
 											<input class="r-observatory-input text-input" type="number" min="0" value="0" data-r-observatory-hand="High Card">
 										</label>
-										<label class="text-control --flat">
+										<label class="control-box --flat">
 											<span class="label truncate">Mercury</span>
 											<input class="r-observatory-input text-input" type="number" min="0" value="0" data-r-observatory-hand="Pair">
 										</label>
-										<label class="text-control --flat">
+										<label class="control-box --flat">
 											<span class="label truncate">Uranus</span>
 											<input class="r-observatory-input text-input" type="number" min="0" value="0" data-r-observatory-hand="Two Pair">
 										</label>
-										<label class="text-control --flat">
+										<label class="control-box --flat">
 											<span class="label truncate">Venus</span>
 											<input class="r-observatory-input text-input" type="number" min="0" value="0" data-r-observatory-hand="Three of a Kind">
 										</label>
-										<label class="text-control --flat">
+										<label class="control-box --flat">
 											<span class="label truncate">Saturn</span>
 											<input class="r-observatory-input text-input" type="number" min="0" value="0" data-r-observatory-hand="Straight">
 										</label>
-										<label class="text-control --flat">
+										<label class="control-box --flat">
 											<span class="label truncate">Jupiter</span>
 											<input class="r-observatory-input text-input" type="number" min="0" value="0" data-r-observatory-hand="Flush">
 										</label>
-										<label class="text-control --flat">
+										<label class="control-box --flat">
 											<span class="label truncate">Earth</span>
 											<input class="r-observatory-input text-input" type="number" min="0" value="0" data-r-observatory-hand="Full House">
 										</label>
-										<label class="text-control --flat">
+										<label class="control-box --flat">
 											<span class="label truncate">Mars</span>
 											<input class="r-observatory-input text-input" type="number" min="0" value="0" data-r-observatory-hand="Four of a Kind">
 										</label>
-										<label class="text-control --flat">
+										<label class="control-box --flat">
 											<span class="label truncate">Neptune</span>
 											<input class="r-observatory-input text-input" type="number" min="0" value="0" data-r-observatory-hand="Straight Flush">
 										</label>
-										<label class="text-control --flat">
+										<label class="control-box --flat">
 											<span class="label truncate">Planet X</span>
 											<input class="r-observatory-input text-input" type="number" min="0" value="0" data-r-observatory-hand="Five of a Kind">
 										</label>
-										<label class="text-control --flat">
+										<label class="control-box --flat">
 											<span class="label truncate">Ceres</span>
 											<input class="r-observatory-input text-input" type="number" min="0" value="0" data-r-observatory-hand="Flush House">
 										</label>
-										<label class="text-control --flat">
+										<label class="control-box --flat">
 											<span class="label truncate">Eris</span>
 											<input class="r-observatory-input text-input" type="number" min="0" value="0" data-r-observatory-hand="Flush Five">
 										</label>
 									</div>
-								</div>
+								</fieldset>
 							</div>
 						</div>
 					</div>
@@ -255,7 +293,7 @@
 							<h2>Jokers</h2>
 
 							<button class="add-joker-button button --icon" type="button" data-j-add-button>
-								<span class="visually-hidden">Add</span>
+								<span class="visually-hidden">Add joker</span>
 
 								<svg class="icon">
 									<use xlink:href="#plus-icon"></use>
@@ -273,7 +311,7 @@
 							<h2>Hand</h2>
 
 							<button class="add-card-button button --icon" type="button" data-c-add-button>
-								<span class="visually-hidden">Add</span>
+								<span class="visually-hidden">Add card</span>
 
 								<svg class="icon">
 									<use xlink:href="#plus-icon"></use>
@@ -334,7 +372,7 @@
 				</div>
 			</header>
 
-			<label class="text-control">
+			<label class="control-box">
 				<span class="label truncate">Number of copies</span>
 
 				<input class="text-input" type="number" value="1" min="1">
@@ -362,7 +400,7 @@
 				</div>
 			</header>
 
-			<label class="text-control">
+			<label class="control-box">
 				<span class="label truncate">Number of copies</span>
 
 				<input class="text-input" type="number" value="1" min="1">
@@ -403,23 +441,31 @@
 	</template>
 
 	<template id="hand-level">
-		<p><span data-h-name></span></p>
+		<fieldset class="stack">
+			<legend><span data-h-name></span></legend>
 
-		<div class="stack">
-			<div class="input-list">
-				<label class="h-level text-control --flat --grow">
-					<span class="label">lvl</span>
+			<div class="stack">
+				<div class="input-list">
+					<label class="h-level control-box --flat --grow">
+						<span class="label">
+							<span aria-hidden="true">lvl</span>
+							<span class="visually-hidden">Level</span>
+						</span>
 
-					<input class="h-level-input text-input" type="number" value="1" min="1" data-h-level>
-				</label>
+						<input class="h-level-input text-input" type="number" value="1" min="1" data-h-level>
+					</label>
 
-				<label class="h-plays text-control --flat --grow">
-					<span class="label">#<span class="visually-hidden">Plays</span></span>
+					<label class="h-plays control-box --flat --grow">
+						<span class="label">
+							<span aria-hidden="true">#</span>
+							<span class="visually-hidden">Number of plays</span>
+						</span>
 
-					<input class="h-plays-input text-input" type="number" value="0" min="0" data-h-plays>
-				</label>
+						<input class="h-plays-input text-input" type="number" value="0" min="0" data-h-plays>
+					</label>
+				</div>
 			</div>
-		</div>
+		</fieldset>
 	</template>
 
 	<template id="joker-card">
@@ -428,16 +474,16 @@
 				<label class="j-name text-control">
 					<span class="visually-hidden">Joker name</span>
 
-					<input class="j-name-input text-input" list="joker-options" autocomplete="off" value="8 Ball" data-j-name>
+					<combo-box
+						class="j-name-input"
+						value="8 Ball"
+						options-json="jokersJson"
+						button-label="Show joker options"
+						input-label="Filter jokers"
+						listbox-label="Jokers"
+						data-j-name
+					></combo-box>
 				</label>
-
-				<button class="j-duplicate-button button --icon" type="button" popovertarget="j-duplicate-modal">
-					<span class="visually-hidden">Duplicate joker</span>
-
-					<svg class="icon">
-						<use xlink:href="#copy-icon"></use>
-					</svg>
-				</button>
 
 				<button class="j-remove-button button --icon" type="button" data-remove-button>
 					<span class="visually-hidden">Remove</span>
@@ -448,32 +494,48 @@
 				</button>
 			</div>
 
-			<label class="j-count text-control --flat --grow">
-				<span class="label truncate">Count</span>
-				<input class="j-count-input text-input" type="number" value="1" min="0" data-j-count>
-				<span class="label truncate">×</span>
-			</label>
+			<div class="action-list">
+				<label class="j-count control-box --flat --grow">
+					<span class="label truncate">Count</span>
+					<input class="j-count-input text-input" type="number" value="1" min="0" data-j-count>
+					<span class="label truncate" aria-hidden="true">×</span>
+				</label>
 
-			<label class="j-edition text-control --flat --grow">
+				<button class="j-duplicate-button button --icon" type="button" popovertarget="j-duplicate-modal">
+					<span class="visually-hidden">Duplicate joker</span>
+
+					<svg class="icon">
+						<use xlink:href="#copy-icon"></use>
+					</svg>
+				</button>
+			</div>
+
+			<label class="j-edition control-box --flat --grow">
 				<span class="label truncate">Edition</span>
 
-				<input class="j-edition-input text-input" list="joker-edition-options" autocomplete="off" value="base" data-j-edition>
+				<select class="j-edition-input select" data-j-edition>
+					<option value="Base" selected>Base</option>
+					<option value="Foil">Foil</option>
+					<option value="Holographic">Holographic</option>
+					<option value="Polychrome">Polychrome</option>
+					<option value="Negative">Negative</option>
+				</select>
 			</label>
 
 			<div class="joker-effects stack">
-				<label class="j-plus-chips text-control --flat --grow">
+				<label class="j-plus-chips control-box --flat --grow">
 					<span class="label truncate">+Chips</span>
 
 					<input class="j-plus-chips-input text-input" type="number" value="0" min="0" data-j-plus-chips>
 				</label>
 
-				<label class="j-plus-multiplier text-control --flat --grow">
+				<label class="j-plus-multiplier control-box --flat --grow">
 					<span class="label truncate">+Mult</span>
 
 					<input class="j-plus-multiplier-input text-input" type="number" value="0" min="0" data-j-plus-multiplier>
 				</label>
 
-				<label class="j-times-multiplier text-control --flat --grow">
+				<label class="j-times-multiplier control-box --flat --grow">
 					<span class="label truncate">xMult</span>
 
 					<input class="j-times-multiplier-input text-input" type="number" value="1" min="1" step="0.05" data-j-times-multiplier>
@@ -489,7 +551,21 @@
 					<label class="j-rank text-control">
 						<span class="visually-hidden">Rank</span>
 
-						<input class="j-rank-input text-input" list="rank-options" autocomplete="off" value="Ace" data-j-rank>
+						<select class="j-rank-input select" data-j-rank>
+							<option value="Ace" selected>Ace</option>
+							<option value="King">King</option>
+							<option value="Queen">Queen</option>
+							<option value="Jack">Jack</option>
+							<option value="10">10</option>
+							<option value="9">9</option>
+							<option value="8">8</option>
+							<option value="7">7</option>
+							<option value="6">6</option>
+							<option value="5">5</option>
+							<option value="4">4</option>
+							<option value="3">3</option>
+							<option value="2">2</option>
+						</select>
 					</label>
 
 					<span class="j-card-of">of</span>
@@ -497,7 +573,12 @@
 					<label class="j-suit text-control">
 						<span class="visually-hidden">Suit</span>
 
-						<input class="j-suit-input text-input" list="suit-options" autocomplete="off" value="Clubs" data-j-suit>
+						<select class="j-suit-input select" data-j-suit>
+							<option value="Clubs" selected>Clubs</option>
+							<option value="Spades">Spades</option>
+							<option value="Hearts">Hearts</option>
+							<option value="Diamonds">Diamonds</option>
+						</select>
 					</label>
 				</div>
 			</div>
@@ -513,14 +594,6 @@
 					<span class="label">Play?</span>
 				</label>
 
-				<button class="c-duplicate-button button --icon push-left" type="button" popovertarget="c-duplicate-modal">
-					<span class="visually-hidden">Duplicate card</span>
-
-					<svg class="icon">
-						<use xlink:href="#copy-icon"></use>
-					</svg>
-				</button>
-
 				<button class="c-remove-button button --icon push-left" type="button" data-remove-button>
 					<span class="visually-hidden">Remove</span>
 
@@ -530,11 +603,21 @@
 				</button>
 			</div>
 
-			<label class="c-count text-control --flat --grow">
-				<span class="label truncate">Count</span>
-				<input class="c-count-input text-input" type="number" value="1" min="1" data-c-count>
-				<span class="label truncate">×</span>
-			</label>
+			<div class="action-list">
+				<label class="c-count control-box --flat --grow">
+					<span class="label truncate">Count</span>
+					<input class="c-count-input text-input" type="number" value="1" min="1" data-c-count>
+					<span class="label truncate" aria-hidden="true">×</span>
+				</label>
+
+				<button class="c-duplicate-button button --icon push-left" type="button" popovertarget="c-duplicate-modal">
+					<span class="visually-hidden">Duplicate card</span>
+
+					<svg class="icon">
+						<use xlink:href="#copy-icon"></use>
+					</svg>
+				</button>
+			</div>
 
 			<label class="c-is-debuffed checkbox-control">
 				<input class="c-is-debuffed-input checkbox" type="checkbox" value="is-debuffed" data-c-is-debuffed>
@@ -546,7 +629,21 @@
 				<label class="c-rank text-control">
 					<span class="visually-hidden">Rank</span>
 
-					<input class="c-rank-input text-input" list="rank-options" autocomplete="off" value="Ace" data-c-rank>
+					<select class="c-rank-input select" data-c-rank>
+						<option value="Ace" selected>Ace</option>
+						<option value="King">King</option>
+						<option value="Queen">Queen</option>
+						<option value="Jack">Jack</option>
+						<option value="10">10</option>
+						<option value="9">9</option>
+						<option value="8">8</option>
+						<option value="7">7</option>
+						<option value="6">6</option>
+						<option value="5">5</option>
+						<option value="4">4</option>
+						<option value="3">3</option>
+						<option value="2">2</option>
+					</select>
 				</label>
 
 				of
@@ -554,26 +651,52 @@
 				<label class="c-suit text-control">
 					<span class="visually-hidden">Suit</span>
 
-					<input class="c-suit-input text-input" list="suit-options" autocomplete="off" value="Clubs" data-c-suit>
+					<select class="c-suit-input select" data-c-suit>
+						<option value="Clubs" selected>Clubs</option>
+						<option value="Spades">Spades</option>
+						<option value="Hearts">Hearts</option>
+						<option value="Diamonds">Diamonds</option>
+					</select>
 				</label>
 			</div>
 
-			<label class="c-edition text-control --flat --grow">
+			<label class="c-edition control-box --flat --grow">
 				<span class="label truncate">Edition</span>
 
-				<input class="c-edition-input text-input" list="playing-card-edition-options" autocomplete="off" value="base" data-c-edition>
+				<select class="c-edition-input select" data-c-edition>
+					<option value="Base" selected>Base</option>
+					<option value="Foil">Foil</option>
+					<option value="Holographic">Holographic</option>
+					<option value="Polychrome">Polychrome</option>
+				</select>
 			</label>
 
-			<label class="c-enhancement text-control --flat --grow">
+			<label class="c-enhancement control-box --flat --grow">
 				<span class="label truncate">Enhancement</span>
 
-				<input class="c-enhancement-input text-input" list="enhancement-options" autocomplete="off" value="none" data-c-enhancement>
+				<select class="c-enhancement-input select" data-c-enhancement>
+					<option value="None" selected>None</option>
+					<option value="Bonus">Bonus</option>
+					<option value="Mult">Mult</option>
+					<option value="Wild">Wild</option>
+					<option value="Glass">Glass</option>
+					<option value="Steel">Steel</option>
+					<option value="Stone">Stone</option>
+					<option value="Gold">Gold</option>
+					<option value="Lucky">Lucky</option>
+				</select>
 			</label>
 
-			<label class="c-seal text-control --flat --grow">
+			<label class="c-seal control-box --flat --grow">
 				<span class="label truncate">Seal</span>
 
-				<input class="c-seal-input text-input" list="seal-options" autocomplete="off" value="none" data-c-seal>
+				<select class="c-seal-input select" data-c-seal>
+					<option value="None" selected>None</option>
+					<option value="Gold">Gold</option>
+					<option value="Red">Red</option>
+					<option value="Blue">Blue</option>
+					<option value="Purple">Purple</option>
+				</select>
 			</label>
 		</div>
 	</template>
@@ -594,274 +717,22 @@
 		</div>
 	</template>
 
-	<datalist id="blind-name-options">
-		<option value="Small Blind"></option>
-		<option value="Big Blind"></option>
-		<option value="The Hook"></option>
-		<option value="The Ox"></option>
-		<option value="The House"></option>
-		<option value="The Wall"></option>
-		<option value="The Wheel"></option>
-		<option value="The Arm"></option>
-		<option value="The Club"></option>
-		<option value="The Fish"></option>
-		<option value="The Psychic"></option>
-		<option value="The Goad"></option>
-		<option value="The Water"></option>
-		<option value="The Window"></option>
-		<option value="The Manacle"></option>
-		<option value="The Eye"></option>
-		<option value="The Mouth"></option>
-		<option value="The Plant"></option>
-		<option value="The Serpent"></option>
-		<option value="The Pillar"></option>
-		<option value="The Needle"></option>
-		<option value="The Head"></option>
-		<option value="The Tooth"></option>
-		<option value="The Flint"></option>
-		<option value="The Mark"></option>
-		<option value="Amber Acorn"></option>
-		<option value="Verdant Leaf"></option>
-		<option value="Violet Vessel"></option>
-		<option value="Crimson Heart"></option>
-		<option value="Cerulean Bell"></option>
-	</datalist>
-
-	<datalist id="deck-options">
-		<option value="Red Deck"></option>
-		<option value="Blue Deck"></option>
-		<option value="Yellow Deck"></option>
-		<option value="Green Deck"></option>
-		<option value="Black Deck"></option>
-		<option value="Magic Deck"></option>
-		<option value="Nebula Deck"></option>
-		<option value="Ghost Deck"></option>
-		<option value="Abandoned Deck"></option>
-		<option value="Checkered Deck"></option>
-		<option value="Zodiac Deck"></option>
-		<option value="Painted Deck"></option>
-		<option value="Anaglyph Deck"></option>
-		<option value="Plasma Deck"></option>
-		<option value="Erratic Deck"></option>
-		<option value="Challenge Deck"></option>
-	</datalist>
-
-	<datalist id="joker-options">
-		<option value="8 Ball"></option>
-		<option value="Abstract Joker"></option>
-		<option value="Acrobat"></option>
-		<option value="Ancient Joker"></option>
-		<option value="Arrowhead"></option>
-		<option value="Astronomer"></option>
-		<option value="Banner"></option>
-		<option value="Baron"></option>
-		<option value="Baseball Card"></option>
-		<option value="Blackboard"></option>
-		<option value="Bloodstone"></option>
-		<option value="Blue Joker"></option>
-		<option value="Blueprint"></option>
-		<option value="Bootstraps"></option>
-		<option value="Brainstorm"></option>
-		<option value="Bull"></option>
-		<option value="Burglar"></option>
-		<option value="Burnt Joker"></option>
-		<option value="Business Card"></option>
-		<option value="Campfire"></option>
-		<option value="Canio"></option>
-		<option value="Card Sharp"></option>
-		<option value="Cartomancer"></option>
-		<option value="Castle"></option>
-		<option value="Cavendish"></option>
-		<option value="Ceremonial Dagger"></option>
-		<option value="Certificate"></option>
-		<option value="Chaos the Clown"></option>
-		<option value="Chicot"></option>
-		<option value="Clever Joker"></option>
-		<option value="Cloud 9"></option>
-		<option value="Constellation"></option>
-		<option value="Crafty Joker"></option>
-		<option value="Crazy Joker"></option>
-		<option value="Credit Card"></option>
-		<option value="Delayed Gratification"></option>
-		<option value="Devious Joker"></option>
-		<option value="Diet Cola"></option>
-		<option value="DNA"></option>
-		<option value="Driver's license"></option>
-		<option value="Droll Joker"></option>
-		<option value="Drunkard"></option>
-		<option value="Dusk"></option>
-		<option value="Egg"></option>
-		<option value="Erosion"></option>
-		<option value="Even Steven"></option>
-		<option value="Faceless Joker"></option>
-		<option value="Fibonacci"></option>
-		<option value="Flash Card"></option>
-		<option value="Flower Pot"></option>
-		<option value="Fortune Teller"></option>
-		<option value="Four Fingers"></option>
-		<option value="Gift Card"></option>
-		<option value="Glass Joker"></option>
-		<option value="Gluttonous Joker"></option>
-		<option value="Golden Joker"></option>
-		<option value="Golden Ticket"></option>
-		<option value="Greedy Joker"></option>
-		<option value="Green Joker"></option>
-		<option value="Gros Michel"></option>
-		<option value="Hack"></option>
-		<option value="Half Joker"></option>
-		<option value="Hallucination"></option>
-		<option value="Hanging Chad"></option>
-		<option value="Hiker"></option>
-		<option value="Hit the Road"></option>
-		<option value="Hologram"></option>
-		<option value="Ice Cream"></option>
-		<option value="Invisible Joker"></option>
-		<option value="Joker Stencil"></option>
-		<option value="Joker"></option>
-		<option value="Jolly Joker"></option>
-		<option value="Juggler"></option>
-		<option value="Loyalty Card"></option>
-		<option value="Luchador"></option>
-		<option value="Lucky Cat"></option>
-		<option value="Lusty Joker"></option>
-		<option value="Mad Joker"></option>
-		<option value="Madness"></option>
-		<option value="Mail-in Rebate"></option>
-		<option value="Marble Joker"></option>
-		<option value="Matador"></option>
-		<option value="Merry Andy"></option>
-		<option value="Midas Mask"></option>
-		<option value="Mime"></option>
-		<option value="Misprint"></option>
-		<option value="Mr. Bones"></option>
-		<option value="Mystic Summit"></option>
-		<option value="Obelisk"></option>
-		<option value="Odd Todd"></option>
-		<option value="Onyx Agate"></option>
-		<option value="Oops! All 6s"></option>
-		<option value="Pareidolia"></option>
-		<option value="Perkeo"></option>
-		<option value="Photograph"></option>
-		<option value="Popcorn"></option>
-		<option value="Raised Fist"></option>
-		<option value="Ramen"></option>
-		<option value="Red Card"></option>
-		<option value="Reserved Parking"></option>
-		<option value="Ride the Bus"></option>
-		<option value="Riff-Raff"></option>
-		<option value="Rocket"></option>
-		<option value="Rough Gem"></option>
-		<option value="Runner"></option>
-		<option value="Satellite"></option>
-		<option value="Scary Face"></option>
-		<option value="Scholar"></option>
-		<option value="Séance"></option>
-		<option value="Seeing Double"></option>
-		<option value="Seltzer"></option>
-		<option value="Shoot the Moon"></option>
-		<option value="Shortcut"></option>
-		<option value="Showman"></option>
-		<option value="Sixth Sense"></option>
-		<option value="Sly Joker"></option>
-		<option value="Smeared Joker"></option>
-		<option value="Smiley Face"></option>
-		<option value="Sock and Buskin"></option>
-		<option value="Space Joker"></option>
-		<option value="Spare Trousers"></option>
-		<option value="Splash"></option>
-		<option value="Square Joker"></option>
-		<option value="Steel Joker"></option>
-		<option value="Stone Joker"></option>
-		<option value="Stuntman"></option>
-		<option value="Supernova"></option>
-		<option value="Superposition"></option>
-		<option value="Swashbuckler"></option>
-		<option value="The Duo"></option>
-		<option value="The Family"></option>
-		<option value="The Idol"></option>
-		<option value="The Order"></option>
-		<option value="The Tribe"></option>
-		<option value="The Trio"></option>
-		<option value="Throwback"></option>
-		<option value="To Do List"></option>
-		<option value="To the Moon"></option>
-		<option value="Trading Card"></option>
-		<option value="Triboulet"></option>
-		<option value="Troubador"></option>
-		<option value="Turtle Bean"></option>
-		<option value="Vagabond"></option>
-		<option value="Vampire"></option>
-		<option value="Walkie Talkie"></option>
-		<option value="Wee Joker"></option>
-		<option value="Wily Joker"></option>
-		<option value="Wrathful Joker"></option>
-		<option value="Yorick"></option>
-		<option value="Zany Joker"></option>
-	</datalist>
-
-	<datalist id="rank-options">
-		<option value="Ace"></option>
-		<option value="King"></option>
-		<option value="Queen"></option>
-		<option value="Jack"></option>
-		<option value="10"></option>
-		<option value="9"></option>
-		<option value="8"></option>
-		<option value="7"></option>
-		<option value="6"></option>
-		<option value="5"></option>
-		<option value="4"></option>
-		<option value="3"></option>
-		<option value="2"></option>
-	</datalist>
-
-	<datalist id="suit-options">
-		<option value="Clubs"></option>
-		<option value="Spades"></option>
-		<option value="Hearts"></option>
-		<option value="Diamonds"></option>
-	</datalist>
-
-	<datalist id="joker-edition-options">
-		<option value="Base"></option>
-		<option value="Foil"></option>
-		<option value="Holographic"></option>
-		<option value="Polychrome"></option>
-		<option value="Negative"></option>
-	</datalist>
-
-	<datalist id="playing-card-edition-options">
-		<option value="Base"></option>
-		<option value="Foil"></option>
-		<option value="Holographic"></option>
-		<option value="Polychrome"></option>
-	</datalist>
-
-	<datalist id="enhancement-options">
-		<option value="None"></option>
-		<option value="Bonus"></option>
-		<option value="Mult"></option>
-		<option value="Wild"></option>
-		<option value="Glass"></option>
-		<option value="Steel"></option>
-		<option value="Stone"></option>
-		<option value="Gold"></option>
-		<option value="Lucky"></option>
-	</datalist>
-
-	<datalist id="seal-options">
-		<option value="None"></option>
-		<option value="Gold"></option>
-		<option value="Red"></option>
-		<option value="Blue"></option>
-		<option value="Purple"></option>
-	</datalist>
-
 	<svg style="display: none;">
 		<defs>
 			<symbol id="broom-icon" role="img" viewBox="0 0 256 256" xmlns="http://www.w3.org/2000/svg">
 				<title>Broom icon</title>
 				<path d="M235.5,216.81c-22.56-11-35.5-34.58-35.5-64.8V134.73a15.94,15.94,0,0,0-10.09-14.87L165,110a8,8,0,0,1-4.48-10.34l21.32-53a28,28,0,0,0-16.1-37,28.14,28.14,0,0,0-35.82,16,.61.61,0,0,0,0,.12L108.9,79a8,8,0,0,1-10.37,4.49L73.11,73.14A15.89,15.89,0,0,0,55.74,76.8C34.68,98.45,24,123.75,24,152a111.45,111.45,0,0,0,31.18,77.53A8,8,0,0,0,61,232H232a8,8,0,0,0,3.5-15.19ZM67.14,88l25.41,10.3a24,24,0,0,0,31.23-13.45l21-53c2.56-6.11,9.47-9.27,15.43-7a12,12,0,0,1,6.88,15.92L145.69,93.76a24,24,0,0,0,13.43,31.14L184,134.73V152c0,.33,0,.66,0,1L55.77,101.71A108.84,108.84,0,0,1,67.14,88Zm48,128a87.53,87.53,0,0,1-24.34-42,8,8,0,0,0-15.49,4,105.16,105.16,0,0,0,18.36,38H64.44A95.54,95.54,0,0,1,40,152a85.9,85.9,0,0,1,7.73-36.29l137.8,55.12c3,18,10.56,33.48,21.89,45.16Z"></path>
+			</symbol>
+
+			<symbol id="caret-down-icon" role="img" viewBox="0 0 256 256" width="16" height="16" xmlns="http://www.w3.org/2000/svg">
+				<title>Caret down icon</title>
+				<polyline points="208 96 128 176 48 96" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="16"/>
+			</symbol>
+
+			<symbol id="check-icon" role="img" viewBox="0 0 256 256" width="16" height="16" xmlns="http://www.w3.org/2000/svg">
+				<title>Check icon</title>
+				<rect width="256" height="256" fill="none"/>
+				<polyline points="40 144 96 200 224 72" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="16"/>
 			</symbol>
 
 			<symbol id="close-icon" role="img" viewBox="0 0 256 256" xmlns="http://www.w3.org/2000/svg">
@@ -900,6 +771,211 @@
 			</symbol>
 		</defs>
 	</svg>
+
+	<script id="blindNamesJson" type="application/json">[
+	"Small Blind",
+	"Big Blind",
+	"The Hook",
+	"The Ox",
+	"The House",
+	"The Wall",
+	"The Wheel",
+	"The Arm",
+	"The Club",
+	"The Fish",
+	"The Psychic",
+	"The Goad",
+	"The Water",
+	"The Window",
+	"The Manacle",
+	"The Eye",
+	"The Mouth",
+	"The Plant",
+	"The Serpent",
+	"The Pillar",
+	"The Needle",
+	"The Head",
+	"The Tooth",
+	"The Flint",
+	"The Mark",
+	"Amber Acorn",
+	"Verdant Leaf",
+	"Violet Vessel",
+	"Crimson Heart",
+	"Cerulean Bell"
+]</script>
+
+	<script id="decksJson" type="application/json">[
+	"Red Deck",
+	"Blue Deck",
+	"Yellow Deck",
+	"Green Deck",
+	"Black Deck",
+	"Magic Deck",
+	"Nebula Deck",
+	"Ghost Deck",
+	"Abandoned Deck",
+	"Checkered Deck",
+	"Zodiac Deck",
+	"Painted Deck",
+	"Anaglyph Deck",
+	"Plasma Deck",
+	"Erratic Deck",
+	"Challenge Deck"
+]</script>
+
+	<script id="jokersJson" type="application/json">[
+	"8 Ball",
+	"Abstract Joker",
+	"Acrobat",
+	"Ancient Joker",
+	"Arrowhead",
+	"Astronomer",
+	"Banner",
+	"Baron",
+	"Baseball Card",
+	"Blackboard",
+	"Bloodstone",
+	"Blue Joker",
+	"Blueprint",
+	"Bootstraps",
+	"Brainstorm",
+	"Bull",
+	"Burglar",
+	"Burnt Joker",
+	"Business Card",
+	"Campfire",
+	"Canio",
+	"Card Sharp",
+	"Cartomancer",
+	"Castle",
+	"Cavendish",
+	"Ceremonial Dagger",
+	"Certificate",
+	"Chaos the Clown",
+	"Chicot",
+	"Clever Joker",
+	"Cloud 9",
+	"Constellation",
+	"Crafty Joker",
+	"Crazy Joker",
+	"Credit Card",
+	"Delayed Gratification",
+	"Devious Joker",
+	"Diet Cola",
+	"DNA",
+	"Driver's license",
+	"Droll Joker",
+	"Drunkard",
+	"Dusk",
+	"Egg",
+	"Erosion",
+	"Even Steven",
+	"Faceless Joker",
+	"Fibonacci",
+	"Flash Card",
+	"Flower Pot",
+	"Fortune Teller",
+	"Four Fingers",
+	"Gift Card",
+	"Glass Joker",
+	"Gluttonous Joker",
+	"Golden Joker",
+	"Golden Ticket",
+	"Greedy Joker",
+	"Green Joker",
+	"Gros Michel",
+	"Hack",
+	"Half Joker",
+	"Hallucination",
+	"Hanging Chad",
+	"Hiker",
+	"Hit the Road",
+	"Hologram",
+	"Ice Cream",
+	"Invisible Joker",
+	"Joker Stencil",
+	"Joker",
+	"Jolly Joker",
+	"Juggler",
+	"Loyalty Card",
+	"Luchador",
+	"Lucky Cat",
+	"Lusty Joker",
+	"Mad Joker",
+	"Madness",
+	"Mail-in Rebate",
+	"Marble Joker",
+	"Matador",
+	"Merry Andy",
+	"Midas Mask",
+	"Mime",
+	"Misprint",
+	"Mr. Bones",
+	"Mystic Summit",
+	"Obelisk",
+	"Odd Todd",
+	"Onyx Agate",
+	"Oops! All 6s",
+	"Pareidolia",
+	"Perkeo",
+	"Photograph",
+	"Popcorn",
+	"Raised Fist",
+	"Ramen",
+	"Red Card",
+	"Reserved Parking",
+	"Ride the Bus",
+	"Riff-Raff",
+	"Rocket",
+	"Rough Gem",
+	"Runner",
+	"Satellite",
+	"Scary Face",
+	"Scholar",
+	"Séance",
+	"Seeing Double",
+	"Seltzer",
+	"Shoot the Moon",
+	"Shortcut",
+	"Showman",
+	"Sixth Sense",
+	"Sly Joker",
+	"Smeared Joker",
+	"Smiley Face",
+	"Sock and Buskin",
+	"Space Joker",
+	"Spare Trousers",
+	"Splash",
+	"Square Joker",
+	"Steel Joker",
+	"Stone Joker",
+	"Stuntman",
+	"Supernova",
+	"Superposition",
+	"Swashbuckler",
+	"The Duo",
+	"The Family",
+	"The Idol",
+	"The Order",
+	"The Tribe",
+	"The Trio",
+	"Throwback",
+	"To Do List",
+	"To the Moon",
+	"Trading Card",
+	"Triboulet",
+	"Troubador",
+	"Turtle Bean",
+	"Vagabond",
+	"Vampire",
+	"Walkie Talkie",
+	"Wee Joker",
+	"Wily Joker",
+	"Wrathful Joker",
+	"Yorick",
+	"Zany Joker"
+]</script>
 
 	<script src="./src/ui/main.ts" type="module"></script>
 </body>
