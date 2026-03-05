@@ -248,7 +248,6 @@ export class ComboBox extends FormAssociatedElement {
 	}
 
 	set name (name) {
-		console.log('name setter')
 		this.setAttribute('name', name)
 	}
 
@@ -260,7 +259,6 @@ export class ComboBox extends FormAssociatedElement {
 	}
 
 	set id (id) {
-		console.log('id setter')
 		this.setAttribute('id', id)
 
 		this.#queueUpdate(() => {
