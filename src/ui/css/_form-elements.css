@@ -33,7 +33,7 @@
 	flex-basis: 100%;
 }
 
-.control-box:where(.--grow)>:is(.text-input, .combo-box, .select) {
+.control-box:where(.--grow)>:is(input, combo-box, select) {
 	flex-grow: 1;
 }
 
@@ -78,13 +78,13 @@
 	margin-inline-end: 0.5rem;
 }
 
-.button:hover,
+.button:where(:enabled):hover,
 ::file-selector-button:hover {
 	background-color: var(--c-background-light);
 }
 
 @media (prefers-contrast: more) {
-	.button:hover,
+	.button:where(:enabled):hover,
 	::file-selector-button:hover {
 		background-color: var(--c-background-lighter);
 	}
@@ -123,13 +123,22 @@
 
 /* SELECT CONTROL */
 
-.select {
-	display: block;
+select,
+select::picker(select) {
+	appearance: base-select;
+	border: 2px solid var(--c-border);
+	border-radius: 0.25rem;
+	color: var(--c-text);
+	background-color: var(--c-background-lighter);
+}
+
+select {
 	inline-size: 100%;
 	max-inline-size: 100%;
 	block-size: 2rem;
 	margin: 0;
 	padding: 0 0.25rem;
+	vertical-align: middle;
 	border: 2px solid var(--c-border);
 	border-radius: 0.25rem;
 	color: var(--c-text);
@@ -137,9 +146,28 @@
 }
 
 @media (prefers-contrast: more) {
-	.select {
+	select {
 		background-color: var(--c-white);
 	}
+}
+
+select,
+selectedcontent {
+	display: inline flex;
+	align-items: center;
+	gap: 0.25rem;
+}
+
+select::picker(select) {
+	margin-block: 0.25rem;
+}
+
+option {
+	gap: 0.25rem;
+}
+
+option:where(:enabled):hover {
+	background-color: var(--c-background-light);
 }
 
 /* CHECKBOX */
@@ -148,8 +176,4 @@
 	display: flex;
 	gap: 0.25rem;
 	align-items: center;
-}
-
-.checkbox-control>.label {
-	flex-grow: 1;
 }

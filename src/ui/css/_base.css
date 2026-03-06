@@ -5,6 +5,7 @@ html {
 	--c-background-lighter: var(--c-grey-lighter);
 	--c-border: var(--c-grey-dark);
 
+	scrollbar-gutter: stable;
 	font-family: var(--f-family);
 	font-size: var(--f-size);
 	line-height: var(--f-line-height);
@@ -16,6 +17,11 @@ html {
 	html {
 		--c-border: var(--c-black);
 	}
+}
+
+html:has(dialog:modal[open]) {
+	/* Disable page scrolling completely alongside a _modal_ dialog already making the page inert. */
+	overflow: hidden;
 }
 
 h1:not(:first-child),

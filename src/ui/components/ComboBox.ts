@@ -9,78 +9,77 @@ const lightCss = /*css*/`
 		inline-size: 100%;
 		max-inline-size: 100%;
 		block-size: 2rem;
+	}
 
-		.cb-button {
-			anchor-name: var(--anchor-name);
-			display: flex;
-			justify-content: space-between;
-			align-items: center;
-			block-size: 100%;
-			inline-size: 100%;
-			padding: 0 0.25rem;
-			border: 2px solid var(--c-border);
-			border-radius: 0.25rem;
-			color: var(--c-text);
-			background-color: var(--c-background-lighter);
-			text-align: left;
+	.cb-button {
+		anchor-name: var(--anchor-name);
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		block-size: 100%;
+		inline-size: 100%;
+		padding: 0 0.25rem;
+		border: 2px solid var(--c-border);
+		border-radius: 0.25rem;
+		color: var(--c-text);
+		background-color: var(--c-background-lighter);
+		text-align: left;
+	}
+
+	.cb-popover {
+		position-anchor: var(--anchor-name);
+		position: absolute;
+		overflow: unset;
+		inset-block-start: calc(anchor(end) + 0.25rem);
+		inset-inline-start: anchor(start);
+		margin: 0;
+		padding: 0;
+		border: none;
+		background-color: transparent;
+	}
+
+	.cb-option-list {
+		max-height: 15rem;
+		display: flex;
+		flex-direction: column;
+		overflow-y: auto;
+		margin-block-start: 0.25rem;
+		border: 2px solid var(--c-border);
+		border-radius: 0.5rem;
+	}
+
+	.cb-option-list > button {
+		display: flex;
+		align-items: center;
+		gap: 0.25rem;
+		padding: 0.25rem;
+		border: none;
+		font: inherit;
+		color: var(--c-text);
+		background-color: var(--c-background-lighter);
+		text-align: left;
+
+		&:focus-visible {
+			isolation: isolate;
 		}
 
-		.cb-popover {
-			position-anchor: var(--anchor-name);
-			position: absolute;
-			overflow: unset;
-			inset: unset;
-			inset-block-start: calc(anchor(end) + 0.25rem);
-			inset-inline-start: anchor(start);
-			margin: 0;
-			padding: 0;
-			border: none;
-			background-color: transparent;
+		&[data-highlighted],
+		&:where(:enabled):hover {
+			background-color: var(--c-background-light);
 		}
 
-		.cb-option-list {
-			max-height: 15rem;
-			display: flex;
-			flex-direction: column;
-			overflow-y: auto;
-			margin-block-start: 0.25rem;
-			border: 2px solid var(--c-border);
-			border-radius: 0.5rem;
+		&:not(:has(> .icon)) {
+			padding-inline-start: calc(2 * 0.25rem + 16px);
 		}
+	}
 
-		.cb-option-list > button {
-			display: flex;
-			align-items: center;
-			gap: 0.25rem;
-			padding: 0.25rem;
-			border: none;
-			font: inherit;
-			color: var(--c-text);
-			background-color: var(--c-background-lighter);
-			text-align: left;
+	.cb-option-list:has(> button) + .cb-empty {
+		display: none;
+	}
 
-			&:focus-visible {
-				isolation: isolate;
-			}
-
-			&[data-highlighted],
-			&:where(:enabled):hover {
-				background-color: var(--c-background-light);
-			}
-
-			&:not(:has(> .icon)) {
-				padding-inline-start: calc(2 * 0.25rem + 16px);
-			}
-		}
-
-		.cb-option-list:has(> button) + .cb-empty {
-			display: none;
-		}
-
-		.cb-empty {
-			padding: 0.25rem;
-			font-style: italic;
-		}
+	.cb-empty {
+		padding: 0.25rem;
+		font-style: italic;
 	}
 `
 const lightStyleSheet = await new CSSStyleSheet().replace(lightCss)
@@ -92,17 +91,13 @@ export class ComboBox extends FormAssociatedElement {
 	static {
 		if (window.customElements.get('combo-box') === undefined) {
 			window.customElements.define('combo-box', ComboBox)
+			document.adoptedStyleSheets.push(lightStyleSheet)
 		}
 	}
 
 	get [Symbol.toStringTag] () {
 		return this.tagName
 	}
-
-	/**
-	 * Tracks queued updates.
-	 */
-	#updateCount = 0
 
 	#value = ''
 	/**
@@ -135,11 +130,9 @@ export class ComboBox extends FormAssociatedElement {
 		},
 	}
 
-	#popover: HTMLElement | null = null
-
-	#searchInput: HTMLInputElement | null = null
 	#query = ''
 	#_highlightedOptionIndex = 0
+	#ariaActiveDescendantElement: Element | null = null
 	#searchInputCommands: Record<string, { action: (event: KeyboardEvent) => void }> = {
 		ArrowDown: {
 			action: (event) => this.#moveOptionIndex(event, 1),
@@ -162,24 +155,18 @@ export class ComboBox extends FormAssociatedElement {
 	constructor () {
 		super()
 
+		if (!this.id) {
+			this.id = `${this.tagName.toLowerCase()}-${this.uniqueId}`
+		}
+
+		// Needed for dynamically setting a unique anchor name.
+		this.style.setProperty('--anchor-name', `--${this.id}`)
+
 		const optionsSelector = `#${this.getAttribute('options-json')}`
 		const optionsScript = document.querySelector<HTMLScriptElement>(optionsSelector)!
 		this.#options = JSON.parse(optionsScript.textContent.trim()) as string[]
 
 		this.setFormValue(this.value)
-
-		// Needed for dynamically setting a unique anchor name.
-		this.style.setProperty('--anchor-name', `--${this.id}`)
-
-		this.ownerDocument.adoptedStyleSheets.push(lightStyleSheet)
-	}
-
-	connectedCallback () {
-		if (!this.isConnected) {
-			return
-		}
-
-		this.#render()
 	}
 
 	formDisabledCallback (disabled: boolean) {
@@ -222,9 +209,7 @@ export class ComboBox extends FormAssociatedElement {
 			this.removeAttribute('disabled')
 		}
 
-		this.#queueUpdate(() => {
-			this.#renderIfIdle()
-		})
+		this.queueRender()
 	}
 
 	/**
@@ -238,9 +223,7 @@ export class ComboBox extends FormAssociatedElement {
 	set disabledState (disabledState) {
 		this.#disabledState = disabledState
 
-		this.#queueUpdate(() => {
-			this.#renderIfIdle()
-		})
+		this.queueRender()
 	}
 
 	get name () {
@@ -255,15 +238,13 @@ export class ComboBox extends FormAssociatedElement {
 	 * ID of the form-associated element. Will be used to prefix all form controls’ `id` and `for` attribute values.
 	 */
 	get id () {
-		return this.getAttribute('id') ?? this.tagName
+		return this.getAttribute('id') ?? ''
 	}
 
 	set id (id) {
 		this.setAttribute('id', id)
 
-		this.#queueUpdate(() => {
-			this.#renderIfIdle()
-		})
+		this.queueRender()
 	}
 
 	get required () {
@@ -286,9 +267,7 @@ export class ComboBox extends FormAssociatedElement {
 		this.#query = query
 		this.#_filteredOptions = this.#options.filter((option) => option.toLowerCase().includes(query))
 
-		this.#queueUpdate(() => {
-			this.#renderIfIdle()
-		})
+		this.queueRender()
 	}
 
 	get #options () {
@@ -299,9 +278,7 @@ export class ComboBox extends FormAssociatedElement {
 		this.#_options = options
 		this.#_filteredOptions = options.filter((option) => option.toLowerCase().includes(this.query))
 
-		this.#queueUpdate(() => {
-			this.#renderIfIdle()
-		})
+		this.queueRender()
 	}
 
 	get #filteredOptions () {
@@ -315,13 +292,12 @@ export class ComboBox extends FormAssociatedElement {
 	set #highlightedOptionIndex (highlightedOptionIndex) {
 		this.#_highlightedOptionIndex = highlightedOptionIndex
 
-		const highlightedOption = this.#getOptionByIndex(highlightedOptionIndex)
-		this.#button!.ariaActiveDescendantElement = highlightedOption
-		this.#searchInput!.ariaActiveDescendantElement = highlightedOption
+		// TODO: Improve this somehow. This might be interacted with before anything was rendered which crashes.
+		if (this.isConnected) {
+			this.#ariaActiveDescendantElement = this.#getOptionByIndex(highlightedOptionIndex)
+		}
 
-		this.#queueUpdate(() => {
-			this.#renderIfIdle()
-		})
+		this.queueRender()
 	}
 
 	/**
@@ -359,16 +335,14 @@ export class ComboBox extends FormAssociatedElement {
 		this.#value = value
 		this.setFormValue(this.value)
 
-		const selectedOptionIndex = this.#filteredOptions.indexOf(this.value)
 		// Update the highlighted option so opening the popover starts with the correct option highlighted
-		this.#highlightedOptionIndex = selectedOptionIndex
+		this.#highlightedOptionIndex = this.#filteredOptions.indexOf(this.value)
 
 		// Clear the query on setting a value so that opening the listbox shows an unfiltered list of options again
 		this.query = ''
-		this.#searchInput!.value = ''
 
-		this.#queueUpdate(() => {
-			this.#renderIfIdle()
+		this.queueUpdate(() => {
+			this.renderIfIdle()
 
 			if (isUserTriggered) {
 				// Form-associated custom elements automatically include their form value in any event's `target.value` property.
@@ -381,44 +355,22 @@ export class ComboBox extends FormAssociatedElement {
 	}
 
 	/**
-	 * Queues an update using `queueMicrotask`.
-	 *
-	 * The `callback` must call `this.#renderIfIdle()` which guarantees that `this.#updateCount` is tracked correctly.
-	 *
-	 * Using `queueMicrotask` ensures that multiple simultaneous changes to IDL attributes can be processed before applying their effects (which might depend on this having happened).
-	 */
-	#queueUpdate (callback: VoidFunction) {
-		this.#updateCount++
-		queueMicrotask(callback)
-	}
-
-	#renderIfIdle () {
-		this.#updateCount--
-
-		if (this.#updateCount === 0) {
-			this.#render()
-		}
-	}
-
-	/**
 	 * Renders the component.
 	 */
-	#render () {
+	render () {
 		if (!this.isConnected) {
 			// Aborts rendering if the component is not yet or no longer connected.
 			return
 		}
 
 		this.classList.add('combo-box')
-		render(this.#template(), this)
+		render(this.template(), this)
 
 		this.#button = this.querySelector<HTMLButtonElement>('.cb-button')!
-		this.#popover = this.#button.popoverTargetElement as HTMLElement
-		this.#searchInput = this.querySelector<HTMLInputElement>('.cb-input')!
 		this.#optionList = this.querySelector<HTMLElement>('.cb-option-list')!
 	}
 
-	#template () {
+	template () {
 		return html`
 			<button
 				class="cb-button"
@@ -450,6 +402,8 @@ export class ComboBox extends FormAssociatedElement {
 					aria-autocomplete="list"
 					aria-expanded="true"
 					aria-controls="${this.id}-listbox"
+					.ariaActiveDescendantElement="${this.#ariaActiveDescendantElement}"
+					.value="${this.query}"
 					@input="${this.#handleSearchInput}"
 					@keydown="${this.#handleSearchShortcuts}"
 				>
@@ -496,14 +450,16 @@ export class ComboBox extends FormAssociatedElement {
 		const optionList = this.#optionList?.children ?? []
 		const option = optionList[index]
 		if (!(option instanceof HTMLElement)) {
-			throw new Error(`<${this.tagName.toLowerCase()} id="${this.id}">: no option as index ${index}!`)
+			throw new Error(`<${this.tagName.toLowerCase()} id="${this.id}">: no option at index ${index}!`)
 		}
 
 		return option
 	}
 
 	#openPopover = () => {
-		this.#popover!.showPopover()
+		if (this.#button?.popoverTargetElement instanceof HTMLElement) {
+			this.#button.popoverTargetElement.showPopover()
+		}
 	}
 
 	#selectNeighboringOption = (direction: -1 | 1) => {
@@ -524,6 +480,7 @@ export class ComboBox extends FormAssociatedElement {
 
 	#handleTogglePopover = (event: ToggleEvent) => {
 		const isOpen = event.newState === 'open'
+
 		this.#button!.ariaExpanded = String(isOpen)
 
 		if (isOpen) {
@@ -556,7 +513,7 @@ export class ComboBox extends FormAssociatedElement {
 		const filteredOptionCount = this.#filteredOptions.length
 		this.#highlightedOptionIndex = Math.max(0, Math.min(this.#highlightedOptionIndex + direction, filteredOptionCount - 1))
 
-		const highlightedOption = this.#button!.ariaActiveDescendantElement
+		const highlightedOption = this.#ariaActiveDescendantElement
 		if (highlightedOption instanceof HTMLElement) {
 			scrollIntoViewIfNeeded(highlightedOption, this.#optionList!)
 		}
@@ -564,7 +521,7 @@ export class ComboBox extends FormAssociatedElement {
 
 	#selectHighlightedOption = (event: KeyboardEvent) => {
 		event.preventDefault()
-		const highlightedOption = this.#button!.ariaActiveDescendantElement
+		const highlightedOption = this.#ariaActiveDescendantElement
 		if (highlightedOption instanceof HTMLElement) {
 			this.#selectOption(highlightedOption.dataset.value!)
 		}
@@ -581,7 +538,9 @@ export class ComboBox extends FormAssociatedElement {
 		this.value = value
 
 		this.#button?.focus()
-		this.#popover?.hidePopover()
+		if (this.#button?.popoverTargetElement instanceof HTMLElement) {
+			this.#button.popoverTargetElement.hidePopover()
+		}
 	}
 }
 

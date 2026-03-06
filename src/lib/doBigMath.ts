@@ -40,6 +40,6 @@ export function doBigMath (scoreValues: ScoreValue[], deck: DeckName) {
 	}
 
 	// Balatro seems to round values starting at a certain threshold and it seems to round down. 🤔
-	const score = actualScore.greaterThan(10000) ? floor(actualScore) : actualScore
+	const score = actualScore.greaterThan(10_000) ? floor(actualScore) : actualScore
 	return { score: score.toString(), log }
 }

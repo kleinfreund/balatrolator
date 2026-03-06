@@ -1,9 +1,11 @@
+import { BaseElement } from './BaseElement.ts'
+
 /**
  * Basic form-associated custom element implementing the {@link https://developer.mozilla.org/en-US/docs/Web/API/ElementInternals|ElementInternals} API.
  *
  * Adapted from {@link https://www.peterkroener.de/unsortierte-erkenntnisse-zu-formular-elementen-mit-custom-elements-teil-1/|Unsortierte Erkenntnisse zu Formular-Elementen mit Custom Elements, Teil 1 von N}.
  */
-export class FormAssociatedElement extends HTMLElement {
+export class FormAssociatedElement extends BaseElement {
 	static formAssociated = true
 
 	#internals = this.attachInternals()

@@ -23,5 +23,10 @@ html {
 	--c-green-light: hsl(145 94% 30%);
 	--c-green-lighter: hsl(145 94% 35%);
 
+	--c-seal-gold: hsl(36 57% 66%);
+	--c-seal-red: hsl(3 82% 61%);
+	--c-seal-blue: hsl(203 100% 50%);
+	--c-seal-purple: hsl(268 75% 68%);
+
 	--s-card-max-inline-size: 16rem;
 }

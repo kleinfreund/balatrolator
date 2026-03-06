@@ -3,9 +3,10 @@ import './components/ComboBox.ts'
 import { getState } from '#lib/getState.ts'
 import { calculateScore } from '#lib/calculateScore.ts'
 import type { ComboBox } from './components/ComboBox.ts'
-import { HandLevel } from './components/HandLevel.ts'
+import { HandLevelCard } from './components/HandLevelCard.ts'
 import { JokerCard } from './components/JokerCard.ts'
 import { PlayingCard } from './components/PlayingCard.ts'
+import { debounce } from './debounce.ts'
 import { readStateFromUrl, saveStateToUrl } from './Storage.ts'
 import { SaveManager } from './SaveManager.ts'
 import type { BlindName, Card, DeckName, HandName, InitialState, Joker, State, Result, InitialJoker, InitialCard } from '#lib/types.ts'
@@ -24,6 +25,7 @@ export class UiState {
 	#saveManager = new SaveManager()
 
 	#form: HTMLFormElement
+	#liveRegion: HTMLElement
 
 	#handsInput: HTMLInputElement
 	#discardsInput: HTMLInputElement
@@ -59,6 +61,8 @@ export class UiState {
 		const form = document.querySelector<HTMLFormElement>('[data-form]')!
 		this.#form = form
 		form.addEventListener('submit', (event) => this.#handleSubmit(event))
+
+		this.#liveRegion = document.querySelector<HTMLElement>('[aria-live="polite"]')!
 
 		this.#handsInput = form.querySelector<HTMLInputElement>('[name="hands"]')!
 		this.#discardsInput = form.querySelector<HTMLInputElement>('[name="discards"]')!
@@ -149,13 +153,7 @@ export class UiState {
 		if (this.#form.checkValidity()) {
 			for (const el of this.#playingCardContainer.children) {
 				if (el instanceof PlayingCard) {
-					el.updateState()
-				}
-			}
-
-			for (const el of this.#jokerContainer.children) {
-				if (el instanceof JokerCard) {
-					el.updateState()
+					el.toggleBlindEffects(this.#blindNameInput.value as BlindName, this.#blindIsActiveCheckbox.checked)
 				}
 			}
 		}
@@ -319,8 +317,27 @@ export class UiState {
 			this.#scoreCardContainer.appendChild(fragment)
 		}
 
-		this.#log.innerHTML = Array.from(resultsByScore.values()).map((result) => result.log.join('\n')).join('\n\n')
+		const resultArray = Array.from(resultsByScore.values())
+
+		let scoreAnnouncement
+		if (resultArray.length === 3) {
+			const scoreLuckNone = resultArray[0]!.formattedScore
+			const scoreLuckAverage = resultArray[1]!.formattedScore
+			const scoreLuckAll = resultArray[2]!.formattedScore
+			scoreAnnouncement = `${hand} scoring ${scoreLuckAverage} on average, ${scoreLuckAll} in the best case, and ${scoreLuckNone} in the worst case.`
+		} else {
+			scoreAnnouncement = `${hand} scoring ${resultArray[0]!.formattedScore}.`
+		}
+		this.#debouncedAriaNotify(scoreAnnouncement)
+
+		this.#log.innerHTML = resultArray.map((result) => result.log.join('\n')).join('\n')
 	}
+
+	#ariaNotify = (message: string) => {
+		this.#liveRegion.innerText = message
+	}
+
+	#debouncedAriaNotify = debounce(this.#ariaNotify, 1_000)
 
 	/**
 	 * Assembles a `State` object from the various form elements in the UI.
@@ -360,7 +377,7 @@ export class UiState {
 		}
 
 		for (const handLevel of this.#handLevelContainer.children) {
-			if (!(handLevel instanceof HandLevel)) continue
+			if (!(handLevel instanceof HandLevelCard)) continue
 
 			initialState.handLevels[handLevel.handName] = {
 				level: handLevel.level,
@@ -421,7 +438,9 @@ export class UiState {
 
 		this.#handLevelContainer.innerHTML = ''
 		for (const [handName, handLevel] of Object.entries(state.handLevels)) {
-			this.#addHandLevel(handName as HandName, handLevel)
+			this.#handLevelContainer.append(
+				new HandLevelCard(handName as HandName, handLevel),
+			)
 		}
 
 		this.#jokerContainer.innerHTML = ''
@@ -438,21 +457,14 @@ export class UiState {
 	}
 
 	#addJoker (joker?: Joker) {
-		this.#jokerContainer.insertAdjacentHTML('beforeend', '<joker-card></joker-card>')
-		const jokerEl = this.#jokerContainer.lastElementChild
-		if (jokerEl instanceof JokerCard) {
-			jokerEl.setJoker(joker)
-			jokerEl.updateState()
-		}
+		const el = new JokerCard(joker)
+		this.#jokerContainer.append(el)
 	}
 
 	#addCard (card?: Card) {
-		this.#playingCardContainer.insertAdjacentHTML('beforeend', '<playing-card></playing-card>')
-		const el = this.#playingCardContainer.lastElementChild
-		if (el instanceof PlayingCard) {
-			el.setCard(card)
-			el.updateState()
-		}
+		const el = new PlayingCard(card)
+		this.#playingCardContainer.append(el)
+		el.toggleBlindEffects(this.#blindNameInput.value as BlindName, this.#blindIsActiveCheckbox.checked)
 	}
 
 	#duplicate (event: Event) {
@@ -467,19 +479,13 @@ export class UiState {
 			while (numberOfCopies--) {
 				const copy = card.clone()
 				card.insertAdjacentElement('afterend', copy)
-				copy.updateState()
+				if (copy instanceof PlayingCard) {
+					copy.toggleBlindEffects(this.#blindNameInput.value as BlindName, this.#blindIsActiveCheckbox.checked)
+				}
 			}
 		}
 
 		dialog.close()
 		this.#calculate()
-	}
-
-	#addHandLevel (handName: HandName, handLevel: { level: number, plays: number }) {
-		this.#handLevelContainer.insertAdjacentHTML('beforeend', '<hand-level></hand-level>')
-		const el = this.#handLevelContainer.lastElementChild
-		if (el instanceof HandLevel) {
-			el.setHandLevel(handName, handLevel)
-		}
 	}
 }

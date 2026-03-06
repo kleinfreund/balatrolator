@@ -1,18 +1,20 @@
+import { BaseElement } from './BaseElement.ts'
+
 const registeredContainers = new Set<Element>()
 let isDragging = false
 const FORMAT_PREFIX = 'dragged-element-id:'
 
 let lastDraggedElId: string | null = null
 
-export class DraggableCard extends HTMLElement {
-	container: HTMLElement | undefined
+export class DraggableCard extends BaseElement {
+	#container: HTMLElement | undefined
 
 	constructor () {
 		super()
 
-		this.addEventListener('dragstart', this.handleDragStart)
-		this.addEventListener('dragend', this.handleDragEnd)
-		this.addEventListener('drop', this.handleDrop)
+		this.addEventListener('dragstart', this.#handleDragStart)
+		this.addEventListener('dragend', this.#handleDragEnd)
+		this.addEventListener('drop', this.#handleDrop)
 	}
 
 	connectedCallback () {
@@ -22,31 +24,32 @@ export class DraggableCard extends HTMLElement {
 
 		const container = this.closest<HTMLElement>('[data-drop-zone]')
 		if (!container) {
-			throw new Error(`${this.tagName} is a DraggableCard but is not an descendant of an element with the “data-drop-zone” attribute.`)
+			throw new Error(`<${this.tagName.toLowerCase()} id="${this.id}"> is a DraggableCard but is not an descendant of an element with the “data-drop-zone” attribute.`)
 		}
-		this.container = container
+		this.#container = container
 
-		if (!registeredContainers.has(this.container)) {
-			registeredContainers.add(this.container)
-
-			this.container.addEventListener('dragenter', this.handleDragOver)
-			this.container.addEventListener('dragover', this.handleDragOver)
+		if (!registeredContainers.has(this.#container)) {
+			registeredContainers.add(this.#container)
+			this.#container.addEventListener('dragenter', this.#handleDragOver)
+			this.#container.addEventListener('dragover', this.#handleDragOver)
 		}
 	}
 
 	disconnectedCallback () {
-		if (this.container) {
-			registeredContainers.delete(this.container)
+		if (this.#container) {
+			registeredContainers.delete(this.#container)
+			this.#container.removeEventListener('dragenter', this.#handleDragOver)
+			this.#container.removeEventListener('dragover', this.#handleDragOver)
+			this.#container = undefined
 		}
-		this.container = undefined
 	}
 
-	handleDragStart = (event: DragEvent) => {
-		if (event.dataTransfer === null || !(event.target instanceof Element) || !this.container) {
+	#handleDragStart = (event: DragEvent) => {
+		if (event.dataTransfer === null || !(event.target instanceof Element) || !this.#container) {
 			return
 		}
 
-		const draggedEl = Array.from(this.container.children).find((el) => el === event.target)
+		const draggedEl = Array.from(this.#container.children).find((el) => el === event.target)
 		if (draggedEl) {
 			isDragging = true
 			event.dataTransfer.effectAllowed = 'move'
@@ -56,24 +59,29 @@ export class DraggableCard extends HTMLElement {
 		}
 	}
 
-	handleDragEnd = (event: DragEvent) => {
-		if (!this.container) {
+	#handleDragEnd = (event: DragEvent) => {
+		if (!this.#container) {
 			return
 		}
 
-		const draggedEl = getDragEventData(event, this.container)
+		const draggedEl = getDragEventData(event, this.#container)
 		if (draggedEl) {
-			drop(this.container, draggedEl, event.clientX)
+			drop(this.#container, draggedEl, event.clientX)
+			for (const node of this.#container.children) {
+				if (node instanceof BaseElement) {
+					node.queueRender()
+				}
+			}
 			isDragging = false
 		}
 	}
 
-	handleDragOver = (event: DragEvent) => {
-		if (!this.container) {
+	#handleDragOver = (event: DragEvent) => {
+		if (!this.#container) {
 			return
 		}
 
-		const draggedEl = getDragEventData(event, this.container)
+		const draggedEl = getDragEventData(event, this.#container)
 		if (draggedEl) {
 			// **Allow** dropping off an element to occur
 			event.preventDefault()
@@ -82,7 +90,7 @@ export class DraggableCard extends HTMLElement {
 		}
 	}
 
-	handleDrop = (event: DragEvent) => {
+	#handleDrop = (event: DragEvent) => {
 		if (isDragging) {
 			event.preventDefault()
 		}
@@ -101,7 +109,6 @@ function getDragEventData (event: DragEvent, container: Element): Element | null
 
 	if (draggedElId && container) {
 		const draggedEl = Array.from(container.children).find((el) => el.id === draggedElId)
-
 		if (draggedEl) {
 			return draggedEl
 		}
