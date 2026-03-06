@@ -23,7 +23,9 @@ export function doBigMath (scoreValues: ScoreValue[], deck: DeckName) {
 			chips: chips.toString(),
 			multiplier: multiplier.toString(),
 		})
-		log.push(formattedScoreValue)
+		if (formattedScoreValue !== '') {
+			log.push(formattedScoreValue)
+		}
 
 		if (import.meta.env?.VITE_DEBUG === 'true') {
 			console.log(formattedScoreValue)
