@@ -26,10 +26,6 @@ export function doBigMath (scoreValues: ScoreValue[], deck: DeckName) {
 		if (formattedScoreValue !== '') {
 			log.push(formattedScoreValue)
 		}
-
-		if (import.meta.env?.VITE_DEBUG === 'true') {
-			console.log(formattedScoreValue)
-		}
 	}
 
 	let actualScore: BigNumber

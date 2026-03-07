@@ -26,23 +26,10 @@ npm install
 npm run start
 ```
 
-In debug mode:
-
-```sh
-npm run start:debug
-```
-
-
 ### Run node tests
 
 ```sh
 npm run test:node
-```
-
-In debug mode:
-
-```sh
-npm run test:node:debug
 ```
 
 ### Run browser tests
