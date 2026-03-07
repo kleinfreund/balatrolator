@@ -78,7 +78,7 @@ function getHandBaseScores (handLevels: HandLevels): HandScore {
 	return Object.fromEntries(handBaseScoresEntries) as HandScore
 }
 
-export function getJoker (initialJoker: InitialJoker, listIndex = 0): Joker {
+function getJoker (initialJoker: InitialJoker, listIndex = 0): Joker {
 	const {
 		index = listIndex,
 		name,

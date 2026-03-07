@@ -84,7 +84,7 @@ export function getHand (playedCards: Card[], jokerSet: Set<JokerName>): { playe
 	return { playedHand: 'High Card', scoringCards }
 }
 
-export function fullHouse (cards: Card[]): Card[] {
+function fullHouse (cards: Card[]): Card[] {
 	const map = new Map<Rank, Card[]>()
 
 	for (const card of cards) {
@@ -258,7 +258,7 @@ export function nOfAKind (cards: Card[], n: number): Card[] {
 	return scoringCards
 }
 
-export function highCard (cards: Card[]): Card[] {
+function highCard (cards: Card[]): Card[] {
 	let highestCard
 	let highestChips = 0
 

@@ -50,7 +50,7 @@ export interface Card extends Required<InitialCard> {
 	index: number
 }
 
-export interface EffectOptions {
+interface EffectOptions {
 	state: State
 	scoringCards: Card[]
 	playedHand: HandName
@@ -59,22 +59,17 @@ export interface EffectOptions {
 	trigger: string
 }
 
-export interface CardEffectOptions extends EffectOptions {
+interface CardEffectOptions extends EffectOptions {
 	card: Card
 }
 
-export interface IndirectEffectOptions extends EffectOptions {
+interface IndirectEffectOptions extends EffectOptions {
 	joker: Joker
 }
 
 export type JokerEffect = (this: Joker, options: EffectOptions) => void
 export type JokerCardEffect = (this: Joker, options: CardEffectOptions) => void
 export type JokerIndirectEffect = (this: Joker, options: IndirectEffectOptions) => void
-
-export interface Probability {
-	numerator: number
-	denominator: number
-}
 
 export interface InitialJoker {
 	index?: number
