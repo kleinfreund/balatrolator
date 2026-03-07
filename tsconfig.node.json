@@ -1,6 +1,7 @@
 {
   "extends": "@tsconfig/node24/tsconfig.json",
   "include": [
+		"balatrolator.ts",
     "vite.config.*",
     "playwright.config.*",
     "eslint.config.*",

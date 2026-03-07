@@ -1,7 +1,6 @@
 {
 	"include": [
-		"./src/**/*",
-		"./balatrolator.ts"
+		"./src/**/*"
 	],
 	"compilerOptions": {
 		"noEmit": true,
