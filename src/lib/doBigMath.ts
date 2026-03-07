@@ -1,6 +1,6 @@
 import { add, BigNumber, bignumber, divide, floor, multiply, pow } from 'mathjs'
 
-import { formatScoreValue } from '#utilities/formatScoreValue.ts'
+import { formatScoreValue } from './formatScoreValue.ts'
 import type { DeckName, ScoreValue } from './types.ts'
 
 export function doBigMath (scoreValues: ScoreValue[], deck: DeckName) {
