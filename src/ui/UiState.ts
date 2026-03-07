@@ -24,38 +24,38 @@ const dateTimeFormat = new Intl.DateTimeFormat(document.documentElement.lang, {
 export class UiState {
 	#saveManager = new SaveManager()
 
-	#form: HTMLFormElement
-	#liveRegion: HTMLElement
+	#form
+	#liveRegion
 
-	#handsInput: HTMLInputElement
-	#discardsInput: HTMLInputElement
-	#moneyInput: HTMLInputElement
-	#blindNameInput: ComboBox
-	#blindIsActiveCheckbox: HTMLInputElement
-	#deckInput: ComboBox
-	#observatoryInputs: NodeListOf<HTMLInputElement>
-	#jokerSlotsInput: HTMLInputElement
+	#handsInput
+	#discardsInput
+	#moneyInput
+	#blindNameInput
+	#blindIsActiveCheckbox
+	#deckInput
+	#observatoryInputs
+	#jokerSlotsInput
 
-	#handLevelContainer: HTMLElement
+	#handLevelContainer
 
-	#jokerContainer: HTMLElement
-	#addJokerButton: HTMLButtonElement
-	#duplicateJokerButton: HTMLButtonElement
+	#jokerContainer
+	#addJokerButton
+	#duplicateJokerButton
 
-	#playingCardContainer: HTMLElement
-	#addCardButton: HTMLButtonElement
-	#duplicateCardButton: HTMLButtonElement
+	#playingCardContainer
+	#addCardButton
+	#duplicateCardButton
 
-	#scoreCardContainer: HTMLElement
-	#playedHandEl: HTMLElement
-	#resetButton: HTMLButtonElement
+	#scoreCardContainer
+	#playedHandEl
+	#resetButton
 
-	#log: HTMLPreElement
+	#log
 
-	#savesContainer: HTMLElement
-	#saveRowTemplate: HTMLTemplateElement
-	#saveForm: HTMLFormElement
-	#importForm: HTMLFormElement
+	#savesContainer
+	#saveRowTemplate
+	#saveForm
+	#importForm
 
 	constructor () {
 		const form = document.querySelector<HTMLFormElement>('[data-form]')!
@@ -86,7 +86,7 @@ export class UiState {
 
 		this.#playingCardContainer = form.querySelector<HTMLElement>('[data-c-container]')!
 		this.#addCardButton = form.querySelector<HTMLButtonElement>('[data-c-add-button]')!
-		this.#addCardButton.addEventListener('click', () => this.#addCard())
+		this.#addCardButton.addEventListener('click', () => this.#addPlayingCard())
 		this.#duplicateCardButton = document.querySelector<HTMLButtonElement>('[data-c-duplicate-button]')!
 		this.#duplicateCardButton.addEventListener('click', (event) => this.#duplicate(event))
 
@@ -450,7 +450,7 @@ export class UiState {
 
 		this.#playingCardContainer.innerHTML = ''
 		for (const card of state.cards) {
-			this.#addCard(card)
+			this.#addPlayingCard(card)
 		}
 
 		this.#applyState(state)
@@ -461,7 +461,7 @@ export class UiState {
 		this.#jokerContainer.append(el)
 	}
 
-	#addCard (card?: Card) {
+	#addPlayingCard (card?: Card) {
 		const el = new PlayingCard(card)
 		this.#playingCardContainer.append(el)
 		el.toggleBlindEffects(this.#blindNameInput.value as BlindName, this.#blindIsActiveCheckbox.checked)
