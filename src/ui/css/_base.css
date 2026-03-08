@@ -10,7 +10,7 @@ html {
 	font-size: var(--f-size);
 	line-height: var(--f-line-height);
 	color: var(--c-text);
-	background-color: var(--c-background);
+	background-color: hsl(249 10% 90%);
 }
 
 @media (prefers-contrast: more) {
@@ -46,11 +46,11 @@ ul {
 }
 
 a {
-	color: var(--c-blue-light);
+	color: var(--c-interactive-light);
 }
 
 a:hover {
-	color: var(--c-blue-dark);
+	color: var(--c-interactive-dark);
 }
 
 legend {

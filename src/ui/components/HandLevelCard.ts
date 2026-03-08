@@ -18,14 +18,10 @@ const lightCss = /*css*/`
 		}
 	}
 
-	.hlc-level-input {
-		text-align: right;
-		inline-size: 4rem;
-	}
-
+	.hlc-level-input,
 	.hlc-plays-input {
 		text-align: right;
-		inline-size: 5rem;
+		inline-size: 2.5rem;
 	}
 `
 const lightStyleSheet = await new CSSStyleSheet().replace(lightCss)

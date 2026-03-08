@@ -16,7 +16,6 @@ const lightCss = /*css*/`
 
 	@media (prefers-contrast: more) {
 		playing-card {
-			--c-text: var(--c-black);
 			--c-border: var(--c-black);
 			--c-background-light: var(--c-grey-light);
 			--c-background-lighter: var(--c-white);

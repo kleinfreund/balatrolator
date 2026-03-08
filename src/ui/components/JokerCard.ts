@@ -7,7 +7,7 @@ import { BaseElement } from '#ui/components/BaseElement.ts'
 
 const lightCss = /*css*/`
 	joker-card {
-		--c-text: var(--c-white);
+		--c-text: var(--c-black);
 		--c-border: var(--c-red-dark);
 		--c-background-light: var(--c-red-light);
 		--c-background-lighter: var(--c-red-lighter);
@@ -17,7 +17,6 @@ const lightCss = /*css*/`
 
 	@media (prefers-contrast: more) {
 		joker-card {
-			--c-text: var(--c-black);
 			--c-border: var(--c-black);
 			--c-background-light: var(--c-grey-light);
 			--c-background-lighter: var(--c-white);

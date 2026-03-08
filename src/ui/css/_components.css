@@ -36,7 +36,7 @@
 		'hands cards cards'
 		'hands score log'
 	;
-	grid-template-columns: 15rem minmax(0, 1fr) minmax(0, 3fr);
+	grid-template-columns: 14rem minmax(0, 1fr) minmax(0, 3fr);
 	gap: 0.5rem;
 }
 
@@ -68,7 +68,7 @@
 	padding: 0.5rem;
 	border: 2px solid var(--c-border);
 	border-radius: 0.5rem;
-	background-color: var(--c-background-lighter);
+	background-color: var(--c-background-light);
 }
 
 @media (prefers-contrast: more) {
@@ -101,7 +101,7 @@
 }
 
 .round-data-card {
-	--c-text: var(--c-white);
+	--c-text: var(--c-black);
 	--c-border: var(--c-blue-dark);
 	--c-background-light: var(--c-blue-light);
 	--c-background-lighter: var(--c-blue-lighter);
@@ -109,7 +109,6 @@
 
 @media (prefers-contrast: more) {
 	.round-data-card {
-		--c-text: var(--c-black);
 		--c-border: var(--c-black);
 		--c-background-light: var(--c-grey-light);
 		--c-background-lighter: var(--c-white);
@@ -154,7 +153,7 @@
 /* SCORE CARD */
 
 .score-card {
-	--c-text: var(--c-white);
+	--c-text: var(--c-black);
 	--c-border: var(--c-green-dark);
 	--c-background-light: var(--c-green-light);
 	--c-background-lighter: var(--c-green-lighter);
@@ -164,7 +163,6 @@
 
 @media (prefers-contrast: more) {
 	.score-card {
-		--c-text: var(--c-black);
 		--c-border: var(--c-black);
 		--c-background-light: var(--c-grey-light);
 		--c-background-lighter: var(--c-white);
@@ -201,7 +199,7 @@
 .s-save-container,
 .s-import-container {
 	display: inline flex;
-	align-items: stretch;
+	align-items: start;
 	flex-wrap: wrap;
 	gap: 0.5rem;
 }
