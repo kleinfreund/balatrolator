@@ -10,4 +10,13 @@ export default defineConfig({
 		},
 		include: ['src/**/*.test.ts'],
 	},
+	build: {
+		rollupOptions: {
+			output: {
+				manualChunks: {
+					mathjs: ['mathjs'],
+				},
+			},
+		},
+	},
 })
