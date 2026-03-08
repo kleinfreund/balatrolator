@@ -116,9 +116,10 @@ export class PlayingCard extends DraggableCard {
 			this.seal = card.seal
 		}
 
+		// Allow clicking the card to toggle its played state.
 		this.addEventListener('click', (event) => {
-			if (event.currentTarget && !isInteractive(event)) {
-				this.played = true
+			if (event.isTrusted && !isInteractive(event)) {
+				this.played = !this.played
 			}
 		}, { capture: true })
 	}
