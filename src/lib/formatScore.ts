@@ -1,4 +1,4 @@
-import { BigNumber, bignumber, divide, round } from 'mathjs'
+import { Decimal } from 'decimal.js'
 
 export function formatScore (score: string): string {
 	if (score.includes('e+')) {
@@ -8,7 +8,7 @@ export function formatScore (score: string): string {
 		return `${number.toFixed(3)}e${suffix}`
 	}
 
-	const bigNumber = bignumber(score)
+	const bigNumber = Decimal(score)
 	if (bigNumber.lessThan(10_000)) {
 		return new Intl.NumberFormat('en', { maximumFractionDigits: 1 })
 			.format(bigNumber.toNumber())
@@ -19,8 +19,8 @@ export function formatScore (score: string): string {
 			.format(bigNumber.toNumber())
 	}
 
-	const decimalValue = divide(bigNumber, bignumber(Math.pow(10, score.length - 1))) as BigNumber
-	const roundedValue = round(decimalValue, 3).toString()
+	const decimalValue = bigNumber.div(Math.pow(10, score.length - 1))
+	const roundedValue = decimalValue.toPrecision(4).toString()
 	const prefix = roundedValue + (roundedValue.includes('.') ? '' : '.')
 
 	return `${prefix.padEnd(5, '0')}e${String(score.length - 1)}`

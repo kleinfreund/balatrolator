@@ -1,22 +1,22 @@
-import { add, BigNumber, bignumber, divide, floor, multiply, pow } from 'mathjs'
+import { Decimal } from 'decimal.js'
 
 import { formatScoreValue } from './formatScoreValue.ts'
 import type { DeckName, ScoreValue } from './types.ts'
 
+Decimal.set({ precision: 64 })
+
 export function doBigMath (scoreValues: ScoreValue[], deck: DeckName) {
-	let chips = bignumber(0)
-	let multiplier = bignumber(0)
+	let chips = Decimal(0)
+	let multiplier = Decimal(0)
 	const log: string[] = []
 	for (const scoreValue of scoreValues) {
 		if (scoreValue.chips) {
 			const [operator, value] = scoreValue.chips
-			const operation = operator === '+' ? add : multiply
-			chips = operation(chips, bignumber(value))
+			chips = chips[operator === '+' ? 'add' : 'mul'](value)
 		}
 		if (scoreValue.multiplier) {
 			const [operator, value] = scoreValue.multiplier
-			const operation = operator === '+' ? add : multiply
-			multiplier = operation(multiplier, bignumber(value))
+			multiplier = multiplier[operator === '+' ? 'add' : 'mul'](value)
 		}
 
 		const formattedScoreValue = formatScoreValue(scoreValue, {
@@ -28,14 +28,14 @@ export function doBigMath (scoreValues: ScoreValue[], deck: DeckName) {
 		}
 	}
 
-	let actualScore: BigNumber
+	let actualScore
 	if (deck === 'Plasma Deck') {
-		actualScore = pow(divide(add(chips, multiplier), bignumber(2)), bignumber(2)) as BigNumber // mathjs type bug
+		actualScore = chips.add(multiplier).div(2).pow(2)
 	} else {
-		actualScore = multiply(chips, multiplier) as BigNumber // mathjs type bug
+		actualScore = chips.mul(multiplier)
 	}
 
 	// Balatro seems to round values starting at a certain threshold and it seems to round down. 🤔
-	const score = actualScore.greaterThan(10_000) ? floor(actualScore) : actualScore
+	const score = actualScore.greaterThan(10_000) ? actualScore.floor() : actualScore
 	return { score: score.toString(), log }
 }

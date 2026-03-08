@@ -52,8 +52,8 @@
 		}
 	},
 	"dependencies": {
-		"lit-html": "3.3.2",
-		"mathjs": "15.1.1"
+		"decimal.js": "10.6.0",
+		"lit-html": "3.3.2"
 	},
 	"devDependencies": {
 		"@commitlint/cli": "20.4.3",
