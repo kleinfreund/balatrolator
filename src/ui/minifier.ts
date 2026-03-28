@@ -1,18 +1,18 @@
 import { BLINDS, DECKS, EDITIONS, ENHANCEMENTS, HANDS, JOKER_DEFINITIONS, JOKER_EDITIONS, JOKER_NAMES, RANKS, SEALS, SUITS } from '#lib/data.ts'
 import { getState } from '#lib/getState.ts'
-import type { Card, Edition, Enhancement, HandLevel, InitialCard, InitialJoker, Joker, JokerName, Rank, Seal, State, Suit } from '#lib/types.ts'
+import type { Card, Edition, Enhancement, HandLevel, HandName, InitialCard, InitialJoker, Joker, JokerName, Rank, Seal, State, Suit } from '#lib/types.ts'
 
 /*
 I'm sorry for the code in this file; it's an abomination. Its job is compressing a `State` object into a minimal (as in size) string for the use of persisting it in the browser's URL or client-side storage (e.g. local storage). This is a context-aware form of data compression “hand-crafted” for this application.
 */
 
 /**
- * Used in place of a default value in the minified output to save on overall string length (e.g. instead of storing “0”, we store the empty string).
+ * Used in place of a default value in the minified output to save on overall string length (i.e. instead of storing “0”, we store the empty string).
  */
 const MINIFIED_DEFAULT_VALUE = ''
 
 /**
- * Separator glyphs to be used in minified strings. Chosen to not be automatically encodeURIComponent-ed when entering them in a URL so the URL stays smaller and somewhat readable.
+ * Separator glyphs to be used in minified strings. Chosen to not be automatically encodeURIComponent-ed when entering them in a URL so the URL stays visually shorter and somewhat readable.
  */
 const SEPARATOR = {
 	first: '-',
@@ -35,7 +35,7 @@ function invertMap<T extends string> (array: T[]): Record<T, number> {
 }
 
 /**
- * Takes a `State` object and minifies it into a string of (relatively) minimal size for the purpose of storing in the client's browser (in the URL and/or local storage).
+ * Takes a `State` object and minifies it into a string of (relatively) minimal size for the purpose of storing in the URL and/or local storage.
  */
 export function minify (state: State): string {
 	const {
@@ -90,12 +90,14 @@ export function deminify (str: string): State {
 			cardCodes,
 		] = str.split(SEPARATOR.first)
 
-		const observatory = Object.fromEntries(!observatoryCodes ? [] : observatoryCodes.split(SEPARATOR.second)
-			.map((code) => fromObservatoryCode(code))
-			.map((planetCount, index) => [HANDS[index], planetCount]))
-		const handLevels = Object.fromEntries(!handLevelCodes ? [] : handLevelCodes.split(SEPARATOR.second)
-			.map((code) => fromHandLevelCode(code))
-			.map((handLevel, index) => [HANDS[index], handLevel]))
+		const observatory = Object.fromEntries(
+			!observatoryCodes ? [] : observatoryCodes.split(SEPARATOR.second)
+				.map((code, index) => [HANDS[index]!, fromObservatoryCode(code)]),
+		) as Record<HandName, number>
+		const handLevels = Object.fromEntries(
+			!handLevelCodes ? [] : handLevelCodes.split(SEPARATOR.second)
+				.map((code, index) => [HANDS[index]!, fromHandLevelCode(code)]),
+		) as Record<HandName, HandLevel>
 		const jokers = !jokerCodes ? [] : jokerCodes.split(SEPARATOR.second)
 			.map((code) => fromJokerCode(code))
 		const cards = !cardCodes ? [] : cardCodes.split(SEPARATOR.second)
