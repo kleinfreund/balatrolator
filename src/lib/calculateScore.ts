@@ -41,19 +41,13 @@ function resolveState (state: State): State {
 	return {
 		...state,
 		// Create copies of cokers based on their count.
-		jokers: state.jokers
-			.map((joker) => {
-				return Array.from({ length: joker.count ?? 1 })
-					.map(() => joker)
-			})
-			.flat(),
+		jokers: state.jokers.flatMap((joker) => {
+			return Array.from({ length: joker.count ?? 1 }, () => joker)
+		}),
 		// Create copies of cards based on their count.
-		cards: state.cards
-			.map((card) => {
-				return Array.from({ length: card.count ?? 1 })
-					.map(() => card)
-			})
-			.flat(),
+		cards: state.cards.flatMap((card) => {
+			return Array.from({ length: card.count ?? 1 }, () => card)
+		}),
 	}
 }
 

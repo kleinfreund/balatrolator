@@ -154,7 +154,7 @@ export function straight (cards: Card[], jokerSet: Set<JokerName>): Card[] {
 	const gap = jokerSet.has('Shortcut') ? 2 : 1
 	const cardIndexes = cards
 		.filter(({ enhancement }) => enhancement !== 'Stone')
-		.map(({ rank }) => {
+		.flatMap(({ rank }) => {
 			if (rank === 'Ace') {
 				// Count an Ace both for its natural rank (i.e. succeeding a “King”) and for its special rank (i.e. preceeding a “2”).
 				return [RANK_TO_INDEX_MAP[rank], 1]
@@ -162,7 +162,6 @@ export function straight (cards: Card[], jokerSet: Set<JokerName>): Card[] {
 
 			return [RANK_TO_INDEX_MAP[rank]]
 		})
-		.flat()
 	cardIndexes.sort((a, b) => a - b)
 
 	const gaps = Array.from({ length: gap }, (_, index) => index + 1)
