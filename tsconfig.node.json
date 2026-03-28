@@ -1,21 +1,26 @@
 {
-  "extends": "@tsconfig/node24/tsconfig.json",
-  "include": [
+	"include": [
 		"balatrolator.ts",
-    "vite.config.*",
-    "playwright.config.*",
-    "eslint.config.*",
-    "playwright/**/*"
-  ],
-  "compilerOptions": {
-    "noEmit": true,
-    "tsBuildInfoFile": "./node_modules/.tmp/tsconfig.node.tsbuildinfo",
-    "verbatimModuleSyntax": true,
-    "allowImportingTsExtensions": true,
-    "erasableSyntaxOnly": true,
-    "module": "NodeNext",
-    "moduleResolution": "NodeNext",
-		"lib": ["DOM"],
-    "types": ["node"]
-  }
+		"vite.config.*",
+		"playwright.config.*",
+		"eslint.config.*",
+		"playwright/**/*"
+	],
+	"compilerOptions": {
+		"tsBuildInfoFile": "./node_modules/.tmp/tsconfig.node.tsbuildinfo",
+		"lib": [
+			"ES2024"
+		],
+		"module": "NodeNext",
+		"moduleResolution": "NodeNext",
+		"allowImportingTsExtensions": true,
+		"esModuleInterop": true,
+		"verbatimModuleSyntax": true,
+		"noEmit": true,
+		"skipLibCheck": true,
+		"target": "es2024",
+		"strict": true,
+		"erasableSyntaxOnly": true,
+		"types": ["node"]
+	}
 }

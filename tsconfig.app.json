@@ -8,8 +8,8 @@
 		"target": "ESNext",
 		"moduleResolution": "Bundler",
 		"allowImportingTsExtensions": true,
-    "moduleDetection": "force",
-    "esModuleInterop": true,
+		"moduleDetection": "force",
+		"esModuleInterop": true,
 		"lib": [
 			"DOM",
 			"DOM.Iterable",
