@@ -6,7 +6,7 @@
 	gap: 0.25rem;
 }
 
-.action-list>:not(.button):not(.push-left) {
+.action-list>:not(.button):not(.push-inline-start) {
 	flex: 1;
 }
 

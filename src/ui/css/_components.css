@@ -146,7 +146,7 @@
 }
 
 .r-observatory-input {
-	text-align: right;
+	text-align: end;
 	inline-size: 4.5rem;
 }
 
@@ -193,7 +193,7 @@
 
 .actions-cell {
 	inline-size: 10rem;
-	text-align: right;
+	text-align: end;
 }
 
 .s-save-container,

@@ -52,10 +52,6 @@
 	flex-wrap: wrap;
 }
 
-.actions:where(.--right) {
-	justify-content: flex-end;
-}
-
 .badge {
 	display: inline block;
 	padding: 0 0.5rem;
@@ -65,7 +61,7 @@
 	font-size: 0.8em;
 }
 
-.push-left {
+.push-inline-start {
 	margin-inline-start: auto;
 }
 
