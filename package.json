@@ -44,11 +44,11 @@
 	"devEngines": {
 		"runtime": {
 			"name": "node",
-			"version": "^24.14.0"
+			"version": "^24.14.1"
 		},
 		"packageManager": {
 			"name": "npm",
-			"version": "^11.9.0"
+			"version": "^11.12.1"
 		}
 	},
 	"dependencies": {
