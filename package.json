@@ -70,7 +70,7 @@
 		"globals": "17.4.0",
 		"husky": "9.1.7",
 		"jsdom": "27.4.0",
-		"knip": "5.88.1",
+		"knip": "6.1.0",
 		"lockfile-lint": "5.0.0",
 		"npm-run-all2": "8.0.4",
 		"playwright": "1.58.2",
