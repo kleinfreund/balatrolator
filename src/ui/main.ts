@@ -1,3 +1,3 @@
-import { UiState } from './UiState.ts'
+import { init } from './UiState.ts'
 
-new UiState().init()
+init()
