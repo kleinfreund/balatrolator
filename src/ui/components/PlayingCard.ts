@@ -269,7 +269,7 @@ export class PlayingCard extends DraggableCard {
 						type="button"
 						@click="${() => this.remove()}"
 					>
-						<span class="visually-hidden">Remove</span>
+						<span class="visually-hidden">Remove playing card</span>
 
 						<svg class="icon">
 							<use xlink:href="#trash-icon"></use>
