@@ -373,8 +373,8 @@ export const JOKER_DEFINITIONS: Record<JokerName, JokerDefinition> = {
 				return
 			}
 
-			const handCardsLowestRankFirst = handCards.sort((cardA, cardB) => RANK_TO_CHIP_MAP[cardA.rank] - RANK_TO_CHIP_MAP[cardB.rank])
-			const lowestRank = handCardsLowestRankFirst[0]!.rank
+			const handCardsLowestRankFirst = handCards.toSorted((cardA, cardB) => RANK_TO_CHIP_MAP[cardA.rank] - RANK_TO_CHIP_MAP[cardB.rank])
+			const lowestRank = handCardsLowestRankFirst.at(0)!.rank
 			const lowestHandCards = handCards.filter(({ rank }) => rank === lowestRank)
 			const lastLowestHandCard = lowestHandCards.at(-1)!
 			// If the current card isn't the *last* lowest, it's not relevant.

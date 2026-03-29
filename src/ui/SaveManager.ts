@@ -42,7 +42,7 @@ export class SaveManager {
 	save (name: string, state: State) {
 		const existingSaveIndex = this.#getSaveIndex(name)
 		const index = existingSaveIndex === -1 ? this.#saves.length : existingSaveIndex
-		const existingSave = this.#saves[index]
+		const existingSave = this.#saves.at(index)
 		this.#saves[index] = {
 			name,
 			time: Date.now(),
@@ -57,7 +57,7 @@ export class SaveManager {
 	autoSave (state: State) {
 		const autoSaveIndex = this.#getAutoSaveIndex()
 		const index = autoSaveIndex === -1 ? this.#saves.length : autoSaveIndex
-		const autoSave = this.#saves[index]
+		const autoSave = this.#saves.at(index)
 		this.#saves[index] = {
 			name: autoSave?.name ?? AUTO_SAVE_NAME,
 			time: Date.now(),
@@ -74,32 +74,30 @@ export class SaveManager {
 	 * Retrieve saves out of web storage.
 	 */
 	retrieveStoredSaves () {
-		let minifiedSaves = [] as StoredSave[]
 		try {
-			minifiedSaves = JSON.parse(WebStorage.get('saves') ?? '[]') as StoredSave[]
+			const minifiedSaves: StoredSave[] = JSON.parse(WebStorage.get('saves') ?? '[]')
+			this.#saves = minifiedSaves
+				.map<Save>((save) => ({
+					...save,
+					state: deminify(save.state),
+				}))
+				.toSorted((saveA, saveB) => saveB.time - saveA.time)
 		} catch (error) {
 			// A JSON SyntaxError can occur here for old save data that was compressed and which is no longer being decompressed.
 			console.error('Failed to parse saves.', error)
 		}
-
-		const saves: Save[] = minifiedSaves.map((save) => ({
-			...save,
-			state: deminify(save.state),
-		}))
-		saves.sort((saveA, saveB) => saveB.time - saveA.time)
-
-		this.#saves = saves
 	}
 
 	/**
 	 * Store saves in web storage.
 	 */
 	storeSaves () {
-		this.#saves.sort((saveA, saveB) => saveB.time - saveA.time)
-		const storedSaves: StoredSave[] = this.#saves.map((save) => ({
-			...save,
-			state: minify(save.state),
-		}))
+		const storedSaves = this.#saves
+			.toSorted((saveA, saveB) => saveB.time - saveA.time)
+			.map<StoredSave>((save) => ({
+				...save,
+				state: minify(save.state),
+			}))
 
 		WebStorage.set('saves', JSON.stringify(storedSaves))
 	}

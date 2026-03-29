@@ -162,11 +162,11 @@ export function straight (cards: Card[], jokerSet: Set<JokerName>): Card[] {
 
 			return [RANK_TO_INDEX_MAP[rank]]
 		})
-	cardIndexes.sort((a, b) => a - b)
+		.toSorted((a, b) => a - b)
 
 	const gaps = Array.from({ length: gap }, (_, index) => index + 1)
 
-	let previousCardIndex = cardIndexes[0]!
+	let previousCardIndex = cardIndexes.at(0)!
 	const scoringCardIndexes: number[] = [previousCardIndex]
 	let isStraight = false
 	for (let i = 1; i < cardIndexes.length; i++) {
