@@ -265,7 +265,7 @@ export class PlayingCard extends DraggableCard {
 					</label>
 
 					<button
-						class="button --icon push-left"
+						class="button --icon push-inline-start"
 						type="button"
 						@click="${() => this.remove()}"
 					>
@@ -383,7 +383,7 @@ export class PlayingCard extends DraggableCard {
 					</label>
 
 					<button
-						class="button --icon push-left"
+						class="button --icon push-inline-start"
 						type="button"
 						popovertarget="pc-duplicate-modal"
 						@click="${(event: Event) => this.showDuplicateModal(event)}"

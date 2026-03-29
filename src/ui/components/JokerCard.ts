@@ -272,7 +272,7 @@ export class JokerCard extends DraggableCard {
 					</button>
 
 					<button
-						class="button --icon push-left"
+						class="button --icon push-inline-start"
 						type="button"
 						@click="${() => this.remove()}"
 					>
