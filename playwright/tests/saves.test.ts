@@ -1,6 +1,17 @@
 import { expect, test } from '@playwright/test'
 
 test.describe('Saves', () => {
+	test('displays save data', async ({ page }) => {
+		await page.clock.setFixedTime(new Date('2026-03-29T15:16:00'))
+		await page.goto('/?state=---1-1--5-___________-11*_*_*_*_*_*_*_*_*_*_*_*-50********_122********_126*****0*3**_69****12.25****_132********_119****5.5****-0*3***2**1*_0*3**4*2**1*4_0*3**2****_0*3**5*2***_0*3**5*2***_0*3***2***')
+
+		const table = page.getByRole('table', { name: /^Saves$/ })
+		const cells = table.getByRole('row').last().getByRole('cell')
+		for (const [i, expectedCellContent] of ['Current hand (autosave)', 'Flush Five', '1.297e16', 'Mar 29, 2026, 15:16:00'].entries()) {
+			await expect(cells.nth(i)).toContainText(expectedCellContent)
+		}
+	})
+
 	test('can store and load saves', async ({ page }) => {
 		await page.goto('/?state=---1-1--5-___________-11*_*_*_*_*_*_*_*_*_*_*_*-50********_122********_126*****0*3**_69****12.25****_132********_119****5.5****-0*3***2**1*_0*3**4*2**1*4_0*3**2****_0*3**5*2***_0*3**5*2***_0*3***2***')
 

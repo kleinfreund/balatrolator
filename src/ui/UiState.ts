@@ -133,6 +133,13 @@ function populateSavesUi () {
 		const nameCell = fragment.querySelector<HTMLTableCellElement>('[data-s-name]')!
 		nameCell.innerHTML = `<b>${save.name}</b>${save.autoSave ? ' <i>(autosave)</>' : ''}`
 
+		const handCell = fragment.querySelector<HTMLTableCellElement>('[data-s-hand]')!
+		handCell.innerHTML = save.hand
+
+		const scoreCell = fragment.querySelector<HTMLTableCellElement>('[data-s-score]')!
+		const averageResult = save.results.find(({ luck }) => luck === 'average')
+		scoreCell.innerHTML = averageResult!.formattedScore
+
 		const timeCell = fragment.querySelector<HTMLTableCellElement>('[data-s-time]')!
 		timeCell.innerText = dateTimeFormat.format(new Date(save.time))
 
@@ -168,7 +175,8 @@ function handleSaveSubmit (event: SubmitEvent) {
 	const formData = new FormData(form)
 	const name = formData.get('name') as Exclude<FormDataEntryValue, File> | null ?? `Save ${saveManager.saves.length - 1}`
 
-	saveManager.save(name, state)
+	const { hand, results } = calculateScore(state)
+	saveManager.save(name, state, hand, results)
 	storeSaves()
 }
 
@@ -217,7 +225,8 @@ function handleImportSubmit (event: SubmitEvent) {
 		if (typeof fileReader.result === 'string') {
 			const name = file.name.replace('.json', '')
 			const state = JSON.parse(fileReader.result) as State
-			saveManager.save(name, state)
+			const { hand, results } = calculateScore(state)
+			saveManager.save(name, state, hand, results)
 			storeSaves()
 		}
 	})
@@ -225,17 +234,16 @@ function handleImportSubmit (event: SubmitEvent) {
 }
 
 function applyState (state: State) {
-	updateScore(state)
+	const { hand, results } = calculateScore(state)
+	updateScore(hand, results)
 	saveStateToUrl(state)
 
 	// Save the current state as a special auto save overwriting the previous auto save.
-	saveManager.autoSave(state)
+	saveManager.autoSave(state, hand, results)
 	storeSaves()
 }
 
-function updateScore (state: State) {
-	const { hand, results } = calculateScore(state)
-
+function updateScore (hand: HandName, results: Result[]) {
 	const resultsByScore = new Map<string, Result>()
 	for (const result of results) {
 		if (!resultsByScore.has(result.score)) {

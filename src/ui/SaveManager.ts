@@ -1,4 +1,4 @@
-import { State } from '#lib/types.ts'
+import { HandName, Result, State } from '#lib/types.ts'
 import { deminify, minify } from './minifier.ts'
 import { WebStorage } from './Storage.ts'
 
@@ -6,6 +6,8 @@ interface Save {
 	name: string
 	time: number
 	state: State
+	hand: HandName
+	results: Result[]
 	autoSave?: boolean
 }
 
@@ -39,7 +41,7 @@ export class SaveManager {
 	/**
 	 * Save the current state under a name.
 	 */
-	save (name: string, state: State) {
+	save (name: string, state: State, hand: HandName, results: Result[]) {
 		const existingSaveIndex = this.#getSaveIndex(name)
 		const index = existingSaveIndex === -1 ? this.#saves.length : existingSaveIndex
 		const existingSave = this.#saves.at(index)
@@ -47,6 +49,8 @@ export class SaveManager {
 			name,
 			time: Date.now(),
 			state,
+			hand,
+			results,
 			autoSave: existingSave?.autoSave ?? false,
 		}
 	}
@@ -54,7 +58,7 @@ export class SaveManager {
 	/**
 	 * Save the current state as a special auto save overwriting the previous auto save.
 	 */
-	autoSave (state: State) {
+	autoSave (state: State, hand: HandName, results: Result[]) {
 		const autoSaveIndex = this.#getAutoSaveIndex()
 		const index = autoSaveIndex === -1 ? this.#saves.length : autoSaveIndex
 		const autoSave = this.#saves.at(index)
@@ -62,6 +66,8 @@ export class SaveManager {
 			name: autoSave?.name ?? AUTO_SAVE_NAME,
 			time: Date.now(),
 			state,
+			hand,
+			results,
 			autoSave: true,
 		}
 	}
