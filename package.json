@@ -35,7 +35,7 @@
 		"lint:lockfile": "lockfile-lint --path package-lock.json --validate-hosts --allowed-hosts npm",
 		"lint:types": "tsc --noEmit",
 		"lint:knip": "knip",
-		"fix": "run-p fix:*",
+		"fix": "run-s fix:*",
 		"fix:code-quality": "npm run lint:code-quality -- --fix",
 		"build": "vite build",
 		"preview": "vite preview",
@@ -73,7 +73,7 @@
 		"lockfile-lint": "5.0.0",
 		"npm-run-all2": "8.0.4",
 		"playwright": "1.58.2",
-		"typescript": "5.9.3",
+		"typescript": "6.0.2",
 		"typescript-eslint": "8.58.0",
 		"vite": "8.0.3",
 		"vitest": "4.1.2"
