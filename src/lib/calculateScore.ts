@@ -200,12 +200,12 @@ function getScore (state: State, playedHand: HandName, scoringCards: Card[], luc
 	}
 
 	for (const card of state.cards.filter(({ played }) => !played)) {
-		for (const trigger of getHeldCardTriggers({ state, card })) {
-			// Debuffed cards don't participate in scoring for held cards at all.
-			if (card.debuffed) {
-				continue
-			}
+		// Debuffed cards don't participate in scoring for held cards at all.
+		if (card.debuffed) {
+			continue
+		}
 
+		for (const trigger of getHeldCardTriggers({ state, card })) {
 			// 1. Enhancement
 			switch (card.enhancement) {
 				case 'Steel': {
@@ -224,11 +224,6 @@ function getScore (state: State, playedHand: HandName, scoringCards: Card[], luc
 		// TODO: Yeah, so this looks wrong. The separate for loop for held card effects ensures that cards are scored in order of the cards first. So a steel card with Mime is counted twice before a next card with Raised Fist is counted. Without doing this, the second steel scoring happens hafter the next card. Concerningly, the same logic applied to played card effects breaks a couple of tests I'm confident are correct.
 		// eslint-disable-next-line @typescript-eslint/no-unused-vars
 		for (const _trigger of getHeldCardTriggers({ state, card })) {
-			// Debuffed cards don't participate in scoring for held cards at all.
-			if (card.debuffed) {
-				continue
-			}
-
 			// 2. Joker effects for held cards
 			for (const joker of state.jokers) {
 				if (joker.heldCardEffect) {
