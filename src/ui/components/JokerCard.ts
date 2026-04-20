@@ -430,7 +430,7 @@ export class JokerCard extends DraggableCard {
 							type="checkbox"
 							value="is-active"
 							checked
-							?checked="${this.active}"
+							.checked="${this.active}"
 							@change="${(event: Event) => {
 								const input = event.target as HTMLInputElement
 								this.active = input.checked

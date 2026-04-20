@@ -254,7 +254,7 @@ export class PlayingCard extends DraggableCard {
 							type="checkbox"
 							value="is-played"
 							checked
-							?checked="${this.played}"
+							.checked="${this.played}"
 							@change="${(event: Event) => {
 								const input = event.target as HTMLInputElement
 								this.played = input.checked
@@ -402,7 +402,7 @@ export class PlayingCard extends DraggableCard {
 						name="card-is-debuffed-${this.uniqueId}"
 						type="checkbox"
 						value="is-debuffed"
-						?checked="${this.debuffed}"
+						.checked="${this.debuffed}"
 						@change="${(event: Event) => {
 							const input = event.target as HTMLInputElement
 							this.debuffed = input.checked
