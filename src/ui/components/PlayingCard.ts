@@ -101,7 +101,7 @@ export class PlayingCard extends DraggableCard {
 		if (!this.id) {
 			this.id = `${this.tagName.toLowerCase()}-${this.uniqueId}`
 		}
-		this.classList.add('card')
+		this.classList.add('card', '--is-played')
 		this.draggable = true
 
 		if (card) {
