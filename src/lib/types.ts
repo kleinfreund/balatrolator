@@ -67,9 +67,9 @@ interface IndirectEffectOptions extends EffectOptions {
 	joker: Joker
 }
 
-export type JokerEffect = (this: Joker, options: EffectOptions) => void
-export type JokerCardEffect = (this: Joker, options: CardEffectOptions) => void
-export type JokerIndirectEffect = (this: Joker, options: IndirectEffectOptions) => void
+type JokerEffect = (this: Joker, options: EffectOptions) => void
+type JokerCardEffect = (this: Joker, options: CardEffectOptions) => void
+type JokerIndirectEffect = (this: Joker, options: IndirectEffectOptions) => void
 
 export interface InitialJoker {
 	index?: number
