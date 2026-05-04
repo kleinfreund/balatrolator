@@ -5,7 +5,12 @@ import type { DeckName, ScoreValue } from './types.ts'
 
 Decimal.set({ precision: 64 })
 
-export function doBigMath (scoreValues: ScoreValue[], deck: DeckName) {
+export function doBigMath (scoreValues: ScoreValue[], deck: DeckName): {
+	chips: string
+	multiplier: string
+	score: string
+	log: string[]
+} {
 	let chips = Decimal(0)
 	let multiplier = Decimal(0)
 	const log: string[] = []
@@ -37,5 +42,10 @@ export function doBigMath (scoreValues: ScoreValue[], deck: DeckName) {
 
 	// Balatro seems to round values starting at a certain threshold and it seems to round down. 🤔
 	const score = actualScore.greaterThan(10_000) ? actualScore.floor() : actualScore
-	return { score: score.toString(), log }
+	return {
+		chips: chips.toString(),
+		multiplier: multiplier.toString(),
+		score: score.toString(),
+		log,
+	}
 }

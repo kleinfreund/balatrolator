@@ -20,7 +20,7 @@ const lightCss = /*css*/`
 
 	.hlc-level-input,
 	.hlc-plays-input {
-		text-align: right;
+		text-align: end;
 		inline-size: 2.5rem;
 	}
 `

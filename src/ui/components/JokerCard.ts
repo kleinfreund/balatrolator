@@ -33,7 +33,7 @@ const lightCss = /*css*/`
 
 	.jc-count-input {
 		inline-size: 3.5rem;
-		text-align: right;
+		text-align: end;
 	}
 
 	.jc-edition-input {
@@ -91,17 +91,17 @@ const lightCss = /*css*/`
 
 	.jc-plus-chips-input {
 		inline-size: 7rem;
-		text-align: right;
+		text-align: end;
 	}
 
 	.jc-plus-multiplier-input {
 		inline-size: 7rem;
-		text-align: right;
+		text-align: end;
 	}
 
 	.jc-times-multiplier-input {
 		inline-size: 7rem;
-		text-align: right;
+		text-align: end;
 	}
 `
 const lightStyleSheet = await new CSSStyleSheet().replace(lightCss)

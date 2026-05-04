@@ -54,7 +54,7 @@ const lightCss = /*css*/`
 
 	.pc-count-input {
 		inline-size: 3.5rem;
-		text-align: right;
+		text-align: end;
 	}
 
 	.pc-edition-input {

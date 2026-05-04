@@ -20,9 +20,11 @@ export function calculateScore (unresolvedState: State): {
 
 	const results = LUCKS.map<Result>((luck) => {
 		const scoreValues = getScore(state, playedHand, scoringCards, luck)
-		const { score, log } = doBigMath(scoreValues, state.deck)
+		const { chips, multiplier, score, log } = doBigMath(scoreValues, state.deck)
 
 		return {
+			chips,
+			multiplier,
 			score,
 			formattedScore: formatScore(score),
 			luck,

@@ -160,6 +160,8 @@ export interface State {
 export type Luck = 'none' | 'average' | 'all'
 
 export interface Result {
+	chips: string
+	multiplier: string
 	score: string
 	formattedScore: string
 	luck: Luck

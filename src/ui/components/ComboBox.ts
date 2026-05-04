@@ -23,7 +23,7 @@ const lightCss = /*css*/`
 		border-radius: 0.25rem;
 		color: var(--c-text);
 		background-color: var(--c-background-lighter);
-		text-align: left;
+		text-align: start;
 	}
 
 	.cb-popover {
@@ -58,7 +58,7 @@ const lightCss = /*css*/`
 		font: inherit;
 		color: var(--c-text);
 		background-color: var(--c-background-lighter);
-		text-align: left;
+		text-align: start;
 
 		&:focus-visible {
 			isolation: isolate;

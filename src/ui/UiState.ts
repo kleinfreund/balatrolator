@@ -265,16 +265,8 @@ function updateScore (hand: HandName, results: Result[]) {
 		formattedScoreEl.textContent = result.formattedScore
 
 		const scoreEl = fragment.querySelector<HTMLElement>('[data-sc-score]')!
-
-		const thousandsSeparatedScore = result.score.includes('.')
-			? result.score
-			: result.score
-				.split('')
-				.toReversed()
-				.map((digit, index) => digit + (index > 0 && index % 3 === 0 ? ',' : ''))
-				.toReversed()
-				.join('')
-		scoreEl.textContent = thousandsSeparatedScore
+		const equation = `${result.chips}×${result.multiplier}`
+		scoreEl.textContent = equation + '\n= ' + result.score
 
 		scoreCardContainer.appendChild(fragment)
 	}

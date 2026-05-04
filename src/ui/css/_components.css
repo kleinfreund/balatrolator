@@ -36,7 +36,7 @@
 		'hands cards cards'
 		'hands score log'
 	;
-	grid-template-columns: 14rem minmax(0, 1fr) minmax(0, 3fr);
+	grid-template-columns: 14rem minmax(0, 1fr) minmax(0, 2fr);
 	gap: 0.5rem;
 }
 
@@ -159,6 +159,7 @@
 	--c-background-lighter: var(--c-green-lighter);
 
 	font-size: 1.2em;
+	text-align: end;
 }
 
 @media (prefers-contrast: more) {
@@ -169,21 +170,8 @@
 	}
 }
 
-.score-entry {
-	display: flex;
-	flex-wrap: wrap;
-	justify-content: space-between;
-	align-items: baseline;
-	gap: 0.25rem;
-
-	.badge {
-		flex-shrink: 0;
-	}
-}
-
 .exact-score {
 	font-size: 0.9rem;
-	word-break: break-all;
 }
 
 .table-wrapper {

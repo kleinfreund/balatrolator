@@ -15,7 +15,8 @@ test.describe('Saves', () => {
 	test('can store and load saves', async ({ page }) => {
 		await page.goto('/?state=---1-1--5-___________-11*_*_*_*_*_*_*_*_*_*_*_*-50********_122********_126*****0*3**_69****12.25****_132********_119****5.5****-0*3***2**1*_0*3**4*2**1*4_0*3**2****_0*3**5*2***_0*3**5*2***_0*3***2***')
 
-		await expect(page.locator('[data-sc-score]')).toHaveText('12,972,158,342,922,240')
+		await expect(page.locator('[data-sc-score]')).toContainText('770×16846958886912')
+		await expect(page.locator('[data-sc-score]')).toContainText('= 12972158342922240')
 
 		const table = page.getByRole('table', { name: /^Saves$/ })
 		await expect(table.getByRole('row')).toHaveCount(2)
@@ -28,10 +29,12 @@ test.describe('Saves', () => {
 		await expect(table.getByRole('row').nth(2)).toContainText('Current hand (autosave)')
 
 		await page.getByRole('button', { name: /^Remove playing card$/ }).first().click()
-		await expect(page.locator('[data-sc-score]')).toHaveText('23,713,925,824,512')
+		await expect(page.locator('[data-sc-score]')).toContainText('148×160229228544')
+		await expect(page.locator('[data-sc-score]')).toContainText('= 23713925824512')
 
 		await page.getByRole('button', { name: /^Load$/ }).last().click()
-		await expect(page.locator('[data-sc-score]')).toHaveText('12,972,158,342,922,240')
+		await expect(page.locator('[data-sc-score]')).toContainText('770×16846958886912')
+		await expect(page.locator('[data-sc-score]')).toContainText('= 12972158342922240')
 
 		await page.reload()
 		const table2 = page.getByRole('table', { name: /^Saves$/ })
