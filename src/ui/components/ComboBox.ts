@@ -36,6 +36,7 @@ const lightCss = /*css*/`
 		padding: 0;
 		border: none;
 		background-color: transparent;
+		font-weight: normal;
 	}
 
 	.cb-option-list {

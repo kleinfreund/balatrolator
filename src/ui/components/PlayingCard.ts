@@ -40,10 +40,12 @@ const lightCss = /*css*/`
 
 	.pc-rank-input {
 		inline-size: 5rem;
+		font-weight: bold;
 	}
 
 	.pc-suit-input {
 		inline-size: 8rem;
+		font-weight: bold;
 	}
 
 	.pc-card-of {

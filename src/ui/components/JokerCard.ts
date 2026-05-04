@@ -27,6 +27,10 @@ const lightCss = /*css*/`
 		cursor: ew-resize;
 	}
 
+	.jc-name-input {
+		font-weight: bold;
+	}
+
 	.jc-count-input {
 		inline-size: 3.5rem;
 		text-align: right;
