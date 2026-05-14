@@ -1,5 +1,6 @@
 html {
 	--c-text: var(--c-black);
+	--c-text-disabled: var(--c-grey-dark);
 	--c-background: var(--c-grey-light);
 	--c-background-light: var(--c-grey-light);
 	--c-background-lighter: var(--c-grey-lighter);

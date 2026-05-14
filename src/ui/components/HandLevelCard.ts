@@ -12,6 +12,7 @@ const lightCss = /*css*/`
 	@media (prefers-contrast: more) {
 		hand-level-card {
 			--c-text: var(--c-black);
+			--c-text-disabled: var(--c-grey-dark);
 			--c-border: var(--c-black);
 			--c-background-light: var(--c-grey-light);
 			--c-background-lighter: var(--c-white);

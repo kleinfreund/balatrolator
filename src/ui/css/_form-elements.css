@@ -96,6 +96,10 @@
 	justify-content: center;
 }
 
+.button:where(:disabled) {
+	color: var(--c-text-disabled);
+}
+
 .button:not(:disabled) {
 	cursor: pointer;
 }

@@ -228,7 +228,7 @@ test.describe('Jokers', () => {
 		}
 	})
 
-	test('can be re-arranged with left/right buttons', async ({ page }) => {
+	test('can be re-arranged with “Move left”/“Move right” buttons', async ({ page }) => {
 		await page.goto('/?state=----1--5-___________-*_*_*_*_*_*_*_*_*_*_*_*-126*****2*3*1*_132*****0*0*1*_69****12.4*0*0*1*-')
 
 		const cards = page.locator('joker-card')
@@ -281,7 +281,7 @@ test.describe('Jokers', () => {
 		await expect(cards3.nth(2).getByRole('button', { name: /^Move joker right$/ })).toHaveAttribute('disabled')
 	})
 
-	test('can be drag-and-dropped to re-arrange', async ({ page }) => {
+	test('can be re-arranged via drag-and-drop', async ({ page }) => {
 		await page.goto('/?state=----1--5-___________-*_*_*_*_*_*_*_*_*_*_*_*-126*****2*3*1*_132*****0*0*1*_69****12.4*0*0*1*-')
 
 		await expect(page.locator('[name^="joker-name-"]')).toHaveCount(3)
@@ -321,6 +321,47 @@ test.describe('Jokers', () => {
 		await expect(cards3.nth(1).locator('[name^="joker-name-"]')).toHaveJSProperty('value', 'The Family')
 		await expect(cards3.nth(2).locator('[name^="joker-name-"]')).toHaveJSProperty('value', 'The Idol')
 		await expect(cards3.nth(2).getByRole('combobox', { name: /^Rank$/ })).toHaveValue('Queen')
+	})
+
+	test('can be re-arranged via keyboard', async ({ page }) => {
+		await page.goto('/?state=----1--5-___________-*_*_*_*_*_*_*_*_*_*_*_*-126*****2*3*1*_132*****0*0*1*_69****12.4*0*0*1*-')
+
+		await expect(page.locator('joker-card').nth(0)).toHaveAccessibleName('Joker 1: The Idol')
+		await expect(page.locator('joker-card').nth(1)).toHaveAccessibleName('Joker 2: The Family')
+		await expect(page.locator('joker-card').nth(2)).toHaveAccessibleName('Joker 3: Hologram')
+
+		await page.getByRole('group', { name: /^Joker 1: The Idol$/}).press('ArrowRight')
+		await expect(page.locator('joker-card').nth(0)).toHaveAccessibleName('Joker 1: The Family')
+		await expect(page.locator('joker-card').nth(1)).toHaveAccessibleName('Joker 2: The Idol')
+		await expect(page.locator('joker-card').nth(2)).toHaveAccessibleName('Joker 3: Hologram')
+		await expect(page.locator('joker-card').nth(0).getByRole('button', { name: /^Move joker left$/ })).toHaveAttribute('disabled')
+		await expect(page.locator('joker-card').nth(0).getByRole('button', { name: /^Move joker right$/ })).not.toHaveAttribute('disabled')
+		await expect(page.locator('joker-card').nth(1).getByRole('button', { name: /^Move joker left$/ })).not.toHaveAttribute('disabled')
+		await expect(page.locator('joker-card').nth(1).getByRole('button', { name: /^Move joker right$/ })).not.toHaveAttribute('disabled')
+		await expect(page.locator('joker-card').nth(2).getByRole('button', { name: /^Move joker left$/ })).not.toHaveAttribute('disabled')
+		await expect(page.locator('joker-card').nth(2).getByRole('button', { name: /^Move joker right$/ })).toHaveAttribute('disabled')
+
+		await page.getByRole('group', { name: /^Joker 2: The Idol$/}).press('ArrowRight')
+		await expect(page.locator('joker-card').nth(0)).toHaveAccessibleName('Joker 1: The Family')
+		await expect(page.locator('joker-card').nth(1)).toHaveAccessibleName('Joker 2: Hologram')
+		await expect(page.locator('joker-card').nth(2)).toHaveAccessibleName('Joker 3: The Idol')
+		await expect(page.locator('joker-card').nth(0).getByRole('button', { name: /^Move joker left$/ })).toHaveAttribute('disabled')
+		await expect(page.locator('joker-card').nth(0).getByRole('button', { name: /^Move joker right$/ })).not.toHaveAttribute('disabled')
+		await expect(page.locator('joker-card').nth(1).getByRole('button', { name: /^Move joker left$/ })).not.toHaveAttribute('disabled')
+		await expect(page.locator('joker-card').nth(1).getByRole('button', { name: /^Move joker right$/ })).not.toHaveAttribute('disabled')
+		await expect(page.locator('joker-card').nth(2).getByRole('button', { name: /^Move joker left$/ })).not.toHaveAttribute('disabled')
+		await expect(page.locator('joker-card').nth(2).getByRole('button', { name: /^Move joker right$/ })).toHaveAttribute('disabled')
+
+		await page.getByRole('group', { name: /^Joker 3: The Idol$/}).press('Control+ArrowLeft')
+		await expect(page.locator('joker-card').nth(0)).toHaveAccessibleName('Joker 1: The Idol')
+		await expect(page.locator('joker-card').nth(1)).toHaveAccessibleName('Joker 2: The Family')
+		await expect(page.locator('joker-card').nth(2)).toHaveAccessibleName('Joker 3: Hologram')
+		await expect(page.locator('joker-card').nth(0).getByRole('button', { name: /^Move joker left$/ })).toHaveAttribute('disabled')
+		await expect(page.locator('joker-card').nth(0).getByRole('button', { name: /^Move joker right$/ })).not.toHaveAttribute('disabled')
+		await expect(page.locator('joker-card').nth(1).getByRole('button', { name: /^Move joker left$/ })).not.toHaveAttribute('disabled')
+		await expect(page.locator('joker-card').nth(1).getByRole('button', { name: /^Move joker right$/ })).not.toHaveAttribute('disabled')
+		await expect(page.locator('joker-card').nth(2).getByRole('button', { name: /^Move joker left$/ })).not.toHaveAttribute('disabled')
+		await expect(page.locator('joker-card').nth(2).getByRole('button', { name: /^Move joker right$/ })).toHaveAttribute('disabled')
 	})
 })
 

@@ -1,6 +1,7 @@
 import { html, render } from 'lit-html'
 
 import { FormAssociatedElement } from './FormAssociatedElement.ts'
+import { getShortcutKey } from '../getShortcutKey.ts'
 
 const lightCss = /*css*/`
 	combo-box {
@@ -543,21 +544,6 @@ export class ComboBox extends FormAssociatedElement {
 			this.#button.popoverTargetElement.hidePopover()
 		}
 	}
-}
-
-/**
- * @returns the shortcut string (e.g. `"Ctrl+Shift+K"`) associated with a {@link KeyboardEvent}.
- */
-function getShortcutKey (event: KeyboardEvent): string {
-	return [
-		event.metaKey ? 'Meta' : undefined,
-		event.ctrlKey ? 'Ctrl' : undefined,
-		event.altKey ? 'Alt' : undefined,
-		event.shiftKey ? 'Shift' : undefined,
-		event.key,
-	]
-		.filter((key) => key !== undefined)
-		.join('+')
 }
 
 /**

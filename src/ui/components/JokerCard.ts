@@ -4,10 +4,12 @@ import { JOKER_DEFINITIONS } from '#lib/data.ts'
 import type { Joker, JokerEdition, JokerName, Rank, Suit } from '#lib/types.ts'
 import { DraggableCard } from './DraggableCard.ts'
 import { BaseElement } from '#ui/components/BaseElement.ts'
+import { getShortcutKey } from '../getShortcutKey.ts'
 
 const lightCss = /*css*/`
 	joker-card {
 		--c-text: var(--c-black);
+		--c-text-disabled: var(--c-red-dark);
 		--c-border: var(--c-red-dark);
 		--c-background-light: var(--c-red-light);
 		--c-background-lighter: var(--c-red-lighter);
@@ -124,6 +126,27 @@ export class JokerCard extends DraggableCard {
 	#rank: Rank = 'Ace'
 	#suit: Suit = 'Clubs'
 
+	#commands: Record<string, { action: (event: KeyboardEvent) => void }> = {
+		ArrowLeft: {
+			action: () => this.#swapLeft(),
+		},
+		'Ctrl+ArrowLeft': {
+			action: () => this.#moveToStart(),
+		},
+		ArrowRight: {
+			action: () => this.#swapRight(),
+		},
+		'Ctrl+ArrowRight': {
+			action: () => this.#moveToEnd(),
+		},
+		Backspace: {
+			action: () => this.remove(),
+		},
+		Delete: {
+			action: () => this.remove(),
+		},
+	}
+
 	constructor (joker?: Omit<Joker, 'index' | 'rarity'>) {
 		super()
 
@@ -132,6 +155,9 @@ export class JokerCard extends DraggableCard {
 		}
 		this.classList.add('card')
 		this.draggable = true
+		this.tabIndex = 0
+		this.role = 'group'
+		this.setAttribute('aria-labelledby', `${this.tagName.toLowerCase()}-${this.uniqueId}-title`)
 
 		if (joker) {
 			this.jokerName = joker.name
@@ -148,6 +174,18 @@ export class JokerCard extends DraggableCard {
 				this.suit = joker.suit
 			}
 		}
+
+		this.addEventListener('keydown', (event) => {
+			const key = getShortcutKey(event)
+			const command = this.#commands[key]
+			if (command) {
+				command.action(event)
+			}
+		})
+	}
+
+	get index () {
+		return Array.from(this.parentElement!.children).indexOf(this)
 	}
 
 	get jokerName () {
@@ -248,6 +286,12 @@ export class JokerCard extends DraggableCard {
 		this.queueRender()
 	}
 
+	toString () {
+		const modifiers = [this.edition !== 'Base' ? this.edition : undefined].filter((modifier) => modifier !== undefined)
+
+		return `Joker ${this.index + 1}: ${this.jokerName}` + (modifiers.length > 0 ? ` (${modifiers.join(', ')})` : '')
+	}
+
 	connectedCallback () {
 		super.connectedCallback()
 
@@ -266,7 +310,7 @@ export class JokerCard extends DraggableCard {
 						class="button --icon"
 						?disabled="${this.previousElementSibling === null}"
 						type="button"
-						@click="${() => this.#swap(this, this.previousElementSibling)}"
+						@click="${this.#swapLeft}"
 					>
 						<span class="visually-hidden">Move joker left</span>
 
@@ -291,7 +335,7 @@ export class JokerCard extends DraggableCard {
 						class="button --icon"
 						?disabled="${this.nextElementSibling === null}"
 						type="button"
-						@click="${() => this.#swap(this.nextElementSibling, this)}"
+						@click="${this.#swapRight}"
 					>
 						<span class="visually-hidden">Move joker right</span>
 
@@ -300,6 +344,8 @@ export class JokerCard extends DraggableCard {
 						</svg>
 					</button>
 				</div>
+
+				<span id="${this.tagName.toLowerCase()}-${this.uniqueId}-title" class="visually-hidden">${this.toString()}</span>
 
 				<label>
 					<span class="visually-hidden">Joker name</span>
@@ -522,16 +568,46 @@ export class JokerCard extends DraggableCard {
 		`
 	}
 
-	#swap = (previousElement: Element | null, nextElement: Element | null) => {
+	#moveToStart = () => {
 		if (
-			this.parentElement &&
-			previousElement instanceof BaseElement &&
-			nextElement instanceof BaseElement
+			this.parentElement?.firstElementChild instanceof BaseElement &&
+			this.parentElement.firstElementChild !== this
 		) {
-			this.parentElement.insertBefore(previousElement, nextElement)
-			// Trigger a re-render to update the “disabled” state of the “Move left”/“Move right” buttons.
-			previousElement.queueRender()
-			nextElement.queueRender()
+			this.#move(this.parentElement.firstElementChild, 'beforebegin')
+		}
+	}
+
+	#moveToEnd = () => {
+		if (
+			this.parentElement?.lastElementChild instanceof BaseElement &&
+			this.parentElement.lastElementChild !== this
+		) {
+			this.#move(this.parentElement.lastElementChild, 'afterend')
+		}
+	}
+
+	#swapLeft = () => {
+		if (this.previousElementSibling instanceof BaseElement) {
+			this.#move(this.previousElementSibling, 'beforebegin')
+		}
+	}
+
+	#swapRight = () => {
+		if (this.nextElementSibling instanceof BaseElement) {
+			this.#move(this.nextElementSibling, 'afterend')
+		}
+	}
+
+	#move (referenceElement: BaseElement, where: InsertPosition) {
+		referenceElement.insertAdjacentElement(where, this)
+		this.focus()
+
+		// Updates the “disabled” state of the “Move left”/“Move right” buttons.
+		// Re-rendering only `referenceElement` and `this` is only sufficient when swapping adjacent elements. Otherwise, up to four elements must be re-rendered (e.g. when moving the last element to the start while there are at least four elements).
+		for (const element of this.parentElement!.children) {
+			if (element instanceof BaseElement) {
+				element.queueRender()
+			}
 		}
 	}
 
