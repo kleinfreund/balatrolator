@@ -56,9 +56,9 @@
 		"lit-html": "3.3.3"
 	},
 	"devDependencies": {
-		"@commitlint/cli": "20.5.3",
-		"@commitlint/config-conventional": "20.5.3",
-		"@commitlint/types": "20.5.0",
+		"@commitlint/cli": "21.0.1",
+		"@commitlint/config-conventional": "21.0.1",
+		"@commitlint/types": "21.0.1",
 		"@eslint/js": "10.0.1",
 		"@playwright/test": "1.60.0",
 		"@stylistic/eslint-plugin": "5.10.0",
