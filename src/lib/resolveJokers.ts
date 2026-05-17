@@ -1,4 +1,4 @@
-import { JokerName } from '#lib/types.ts'
+import type { JokerName } from '#lib/types.ts'
 
 /**
  * Resolves a joker to its “Copy” target if applicable
