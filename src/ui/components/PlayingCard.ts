@@ -1,8 +1,7 @@
 import { html } from 'lit-html'
 
 import type { BlindName, Card, Edition, Enhancement, Rank, Seal, Suit } from '#lib/types.ts'
-import { DraggableCard } from './DraggableCard.ts'
-import { BaseElement } from '#ui/components/BaseElement.ts'
+import { MovableCard } from './MovableCard.ts'
 import { getShortcutKey } from '../getShortcutKey.ts'
 
 const lightCss = /*css*/`
@@ -82,7 +81,7 @@ const lightCss = /*css*/`
 `
 const lightStyleSheet = await new CSSStyleSheet().replace(lightCss)
 
-export class PlayingCard extends DraggableCard {
+export class PlayingCard extends MovableCard {
 	static {
 		if (window.customElements.get('playing-card') === undefined) {
 			window.customElements.define('playing-card', PlayingCard)
@@ -101,16 +100,16 @@ export class PlayingCard extends DraggableCard {
 
 	#commands: Record<string, { action: (event: KeyboardEvent) => void }> = {
 		ArrowLeft: {
-			action: () => this.#swapLeft(),
+			action: () => this.swapLeft(),
 		},
 		'Ctrl+ArrowLeft': {
-			action: () => this.#moveToStart(),
+			action: () => this.moveToStart(),
 		},
 		ArrowRight: {
-			action: () => this.#swapRight(),
+			action: () => this.swapRight(),
 		},
 		'Ctrl+ArrowRight': {
-			action: () => this.#moveToEnd(),
+			action: () => this.moveToEnd(),
 		},
 		Backspace: {
 			action: () => this.remove(),
@@ -275,7 +274,7 @@ export class PlayingCard extends DraggableCard {
 						class="button --icon"
 						?disabled="${this.previousElementSibling === null}"
 						type="button"
-						@click="${this.#swapLeft}"
+						@click="${this.swapLeft}"
 					>
 						<span class="visually-hidden">Move card left</span>
 
@@ -316,7 +315,7 @@ export class PlayingCard extends DraggableCard {
 						class="button --icon"
 						?disabled="${this.nextElementSibling === null}"
 						type="button"
-						@click="${this.#swapRight}"
+						@click="${this.swapRight}"
 					>
 						<span class="visually-hidden">Move card right</span>
 
@@ -533,49 +532,6 @@ export class PlayingCard extends DraggableCard {
 				</label>
 			</div>
 		`
-	}
-
-	#moveToStart = () => {
-		if (
-			this.parentElement?.firstElementChild instanceof BaseElement &&
-			this.parentElement.firstElementChild !== this
-		) {
-			this.#move(this.parentElement.firstElementChild, 'beforebegin')
-		}
-	}
-
-	#moveToEnd = () => {
-		if (
-			this.parentElement?.lastElementChild instanceof BaseElement &&
-			this.parentElement.lastElementChild !== this
-		) {
-			this.#move(this.parentElement.lastElementChild, 'afterend')
-		}
-	}
-
-	#swapLeft = () => {
-		if (this.previousElementSibling instanceof BaseElement) {
-			this.#move(this.previousElementSibling, 'beforebegin')
-		}
-	}
-
-	#swapRight = () => {
-		if (this.nextElementSibling instanceof BaseElement) {
-			this.#move(this.nextElementSibling, 'afterend')
-		}
-	}
-
-	#move (referenceElement: BaseElement, where: InsertPosition) {
-		referenceElement.insertAdjacentElement(where, this)
-		this.focus()
-
-		// Updates the “disabled” state of the “Move left”/“Move right” buttons.
-		// Re-rendering only `referenceElement` and `this` is only sufficient when swapping adjacent elements. Otherwise, up to four elements must be re-rendered (e.g. when moving the last element to the start while there are at least four elements).
-		for (const element of this.parentElement!.children) {
-			if (element instanceof BaseElement) {
-				element.queueRender()
-			}
-		}
 	}
 
 	toggleBlindEffects (blindName: BlindName, isActive: boolean) {

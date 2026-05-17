@@ -6,7 +6,7 @@ const FORMAT_PREFIX = 'dragged-element-id:'
 
 let lastDraggedElId: string | null = null
 
-export class DraggableCard extends BaseElement {
+export class MovableCard extends BaseElement {
 	#container: HTMLElement | undefined
 
 	constructor () {
@@ -22,9 +22,9 @@ export class DraggableCard extends BaseElement {
 			return
 		}
 
-		const container = this.closest<HTMLElement>('[data-drop-zone]')
+		const container = this.parentElement
 		if (!container) {
-			throw new Error(`<${this.tagName.toLowerCase()} id="${this.id}"> is a DraggableCard but is not an descendant of an element with the “data-drop-zone” attribute.`)
+			throw new Error(`<${this.tagName.toLowerCase()} id="${this.id}"> “parentElement” is not available.`)
 		}
 		this.#container = container
 
@@ -41,6 +41,49 @@ export class DraggableCard extends BaseElement {
 			this.#container.removeEventListener('dragenter', this.#handleDragOver)
 			this.#container.removeEventListener('dragover', this.#handleDragOver)
 			this.#container = undefined
+		}
+	}
+
+	moveToStart = () => {
+		if (
+			this.#container?.firstElementChild instanceof BaseElement &&
+			this.#container.firstElementChild !== this
+		) {
+			this.#move(this.#container.firstElementChild, 'beforebegin')
+		}
+	}
+
+	moveToEnd = () => {
+		if (
+			this.#container?.lastElementChild instanceof BaseElement &&
+			this.#container.lastElementChild !== this
+		) {
+			this.#move(this.#container.lastElementChild, 'afterend')
+		}
+	}
+
+	swapLeft = () => {
+		if (this.previousElementSibling instanceof BaseElement) {
+			this.#move(this.previousElementSibling, 'beforebegin')
+		}
+	}
+
+	swapRight = () => {
+		if (this.nextElementSibling instanceof BaseElement) {
+			this.#move(this.nextElementSibling, 'afterend')
+		}
+	}
+
+	#move (referenceElement: BaseElement, where: InsertPosition) {
+		referenceElement.insertAdjacentElement(where, this)
+		this.focus()
+
+		// Updates the “disabled” state of the “Move left”/“Move right” buttons.
+		// Re-rendering only `referenceElement` and `this` is only sufficient when swapping adjacent elements. Otherwise, up to four elements must be re-rendered (e.g. when moving the last element to the start while there are at least four elements).
+		for (const element of this.parentElement!.children) {
+			if (element instanceof BaseElement) {
+				element.queueRender()
+			}
 		}
 	}
 
