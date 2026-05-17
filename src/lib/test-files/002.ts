@@ -20,9 +20,9 @@ export default (message: string): TestCase => {
 				{ rank: '4', suit: 'Hearts', edition: 'Holographic' },
 			],
 			results: [
-				{ score: '600', formattedScore: '600', luck: 'none' },
-				{ score: '600', formattedScore: '600', luck: 'average' },
-				{ score: '600', formattedScore: '600', luck: 'all' },
+				{ chips: '50', multiplier: '12', score: '600', formattedScore: '600', luck: 'none' },
+				{ chips: '50', multiplier: '12', score: '600', formattedScore: '600', luck: 'average' },
+				{ chips: '50', multiplier: '12', score: '600', formattedScore: '600', luck: 'all' },
 			],
 		},
 	}

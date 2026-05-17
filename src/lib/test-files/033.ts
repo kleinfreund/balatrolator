@@ -35,9 +35,9 @@ export default (message: string): TestCase => {
 				{ rank: 'Jack', suit: 'Hearts', edition: 'Holographic', enhancement: 'Lucky', seal: 'Red' },
 			],
 			results: [
-				{ score: '56104413326638560', formattedScore: '5.610e16', luck: 'none' },
-				{ score: '66190599992094560', formattedScore: '6.619e16', luck: 'average' },
-				{ score: '81319879990278560', formattedScore: '8.132e16', luck: 'all' },
+				{ chips: '860', multiplier: '65237689914696', score: '56104413326638560', formattedScore: '5.610e16', luck: 'none' },
+				{ chips: '860', multiplier: '76965813944296', score: '66190599992094560', formattedScore: '6.619e16', luck: 'average' },
+				{ chips: '860', multiplier: '94557999988696', score: '81319879990278560', formattedScore: '8.132e16', luck: 'all' },
 			],
 		},
 	}

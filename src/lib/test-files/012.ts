@@ -29,9 +29,9 @@ export default (message: string): TestCase => {
 				{ rank: '5', suit: 'Spades', seal: 'Red' },
 			],
 			results: [
-				{ score: '13510', formattedScore: '13,510', luck: 'none' },
-				{ score: '13510', formattedScore: '13,510', luck: 'average' },
-				{ score: '13510', formattedScore: '13,510', luck: 'all' },
+				{ chips: '386', multiplier: '35', score: '13510', formattedScore: '13,510', luck: 'none' },
+				{ chips: '386', multiplier: '35', score: '13510', formattedScore: '13,510', luck: 'average' },
+				{ chips: '386', multiplier: '35', score: '13510', formattedScore: '13,510', luck: 'all' },
 			],
 		},
 	}

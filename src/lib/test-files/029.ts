@@ -34,9 +34,9 @@ export default (message: string): TestCase => {
 				{ rank: '6', suit: 'Hearts', enhancement: 'Lucky' },
 			],
 			results: [
-				{ score: '369904053492', formattedScore: '369,904,053,492', luck: 'none' },
-				{ score: '369904053492', formattedScore: '369,904,053,492', luck: 'average' },
-				{ score: '369904053492', formattedScore: '369,904,053,492', luck: 'all' },
+				{ chips: '159', multiplier: '2326440588', score: '369904053492', formattedScore: '369,904,053,492', luck: 'none' },
+				{ chips: '159', multiplier: '2326440588', score: '369904053492', formattedScore: '369,904,053,492', luck: 'average' },
+				{ chips: '159', multiplier: '2326440588', score: '369904053492', formattedScore: '369,904,053,492', luck: 'all' },
 			],
 		},
 	}

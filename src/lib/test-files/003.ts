@@ -24,9 +24,9 @@ export default (message: string): TestCase => {
 				{ rank: '7', suit: 'Hearts', enhancement: 'Bonus' },
 			],
 			results: [
-				{ score: '147', formattedScore: '147', luck: 'none' },
-				{ score: '147', formattedScore: '147', luck: 'average' },
-				{ score: '147', formattedScore: '147', luck: 'all' },
+				{ chips: '42', multiplier: '3.5', score: '147', formattedScore: '147', luck: 'none' },
+				{ chips: '42', multiplier: '3.5', score: '147', formattedScore: '147', luck: 'average' },
+				{ chips: '42', multiplier: '3.5', score: '147', formattedScore: '147', luck: 'all' },
 			],
 		},
 	}

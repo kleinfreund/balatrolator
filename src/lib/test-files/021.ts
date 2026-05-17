@@ -22,9 +22,9 @@ export default (message: string): TestCase => {
 				{ rank: '7', suit: 'Diamonds' },
 			],
 			results: [
-				{ score: '567', formattedScore: '567', luck: 'none' },
-				{ score: '567', formattedScore: '567', luck: 'average' },
-				{ score: '567', formattedScore: '567', luck: 'all' },
+				{ chips: '81', multiplier: '7', score: '567', formattedScore: '567', luck: 'none' },
+				{ chips: '81', multiplier: '7', score: '567', formattedScore: '567', luck: 'average' },
+				{ chips: '81', multiplier: '7', score: '567', formattedScore: '567', luck: 'all' },
 			],
 		},
 	}

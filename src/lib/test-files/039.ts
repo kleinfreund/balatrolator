@@ -28,9 +28,9 @@ export default (message: string): TestCase => {
 				{ rank: '7', suit: 'Clubs' },
 			],
 			results: [
-				{ score: '121277', formattedScore: '121,277', luck: 'none' },
-				{ score: '121277', formattedScore: '121,277', luck: 'average' },
-				{ score: '121277', formattedScore: '121,277', luck: 'all' },
+				{ chips: '318', multiplier: '381.375', score: '121277', formattedScore: '121,277', luck: 'none' },
+				{ chips: '318', multiplier: '381.375', score: '121277', formattedScore: '121,277', luck: 'average' },
+				{ chips: '318', multiplier: '381.375', score: '121277', formattedScore: '121,277', luck: 'all' },
 			],
 		},
 	}

@@ -25,9 +25,9 @@ export default (message: string): TestCase => {
 				{ rank: 'Queen', suit: 'Diamonds', debuffed: true },
 			],
 			results: [
-				{ score: '16.25', formattedScore: '16.3', luck: 'none' },
-				{ score: '16.25', formattedScore: '16.3', luck: 'average' },
-				{ score: '16.25', formattedScore: '16.3', luck: 'all' },
+				{ chips: '5', multiplier: '3.25', score: '16.25', formattedScore: '16.3', luck: 'none' },
+				{ chips: '5', multiplier: '3.25', score: '16.25', formattedScore: '16.3', luck: 'average' },
+				{ chips: '5', multiplier: '3.25', score: '16.25', formattedScore: '16.3', luck: 'all' },
 			],
 		},
 	}

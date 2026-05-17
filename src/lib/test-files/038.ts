@@ -17,9 +17,9 @@ export default (message: string): TestCase => {
 				{ rank: 'Jack', suit: 'Spades' },
 			],
 			results: [
-				{ score: '60', formattedScore: '60', luck: 'none' },
-				{ score: '60', formattedScore: '60', luck: 'average' },
-				{ score: '60', formattedScore: '60', luck: 'all' },
+				{ chips: '15', multiplier: '4', score: '60', formattedScore: '60', luck: 'none' },
+				{ chips: '15', multiplier: '4', score: '60', formattedScore: '60', luck: 'average' },
+				{ chips: '15', multiplier: '4', score: '60', formattedScore: '60', luck: 'all' },
 			],
 		},
 	}

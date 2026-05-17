@@ -30,9 +30,9 @@ export default (message: string): TestCase => {
 				{ rank: '4', suit: 'Clubs' },
 			],
 			results: [
-				{ score: '3192', formattedScore: '3,192', luck: 'none' },
-				{ score: '3192', formattedScore: '3,192', luck: 'average' },
-				{ score: '3192', formattedScore: '3,192', luck: 'all' },
+				{ chips: '114', multiplier: '28', score: '3192', formattedScore: '3,192', luck: 'none' },
+				{ chips: '114', multiplier: '28', score: '3192', formattedScore: '3,192', luck: 'average' },
+				{ chips: '114', multiplier: '28', score: '3192', formattedScore: '3,192', luck: 'all' },
 			],
 		},
 	}

@@ -19,9 +19,9 @@ export default (message: string): TestCase => {
 				{ rank: 'Queen', suit: 'Diamonds' },
 			],
 			results: [
-				{ score: '52.5', formattedScore: '52.5', luck: 'none' },
-				{ score: '52.5', formattedScore: '52.5', luck: 'average' },
-				{ score: '52.5', formattedScore: '52.5', luck: 'all' },
+				{ chips: '35', multiplier: '1.5', score: '52.5', formattedScore: '52.5', luck: 'none' },
+				{ chips: '35', multiplier: '1.5', score: '52.5', formattedScore: '52.5', luck: 'average' },
+				{ chips: '35', multiplier: '1.5', score: '52.5', formattedScore: '52.5', luck: 'all' },
 			],
 		},
 	}

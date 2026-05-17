@@ -37,9 +37,9 @@ export default (message: string): TestCase => {
 				{ rank: 'Queen', suit: 'Diamonds', enhancement: 'Glass' },
 			],
 			results: [
-				{ score: '354294', formattedScore: '354,294', luck: 'none' },
-				{ score: '354294', formattedScore: '354,294', luck: 'average' },
-				{ score: '354294', formattedScore: '354,294', luck: 'all' },
+				{ chips: '288', multiplier: '1230.1875', score: '354294', formattedScore: '354,294', luck: 'none' },
+				{ chips: '288', multiplier: '1230.1875', score: '354294', formattedScore: '354,294', luck: 'average' },
+				{ chips: '288', multiplier: '1230.1875', score: '354294', formattedScore: '354,294', luck: 'all' },
 			],
 		},
 	}
