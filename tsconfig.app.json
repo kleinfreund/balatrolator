@@ -1,14 +1,13 @@
 {
-	"include": [
-		"./src/**/*"
-	],
+	"include": ["src/**/*"],
 	"compilerOptions": {
+		"tsBuildInfoFile": "./node_modules/.tmp/tsconfig.app.tsbuildinfo",
 		"noEmit": true,
 		"moduleResolution": "Bundler",
 		"allowImportingTsExtensions": true,
 		"moduleDetection": "force",
 		"esModuleInterop": true,
-		"lib": ["DOM", "ES2024"],
+		"lib": ["ES2024", "DOM"],
 		"allowUnreachableCode": false,
 		"noImplicitAny": true,
 		"noImplicitReturns": true,

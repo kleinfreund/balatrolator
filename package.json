@@ -33,7 +33,7 @@
 		"lint": "run-p lint:*",
 		"lint:code-quality": "eslint",
 		"lint:lockfile": "lockfile-lint --path package-lock.json --validate-hosts --allowed-hosts npm",
-		"lint:types": "tsc --noEmit",
+		"lint:types": "tsc --build --noEmit",
 		"lint:knip": "knip",
 		"fix": "run-s fix:*",
 		"fix:code-quality": "npm run lint:code-quality -- --fix",
