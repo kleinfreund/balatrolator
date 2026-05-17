@@ -56,14 +56,16 @@ function getScore (state: State, playedHand: HandName, scoringCards: Card[], luc
 	const baseFactor = (state.blind.name === 'The Flint' && state.blind.active ? 0.5 : 1)
 	// The base score seems to be rounded here.
 	const score: ScoreValue[] = []
-	score.push({
-		chips: ['+', Math.round(baseScore.chips * baseFactor)],
-		phase: 'base',
-	})
-	score.push({
-		multiplier: ['+', Math.round(baseScore.multiplier * baseFactor)],
-		phase: 'base',
-	})
+	score.push(
+		{
+			chips: ['+', Math.round(baseScore.chips * baseFactor)],
+			phase: 'base',
+		},
+		{
+			multiplier: ['+', Math.round(baseScore.multiplier * baseFactor)],
+			phase: 'base',
+		},
+	)
 
 	for (const [index, card] of scoringCards.entries()) {
 		for (const trigger of getPlayedCardTriggers({ state, card, index })) {
