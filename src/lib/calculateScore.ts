@@ -67,21 +67,23 @@ function getScore (state: State, playedHand: HandName, scoringCards: Card[], luc
 
 	for (const [index, card] of scoringCards.entries()) {
 		for (const trigger of getPlayedCardTriggers({ state, card, index })) {
-			// Debuffed cards don't participate in scoring for played cards except that they still apply stone enhancement.
+			// 1. Stone enhancement always applies even if a card is debuffed
+			if (card.enhancement === 'Stone') {
+				score.push({
+					chips: ['+', 50],
+					phase: 'played-cards',
+					card,
+					type: 'enhancement',
+					trigger,
+				})
+			}
+
+			// Beyond applying Stone enhancement, a debuffed card doesn't participate in scoring
 			if (card.debuffed) {
-				if (card.enhancement === 'Stone') {
-					score.push({
-						chips: ['+', 50],
-						phase: 'played-cards',
-						card,
-						type: 'enhancement',
-						trigger,
-					})
-				}
 				continue
 			}
 
-			// 1. Rank
+			// 2. Rank
 			if (card.enhancement !== 'Stone') {
 				score.push({
 					chips: ['+', RANK_TO_CHIP_MAP[card.rank]],
@@ -92,18 +94,8 @@ function getScore (state: State, playedHand: HandName, scoringCards: Card[], luc
 				})
 			}
 
-			// 2. Enhancement
+			// 2. Enhancement (other than Stone)
 			switch (card.enhancement) {
-				case 'Stone': {
-					score.push({
-						chips: ['+', 50],
-						phase: 'played-cards',
-						card,
-						type: 'enhancement',
-						trigger,
-					})
-					break
-				}
 				case 'Bonus': {
 					score.push({
 						chips: ['+', 30],
@@ -197,7 +189,7 @@ function getScore (state: State, playedHand: HandName, scoringCards: Card[], luc
 	}
 
 	for (const card of state.cards.filter(({ played }) => !played)) {
-		// Debuffed cards don't participate in scoring for held cards at all.
+		// A debuffed card doesn't participate in scoring for held cards
 		if (card.debuffed) {
 			continue
 		}
@@ -229,7 +221,7 @@ function getScore (state: State, playedHand: HandName, scoringCards: Card[], luc
 	}
 
 	for (const joker of state.jokers) {
-		// 1. Edition (plus)
+		// 1. Edition (additive)
 		switch (joker.edition) {
 			case 'Foil': {
 				score.push({
@@ -262,7 +254,7 @@ function getScore (state: State, playedHand: HandName, scoringCards: Card[], luc
 			}
 		}
 
-		// 4. Edition (mult)
+		// 4. Edition (multiplicative)
 		switch (joker.edition) {
 			case 'Polychrome': {
 				score.push({
