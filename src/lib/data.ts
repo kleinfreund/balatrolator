@@ -1388,7 +1388,7 @@ export const JOKER_DEFINITIONS: Record<JokerName, JokerDefinition> = {
 		rarity: 'legendary',
 		playedCardEffect ({ score, card, trigger }) {
 			score.push({
-				multiplier: ['*', isRank(card, ['King', 'Queen']) ? 2 : 0],
+				multiplier: ['*', isRank(card, ['King', 'Queen']) ? 2 : 1],
 				phase: 'played-cards',
 				card,
 				joker: this,

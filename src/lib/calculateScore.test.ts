@@ -59,6 +59,7 @@ describe('calculateScore', async () => {
 		(await import('./test-files/042.ts')).default('Regression test for #29'),
 		(await import('./test-files/043.ts')).default('Regression test for #30'),
 		(await import('./test-files/044.ts')).default('Regression test for #32'),
+		(await import('./test-files/045.ts')).default('Regression test for #33'),
 	])('$message', ({ initialState, expected }) => {
 		const score = calculateScore(getState(initialState))
 
