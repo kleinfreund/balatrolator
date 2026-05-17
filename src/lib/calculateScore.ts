@@ -12,7 +12,16 @@ export function calculateScore (unresolvedState: State): {
 	scoringCards: Card[]
 	results: Result[]
 } {
-	const state = resolveState(unresolvedState)
+	// Create copies of jokers and cards based on their count.
+	const state = {
+		...unresolvedState,
+		jokers: unresolvedState.jokers.flatMap((joker) => {
+			return Array.from({ length: joker.count ?? 1 }, () => joker)
+		}),
+		cards: unresolvedState.cards.flatMap((card) => {
+			return Array.from({ length: card.count ?? 1 }, () => card)
+		}),
+	}
 
 	const playedCards = state.cards.filter((card) => card.played)
 	const { playedHand, scoringCards: preliminaryScoringCards } = getHand(playedCards, state.jokerSet)
@@ -36,20 +45,6 @@ export function calculateScore (unresolvedState: State): {
 		hand: playedHand,
 		scoringCards,
 		results,
-	}
-}
-
-function resolveState (state: State): State {
-	return {
-		...state,
-		// Create copies of cokers based on their count.
-		jokers: state.jokers.flatMap((joker) => {
-			return Array.from({ length: joker.count ?? 1 }, () => joker)
-		}),
-		// Create copies of cards based on their count.
-		cards: state.cards.flatMap((card) => {
-			return Array.from({ length: card.count ?? 1 }, () => card)
-		}),
 	}
 }
 
@@ -364,11 +359,7 @@ function getJokerTriggers (options: { state: State, joker: Joker }) {
 	for (const joker of options.state.jokers) {
 		if (['Blueprint', 'Brainstorm'].includes(joker.name)) {
 			const resolvedJoker = resolveJoker(options.state.jokers, joker)
-			if (resolvedJoker === undefined) {
-				continue
-			}
-
-			if (resolvedJoker.index === options.joker.index) {
+			if (resolvedJoker !== undefined && resolvedJoker.index === options.joker.index) {
 				triggers.push(joker.name)
 			}
 		}
