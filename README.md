@@ -48,8 +48,8 @@ Of special note is the case when there are enough instances of the “Oops! All 
 
 ### Calculate score via CLI
 
-After cloning this repository, run the following to calculate a score with a Balatrolator save export in JSON format.
+After cloning this repository and installing the dependencies, run the following to calculate a score with a Balatrolator save export in JSON format.
 
 ```sh
-node --experimental-strip-types balatrolator.ts 'Current hand.json'
+node balatrolator.ts --path 'Current hand.json'
 ```
