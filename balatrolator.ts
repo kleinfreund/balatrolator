@@ -1,5 +1,13 @@
 #! /usr/bin/env node
 
+/**
+ * **Usage**:
+ *
+ * ```sh
+ * node balatrolator.ts --path 'Current hand.json'
+ * ```
+ */
+
 import { readFileSync } from 'node:fs'
 import { parseArgs } from 'node:util'
 
