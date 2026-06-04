@@ -139,10 +139,18 @@ export class JokerCard extends MovableCard {
 			action: () => this.moveToEnd(),
 		},
 		Backspace: {
-			action: () => this.remove(),
+			action: (event) => {
+				if (event.target === this) {
+					this.remove()
+				}
+			},
 		},
 		Delete: {
-			action: () => this.remove(),
+			action: (event) => {
+				if (event.target === this) {
+					this.remove()
+				}
+			},
 		},
 	}
 
