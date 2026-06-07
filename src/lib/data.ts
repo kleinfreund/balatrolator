@@ -607,7 +607,7 @@ export const JOKER_DEFINITIONS: Record<JokerName, JokerDefinition> = {
 		},
 	},
 	'Hiker': {
-		rarity: 'common',
+		rarity: 'uncommon',
 		hasPlusChipsInput: true,
 		effect ({ score, trigger }) {
 			score.push({
@@ -705,7 +705,7 @@ export const JOKER_DEFINITIONS: Record<JokerName, JokerDefinition> = {
 		rarity: 'common',
 	},
 	'Vampire': {
-		rarity: 'rare',
+		rarity: 'uncommon',
 		hasTimesMultiplierInput: true,
 		effect ({ score, trigger }) {
 			score.push({
@@ -717,7 +717,7 @@ export const JOKER_DEFINITIONS: Record<JokerName, JokerDefinition> = {
 		},
 	},
 	'Shortcut': {
-		rarity: 'common',
+		rarity: 'uncommon',
 	},
 	'Hologram': {
 		rarity: 'uncommon',
@@ -1269,7 +1269,7 @@ export const JOKER_DEFINITIONS: Record<JokerName, JokerDefinition> = {
 		},
 	},
 	'The Order': {
-		rarity: 'common',
+		rarity: 'rare',
 		effect ({ state, score, trigger }) {
 			const cards = straight(state.cards.filter(({ played }) => played), state.jokerSet)
 			score.push({
@@ -1360,7 +1360,7 @@ export const JOKER_DEFINITIONS: Record<JokerName, JokerDefinition> = {
 		rarity: 'rare',
 	},
 	'Bootstraps': {
-		rarity: 'common',
+		rarity: 'uncommon',
 		effect ({ state, score, trigger }) {
 			// Note: I'm assuming here that this can't *subtract* multiplier if money is negative.
 			const factor = Math.max(0, Math.floor(state.money / 5))
