@@ -229,6 +229,11 @@ function handleImportSubmit (event: SubmitEvent) {
 			const { hand, results } = calculateScore(state)
 			saveManager.save(name, state, hand, results)
 			storeSaves()
+
+			const input = form.querySelector('input[name="import"]')
+			if (input instanceof HTMLInputElement) {
+				input.value = ''
+			}
 		}
 	})
 	fileReader.readAsText(file)
