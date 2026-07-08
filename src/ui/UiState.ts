@@ -223,11 +223,13 @@ function handleImportSubmit (event: SubmitEvent) {
 	const fileReader = new FileReader()
 	fileReader.addEventListener('load', () => {
 		if (typeof fileReader.result === 'string') {
-			const name = file.name.replace('.json', '')
+			const fileName = file.name.replace('.json', '')
+			const existingSave = saveManager.getSave(fileName)
+			const saveName = existingSave !== undefined ? `${fileName} copy` : fileName
 			const state = JSON.parse(fileReader.result) as State
 			state.jokerSet = new Set(state.jokers.map(({ name }) => name))
 			const { hand, results } = calculateScore(state)
-			saveManager.save(name, state, hand, results)
+			saveManager.save(saveName, state, hand, results)
 			storeSaves()
 
 			const input = form.querySelector('input[name="import"]')
