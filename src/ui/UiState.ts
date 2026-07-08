@@ -225,6 +225,7 @@ function handleImportSubmit (event: SubmitEvent) {
 		if (typeof fileReader.result === 'string') {
 			const name = file.name.replace('.json', '')
 			const state = JSON.parse(fileReader.result) as State
+			state.jokerSet = new Set(state.jokers.map(({ name }) => name))
 			const { hand, results } = calculateScore(state)
 			saveManager.save(name, state, hand, results)
 			storeSaves()
