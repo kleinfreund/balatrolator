@@ -182,6 +182,8 @@
 }
 
 .actions-cell {
+	/* Prevent the table from creating strange horizontal overflow on an ancestor of the table wrapper which itself still scrolls normally. */
+	position: relative;
 	inline-size: 10rem;
 	text-align: end;
 }
