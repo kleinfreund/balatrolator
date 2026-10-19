@@ -32,7 +32,7 @@ describe('Storage', () => {
 				handLevels: {
 					'Flush Five': {
 						level: 11,
-						plays: 0,
+						plays: 1,
 					},
 				},
 			},

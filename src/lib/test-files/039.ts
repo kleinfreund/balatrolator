@@ -16,7 +16,7 @@ export default (message: string): TestCase => {
 				{ name: 'Card Sharp' },
 			],
 			handLevels: {
-				'Two Pair': { level: 8, plays: 0 },
+				'Two Pair': { level: 8, plays: 1 },
 			},
 		},
 		expected: {

@@ -24,7 +24,7 @@ export default (message: string): TestCase => {
 			handLevels: {
 				'High Card': {
 					level: 171,
-					plays: 0,
+					plays: 1,
 				},
 			},
 		},

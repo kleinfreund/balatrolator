@@ -25,7 +25,7 @@ export default (message: string): TestCase => {
 			handLevels: {
 				'Flush': {
 					level: 5,
-					plays: 0,
+					plays: 1,
 				},
 			},
 		},

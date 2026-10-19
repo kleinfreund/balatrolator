@@ -135,7 +135,7 @@ function fromObservatoryCode (code: string): number {
 function toHandLevelCode ({ level, plays }: HandLevel): string {
 	return [
 		level !== 1 ? level : MINIFIED_DEFAULT_VALUE,
-		plays !== 0 ? plays : MINIFIED_DEFAULT_VALUE,
+		plays !== 1 ? plays : MINIFIED_DEFAULT_VALUE,
 	].join(SEPARATOR.third)
 }
 
@@ -147,7 +147,7 @@ function fromHandLevelCode (code: string): HandLevel {
 
 	return {
 		level: level !== MINIFIED_DEFAULT_VALUE ? Number(level) : 1,
-		plays: plays !== MINIFIED_DEFAULT_VALUE ? Number(plays) : 0,
+		plays: plays !== MINIFIED_DEFAULT_VALUE ? Number(plays) : 1,
 	}
 }
 

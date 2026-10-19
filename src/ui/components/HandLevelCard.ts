@@ -115,9 +115,9 @@ export class HandLevelCard extends BaseElement {
 							<input
 								class="hlc-plays-input text-input"
 								type="number"
-								value="0"
+								value="1"
 								.value="${this.plays}"
-								min="0"
+								min="1"
 								@change="${(event: Event) => {
 									const input = event.target as HTMLInputElement
 									this.plays = Number(input.value)

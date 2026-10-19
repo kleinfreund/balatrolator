@@ -23,7 +23,7 @@ export default (message: string): TestCase => {
 			handLevels: {
 				'Flush Five': {
 					level: 1,
-					plays: 0,
+					plays: 1,
 				},
 			},
 		},

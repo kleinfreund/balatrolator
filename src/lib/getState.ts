@@ -57,7 +57,7 @@ function getObservatory (initialObservatory: InitialObservatory): Observatory {
 
 function getHandLevels (initialHandLevels: InitialHandLevels): HandLevels {
 	const handNames = Object.keys(DEFAULT_HAND_SCORE_SETS) as HandName[]
-	const handLevelEntries = handNames.map<[HandName, HandLevel]>((handName) => [handName, initialHandLevels[handName] ?? { level: 1, plays: 0 }])
+	const handLevelEntries = handNames.map<[HandName, HandLevel]>((handName) => [handName, initialHandLevels[handName] ?? { level: 1, plays: 1 }])
 
 	return Object.fromEntries(handLevelEntries) as HandLevels
 }

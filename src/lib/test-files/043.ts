@@ -23,7 +23,7 @@ export default (message: string): TestCase => {
 			handLevels: {
 				'Two Pair': {
 					level: 7,
-					plays: 0,
+					plays: 1,
 				},
 			},
 		},

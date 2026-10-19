@@ -15,6 +15,12 @@ export default (message: string): TestCase => {
 			jokers: [
 				{ name: 'Supernova' },
 			],
+			handLevels: {
+				'Flush': {
+					level: 1,
+					plays: 1,
+				},
+			},
 		},
 		expected: {
 			hand: 'Flush',
