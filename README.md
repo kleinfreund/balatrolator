@@ -20,25 +20,23 @@
 
 ## Non-features
 
-- No hand optimizations: the goal of this calculator is to predict/verify scores (i.e doing the math). I leave being clever to you. 🤡 (Also: I might change my mind on this. 🃏)
+- Hand optimizations: the goal of this calculator is to predict/verify scores (i.e doing the math). I leave being clever to you. 🤡 (Also: I might change my mind on this. 🃏)
 
 ## Documentation
 
 ### Tell me the odds: how probabilistic effects are handled
 
-Balatrolator always returns deterministic scores and doesn't roll any “dice” when probabilistic effects (e.g. lucky card) are at play. Instead, it gives you scores for three “luck modes”:
+Balatrolator always returns deterministic scores and doesn't “roll any dice” when probabilistic effects (e.g. lucky cards) are at play. Instead, it gives you scores for three scenarios:
 
 - **no luck**: the lower bound
 - **all luck**: the upper bound
 - **average luck**: the score you can expect with perfectly average luck
 
-“No luck” means probabilistic effects never contribute anything to the score. Lucky cards never apply their +Mult value; Bloodstone never applies its xMult value.
-
-“All luck” means probablistic effects always contribute to the score. Lucky cards always add their +Mult value; Bloodstone always applies its xMult value.
+“No luck” means probabilistic effects never contribute anything to the score. Lucky cards never apply their +Mult value; Bloodstone never applies its xMult value. Conversely, “All luck” means probabilistic effects always contribute to the score. Lucky cards always add their +Mult value; Bloodstone always applies its xMult value.
 
 “Average luck” means probabilistic effects are counted with the scores that you can expect on average. That is, the resulting score is the one you would get as if you would play the same hand an infinite amount of times and averaged the resulting scores. In other words, a lucky card's +Mult value of 20 with standard odds of 1 in 5 would add 4 (20 * 1/5). “Oops! All 6s” jokers do factor into this math: having two instances of that joker would raise the odds of a lucky card's +Mult effect to 4 in 5 and so the value scored would be 16 (20 * 4/5).
 
-Of special note is the case when there are enough instances of the “Oops! All 6s” joker to guarantee an effect in the game. In that case, the three luck modes become irrelevant and the score is calculated the same way it would in “all luck” mode.
+Of special note is the case when there are enough instances of the “Oops! All 6s” joker to guarantee an effect in the game. In that case, the three luck modes become irrelevant and the score is calculated the same way as it would in “all luck” mode.
 
 ## Contributing
 
