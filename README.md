@@ -2,7 +2,7 @@
 
 [![Tests passing](https://github.com/kleinfreund/balatrolator/workflows/Tests/badge.svg)](https://github.com/kleinfreund/balatrolator/actions)
 
-[Balatrolator](https://balatrolator.com/) is a [Balatro](https://www.playbalatro.com/) score calculator. It's a fan project and not affiliated with the makers of Balatro.
+[Balatrolator](https://balatrolator.com/) is a [Balatro](https://www.playbalatro.com/) score calculator. It’s a fan project and not affiliated with the makers of Balatro.
 
 > [!NOTE]
 > Please, [report any bugs you encounter](https://github.com/kleinfreund/balatrolator/issues/new/choose).
@@ -26,7 +26,7 @@
 
 ### Tell me the odds: how probabilistic effects are handled
 
-Balatrolator always returns deterministic scores and doesn't “roll any dice” when probabilistic effects (e.g. lucky cards) are at play. Instead, it gives you scores for three scenarios:
+Balatrolator always returns deterministic scores and doesn’t “roll any dice” when probabilistic effects (e.g. lucky cards) are at play. Instead, it gives you scores for three scenarios:
 
 - **no luck**: the lower bound
 - **all luck**: the upper bound
@@ -34,7 +34,7 @@ Balatrolator always returns deterministic scores and doesn't “roll any dice”
 
 “No luck” means probabilistic effects never contribute anything to the score. Lucky cards never apply their +Mult value; Bloodstone never applies its xMult value. Conversely, “All luck” means probabilistic effects always contribute to the score. Lucky cards always add their +Mult value; Bloodstone always applies its xMult value.
 
-“Average luck” means probabilistic effects are counted with the scores that you can expect on average. That is, the resulting score is the one you would get as if you would play the same hand an infinite amount of times and averaged the resulting scores. In other words, a lucky card's +Mult value of 20 with standard odds of 1 in 5 would add 4 (20 * 1/5). “Oops! All 6s” jokers do factor into this math: having two instances of that joker would raise the odds of a lucky card's +Mult effect to 4 in 5 and so the value scored would be 16 (20 * 4/5).
+“Average luck” means probabilistic effects are counted with the scores that you can expect on average. That is, the resulting score is the one you would get as if you would play the same hand an infinite amount of times and averaged the resulting scores. In other words, a lucky card’s +Mult value of 20 with standard odds of 1 in 5 would add 4 (20 * 1/5). “Oops! All 6s” jokers do factor into this math: having two instances of that joker would raise the odds of a lucky card’s +Mult effect to 4 in 5 and so the value scored would be 16 (20 * 4/5).
 
 Of special note is the case when there are enough instances of the “Oops! All 6s” joker to guarantee an effect in the game. In that case, the three luck modes become irrelevant and the score is calculated the same way as it would in “all luck” mode.
 
