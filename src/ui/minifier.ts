@@ -1,6 +1,6 @@
 import { BLINDS, DECKS, EDITIONS, ENHANCEMENTS, HANDS, JOKER_DEFINITIONS, JOKER_EDITIONS, JOKER_NAMES, RANKS, SEALS, SUITS } from '#lib/data.ts'
 import { getState } from '#lib/getState.ts'
-import type { Card, Edition, Enhancement, HandLevel, HandName, InitialCard, InitialJoker, Joker, JokerName, Rank, Seal, State, Suit } from '#lib/types.ts'
+import type { Card, HandLevel, HandName, InitialCard, InitialJoker, Joker, State } from '#lib/types.ts'
 
 /*
 I'm sorry for the code in this file; it's an abomination. Its job is compressing a `State` object into a minimal (as in size) string for the use of persisting it in the browser's URL or client-side storage (e.g. local storage). This is a context-aware form of data compression “hand-crafted” for this application.
@@ -31,7 +31,7 @@ const SEAL_INDEXES = invertMap(SEALS)
 const SUIT_INDEXES = invertMap(SUITS)
 
 function invertMap<T extends string> (array: T[]): Record<T, number> {
-	return Object.fromEntries(array.map((value, index) => [value, index])) as Record<T, number>
+	return Object.fromEntries(array.map<[T, number]>((value, index) => [value, index])) as Record<T, number>
 }
 
 /**
@@ -92,11 +92,11 @@ export function deminify (str: string): State {
 
 		const observatory = Object.fromEntries(
 			!observatoryCodes ? [] : observatoryCodes.split(SEPARATOR.second)
-				.map((code, index) => [HANDS[index]!, fromObservatoryCode(code)]),
+				.map<[HandName, number]>((code, index) => [HANDS[index]!, fromObservatoryCode(code)]),
 		) as Record<HandName, number>
 		const handLevels = Object.fromEntries(
 			!handLevelCodes ? [] : handLevelCodes.split(SEPARATOR.second)
-				.map((code, index) => [HANDS[index]!, fromHandLevelCode(code)]),
+				.map<[HandName, HandLevel]>((code, index) => [HANDS[index]!, fromHandLevelCode(code)]),
 		) as Record<HandName, HandLevel>
 		const jokers = !jokerCodes ? [] : jokerCodes.split(SEPARATOR.second)
 			.map((code) => fromJokerCode(code))
@@ -191,13 +191,13 @@ function fromJokerCode (code: string): InitialJoker {
 	] = code.split(SEPARATOR.third)
 
 	return {
-		name: JOKER_NAMES[Number(nameIndex || '0')] as JokerName,
-		edition: JOKER_EDITIONS[Number(editionIndex || '0')] as Edition,
+		name: JOKER_NAMES[Number(nameIndex || '0')]!,
+		edition: JOKER_EDITIONS[Number(editionIndex || '0')]!,
 		plusChips: Number(plusChips || '0'),
 		plusMultiplier: Number(plusMultiplier || '0'),
 		timesMultiplier: Number(timesMultiplier || '1'),
-		rank: rankIndex !== '' ? RANKS[Number(rankIndex)] as Rank : undefined,
-		suit: suitIndex !== '' ? SUITS[Number(suitIndex)] as Suit : undefined,
+		rank: rankIndex !== '' ? RANKS[Number(rankIndex)]! : undefined,
+		suit: suitIndex !== '' ? SUITS[Number(suitIndex)]! : undefined,
 		active: active === '1',
 		count: Number(count || '1'),
 	}
@@ -240,11 +240,11 @@ function fromCardCode (code: string): InitialCard {
 	] = code.split(SEPARATOR.third)
 
 	return {
-		rank: RANKS[Number(rankIndex || '0')] as Rank,
-		suit: SUITS[Number(suitIndex || '0')] as Suit,
-		edition: EDITIONS[Number(editionIndex || '0')] as Edition,
-		enhancement: ENHANCEMENTS[Number(enhancementIndex || '0')] as Enhancement,
-		seal: SEALS[Number(sealIndex || '0')] as Seal,
+		rank: RANKS[Number(rankIndex || '0')]!,
+		suit: SUITS[Number(suitIndex || '0')]!,
+		edition: EDITIONS[Number(editionIndex || '0')]!,
+		enhancement: ENHANCEMENTS[Number(enhancementIndex || '0')]!,
+		seal: SEALS[Number(sealIndex || '0')]!,
 		debuffed: debuffed === '1',
 		played: played === '1',
 		count: Number(count || '1'),

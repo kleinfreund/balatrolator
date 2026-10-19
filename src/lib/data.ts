@@ -1126,7 +1126,7 @@ export const JOKER_DEFINITIONS: Record<JokerName, JokerDefinition> = {
 			}
 
 			let hasAllSuits = false
-			const suits = ['Spades', 'Hearts', 'Clubs', 'Diamonds'] as Suit[]
+			const suits: Suit[] = ['Spades', 'Hearts', 'Clubs', 'Diamonds']
 			const cards = new Set<Card>()
 			for (const suit of suits) {
 				for (const card of scoringCards) {

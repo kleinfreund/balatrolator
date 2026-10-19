@@ -258,7 +258,7 @@ export function nOfAKind (cards: Card[], n: number): Card[] {
 }
 
 function highCard (cards: Card[]): Card[] {
-	let highestCard
+	let highestCard: Card | undefined
 	let highestChips = 0
 
 	for (const card of cards) {
@@ -274,7 +274,7 @@ function highCard (cards: Card[]): Card[] {
 		}
 	}
 
-	return [highestCard as Card]
+	return [highestCard!]
 }
 
 function combineCards (playedCards: Card[], ...cardLists: Card[][]): Card[] {
