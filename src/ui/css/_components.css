@@ -181,6 +181,10 @@
 	overflow-x: auto
 }
 
+.score-cell {
+	text-align: end;
+}
+
 .actions-cell {
 	/* Prevent the table from creating strange horizontal overflow on an ancestor of the table wrapper which itself still scrolls normally. */
 	position: relative;
