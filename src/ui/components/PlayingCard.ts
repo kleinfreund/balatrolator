@@ -153,7 +153,11 @@ export class PlayingCard extends MovableCard {
 		// Allow clicking the card to toggle its played state.
 		this.addEventListener('click', (event) => {
 			if (event.isTrusted && !isInteractive(event)) {
-				this.played = !this.played
+				const input = this.querySelector<HTMLInputElement>(`[name="card-is-played-${this.uniqueId}"]`)
+				if (input instanceof HTMLInputElement) {
+					input.checked = !input.checked
+					input.dispatchEvent(new Event('change', { bubbles: true }))
+				}
 			}
 		}, { capture: true })
 

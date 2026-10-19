@@ -29,7 +29,9 @@ form.addEventListener('submit', (event) => {
 	const state = readStateFromUi()
 	applyState(state)
 })
-form.addEventListener('change', () => calculate())
+form.addEventListener('change', () => {
+	calculate()
+})
 
 const liveRegion = document.querySelector<HTMLElement>('[aria-live="polite"]')!
 function ariaNotify (message: string) {
