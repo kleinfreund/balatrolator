@@ -1,7 +1,7 @@
 import { html, render } from 'lit-html'
 
+import { createCommandHandler } from '#ui/createCommandHandler.ts'
 import { FormAssociatedElement } from './FormAssociatedElement.ts'
-import { getShortcutKey } from '../getShortcutKey.ts'
 
 const lightCss = /*css*/`
 	combo-box {
@@ -111,7 +111,7 @@ export class ComboBox extends FormAssociatedElement {
 	#disabledState = false
 
 	#button: HTMLButtonElement | null = null
-	#buttonCommands: Record<string, { action: (event: KeyboardEvent) => void }> = {
+	#handleButtonShortcuts = createCommandHandler({
 		'Alt+ArrowDown': {
 			action: () => this.#openPopover(),
 		},
@@ -130,12 +130,12 @@ export class ComboBox extends FormAssociatedElement {
 		ArrowRight: {
 			action: () => this.#selectNeighboringOption(1),
 		},
-	}
+	})
 
 	#query = ''
 	#_highlightedOptionIndex = 0
 	#ariaActiveDescendantElement: Element | null = null
-	#searchInputCommands: Record<string, { action: (event: KeyboardEvent) => void }> = {
+	#handleSearchInputShortcuts = createCommandHandler({
 		ArrowDown: {
 			action: (event) => this.#moveOptionIndex(event, 1),
 		},
@@ -148,7 +148,7 @@ export class ComboBox extends FormAssociatedElement {
 		Tab: {
 			action: (event) => this.#selectHighlightedOption(event),
 		},
-	}
+	})
 
 	#optionList: HTMLElement | null = null
 	#_options: string[] = []
@@ -407,7 +407,7 @@ export class ComboBox extends FormAssociatedElement {
 					.ariaActiveDescendantElement="${this.#ariaActiveDescendantElement}"
 					.value="${this.query}"
 					@input="${this.#handleSearchInput}"
-					@keydown="${this.#handleSearchShortcuts}"
+					@keydown="${this.#handleSearchInputShortcuts}"
 				>
 
 				<div
@@ -472,14 +472,6 @@ export class ComboBox extends FormAssociatedElement {
 		}
 	}
 
-	#handleButtonShortcuts = (event: KeyboardEvent) => {
-		const key = getShortcutKey(event)
-		const command = this.#buttonCommands[key]
-		if (command) {
-			command.action(event)
-		}
-	}
-
 	#handleTogglePopover = (event: ToggleEvent) => {
 		const isOpen = event.newState === 'open'
 
@@ -499,14 +491,6 @@ export class ComboBox extends FormAssociatedElement {
 		this.#highlightedOptionIndex = 0
 		const input = event.target as HTMLInputElement
 		this.query = input.value.trim().toLowerCase()
-	}
-
-	#handleSearchShortcuts = (event: KeyboardEvent) => {
-		const key = getShortcutKey(event)
-		const command = this.#searchInputCommands[key]
-		if (command) {
-			command.action(event)
-		}
 	}
 
 	#moveOptionIndex = (event: KeyboardEvent, direction: -1 | 1) => {

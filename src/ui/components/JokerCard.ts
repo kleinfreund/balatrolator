@@ -2,8 +2,8 @@ import { html } from 'lit-html'
 
 import { JOKER_DEFINITIONS } from '#lib/data.ts'
 import type { Joker, JokerEdition, JokerName, Rank, Suit } from '#lib/types.ts'
+import { createCommandHandler } from '#ui/createCommandHandler.ts'
 import { MovableCard } from './MovableCard.ts'
-import { getShortcutKey } from '../getShortcutKey.ts'
 
 const lightCss = /*css*/`
 	joker-card {
@@ -125,7 +125,7 @@ export class JokerCard extends MovableCard {
 	#rank: Rank = 'Ace'
 	#suit: Suit = 'Clubs'
 
-	#commands: Record<string, { action: (event: KeyboardEvent) => void }> = {
+	#handleShortcuts = createCommandHandler({
 		ArrowLeft: {
 			action: () => this.swapLeft(),
 		},
@@ -152,7 +152,7 @@ export class JokerCard extends MovableCard {
 				}
 			},
 		},
-	}
+	})
 
 	constructor (joker?: Omit<Joker, 'index' | 'rarity'>) {
 		super()
@@ -182,13 +182,7 @@ export class JokerCard extends MovableCard {
 			}
 		}
 
-		this.addEventListener('keydown', (event) => {
-			const key = getShortcutKey(event)
-			const command = this.#commands[key]
-			if (command) {
-				command.action(event)
-			}
-		})
+		this.addEventListener('keydown', this.#handleShortcuts)
 	}
 
 	get index () {

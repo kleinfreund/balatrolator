@@ -1,8 +1,8 @@
 import { html } from 'lit-html'
 
+import { createCommandHandler } from '#ui/createCommandHandler.ts'
 import type { BlindName, Card, Edition, Enhancement, Rank, Seal, Suit } from '#lib/types.ts'
 import { MovableCard } from './MovableCard.ts'
-import { getShortcutKey } from '../getShortcutKey.ts'
 
 const lightCss = /*css*/`
 	playing-card {
@@ -98,7 +98,7 @@ export class PlayingCard extends MovableCard {
 	#enhancement: Enhancement = 'None'
 	#seal: Seal = 'None'
 
-	#commands: Record<string, { action: (event: KeyboardEvent) => void }> = {
+	#handleShortcuts = createCommandHandler({
 		ArrowLeft: {
 			action: () => this.swapLeft(),
 		},
@@ -125,7 +125,7 @@ export class PlayingCard extends MovableCard {
 				}
 			},
 		},
-	}
+	})
 
 	constructor (card?: Omit<Card, 'index'>) {
 		super()
@@ -161,13 +161,7 @@ export class PlayingCard extends MovableCard {
 			}
 		}, { capture: true })
 
-		this.addEventListener('keydown', (event) => {
-			const key = getShortcutKey(event)
-			const command = this.#commands[key]
-			if (command) {
-				command.action(event)
-			}
-		})
+		this.addEventListener('keydown', this.#handleShortcuts)
 	}
 
 	get index () {
