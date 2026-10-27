@@ -25,19 +25,38 @@
 
 .saves {
 	flex: 3;
-	min-inline-size: 0;
+	min-inline-size: min(40rem, 100%);
 }
 
 .form {
 	display: grid;
-	grid-template-areas:
-		'hands round round'
-		'hands jokers jokers'
-		'hands cards cards'
-		'hands score log'
-	;
-	grid-template-columns: 14rem minmax(0, 1fr) minmax(0, 2fr);
 	gap: 0.5rem;
+}
+
+@media (width < 42rem) {
+	.form {
+		grid-template-areas:
+			'hands'
+			'round'
+			'jokers'
+			'cards'
+			'score'
+			'log'
+		;
+		grid-template-columns: minmax(0, 1fr);
+	}
+}
+
+@media (width >= 42rem) {
+	.form {
+		grid-template-areas:
+			'hands round round'
+			'hands jokers jokers'
+			'hands cards cards'
+			'hands score log'
+		;
+		grid-template-columns: 14rem minmax(0, 1fr) minmax(0, 2fr);
+	}
 }
 
 .form__round {
@@ -119,7 +138,15 @@
 /* ROUND DATA */
 
 .r-observatory-input-list {
-	columns: 3;
+	display: flex;
+	flex-wrap: wrap;
+	gap: 0.5rem;
+	overflow-x: auto;
+}
+
+.r-observatory-input-list > * {
+	min-inline-size: 0;
+	inline-size: 9.5rem;
 }
 
 .r-hands-input {
@@ -160,6 +187,7 @@
 	--c-background-light: var(--c-green-light);
 	--c-background-lighter: var(--c-green-lighter);
 
+	min-inline-size: 0;
 	font-size: 1.2em;
 	text-align: end;
 }
@@ -172,8 +200,13 @@
 	}
 }
 
+.formatted-score {
+	word-break: break-word;
+}
+
 .exact-score {
 	font-size: 0.9rem;
+	white-space: normal;
 }
 
 .table-wrapper {
