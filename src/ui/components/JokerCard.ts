@@ -12,8 +12,10 @@ const lightCss = /*css*/`
 		--c-border: var(--c-red-dark);
 		--c-background-light: var(--c-red-light);
 		--c-background-lighter: var(--c-red-lighter);
+		--card-gap: 0.5rem;
 
 		display: block;
+		transform: translateX(calc(var(--shift-by, 0) * (100% + var(--card-gap))))
 	}
 
 	@media (prefers-contrast: more) {
@@ -24,8 +26,18 @@ const lightCss = /*css*/`
 		}
 	}
 
+	@media (prefers-reduced-motion: no-preference) {
+		:where(:not([disable-animations])) > joker-card {
+			transition: transform 100ms ease-in-out;
+		}
+	}
+
 	joker-card:where([draggable="true"]) {
 		cursor: ew-resize;
+	}
+
+	joker-card:where([is-being-dragged]) {
+		opacity: 0.5;
 	}
 
 	.jc-name-input {

@@ -11,8 +11,10 @@ const lightCss = /*css*/`
 		--c-border: var(--c-yellow-dark);
 		--c-background-light: var(--c-yellow-light);
 		--c-background-lighter: var(--c-yellow-lighter);
+		--card-gap: 0.5rem;
 
 		display: block;
+		transform: translateX(calc(var(--shift-by, 0) * (100% + var(--card-gap))))
 	}
 
 	@media (prefers-contrast: more) {
@@ -23,8 +25,18 @@ const lightCss = /*css*/`
 		}
 	}
 
+	@media (prefers-reduced-motion: no-preference) {
+		:where(:not([disable-animations])) > playing-card {
+			transition: transform 100ms ease-in-out;
+		}
+	}
+
 	playing-card:where([draggable="true"]) {
 		cursor: ew-resize;
+	}
+
+	playing-card:where([is-being-dragged]) {
+		opacity: 0.5;
 	}
 
 	playing-card:where(.--is-played) {
