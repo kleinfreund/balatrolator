@@ -129,7 +129,7 @@ export class MovableCard extends BaseElement {
 	}
 
 	#handleDragOver = (event: DragEvent) => {
-		if (!this.#container) {
+		if (event.dataTransfer === null || !this.#container) {
 			return
 		}
 
@@ -137,6 +137,8 @@ export class MovableCard extends BaseElement {
 		if (draggedEl) {
 			// **Allow** dropping off an element to occur
 			event.preventDefault()
+			event.dataTransfer.dropEffect = 'move'
+
 			// Safari workaround: Store the drag event data during the dragover event to work around an issue in Safari that makes it impossible to read `event.dataTransfer.types` during the dragend event.
 			lastDraggedElId = draggedEl.id
 
